@@ -7,60 +7,108 @@ and follow their build — without being there.**
 > Build back home — without being there.
 > *Your money never moves without your permission.*
 
+## What is in here
+
+| Area | URL | Who |
+|---|---|---|
+| Public website (EN / Shona / Ndebele) | `/`, `/services`, `/how-it-works`, `/about`, `/contact`, `/book-a-call`, `/terms`, `/privacy` | Everyone |
+| Client portal | `/portal` | Clients |
+| Field team portal | `/field` | Lawyer, field agents (2FA required) |
+| Admin dashboard | `/admin` | LBH admin (2FA required) |
+
 ## Stack
 
-- **Next.js** (App Router, TypeScript) + **Tailwind CSS v4** — deploys to Vercel
-  (Pro plan before going live; Hobby does not allow commercial use).
-- **next-intl** — English, Shona and Ndebele from day one. English is the master
-  copy; `messages/sn.json` and `messages/nd.json` are drafts marked
-  `"_meta": { "needs_review": true }` until a native speaker reviews them.
-- Planned (next phases, pending owner sign-off): **Supabase** (Postgres, Auth,
-  Storage, Realtime), **Paynow** for payments (sandbox first), **Resend** for email.
+- **Next.js 16** (App Router, TypeScript) + **Tailwind CSS v4**, **next-intl** for EN/SN/ND.
+- **Supabase** — Postgres with row-level security, Auth (TOTP 2FA), Storage (private buckets), Realtime (chat).
+- **Paynow** for online payments (simulated test mode until merchant keys are set).
+- **pdfkit** for quote / invoice / report PDFs, **sharp** for image re-encoding, **Leaflet/OpenStreetMap** for map pins.
+- **Resend** for email (falls back to logging emails in the server console).
 
-## Getting started
+## Run it locally
+
+Requires Node 20+ and Docker.
 
 ```bash
 npm install
-npm run dev
+npx supabase start          # local Postgres/Auth/Storage/Realtime in Docker
+npx supabase db reset       # schema + clearly labelled SAMPLE data
+cp .env.example .env.local  # then paste the keys printed by `npx supabase status`
+npm run dev                 # http://localhost:3000
 ```
+
+### Sample logins (local only — all marked SAMPLE)
+
+Password for every account: `Lbh-Sample-2026`
+
+| Email | Role | What to try |
+|---|---|---|
+| `client@lbh.test` | Client | Accept quote #1001, pay the deposit, approve the extra trip, pick a supplier, chat |
+| `client2@lbh.test` | Client | Read a published land report with verdict + PDF |
+| `agent@lbh.test` | Field agent | Assigned jobs, checklist, photo/receipt capture, draft report |
+| `lawyer@lbh.test` | Field (lawyer) | Has no jobs — shows field staff only see their own |
+| `admin@lbh.test` | Admin | Needs-you queue, quote builder, publish reports, confirm payments |
+
+Staff accounts are asked to set up an authenticator app (Google Authenticator, Authy,
+1Password…) on first login — scan the QR code, enter the 6-digit code.
+
+### Payments in test mode
+
+With `PAYNOW_INTEGRATION_ID` / `PAYNOW_INTEGRATION_KEY` empty, "Pay online" opens a
+clearly labelled **simulated checkout** where you choose success or failure. No money
+moves. Set real Paynow credentials (test keys first) to switch to the real checkout;
+the simulator then switches itself off.
+
+## Tests
+
+```bash
+npm test            # unit tests + 29 database permission tests (needs `npx supabase start`)
+npm run lint
+
+# full browser end-to-end run of every flow:
+npx supabase db reset && npm run build && npm run start   # in one terminal
+npm run test:e2e                                          # in another
+```
+
+The permission tests sign in as each sample role and call the database directly, proving
+the rules hold even if someone bypasses the website: clients only see their own data,
+field staff never see prices, nobody publishes their own report, approvals and quote
+acceptance only by the owning client, and the 2FA requirement.
 
 ## Project conventions
 
-- **Design tokens** live in `src/app/globals.css` (`@theme`): forest green
-  `#163A2B`, gold `#C9A227`, off-white `#F8F6F1`, text `#1B1F1C`, muted
-  `#5E6862`, borders `#E4E1D8`. **No orange anywhere.**
-- **No prices on public pages.** Prices only ever appear inside a client's own
-  quote (portal, later phase).
-- All user-facing text comes from `messages/<locale>.json` — never hard-code copy.
-- Photo slots: drop final photos into `public/images/` as `hero.jpg`, `land.jpg`,
-  `materials.jpg`, `monitoring.jpg`, `camera.jpg`, `live-feed.jpg` (current files
-  are clearly-labelled placeholders).
-- Contact details (`src/config/site.ts`) are placeholders, overridable via
-  `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_CONTACT_EMAIL`, `NEXT_PUBLIC_WHATSAPP_NUMBER`
-  until the real domain / email / WhatsApp number are chosen.
+- **Design tokens** in `src/app/globals.css`: forest green `#163A2B`, gold `#C9A227`,
+  off-white `#F8F6F1`. **No orange anywhere.**
+- **No prices on public pages** — prices only appear inside a client's own quote.
+  A test fails if a dollar amount appears in the public copy.
+- **All text in `messages/<locale>.json`** — never hard-coded. A test enforces that all
+  three files have the same keys. Shona/Ndebele are drafts (`needs_review: true`);
+  admins tick strings off at `/admin/translations`.
+- **Money** is USD integer cents everywhere; every money event is in the audit log.
+- **Photos**: drop final photos into `public/images/` with the same names
+  (`hero.jpg`, `land.jpg`, `materials.jpg`, `monitoring.jpg`, `camera.jpg`,
+  `live-feed.jpg`). The current files are cut from the approved mockups as stand-ins.
 
-## Build phases
+## Deploying (when ready)
 
-1. ✅ **Foundation** — setup, design tokens, components, i18n (EN/SN/ND), security headers.
-2. ✅ **Public website** — homepage matching the approved mockups (full-bleed hero),
-   services, how it works, about, contact, book-a-call form, terms, privacy,
-   floating WhatsApp button, PWA manifest.
-3. ⬜ **Booking & client portal** — Supabase auth + roles, persist bookings,
-   requests (land + materials), quotes + accept, chat. *(Booking form currently
-   validates server-side but does not yet persist — wired to Supabase in this phase.)*
-4. ⬜ **Field portal & reports** — jobs, GPS/time-stamped capture, receipts,
-   draft → admin review → publish, PDF report.
-5. ⬜ **Payments** — Paynow (test mode) + manual proof flow, deposits/balances,
-   extra-cost approvals, invoices.
-6. ⬜ **Admin dashboard** — settings, notifications.
-7. ⬜ **Launch hardening** — security review, accessibility, performance,
-   translation review list.
+1. Create a Supabase project on a **paid plan** (backups), push the schema:
+   `npx supabase link --project-ref <ref> && npx supabase db push`. Do **not** run the
+   seed file in production. In the dashboard enable TOTP MFA, set the site URL, and
+   configure SMTP for auth emails.
+2. Deploy to **Vercel Pro** (Hobby does not allow commercial use) with the env vars
+   from `.env.example`. `SUPABASE_SERVICE_ROLE_KEY` is server-only.
+3. Paynow: add the merchant integration ID/key and set `PAYNOW_RESULT_URL` to
+   `https://<domain>/api/paynow/result`.
+4. Create the first admin: invite them in Supabase Auth, then set
+   `raw_app_meta_data.role = 'admin'` for that user (later admins are invited from
+   `/admin/settings`).
 
 ## Open items (owner input needed)
 
-- Domain name (placeholder: `letsbuildhome.co.zw`) and contact email / WhatsApp number.
-- Zimbabwe entity name and registration details (for invoices; placeholder
-  `[LBH ZIMBABWE ENTITY NAME · REG NUMBER]` appears in the Terms).
-- Per-km travel rate and service fees (admin settings — never public).
+- Domain name (placeholder `letsbuildhome.co.zw`), contact email and WhatsApp number
+  (set in `/admin/settings` and the env vars).
+- Zimbabwe entity name and registration details — placeholder
+  `[LBH ZIMBABWE ENTITY NAME · REG NUMBER]` appears on invoices, PDFs and Terms.
+- Per-km travel rate and service fees (entered in `/admin/settings`; sample rate is $0.50/km).
 - Final photos for `public/images/`.
-- Supabase region + database schema sign-off before Phase 3 begins.
+- Native-speaker review of the Shona and Ndebele text.
+- Supabase hosting region, and Paynow merchant account.
