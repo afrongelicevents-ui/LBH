@@ -195,7 +195,8 @@
     "errorEmail": "Faka i-email eqondileyo.",
     "errorWhatsapp": "Faka inombolo yeWhatsApp eqondileyo lekhodi yelizwe.",
     "errorGeneric": "Kukhona okungahambanga kuhle. Zama futhi, loba usithinte kuWhatsApp.",
-    "slotPlaceholder": "Khetha isikhathi"
+    "slotPlaceholder": "Khetha isikhathi",
+    "errorRate": "Izicelo ezinengi kakhulu — zama futhi ngemva kwehora, loba usithinte kuWhatsApp."
   },
   "termsPage": {
     "metaTitle": "Imithetho yoMsebenzi",
@@ -243,5 +244,489 @@
     "title": "Ikhasi kalitholakalanga",
     "text": "Ikhasi olidingayo kalikho.",
     "home": "Buyela ekhasini lokuqala"
+  },
+  "auth": {
+    "loginTitle": "Ngena kuLBH",
+    "loginSubtitle": "Iportal yamaklayenti, iqembu lasensimini le-admin",
+    "email": "I-email",
+    "password": "Iphasiwedi",
+    "signIn": "Ngena",
+    "forgot": "Ukhohlwe iphasiwedi? Ngithumela ilink yokulungisa",
+    "resetSent": "Khangela i-email yakho — sithumele ilink yokulungisa.",
+    "errorInvalid": "I-email loba iphasiwedi engaqondanga.",
+    "errorEnterEmail": "Qala ufake i-email yakho.",
+    "errorGeneric": "Kukhona okungahambanga kuhle. Zama futhi.",
+    "noAccountHint": "Awula-akhawunti? Bhuka ucingo lwamahala — i-akhawunti yenziwa nge-email yakho.",
+    "mfaTitle": "I-two-factor authentication",
+    "mfaRequired": "Iyadingeka kubasebenzi beLBH.",
+    "mfaScan": "Skena le-QR code nge-authenticator app (Google Authenticator, Authy…), ubusufaka ikhodi yezinombolo eziyi-6.",
+    "mfaSecret": "Loba faka le-secret ngesandla",
+    "mfaEnterCode": "Faka ikhodi yezinombolo eziyi-6 evela ku-authenticator app yakho.",
+    "mfaVerify": "Qinisekisa ikhodi",
+    "mfaWrongCode": "Leyo khodi kayiqondanga loba isiphelile — zama futhi.",
+    "setPasswordTitle": "Beka iphasiwedi yakho",
+    "newPassword": "Iphasiwedi entsha (okungenani izinhlamvu ezili-10)",
+    "confirmPassword": "Qinisekisa iphasiwedi",
+    "savePassword": "Gcina iphasiwedi",
+    "passwordTooShort": "Iphasiwedi kumele ibe lezinhlamvu ezili-10 okungenani.",
+    "passwordMismatch": "Amaphasiwedi kawafanani."
+  },
+  "notify": {
+    "saved": "Kugciniwe — sizakwazisa nxa sesisebenza.",
+    "emailPlaceholder": "I-email yakho",
+    "button": "Ngazisa",
+    "error": "Kakugcinwanga — khangela i-email uzame futhi."
+  },
+  "pay": {
+    "testBanner": "I-test mode — ukubhadala kokulinga",
+    "testExplainer": "IPaynow kayikaxhunywa, ngakho akulamali yangempela ehambayo. Sebenzisa inkinobho ezingezansi ukulinga.",
+    "youArePaying": "Ubhadala",
+    "simulatePaid": "Linga ukubhadala okuphumeleleyo (TEST)",
+    "simulateFailed": "Linga ukubhadala okwehlulekileyo (TEST)",
+    "status": {
+      "confirmed": "Ukubhadala kuqinisekisiwe",
+      "submitted": "Kulindele ukuqinisekiswa",
+      "cancelled": "Kukhanselisiwe"
+    },
+    "thanksTitle": "Siyabonga — imali ifikile!",
+    "thanksText": "Samukele {amount}. Irisidi ikuportal yakho.",
+    "failedTitle": "Ukubhadala kwehlulekile",
+    "failedText": "Akulalutho olubhadalwe. Ungazama futhi ekhasini lesicelo sakho, loba uthumele ubufakazi be-bank transfer.",
+    "processingTitle": "Ukubhadala kuyenziwa…",
+    "processingText": "Siqinisekisa ukubhadala kwakho. Leli khasi liyantshintsha nxa sekuphelile.",
+    "backToRequest": "Buyela esicelweni sami"
+  },
+  "portal": {
+    "shell": {
+      "area": {
+        "client": "Iportal yeklayenti",
+        "field": "Iqembu lasensimini",
+        "admin": "I-admin"
+      },
+      "signOut": "Phuma"
+    },
+    "nav": {
+      "dashboard": "Izicelo zami",
+      "newLand": "Hlola isitandi",
+      "newMaterials": "Odola impahla",
+      "chat": "Khuluma leLBH",
+      "myJobs": "Imisebenzi yami"
+    },
+    "dashboard": {
+      "title": "Izicelo zami",
+      "pendingApprovals": "{count, plural, one {imvumo engu-# ikulindele — akulalutho oluhambayo uze unqume} other {izimvumo ezingu-# zikulindele — akulalutho oluhambayo uze unqume}}",
+      "myRequests": "Izicelo zami",
+      "noRequests": "Awukabi lazicelo. Qala esinye — kuthatha imizuzu embalwa.",
+      "startLand": "Hlola isitandi",
+      "startMaterials": "Odola impahla",
+      "myCalls": "Izingcingo zami ezibhukiweyo",
+      "service": {
+        "land": "Ukuhlola isitandi",
+        "materials": "Impahla",
+        "monitoring": "Ukugadwa kwesayithi",
+        "camera": "Ikhamera live",
+        "not-sure": "Angikazi"
+      },
+      "booking": {
+        "new": "Kuceliwe",
+        "confirmed": "Kuqinisekisiwe",
+        "completed": "Kuphelile",
+        "cancelled": "Kukhanselisiwe"
+      }
+    },
+    "status": {
+      "call_booked": "Ucingo lubhukiwe",
+      "quote_sent": "Ikhotheshini ithunyelwe",
+      "accepted": "Kuvunyiwe",
+      "deposit_paid": "Idiphozithi ibhadalwe",
+      "on_site": "Iqembu lisesayithini",
+      "report_ready": "Umbiko usulungile",
+      "balance_paid": "Eseleyo ibhadalwe",
+      "done": "Kuphelile",
+      "cancelled": "Kukhanselisiwe"
+    },
+    "forms": {
+      "landTitle": "Isicelo sokuhlola isitandi",
+      "landIntro": "Sitshele ngesitandi. Nxa usipha ulwazi olunengi, ummeli leqembu lethu bayaphangisa ukuhlola.",
+      "materialsTitle": "Isicelo sempahla",
+      "materialsIntro": "Bhala okudingwa yikwakha kwakho, loba ufake i-BOQ yakho. Siqathanisa amakhotheshini — akulalutho oluthengwayo ungavumanga ngombhalo.",
+      "town": "Idolobho / indawo",
+      "standNumber": "Inombolo yesitandi",
+      "mapPin": "Iphini kumephu (akubanjwa ngamandla)",
+      "mapAria": "Imephu — thinta ukubeka iphini esitandini",
+      "pinSet": "Iphini libekiwe",
+      "pinHint": "Thinta imephu ukutshengisa lapho isitandi sikhona (akubanjwa ngamandla).",
+      "documents": "Amaphepha (i-title deed, isivumelwano sokuthengisa, izincwadi zekhansili)",
+      "documentsHint": "I-PDF loba izithombe, kufika kumafayela ali-10.",
+      "introducedBy": "Ngubani okwazise ngalo umhlabathi?",
+      "toldAbout": "Watshelwa ini ngawo?",
+      "submitLand": "Thumela isicelo",
+      "siteAddress": "Ikheli lesayithi / idolobho",
+      "itemList": "Uluhlu lwezinto",
+      "itemName": "Into",
+      "itemQty": "Ubunengi",
+      "itemNotes": "Okunye",
+      "removeItem": "Susa into",
+      "addItem": "Engeza into",
+      "boqUpload": "Loba faka i-BOQ / uluhlu (i-PDF loba isithombe)",
+      "neededBy": "Kudingeka ngelanga lika",
+      "deliveryInstructions": "Imilayo yokuletha",
+      "submitMaterials": "Thumela isicelo",
+      "error": {
+        "invalid": "Khangela okubhalileyo uzame futhi.",
+        "db": "Kakugcinwanga — zama futhi.",
+        "error": "Kukhona okungahambanga kuhle — zama futhi.",
+        "rate": "Izicelo ezinengi kakhulu — zama emva kwesikhathi."
+      }
+    },
+    "request": {
+      "back": "Izicelo zami",
+      "detailsTitle": "Imininingwane yesicelo",
+      "town": "Idolobho / indawo",
+      "standNumber": "Inombolo yesitandi",
+      "mapPin": "Iphini kumephu",
+      "siteAddress": "Ikheli lesayithi",
+      "documents": "Amaphepha akho",
+      "quoteTitle": "Ikhotheshini #{number}",
+      "downloadPdf": "Thatha i-PDF",
+      "total": "Isamba",
+      "depositLine": "Idiphozithi ({pct}%)",
+      "balanceLine": "Eseleyo",
+      "acceptQuote": "Vuma le khotheshini",
+      "acceptConfirmText": "Ukuvuma kubhala ibizo lakho lesikhathi njengokuvuma okubhaliweyo. Umsebenzi uqala nxa idiphozithi ibhadalwe.",
+      "acceptConfirmYes": "Yebo, ngiyavuma",
+      "cancel": "Khansela",
+      "acceptedBy": "Kuvunywe ngu{name} ngo{date}",
+      "paymentsTitle": "Izimbadalo",
+      "paymentKind": {
+        "deposit": "Idiphozithi",
+        "balance": "Eseleyo",
+        "extra": "Eyokwengeza evunyiweyo"
+      },
+      "paymentStatus": {
+        "pending": "Ilindele ukubhadalwa",
+        "submitted": "Ubufakazi buyahlolwa",
+        "confirmed": "Ibhadalwe",
+        "failed": "Yehlulekile",
+        "cancelled": "Ikhanselisiwe"
+      },
+      "payNow": "Bhadala online",
+      "paidManually": "Ngibhadale ngeRemitly / WorldRemit / ibhanga",
+      "proofHint": "Faka irisidi yakho yokuthumela lereferensi — siqinisekisa phakathi kosuku olulodwa lomsebenzi.",
+      "proofReference": "Ireferensi yokuthumela",
+      "proofFile": "Ubufakazi (isithombe loba i-PDF)",
+      "submitProof": "Thumela ubufakazi",
+      "proofSubmitted": "Ubufakazi bufikile — sizabuqinisekisa masinyane.",
+      "actionFailed": "Kakusebenzanga — zama futhi.",
+      "approvalsTitle": "Izimvumo",
+      "approvalsHint": "Izinhambo zokwengeza, inhlawulo loba imbadalo zekhansili. Akulalutho oluhambayo uze uvume.",
+      "fieldNote": "Umbiko wasensimini",
+      "approve": "Vuma",
+      "decline": "Yala",
+      "approvalStatus": {
+        "approved": "Kuvunyiwe",
+        "declined": "Kwaliwe"
+      },
+      "suppliersTitle": "Amakhotheshini abathengisi",
+      "suppliersHint": "Siqathanise lababathengisi. Vuma OYEDWA kuphela — akulalutho oluthengwayo ungakavumi.",
+      "approveSupplier": "Vuma lo mthengisi",
+      "supplierApproved": "Uvunyiwe",
+      "receiptsTitle": "Amarisidi",
+      "receipt": "Irisidi",
+      "reportReady": "Umbiko wakho usulungile",
+      "readReport": "Bala umbiko",
+      "invoiceLink": "I-invoice #{number} (PDF)"
+    },
+    "chat": {
+      "title": "Khuluma leLBH",
+      "empty": "Akulamilayezo — bingelela!",
+      "placeholder": "Bhala umlayezo…",
+      "send": "Thumela",
+      "orWhatsapp": "Ufuna iWhatsApp? Khuluma lathi khona"
+    },
+    "report": {
+      "back": "Buyela esicelweni",
+      "title": "Umbiko wokuHlolwa kweSitandi",
+      "downloadPdf": "Thatha i-PDF",
+      "verdictLabel": "Isinqumo",
+      "verdict": {
+        "clear": "✅ Kuhlanzekile",
+        "concerns": "⚠️ Okukhathazayo",
+        "red_flags": "⛔ Izixwayiso"
+      },
+      "verdictText": {
+        "clear": "Akulazixwayiso ezitholakeleyo kulolu hlolo.",
+        "concerns": "Bala okutholakeleyo ngaphansi ungakabhadali okunye.",
+        "red_flags": "Ungaqhubeki lokhu kungakalungiswa."
+      },
+      "section": {
+        "stand_details": "Imininingwane yesitandi",
+        "legal_findings": "Okutholakeleyo emthethweni le-title",
+        "council_confirmation": "Ukuqinisekiswa likhansili",
+        "measurements": "Izilinganiso ziqathaniswa lamaphepha",
+        "red_flags": "Izixwayiso, zichasiswa ngokucacileyo",
+        "next_steps": "Isinyathelo esilandelayo esinconywayo",
+        "costs_summary": "Intengo lokuqathaniswa kohambo"
+      },
+      "gallery": "Izithombe lamavidiyo alosuku",
+      "video": "Ividiyo",
+      "farFlag": "ithethwe khatshana lephini lesitandi",
+      "disclaimer": "Lo mbiko luhlolo lwenyama lolwamaphepha olwenziwa ngezinsuku ezibhaliweyo. Kayisiso isiqinisekiso.",
+      "taken": "Ithethwe",
+      "uploaded": "Ifakwe"
+    }
+  },
+  "field": {
+    "myJobs": "Imisebenzi yami",
+    "noJobs": "Awukabelwa misebenzi.",
+    "client": "Iklayenti",
+    "requestType": {
+      "land_verification": "Ukuhlola isitandi",
+      "materials": "Impahla"
+    },
+    "jobStatus": {
+      "assigned": "Wabelwe",
+      "in_progress": "Uyenziwa",
+      "submitted": "Uthunyelwe",
+      "completed": "Uphelile"
+    },
+    "saved": "Kugciniwe.",
+    "error": {
+      "invalid": "Khangela amafilidi uzame futhi.",
+      "db": "Kakugcinwanga — zama futhi.",
+      "error": "Kukhona okungahambanga kuhle.",
+      "toobig": "Ifayela likhulu kakhulu.",
+      "locked": "Umbiko uku-admin — kawusalungiseki."
+    },
+    "standDetails": "Imininingwane yesitandi / yesicelo",
+    "clientDocuments": "Amaphepha eklayenti",
+    "visitTitle": "I-checklist yokuvakatsha lezilinganiso",
+    "visit": {
+      "arrived": "Ngifikile esitandini",
+      "council_officer_present": "Isikhulu sekhansili sikhona",
+      "pegs_shown": "Izikhonkwane zitshengisiwe zaqinisekiswa",
+      "length_m": "Ubude (m)",
+      "width_m": "Ububanzi (m)",
+      "area_sqm": "Indawo (sqm)",
+      "title_notes": "Amanothi e-title / omthetho",
+      "findings": "Okutholakeleyo"
+    },
+    "saveVisit": "Gcina ukuvakatsha",
+    "captureTitle": "Izithombe, ividiyo lamarisidi",
+    "captureHint": "Thatha ku-app ukuze usuku le-GPS kubhalwe. Izithombe ezithethwe okudlula 300 m kusuka kuphini ziyafakwa isixwayiso.",
+    "photos": "Izithombe",
+    "videos": "Ividiyo",
+    "receipts": "Amarisidi",
+    "receiptAmount": "Imali (USD)",
+    "mediaNote": "Inothi (akubanjwa ngamandla)",
+    "gpsHint": "I-GPS izathathwa nxa ukhetha ifayela.",
+    "gpsDenied": "I-GPS kayikho — ulwazi lwesithombe luzasetshenziswa nxa lukhona.",
+    "uploading": "Kuyafakwa…",
+    "upload": {
+      "photo": "Faka isithombe",
+      "video": "Faka ividiyo",
+      "receipt": "Faka irisidi"
+    },
+    "farFlag": "{m} m kusuka kuphini",
+    "extraCostTitle": "Cela intengo yokwengeza / uhambo lokwengeza",
+    "extraCostHint": "Kuqala kuye ku-admin. Iklayenti kumele livume kungakenzakali lutho.",
+    "extraTitle": "Kuyini?",
+    "extraReason": "Kungani kudingeka?",
+    "extraAmount": "Imali (USD)",
+    "sendExtraCost": "Thumela ku-admin",
+    "extraCostSent": "Kuthunyelwe ku-admin ukuthi kuhlolwe.",
+    "extraStatus": {
+      "pending": "Ku-admin",
+      "forwarded": "Kuthunyelwe kuklayenti",
+      "rejected": "Kwaliwe"
+    },
+    "reportTitle": "Umbiko wokuqala",
+    "reportHint": "Umbiko wakho uya ku-admin ukuthi uhlolwe — kawuyi kuklayenti ngqo.",
+    "verdict": "Isinqumo",
+    "verdicts": {
+      "clear": "Kuhlanzekile",
+      "concerns": "Okukhathazayo",
+      "red_flags": "Izixwayiso"
+    },
+    "saveDraft": "Gcina",
+    "submitToAdmin": "Thumela ku-admin",
+    "submitNote": "Ukuthumela kuvala umbiko lapho i-admin iwuhlola.",
+    "changesRequested": "I-admin icele untshintsho — lungisa uthumele futhi.",
+    "reportStatus": {
+      "submitted": "Uthunyelwe — uku-admin ukuthi uhlolwe.",
+      "published": "Ukhitshelwe iklayenti."
+    }
+  },
+  "admin": {
+    "nav": {
+      "needsYou": "Kudinga wena",
+      "requests": "Izicelo",
+      "bookings": "Amabhukingi",
+      "clients": "Abantu",
+      "chats": "Izingxoxo",
+      "payments": "Izimbadalo",
+      "interest": "Intshisekelo",
+      "settings": "Izilungiselelo",
+      "translations": "Izihumutsho",
+      "audit": "I-audit log"
+    },
+    "needsYou": {
+      "title": "Kudinga wena",
+      "nothing": "Akulalutho olulindileyo.",
+      "block": {
+        "bookings": "Izingcingo ezintsha ezibhukiweyo",
+        "requests": "Izicelo ezintsha (kudingeka ikhotheshini)",
+        "reports": "Imibiko okumele ihlolwe",
+        "proofs": "Ubufakazi bokubhadala obokuqinisekiswa",
+        "extras": "Izicelo zentengo yokwengeza",
+        "chats": "Izingxoxo ezingafundwanga"
+      }
+    },
+    "common": {
+      "error": {
+        "db": "Inkinga yedatabase.",
+        "invalid": "Okufakiweyo kakuqondanga.",
+        "auth": "Awulamvumo (i-2FA isilungisiwe yini?).",
+        "exists": "Le-email isilayo i-akhawunti.",
+        "self": "Nguwe obhale lo mbiko — enye i-admin kumele iwukhiphe.",
+        "closed": "Kakusavulekanga."
+      }
+    },
+    "bookings": {
+      "title": "Izingcingo ezibhukiweyo",
+      "confirm": "Qinisekisa",
+      "complete": "Kuphelile",
+      "cancel": "Khansela"
+    },
+    "requests": {
+      "title": "Izicelo",
+      "request": "Isicelo",
+      "client": "Iklayenti",
+      "type": "Uhlobo",
+      "status": "Isimo",
+      "created": "Kwenziwe"
+    },
+    "clients": {
+      "title": "Abantu",
+      "name": "Ibizo",
+      "email": "I-email",
+      "country": "Ilizwe",
+      "role": "Indima"
+    },
+    "chats": {
+      "title": "Ibhokisi lezingxoxo",
+      "empty": "Akulazingxoxo."
+    },
+    "quote": {
+      "defaultServiceFee": "Imbadalo yomsebenzi",
+      "defaultTravel": "Uhambo olulinganisiweyo (km × ${rate}/km)",
+      "kind": "Uhlobo",
+      "kinds": {
+        "service_fee": "Imbadalo yomsebenzi",
+        "travel": "Uhambo",
+        "other": "Okunye"
+      },
+      "description": "Inchasiselo",
+      "km": "km",
+      "qty": "Ubunengi",
+      "unitUsd": "$ ngayinye",
+      "removeLine": "Susa umugqa",
+      "addLine": "Engeza umugqa",
+      "depositPct": "Idiphozithi %",
+      "notes": "Amanothi kuklayenti",
+      "total": "Isamba",
+      "saveDraft": "Gcina",
+      "sendToClient": "Thumela kuklayenti",
+      "saved": "Ikhotheshini igciniwe."
+    },
+    "request": {
+      "allRequests": "Zonke izicelo",
+      "details": "Imininingwane lamaphepha",
+      "quotes": "Amakhotheshini",
+      "newQuote": "Ikhotheshini entsha",
+      "acceptedBy": "Kuvunywe ngu{name} (ukuvuma okubhaliweyo)",
+      "payments": "Izimbadalo",
+      "viewProof": "bona ubufakazi",
+      "fieldTeam": "Iqembu lasensimini",
+      "chooseStaff": "Khetha isisebenzi…",
+      "assign": "Yabela",
+      "assigned": "Kwabelwe.",
+      "extraCosts": "Izicelo zentengo yokwengeza ezivela ensimini",
+      "forwardToClient": "Thumela kuklayenti ukuthi livume",
+      "reject": "Yala",
+      "supplierQuotes": "Amakhotheshini abathengisi",
+      "supplierName": "Umthengisi",
+      "amountUsd": "Imali $",
+      "supplierDetails": "Imininingwane",
+      "addSupplier": "Engeza",
+      "supplierAdded": "Ikhotheshini yomthengisi yengeziwe.",
+      "reports": "Imibiko",
+      "author": "Umbhali",
+      "publish": "Khiphela iklayenti",
+      "requestChanges": "Cela untshintsho",
+      "changesNote": "Inothi kumbhali (akubanjwa ngamandla)",
+      "selfPublishBlocked": "Nguwe umbhali walo mbiko — kakho osayina umsebenzi wakhe. Enye i-admin kumele iwukhiphe.",
+      "done": "Kuphelile.",
+      "markCallBooked": "Beka ucingo lubhukiwe",
+      "markDone": "Beka kuphelile",
+      "markCancelled": "Khansela isicelo",
+      "media": "Okwasensimini"
+    },
+    "payments": {
+      "title": "Izimbadalo",
+      "exportCsv": "Khipha i-CSV",
+      "request": "Isicelo",
+      "kind": "Uhlobo",
+      "amount": "Imali",
+      "method": "Indlela",
+      "status": "Isimo",
+      "reference": "Ireferensi",
+      "confirmPayment": "Qinisekisa ifikile"
+    },
+    "interest": {
+      "title": "Intshisekelo ye-“Ngazisa”",
+      "hint": "Abantu abacela ukwaziswa nxa imisebenzi ezayo isiqala.",
+      "service": "Umsebenzi",
+      "email": "I-email",
+      "date": "Usuku"
+    },
+    "settings": {
+      "title": "Izilungiselelo",
+      "saved": "Izilungiselelo zigciniwe.",
+      "perKmRate": "Intengo yohambo ($ nge-km)",
+      "depositPct": "Idiphozithi %",
+      "whatsapp": "Inombolo yeWhatsApp (izinombolo kuphela, lekhodi yelizwe)",
+      "email": "I-email yokuthintana",
+      "callSlots": "Izikhathi zocingo ezikhona (sinye emugqeni)",
+      "callSlotsHint": "Zitshengiswa amaklayenti nxa ebhuka ucingo lwamahala.",
+      "bannedWords": "Amazwi avinjelweyo (ahlukaniswa ngamakhoma)",
+      "save": "Gcina izilungiselelo",
+      "inviteStaffTitle": "Nxusa abasebenzi",
+      "staffName": "Ibizo eligcweleyo",
+      "staffEmail": "I-email",
+      "staffRole": "Indima",
+      "roleField": "Iqembu lasensimini",
+      "roleAdmin": "I-admin",
+      "invite": "Thumela isinxuso",
+      "staffInvited": "Isinxuso sithunyelwe.",
+      "mfaNote": "Abasebenzi kumele babeke iphasiwedi balungise i-2FA ekungeneni kwakuqala."
+    },
+    "audit": {
+      "title": "I-audit log",
+      "when": "Nini",
+      "actor": "Ngubani",
+      "action": "Isenzo",
+      "entity": "Into",
+      "data": "Idatha"
+    },
+    "translations": {
+      "title": "Ukuhlolwa kwezihumutsho",
+      "remaining": "Imitsho engu-{count} isadinga ukuhlolwa ngokhuluma ulimi",
+      "fileReviewed": "Ifayela lalolu limi selibekwe njengelihloliweyo.",
+      "key": "I-key",
+      "reviewed": "Kuhloliwe",
+      "markReviewed": "Beka kuhloliwe",
+      "fileNote": "Nxa yonke imitsho isihloliwe ngokhuluma ulimi, beka i-needs_review ibe yi-false efayeleni lolimi ubusudeploya futhi."
+    }
   }
 }

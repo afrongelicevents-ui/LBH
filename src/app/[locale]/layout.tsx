@@ -5,9 +5,6 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { site } from "@/config/site";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import "../globals.css";
 
 const interTight = Inter_Tight({
@@ -64,12 +61,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body className={`${interTight.variable} flex min-h-screen flex-col antialiased`}>
-        <NextIntlClientProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <WhatsAppButton />
-        </NextIntlClientProvider>
+        <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>
   );

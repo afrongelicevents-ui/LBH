@@ -34,6 +34,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+@layer components {
 /* Headline styling: extra bold, tight letter-spacing (brief §4 typography) */
 .headline {
   font-weight: 800;
@@ -114,6 +115,8 @@ body {
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
   overflow: hidden;
+}
+
 }
 
 /* Focus visibility for accessibility */

@@ -6,7 +6,7 @@ import { waLink } from "@/config/site";
 import {
   submitBooking,
   type BookingResult,
-} from "@/app/[locale]/book-a-call/actions";
+} from "@/app/[locale]/(site)/book-a-call/actions";
 import { ArrowRightIcon, CheckCircleIcon, WhatsAppIcon } from "./icons";
 
 const inputCls =
@@ -52,7 +52,9 @@ export default function BookCallForm() {
               : state.field === "whatsapp"
                 ? t("errorWhatsapp")
                 : t("errorRequired")
-            : t("errorGeneric")}
+            : state.status === "rate"
+              ? t("errorRate")
+              : t("errorGeneric")}
         </p>
       )}
 

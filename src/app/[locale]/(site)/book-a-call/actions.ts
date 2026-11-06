@@ -1,0 +1,109 @@
+"use server";
+
+import { bookingSchema } from "@/lib/booking";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { rateLimited } from "@/lib/ratelimit";
+import { sendEmail } from "@/lib/email";
+import { site } from "@/config/site";
+
+export type BookingResult =
+  | { status: "ok" }
+  | { status: "invalid"; field?: string }
+  | { status: "rate" }
+  | { status: "error" };
+
+/**
+ * "Book a free first call" (brief §5.1): no account needed — one is created
+ * from the email. Stores the enquiry for the admin "Needs you" queue and
+ * sends a confirmation email (invite link for new accounts).
+ */
+export async function submitBooking(
+  _prev: BookingResult | null,
+  formData: FormData
+): Promise<BookingResult> {
+  const raw = Object.fromEntries(formData.entries());
+  const parsed = bookingSchema.safeParse(raw);
+
+  if (!parsed.success) {
+    const first = parsed.error.issues[0];
+    return { status: "invalid", field: first?.path?.[0]?.toString() };
+  }
+  // Honeypot filled in → pretend success, store nothing.
+  if (raw.website) return { status: "ok" };
+
+  if (await rateLimited("booking", 5, 3600)) return { status: "rate" };
+
+  const d = parsed.data;
+  const admin = createAdminClient();
+
+  try {
+    // Existing account with this email?
+    const { data: existing } = await admin
+      .from("profiles")
+      .select("id, role")
+      .eq("email", d.email.toLowerCase())
+      .maybeSingle();
+
+    let clientId: string | null = existing?.id ?? null;
+    let inviteNote = "";
+
+    if (!existing) {
+      const { data: created, error: createErr } =
+        await admin.auth.admin.createUser({
+          email: d.email.toLowerCase(),
+          email_confirm: false,
+          user_metadata: {
+            full_name: d.name,
+            whatsapp: d.whatsapp,
+            country: d.country,
+          },
+        });
+      if (createErr) {
+        console.error(`[booking] createUser: ${createErr.message}`);
+      } else {
+        clientId = created.user.id;
+        const { data: link } = await admin.auth.admin.generateLink({
+          type: "invite",
+          email: d.email.toLowerCase(),
+          options: {
+            redirectTo: `${site.url}/account/password`,
+          },
+        });
+        if (link?.properties?.action_link) {
+          inviteNote = `\n\nSet up your LBH portal account (view quotes, approve costs, read reports):\n${link.properties.action_link}`;
+        }
+      }
+    }
+
+    const { error: insertErr } = await admin.from("call_bookings").insert({
+      client_id: clientId,
+      name: d.name,
+      email: d.email.toLowerCase(),
+      whatsapp: d.whatsapp,
+      country: d.country,
+      service: d.service,
+      description: d.description ?? "",
+      preferred_slot: d.slot,
+      call_type: d.callType,
+      status: "new",
+    });
+    if (insertErr) throw new Error(insertErr.message);
+
+    await sendEmail({
+      to: d.email,
+      subject: "LBH — your free first call is booked",
+      text:
+        `Hi ${d.name},\n\n` +
+        `Thank you — we received your request for a free first call ` +
+        `(${d.slot}, ${d.callType}). We will confirm the exact time by email ` +
+        `and WhatsApp.\n\nTalk soon,\nLBH — Let's Build Home\n` +
+        `WhatsApp: https://wa.me/${site.whatsappNumber}` +
+        inviteNote,
+    });
+
+    return { status: "ok" };
+  } catch (e) {
+    console.error(`[booking] ${e instanceof Error ? e.message : e}`);
+    return { status: "error" };
+  }
+}

@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import SectionTitle from "@/components/SectionTitle";
+import NotifyMeForm from "@/components/NotifyMeForm";
 import { CheckCircleIcon, ArrowRightIcon } from "@/components/icons";
 import { services } from "@/lib/services";
 
@@ -77,9 +78,12 @@ function ServicesContent() {
                     ))}
                   </ul>
                   {svc.comingSoon ? (
-                    <p className="mt-5 text-sm text-muted italic">
-                      {t("servicesPage.notifyHint")}
-                    </p>
+                    <>
+                      <p className="mt-5 text-sm text-muted italic">
+                        {t("servicesPage.notifyHint")}
+                      </p>
+                      <NotifyMeForm service={svc.key as "monitoring" | "camera"} />
+                    </>
                   ) : (
                     <Link
                       href="/book-a-call"

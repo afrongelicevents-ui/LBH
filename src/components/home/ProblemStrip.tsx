@@ -5,7 +5,11 @@ import {
   HouseCheckIcon,
 } from "@/components/icons";
 
-/** Full-width dark green band, three columns divided by thin gold lines (brief §4.1). */
+/**
+ * Problem strip. Mobile (per phone mockup): light off-white band, dark green
+ * icons, one row of three divided by thin gold lines, ~90px tall.
+ * Desktop: full-width dark green band with gold icons.
+ */
 export default function ProblemStrip() {
   const t = useTranslations("home.problems");
 
@@ -16,17 +20,21 @@ export default function ProblemStrip() {
   ];
 
   return (
-    <section className="bg-forest text-white">
-      <div className="mx-auto grid max-w-7xl grid-cols-3 px-2 py-6 sm:px-6 md:py-8 lg:px-8">
+    <section className="border-b border-line bg-offwhite md:border-0 md:bg-forest md:text-white">
+      <div className="mx-auto grid max-w-7xl grid-cols-3 px-1 py-3.5 sm:px-6 md:py-8 lg:px-8">
         {items.map((item, i) => (
           <div
             key={i}
-            className={`flex flex-col items-center gap-2 px-2 text-center md:flex-row md:justify-center md:gap-3 md:px-6 ${
-              i > 0 ? "border-l border-gold/60" : ""
+            className={`flex flex-col items-center gap-1.5 px-1.5 text-center md:flex-row md:justify-center md:gap-3 md:px-6 ${
+              i > 0 ? "border-l border-gold/70 md:border-gold/60" : ""
             }`}
           >
-            <item.icon width={30} height={30} className="shrink-0 text-gold" />
-            <p className="text-xs leading-snug font-bold sm:text-sm md:text-base">
+            <item.icon
+              width={26}
+              height={26}
+              className="shrink-0 text-forest md:text-gold"
+            />
+            <p className="text-xs leading-snug font-bold text-ink md:text-base md:text-white">
               {item.text}
             </p>
           </div>

@@ -195,7 +195,8 @@
     "errorEmail": "Isa email chaiyo.",
     "errorWhatsapp": "Isa nhamba yeWhatsApp chaiyo ine kodhi yenyika.",
     "errorGeneric": "Pane chakanganisika. Edza zvakare, kana utisvikire paWhatsApp.",
-    "slotPlaceholder": "Sarudza nguva"
+    "slotPlaceholder": "Sarudza nguva",
+    "errorRate": "Zvikumbiro zvakawandisa — edza zvakare paawa rinotevera, kana utisvikire paWhatsApp."
   },
   "termsPage": {
     "metaTitle": "Mitemo yeBasa",
@@ -243,5 +244,489 @@
     "title": "Peji haina kuwanikwa",
     "text": "Peji yauri kutsvaga haipo.",
     "home": "Dzokera kupeji yekutanga"
+  },
+  "auth": {
+    "loginTitle": "Pinda muLBH",
+    "loginSubtitle": "Portal yevatengi, timu yemumunda neadmin",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Pinda",
+    "forgot": "Wakanganwa password? Nditumire link yekugadzirisa",
+    "resetSent": "Tarisa email yako — tatumira link yekugadzirisa.",
+    "errorInvalid": "Email kana password isiriyo.",
+    "errorEnterEmail": "Tanga waisa email yako.",
+    "errorGeneric": "Pane chakanganisika. Edza zvakare.",
+    "noAccountHint": "Hauna account? Bhuka runhare rwemahara — account inogadzirwa kubva paemail yako.",
+    "mfaTitle": "Two-factor authentication",
+    "mfaRequired": "Inodiwa kuvashandi veLBH.",
+    "mfaScan": "Skena QR code iyi neauthenticator app (Google Authenticator, Authy…), wobva waisa kodhi ye6 digits.",
+    "mfaSecret": "Kana kuisa secret iyi nemaoko",
+    "mfaEnterCode": "Isa kodhi ye6 digits kubva kuauthenticator app yako.",
+    "mfaVerify": "Simbisa kodhi",
+    "mfaWrongCode": "Kodhi iyi haina kururama kana yapera — edza zvakare.",
+    "setPasswordTitle": "Isa password yako",
+    "newPassword": "Password itsva (zvinyorwa 10 zvichikwira)",
+    "confirmPassword": "Simbisa password",
+    "savePassword": "Chengeta password",
+    "passwordTooShort": "Password inofanira kuva nezvinyorwa 10 zvichikwira.",
+    "passwordMismatch": "MaPassword haana kufanana."
+  },
+  "notify": {
+    "saved": "Zvachengetwa — tichakuzivisa richangotanga.",
+    "emailPlaceholder": "Email yako",
+    "button": "Ndizivise",
+    "error": "Hazvina kuchengetwa — tarisa email woedza zvakare."
+  },
+  "pay": {
+    "testBanner": "Test mode — kubhadhara kwekuedza",
+    "testExplainer": "Paynow haisati yabatanidzwa, saka hapana mari chaiyo inofamba. Shandisa mabhatani ari pasi kuedza.",
+    "youArePaying": "Uri kubhadhara",
+    "simulatePaid": "Edza kubhadhara kwakabudirira (TEST)",
+    "simulateFailed": "Edza kubhadhara kwakakundikana (TEST)",
+    "status": {
+      "confirmed": "Kubhadhara kwasimbiswa",
+      "submitted": "Kwakamirira kusimbiswa",
+      "cancelled": "Kwakakanzurwa"
+    },
+    "thanksTitle": "Tatenda — mari yasvika!",
+    "thanksText": "Tagamuchira {amount}. Risiti iri muportal yako.",
+    "failedTitle": "Kubhadhara kwakundikana",
+    "failedText": "Hapana chabhadharwa. Unogona kuedza zvakare papeji yechikumbiro chako, kana kutumira umbowo hwebank transfer.",
+    "processingTitle": "Kubhadhara kuri kuitwa…",
+    "processingText": "Tiri kusimbisa kubhadhara kwako. Peji ino inochinja kana zvapera.",
+    "backToRequest": "Dzokera kuchikumbiro changu"
+  },
+  "portal": {
+    "shell": {
+      "area": {
+        "client": "Portal yemutengi",
+        "field": "Timu yemumunda",
+        "admin": "Admin"
+      },
+      "signOut": "Buda"
+    },
+    "nav": {
+      "dashboard": "Zvikumbiro zvangu",
+      "newLand": "Ongorora stendi",
+      "newMaterials": "Odha zvivakwa",
+      "chat": "Taura neLBH",
+      "myJobs": "Mabasa angu"
+    },
+    "dashboard": {
+      "title": "Zvikumbiro zvangu",
+      "pendingApprovals": "{count, plural, one {# mvumo yakakumirira — hapana chinofamba kusvika wasarudza} other {# mvumo dzakakumirira — hapana chinofamba kusvika wasarudza}}",
+      "myRequests": "Zvikumbiro zvangu",
+      "noRequests": "Hausati wava nezvikumbiro. Tanga chimwe — zvinotora maminitsi mashoma.",
+      "startLand": "Ongorora stendi",
+      "startMaterials": "Odha zvivakwa",
+      "myCalls": "Runhare rwangu rwakabhukwa",
+      "service": {
+        "land": "Kuongorora stendi",
+        "materials": "Zvivakwa",
+        "monitoring": "Kutariswa kwesaiti",
+        "camera": "Kamera live",
+        "not-sure": "Handisati ndaziva"
+      },
+      "booking": {
+        "new": "Chakumbirwa",
+        "confirmed": "Chasimbiswa",
+        "completed": "Chapera",
+        "cancelled": "Chakanzurwa"
+      }
+    },
+    "status": {
+      "call_booked": "Runhare rwabhukwa",
+      "quote_sent": "Kotesheni yatumirwa",
+      "accepted": "Yabvumwa",
+      "deposit_paid": "Dhipoziti yabhadharwa",
+      "on_site": "Timu iri pasaiti",
+      "report_ready": "Gwaro ragadzirira",
+      "balance_paid": "Yasara yabhadharwa",
+      "done": "Zvapera",
+      "cancelled": "Zvakanzurwa"
+    },
+    "forms": {
+      "landTitle": "Chikumbiro chekuongorora stendi",
+      "landIntro": "Tiudze nezvestendi. Paunowanza ruzivo, gweta netimu yedu vanokurumidza kuongorora.",
+      "materialsTitle": "Chikumbiro chezvivakwa",
+      "materialsIntro": "Nyora zvinodiwa pakuvaka kwako, kana kuisa BOQ yako. Tinoenzanisa makotesheni — hapana chinotengwa usina kubvumira nechinyorwa.",
+      "town": "Guta / nzvimbo",
+      "standNumber": "Nhamba yestendi",
+      "mapPin": "Pini pamepu (hazvimanikidzwi)",
+      "mapAria": "Mepu — baya kuisa pini pastendi",
+      "pinSet": "Pini yaiswa",
+      "pinHint": "Baya mepu kuratidza pane stendi (hazvimanikidzwi).",
+      "documents": "Magwaro (title deed, chibvumirano chekutengesa, tsamba dzekanzuru)",
+      "documentsHint": "PDF kana mifananidzo, kusvika mafaira 10.",
+      "introducedBy": "Ndiani akakuzivisa nezvemunda uyu?",
+      "toldAbout": "Wakaudzwa chii nezvawo?",
+      "submitLand": "Tumira chikumbiro",
+      "siteAddress": "Kero yesaiti / guta",
+      "itemList": "Zvinhu zvinodiwa",
+      "itemName": "Chinhu",
+      "itemQty": "Huwandu",
+      "itemNotes": "Zvimwe",
+      "removeItem": "Bvisa chinhu",
+      "addItem": "Wedzera chinhu",
+      "boqUpload": "Kana kuisa BOQ / rondedzero (PDF kana mufananidzo)",
+      "neededBy": "Zvinodiwa nezuva ra",
+      "deliveryInstructions": "Mirairo yekusvitsa",
+      "submitMaterials": "Tumira chikumbiro",
+      "error": {
+        "invalid": "Tarisa zvawanyora woedza zvakare.",
+        "db": "Hazvina kuchengetwa — edza zvakare.",
+        "error": "Pane chakanganisika — edza zvakare.",
+        "rate": "Zvikumbiro zvakawandisa — edza gare gare."
+      }
+    },
+    "request": {
+      "back": "Zvikumbiro zvangu",
+      "detailsTitle": "Ruzivo rwechikumbiro",
+      "town": "Guta / nzvimbo",
+      "standNumber": "Nhamba yestendi",
+      "mapPin": "Pini pamepu",
+      "siteAddress": "Kero yesaiti",
+      "documents": "Magwaro ako",
+      "quoteTitle": "Kotesheni #{number}",
+      "downloadPdf": "Tora PDF",
+      "total": "Yese",
+      "depositLine": "Dhipoziti ({pct}%)",
+      "balanceLine": "Yasara",
+      "acceptQuote": "Bvuma kotesheni iyi",
+      "acceptConfirmText": "Kubvuma kunonyora zita rako nenguva sekubvuma kwakanyorwa. Basa rinotanga kana dhipoziti yabhadharwa.",
+      "acceptConfirmYes": "Hongu, ndinobvuma",
+      "cancel": "Kanzura",
+      "acceptedBy": "Yakabvumwa na{name} musi wa{date}",
+      "paymentsTitle": "Kubhadhara",
+      "paymentKind": {
+        "deposit": "Dhipoziti",
+        "balance": "Yasara",
+        "extra": "Yekuwedzera yakabvumwa"
+      },
+      "paymentStatus": {
+        "pending": "Yakamirira kubhadharwa",
+        "submitted": "Umbowo huri kuongororwa",
+        "confirmed": "Yabhadharwa",
+        "failed": "Yakundikana",
+        "cancelled": "Yakanzurwa"
+      },
+      "payNow": "Bhadhara online",
+      "paidManually": "Ndabhadhara neRemitly / WorldRemit / bhanga",
+      "proofHint": "Isa risiti yako yekutumira nereferensi — tinosimbisa mukati mezuva rimwe rebasa.",
+      "proofReference": "Referensi yekutumira",
+      "proofFile": "Umbowo (mufananidzo kana PDF)",
+      "submitProof": "Tumira umbowo",
+      "proofSubmitted": "Umbowo hwasvika — tichahusimbisa munguva pfupi.",
+      "actionFailed": "Hazvina kushanda — edza zvakare.",
+      "approvalsTitle": "Mvumo",
+      "approvalsHint": "Nzendo dzekuwedzera, faini kana mitero yekanzuru. Hapana chinofamba kusvika wabvumira.",
+      "fieldNote": "Shoko remumunda",
+      "approve": "Bvumira",
+      "decline": "Ramba",
+      "approvalStatus": {
+        "approved": "Zvabvumirwa",
+        "declined": "Zvarambwa"
+      },
+      "suppliersTitle": "Makotesheni evatengesi",
+      "suppliersHint": "Takaenzanisa vatengesi ava. Bvumira MUMWE chete — hapana chinotengwa usati wadaro.",
+      "approveSupplier": "Bvumira mutengesi uyu",
+      "supplierApproved": "Abvumirwa",
+      "receiptsTitle": "Marisiti",
+      "receipt": "Risiti",
+      "reportReady": "Gwaro rako ragadzirira",
+      "readReport": "Verenga gwaro",
+      "invoiceLink": "Invoice #{number} (PDF)"
+    },
+    "chat": {
+      "title": "Taura neLBH",
+      "empty": "Hapana mashoko — kwazisa!",
+      "placeholder": "Nyora shoko…",
+      "send": "Tumira",
+      "orWhatsapp": "Unoda WhatsApp? Taura nesu ikoko"
+    },
+    "report": {
+      "back": "Dzokera kuchikumbiro",
+      "title": "Gwaro reKuongororwa kweStendi",
+      "downloadPdf": "Tora PDF",
+      "verdictLabel": "Mhedziso",
+      "verdict": {
+        "clear": "✅ Yakachena",
+        "concerns": "⚠️ Zvinonetsa",
+        "red_flags": "⛔ Yambiro"
+      },
+      "verdictText": {
+        "clear": "Hapana yambiro dzakawanikwa pakuongorora uku.",
+        "concerns": "Verenga zvakawanikwa pasi usati wabhadhara chimwe.",
+        "red_flags": "Usaenderera mberi izvi zvisati zvagadziriswa."
+      },
+      "section": {
+        "stand_details": "Ruzivo rwestendi",
+        "legal_findings": "Zvakawanikwa pamutemo netitle",
+        "council_confirmation": "Kusimbiswa nekanzuru",
+        "measurements": "Zviyero zvichienzaniswa nemagwaro",
+        "red_flags": "Yambiro, dzichitsanangurwa zviri nyore",
+        "next_steps": "Nhanho inotevera inokurudzirwa",
+        "costs_summary": "Mitengo nekuenzaniswa kwerwendo"
+      },
+      "gallery": "Mifananidzo nevhidhiyo zvine zuva",
+      "video": "Vhidhiyo",
+      "farFlag": "yakatorwa kure nepini yestendi",
+      "disclaimer": "Gwaro iri iongororo yepanyama neyemagwaro yakaitwa pamazuva akanyorwa. Harisi vimbiso.",
+      "taken": "Yakatorwa",
+      "uploaded": "Yakaiswa"
+    }
+  },
+  "field": {
+    "myJobs": "Mabasa angu",
+    "noJobs": "Hausati wapiwa mabasa.",
+    "client": "Mutengi",
+    "requestType": {
+      "land_verification": "Kuongorora stendi",
+      "materials": "Zvivakwa"
+    },
+    "jobStatus": {
+      "assigned": "Rakapiwa",
+      "in_progress": "Riri kuitwa",
+      "submitted": "Ratumirwa",
+      "completed": "Rapera"
+    },
+    "saved": "Zvachengetwa.",
+    "error": {
+      "invalid": "Tarisa zvawanyora woedza zvakare.",
+      "db": "Hazvina kuchengetwa — edza zvakare.",
+      "error": "Pane chakanganisika.",
+      "toobig": "Faira rakakurisa.",
+      "locked": "Gwaro riri kuadmin — harichagadziriswi."
+    },
+    "standDetails": "Ruzivo rwestendi / chikumbiro",
+    "clientDocuments": "Magwaro emutengi",
+    "visitTitle": "Checklist yekushanya nezviyero",
+    "visit": {
+      "arrived": "Ndasvika pastendi",
+      "council_officer_present": "Mukuru wekanzuru aripo",
+      "pegs_shown": "Zvipandi zvaratidzwa zvikasimbiswa",
+      "length_m": "Hurefu (m)",
+      "width_m": "Hupamhi (m)",
+      "area_sqm": "Nzvimbo (sqm)",
+      "title_notes": "Zvinyorwa zvetitle / mutemo",
+      "findings": "Zvakawanikwa"
+    },
+    "saveVisit": "Chengeta kushanya",
+    "captureTitle": "Mifananidzo, vhidhiyo nemarisiti",
+    "captureHint": "Tora muapp kuti zuva neGPS zvinyorwe. Mifananidzo yakatorwa kudarika 300 m kubva papini inoiswa yambiro.",
+    "photos": "Mifananidzo",
+    "videos": "Vhidhiyo",
+    "receipts": "Marisiti",
+    "receiptAmount": "Mari (USD)",
+    "mediaNote": "Shoko (hazvimanikidzwi)",
+    "gpsHint": "GPS inotorwa kana wasarudza faira.",
+    "gpsDenied": "GPS haipo — ruzivo rwemufananidzo rwunoshandiswa kana rwuripo.",
+    "uploading": "Kuisa…",
+    "upload": {
+      "photo": "Isa mufananidzo",
+      "video": "Isa vhidhiyo",
+      "receipt": "Isa risiti"
+    },
+    "farFlag": "{m} m kubva papini",
+    "extraCostTitle": "Kumbira mutengo wekuwedzera / rwendo rwekuwedzera",
+    "extraCostHint": "Zvinotanga zvaenda kuadmin. Mutengi anofanira kubvumira zvisati zvaitika.",
+    "extraTitle": "Chii ichocho?",
+    "extraReason": "Sei zvichidiwa?",
+    "extraAmount": "Mari (USD)",
+    "sendExtraCost": "Tumira kuadmin",
+    "extraCostSent": "Zvatumirwa kuadmin kuti zviongororwe.",
+    "extraStatus": {
+      "pending": "Kuadmin",
+      "forwarded": "Zvatumirwa kumutengi",
+      "rejected": "Zvarambwa"
+    },
+    "reportTitle": "Gwaro rekutanga",
+    "reportHint": "Gwaro rako rinoenda kuadmin kuti riongororwe — harimboendi kumutengi zvakananga.",
+    "verdict": "Mhedziso",
+    "verdicts": {
+      "clear": "Yakachena",
+      "concerns": "Zvinonetsa",
+      "red_flags": "Yambiro"
+    },
+    "saveDraft": "Chengeta",
+    "submitToAdmin": "Tumira kuadmin",
+    "submitNote": "Kutumira kunokiya gwaro apo admin inoriongorora.",
+    "changesRequested": "Admin yakumbira shanduko — gadzirisa wotumira zvakare.",
+    "reportStatus": {
+      "submitted": "Ratumirwa — riri kuadmin kuti riongororwe.",
+      "published": "Raburitswa kumutengi."
+    }
+  },
+  "admin": {
+    "nav": {
+      "needsYou": "Zvinoda iwe",
+      "requests": "Zvikumbiro",
+      "bookings": "Mabhukinwa",
+      "clients": "Vanhu",
+      "chats": "Hurukuro",
+      "payments": "Kubhadhara",
+      "interest": "Chido",
+      "settings": "Masettings",
+      "translations": "Shanduro",
+      "audit": "Audit log"
+    },
+    "needsYou": {
+      "title": "Zvinoda iwe",
+      "nothing": "Hapana chakamirira.",
+      "block": {
+        "bookings": "Runhare rutsva rwakabhukwa",
+        "requests": "Zvikumbiro zvitsva (kotesheni inodiwa)",
+        "reports": "Magwaro ekuongorora",
+        "proofs": "Umbowo hwekubhadhara hwekusimbisa",
+        "extras": "Zvikumbiro zvemitengo yekuwedzera",
+        "chats": "Hurukuro dzisina kuverengwa"
+      }
+    },
+    "common": {
+      "error": {
+        "db": "Dambudziko redatabase.",
+        "invalid": "Zvawaisa hazvina kururama.",
+        "auth": "Hauna mvumo (2FA yakagadzwa here?).",
+        "exists": "Email iyi yatova neaccount.",
+        "self": "Ndiwe wakanyora gwaro iri — imwe admin inofanira kuriburitsa.",
+        "closed": "Hazvichavhurwi."
+      }
+    },
+    "bookings": {
+      "title": "Runhare rwakabhukwa",
+      "confirm": "Simbisa",
+      "complete": "Zvapera",
+      "cancel": "Kanzura"
+    },
+    "requests": {
+      "title": "Zvikumbiro",
+      "request": "Chikumbiro",
+      "client": "Mutengi",
+      "type": "Rudzi",
+      "status": "Mamiriro",
+      "created": "Zvakagadzirwa"
+    },
+    "clients": {
+      "title": "Vanhu",
+      "name": "Zita",
+      "email": "Email",
+      "country": "Nyika",
+      "role": "Basa"
+    },
+    "chats": {
+      "title": "Hurukuro",
+      "empty": "Hapana hurukuro."
+    },
+    "quote": {
+      "defaultServiceFee": "Muripo webasa",
+      "defaultTravel": "Rwendo rwunofungidzirwa (km × ${rate}/km)",
+      "kind": "Rudzi",
+      "kinds": {
+        "service_fee": "Muripo webasa",
+        "travel": "Rwendo",
+        "other": "Zvimwe"
+      },
+      "description": "Tsanangudzo",
+      "km": "km",
+      "qty": "Huwandu",
+      "unitUsd": "$ imwe",
+      "removeLine": "Bvisa mutsara",
+      "addLine": "Wedzera mutsara",
+      "depositPct": "Dhipoziti %",
+      "notes": "Mashoko kumutengi",
+      "total": "Yese",
+      "saveDraft": "Chengeta",
+      "sendToClient": "Tumira kumutengi",
+      "saved": "Kotesheni yachengetwa."
+    },
+    "request": {
+      "allRequests": "Zvikumbiro zvese",
+      "details": "Ruzivo nemagwaro",
+      "quotes": "Makotesheni",
+      "newQuote": "Kotesheni itsva",
+      "acceptedBy": "Yakabvumwa na{name} (kubvuma kwakanyorwa)",
+      "payments": "Kubhadhara",
+      "viewProof": "ona umbowo",
+      "fieldTeam": "Timu yemumunda",
+      "chooseStaff": "Sarudza mushandi…",
+      "assign": "Pa basa",
+      "assigned": "Basa rapiwa.",
+      "extraCosts": "Zvikumbiro zvemitengo yekuwedzera kubva kumunda",
+      "forwardToClient": "Tumira kumutengi kuti abvumire",
+      "reject": "Ramba",
+      "supplierQuotes": "Makotesheni evatengesi",
+      "supplierName": "Mutengesi",
+      "amountUsd": "Mari $",
+      "supplierDetails": "Ruzivo",
+      "addSupplier": "Wedzera",
+      "supplierAdded": "Kotesheni yemutengesi yawedzerwa.",
+      "reports": "Magwaro",
+      "author": "Munyori",
+      "publish": "Buritsa kumutengi",
+      "requestChanges": "Kumbira shanduko",
+      "changesNote": "Shoko kumunyori (hazvimanikidzwi)",
+      "selfPublishBlocked": "Ndiwe munyori wegwaro iri — hapana anosaina basa rake. Imwe admin inofanira kuriburitsa.",
+      "done": "Zvapera.",
+      "markCallBooked": "Isa runhare rwabhukwa",
+      "markDone": "Isa zvapera",
+      "markCancelled": "Kanzura chikumbiro",
+      "media": "Zvemumunda"
+    },
+    "payments": {
+      "title": "Kubhadhara",
+      "exportCsv": "Buritsa CSV",
+      "request": "Chikumbiro",
+      "kind": "Rudzi",
+      "amount": "Mari",
+      "method": "Nzira",
+      "status": "Mamiriro",
+      "reference": "Referensi",
+      "confirmPayment": "Simbisa yasvika"
+    },
+    "interest": {
+      "title": "Chido che“Ndizivise”",
+      "hint": "Vanhu vakakumbira kuziviswa kana mabasa achangouya atanga.",
+      "service": "Basa",
+      "email": "Email",
+      "date": "Zuva"
+    },
+    "settings": {
+      "title": "Masettings",
+      "saved": "Masettings achengetwa.",
+      "perKmRate": "Mutengo werwendo ($ pakm)",
+      "depositPct": "Dhipoziti %",
+      "whatsapp": "Nhamba yeWhatsApp (manhamba chete, nekodhi yenyika)",
+      "email": "Email yekubata",
+      "callSlots": "Nguva dzerunhare dziripo (imwe pamutsara)",
+      "callSlotsHint": "Dzinoratidzwa kuvatengi pavanobhuka runhare rwemahara.",
+      "bannedWords": "Mazwi akarambidzwa (akaparadzaniswa nekoma)",
+      "save": "Chengeta masettings",
+      "inviteStaffTitle": "Kokera vashandi",
+      "staffName": "Zita rizere",
+      "staffEmail": "Email",
+      "staffRole": "Basa",
+      "roleField": "Timu yemumunda",
+      "roleAdmin": "Admin",
+      "invite": "Tumira kokero",
+      "staffInvited": "Kokero yatumirwa.",
+      "mfaNote": "Vashandi vanofanira kuisa password nekugadza 2FA pakupinda kwekutanga."
+    },
+    "audit": {
+      "title": "Audit log",
+      "when": "Rini",
+      "actor": "Ani",
+      "action": "Chiito",
+      "entity": "Chinhu",
+      "data": "Data"
+    },
+    "translations": {
+      "title": "Kuongorora shanduro",
+      "remaining": "{count} mitsara ichiri kuda kuongororwa nemutauri wechizvarwa",
+      "fileReviewed": "Faira remutauro uyu rakanzi raongororwa.",
+      "key": "Key",
+      "reviewed": "Yaongororwa",
+      "markReviewed": "Isa yaongororwa",
+      "fileNote": "Kana mitsara yese yaongororwa nemutauri wechizvarwa, isa needs_review kuita false mufaira remutauro wodeploya zvakare."
+    }
   }
 }

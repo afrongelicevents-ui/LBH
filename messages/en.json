@@ -194,7 +194,8 @@
     "errorEmail": "Please enter a valid email address.",
     "errorWhatsapp": "Please enter a valid WhatsApp number with country code.",
     "errorGeneric": "Something went wrong. Please try again, or reach us on WhatsApp.",
-    "slotPlaceholder": "Select a time"
+    "slotPlaceholder": "Select a time",
+    "errorRate": "Too many requests from your connection — please try again in an hour, or reach us on WhatsApp."
   },
   "termsPage": {
     "metaTitle": "Terms of Service",
@@ -242,5 +243,489 @@
     "title": "Page not found",
     "text": "The page you are looking for does not exist.",
     "home": "Back to the homepage"
+  },
+  "auth": {
+    "loginTitle": "Log in to LBH",
+    "loginSubtitle": "Client portal, field team and admin",
+    "email": "Email address",
+    "password": "Password",
+    "signIn": "Sign in",
+    "forgot": "Forgotten your password? Email me a reset link",
+    "resetSent": "Check your inbox — we sent you a reset link.",
+    "errorInvalid": "Wrong email or password.",
+    "errorEnterEmail": "Enter your email address first.",
+    "errorGeneric": "Something went wrong. Please try again.",
+    "noAccountHint": "No account yet? Book a free first call — your account is created from your email.",
+    "mfaTitle": "Two-factor authentication",
+    "mfaRequired": "Required for LBH staff accounts.",
+    "mfaScan": "Scan this QR code with an authenticator app (Google Authenticator, Authy, 1Password…), then enter the 6-digit code.",
+    "mfaSecret": "Or enter this secret manually",
+    "mfaEnterCode": "Enter the 6-digit code from your authenticator app.",
+    "mfaVerify": "Verify code",
+    "mfaWrongCode": "That code is wrong or expired — try again.",
+    "setPasswordTitle": "Set your password",
+    "newPassword": "New password (min 10 characters)",
+    "confirmPassword": "Confirm password",
+    "savePassword": "Save password",
+    "passwordTooShort": "Password must be at least 10 characters.",
+    "passwordMismatch": "Passwords do not match."
+  },
+  "notify": {
+    "saved": "Saved — we will let you know the moment it is live.",
+    "emailPlaceholder": "Your email address",
+    "button": "Notify me",
+    "error": "Could not save that — check the address and try again."
+  },
+  "pay": {
+    "testBanner": "Test mode — simulated payment",
+    "testExplainer": "Paynow is not connected yet, so no real money moves. Use the buttons below to simulate an outcome.",
+    "youArePaying": "You are paying",
+    "simulatePaid": "Simulate successful payment (TEST)",
+    "simulateFailed": "Simulate failed payment (TEST)",
+    "status": {
+      "confirmed": "Payment confirmed",
+      "submitted": "Awaiting confirmation",
+      "cancelled": "Cancelled"
+    },
+    "thanksTitle": "Thank you — payment received!",
+    "thanksText": "We received {amount}. A receipt is in your portal.",
+    "failedTitle": "Payment failed",
+    "failedText": "Nothing was charged. You can try again from your request page, or send proof of a bank transfer instead.",
+    "processingTitle": "Payment processing…",
+    "processingText": "We are confirming your payment. This page updates when it is done — you can safely close it.",
+    "backToRequest": "Back to my request"
+  },
+  "portal": {
+    "shell": {
+      "area": {
+        "client": "Client portal",
+        "field": "Field team",
+        "admin": "Admin"
+      },
+      "signOut": "Sign out"
+    },
+    "nav": {
+      "dashboard": "My requests",
+      "newLand": "Verify land",
+      "newMaterials": "Order materials",
+      "chat": "Chat with LBH",
+      "myJobs": "My jobs"
+    },
+    "dashboard": {
+      "title": "My requests",
+      "pendingApprovals": "{count, plural, one {# approval waiting for you — nothing proceeds until you decide} other {# approvals waiting for you — nothing proceeds until you decide}}",
+      "myRequests": "My requests",
+      "noRequests": "You have no requests yet. Start one — it only takes a few minutes.",
+      "startLand": "Verify land",
+      "startMaterials": "Order materials",
+      "myCalls": "My call bookings",
+      "service": {
+        "land": "Land verification",
+        "materials": "Materials",
+        "monitoring": "Site monitoring",
+        "camera": "Live camera",
+        "not-sure": "Not sure yet"
+      },
+      "booking": {
+        "new": "Requested",
+        "confirmed": "Confirmed",
+        "completed": "Done",
+        "cancelled": "Cancelled"
+      }
+    },
+    "status": {
+      "call_booked": "Call booked",
+      "quote_sent": "Quote sent",
+      "accepted": "Accepted",
+      "deposit_paid": "Deposit paid",
+      "on_site": "Team on site",
+      "report_ready": "Report ready",
+      "balance_paid": "Balance paid",
+      "done": "Done",
+      "cancelled": "Cancelled"
+    },
+    "forms": {
+      "landTitle": "Land verification request",
+      "landIntro": "Tell us about the stand. The more you share, the faster our lawyer and field team can check it.",
+      "materialsTitle": "Materials request",
+      "materialsIntro": "List what your build needs, or upload your BOQ. We compare supplier quotes — nothing is bought without your written approval.",
+      "town": "Town / area",
+      "standNumber": "Stand number",
+      "mapPin": "Map pin (optional)",
+      "mapAria": "Map — tap to drop a pin on the stand",
+      "pinSet": "Pin set",
+      "pinHint": "Tap the map to mark where the stand is (optional).",
+      "documents": "Documents (title deed, agreement of sale, council letters)",
+      "documentsHint": "PDF or photos, up to 10 files.",
+      "introducedBy": "Who introduced you to this land?",
+      "toldAbout": "What were you told about it?",
+      "submitLand": "Send request",
+      "siteAddress": "Site address / town",
+      "itemList": "Item list",
+      "itemName": "Item",
+      "itemQty": "Quantity",
+      "itemNotes": "Notes",
+      "removeItem": "Remove item",
+      "addItem": "Add item",
+      "boqUpload": "Or upload a BOQ / list (PDF or photo)",
+      "neededBy": "Needed by",
+      "deliveryInstructions": "Delivery instructions",
+      "submitMaterials": "Send request",
+      "error": {
+        "invalid": "Please check the highlighted fields.",
+        "db": "Could not save — try again.",
+        "error": "Something went wrong — try again.",
+        "rate": "Too many requests — try again later."
+      }
+    },
+    "request": {
+      "back": "My requests",
+      "detailsTitle": "Request details",
+      "town": "Town / area",
+      "standNumber": "Stand number",
+      "mapPin": "Map pin",
+      "siteAddress": "Site address",
+      "documents": "Your documents",
+      "quoteTitle": "Quote #{number}",
+      "downloadPdf": "Download PDF",
+      "total": "Total",
+      "depositLine": "Deposit ({pct}%)",
+      "balanceLine": "Balance",
+      "acceptQuote": "Accept this quote",
+      "acceptConfirmText": "Accepting records your name and the time as written acceptance. Work starts once the deposit is paid.",
+      "acceptConfirmYes": "Yes, I accept",
+      "cancel": "Cancel",
+      "acceptedBy": "Accepted by {name} on {date}",
+      "paymentsTitle": "Payments",
+      "paymentKind": {
+        "deposit": "Deposit",
+        "balance": "Balance",
+        "extra": "Approved extra"
+      },
+      "paymentStatus": {
+        "pending": "Awaiting payment",
+        "submitted": "Proof under review",
+        "confirmed": "Paid",
+        "failed": "Failed",
+        "cancelled": "Cancelled"
+      },
+      "payNow": "Pay online",
+      "paidManually": "I paid via Remitly / WorldRemit / bank",
+      "proofHint": "Upload your transfer receipt and reference — we confirm it within one working day.",
+      "proofReference": "Transfer reference",
+      "proofFile": "Proof (photo or PDF)",
+      "submitProof": "Send proof",
+      "proofSubmitted": "Proof received — we will confirm it shortly.",
+      "actionFailed": "That did not work — try again.",
+      "approvalsTitle": "Approvals",
+      "approvalsHint": "Extra trips, fines or council charges. Nothing proceeds until you approve.",
+      "fieldNote": "Field note",
+      "approve": "Approve",
+      "decline": "Decline",
+      "approvalStatus": {
+        "approved": "Approved",
+        "declined": "Declined"
+      },
+      "suppliersTitle": "Supplier quotes",
+      "suppliersHint": "We compared these suppliers. Approve ONE — nothing is bought until you do.",
+      "approveSupplier": "Approve this supplier",
+      "supplierApproved": "Approved",
+      "receiptsTitle": "Receipts",
+      "receipt": "Receipt",
+      "reportReady": "Your report is ready",
+      "readReport": "Read the report",
+      "invoiceLink": "Invoice #{number} (PDF)"
+    },
+    "chat": {
+      "title": "Chat with LBH",
+      "empty": "No messages yet — say hello!",
+      "placeholder": "Type a message…",
+      "send": "Send",
+      "orWhatsapp": "Prefer WhatsApp? Chat with us there"
+    },
+    "report": {
+      "back": "Back to request",
+      "title": "Land Verification Report",
+      "downloadPdf": "Download PDF",
+      "verdictLabel": "Verdict",
+      "verdict": {
+        "clear": "✅ Clear",
+        "concerns": "⚠️ Concerns",
+        "red_flags": "⛔ Red flags"
+      },
+      "verdictText": {
+        "clear": "No red flags found in this check.",
+        "concerns": "Read the findings below before paying anything more.",
+        "red_flags": "Do not proceed before these are resolved."
+      },
+      "section": {
+        "stand_details": "Stand details",
+        "legal_findings": "Legal & title check findings",
+        "council_confirmation": "Council confirmation",
+        "measurements": "Measurements vs documents",
+        "red_flags": "Red flags, explained plainly",
+        "next_steps": "Recommended next step",
+        "costs_summary": "Costs & travel reconciliation"
+      },
+      "gallery": "Dated photos & video",
+      "video": "Video",
+      "farFlag": "taken far from the stand pin",
+      "disclaimer": "This report is a physical and documentary check carried out on the dates stated. It is not a guarantee.",
+      "taken": "Taken",
+      "uploaded": "Uploaded"
+    }
+  },
+  "field": {
+    "myJobs": "My jobs",
+    "noJobs": "No jobs assigned to you yet.",
+    "client": "Client",
+    "requestType": {
+      "land_verification": "Land verification",
+      "materials": "Materials"
+    },
+    "jobStatus": {
+      "assigned": "Assigned",
+      "in_progress": "In progress",
+      "submitted": "Submitted",
+      "completed": "Completed"
+    },
+    "saved": "Saved.",
+    "error": {
+      "invalid": "Check the fields and try again.",
+      "db": "Could not save — try again.",
+      "error": "Something went wrong.",
+      "toobig": "File is too large.",
+      "locked": "This report is with admin and can no longer be edited."
+    },
+    "standDetails": "Stand / request details",
+    "clientDocuments": "Client documents",
+    "visitTitle": "Visit checklist & measurements",
+    "visit": {
+      "arrived": "Arrived at the stand",
+      "council_officer_present": "Council officer present",
+      "pegs_shown": "Pegs shown and confirmed",
+      "length_m": "Length (m)",
+      "width_m": "Width (m)",
+      "area_sqm": "Area (sqm)",
+      "title_notes": "Title / legal notes",
+      "findings": "Findings"
+    },
+    "saveVisit": "Save visit",
+    "captureTitle": "Photos, video & receipts",
+    "captureHint": "Capture in the app so date and GPS are recorded. Photos taken more than 300 m from the stand pin are flagged.",
+    "photos": "Photos",
+    "videos": "Video",
+    "receipts": "Receipts",
+    "receiptAmount": "Amount (USD)",
+    "mediaNote": "Note (optional)",
+    "gpsHint": "GPS will be captured when you pick a file.",
+    "gpsDenied": "GPS not available — the photo's own data will be used if present.",
+    "uploading": "Uploading…",
+    "upload": {
+      "photo": "Upload photo",
+      "video": "Upload video",
+      "receipt": "Upload receipt"
+    },
+    "farFlag": "{m} m from pin",
+    "extraCostTitle": "Request extra cost / extra trip",
+    "extraCostHint": "Goes to admin first. The client must approve before anything happens.",
+    "extraTitle": "What is it?",
+    "extraReason": "Why is it needed?",
+    "extraAmount": "Amount (USD)",
+    "sendExtraCost": "Send to admin",
+    "extraCostSent": "Sent to admin for review.",
+    "extraStatus": {
+      "pending": "With admin",
+      "forwarded": "Sent to client",
+      "rejected": "Rejected"
+    },
+    "reportTitle": "Draft report",
+    "reportHint": "Your draft goes to admin for review — never directly to the client.",
+    "verdict": "Verdict",
+    "verdicts": {
+      "clear": "Clear",
+      "concerns": "Concerns",
+      "red_flags": "Red flags"
+    },
+    "saveDraft": "Save draft",
+    "submitToAdmin": "Submit to admin",
+    "submitNote": "Submitting locks the draft while admin reviews it.",
+    "changesRequested": "Admin requested changes — update and resubmit.",
+    "reportStatus": {
+      "submitted": "Submitted — with admin for review.",
+      "published": "Published to the client."
+    }
+  },
+  "admin": {
+    "nav": {
+      "needsYou": "Needs you",
+      "requests": "Requests",
+      "bookings": "Bookings",
+      "clients": "People",
+      "chats": "Chats",
+      "payments": "Payments",
+      "interest": "Interest",
+      "settings": "Settings",
+      "translations": "Translations",
+      "audit": "Audit log"
+    },
+    "needsYou": {
+      "title": "Needs you",
+      "nothing": "Nothing waiting.",
+      "block": {
+        "bookings": "New call bookings",
+        "requests": "New requests (quote needed)",
+        "reports": "Reports to review",
+        "proofs": "Payment proofs to confirm",
+        "extras": "Extra-cost requests",
+        "chats": "Unread chats"
+      }
+    },
+    "common": {
+      "error": {
+        "db": "Database error.",
+        "invalid": "Invalid input.",
+        "auth": "Not authorised (is 2FA set up?).",
+        "exists": "That email already has an account.",
+        "self": "You wrote this report — another admin must publish it.",
+        "closed": "No longer open."
+      }
+    },
+    "bookings": {
+      "title": "Call bookings",
+      "confirm": "Confirm",
+      "complete": "Completed",
+      "cancel": "Cancel"
+    },
+    "requests": {
+      "title": "Requests",
+      "request": "Request",
+      "client": "Client",
+      "type": "Type",
+      "status": "Status",
+      "created": "Created"
+    },
+    "clients": {
+      "title": "People",
+      "name": "Name",
+      "email": "Email",
+      "country": "Country",
+      "role": "Role"
+    },
+    "chats": {
+      "title": "Chat inbox",
+      "empty": "No conversations yet."
+    },
+    "quote": {
+      "defaultServiceFee": "Service fee",
+      "defaultTravel": "Estimated travel (km × ${rate}/km)",
+      "kind": "Type",
+      "kinds": {
+        "service_fee": "Service fee",
+        "travel": "Travel",
+        "other": "Other"
+      },
+      "description": "Description",
+      "km": "km",
+      "qty": "Qty",
+      "unitUsd": "Unit $",
+      "removeLine": "Remove line",
+      "addLine": "Add line",
+      "depositPct": "Deposit %",
+      "notes": "Notes to client",
+      "total": "Total",
+      "saveDraft": "Save draft",
+      "sendToClient": "Send to client",
+      "saved": "Quote saved."
+    },
+    "request": {
+      "allRequests": "All requests",
+      "details": "Details & documents",
+      "quotes": "Quotes",
+      "newQuote": "New quote",
+      "acceptedBy": "Accepted by {name} (written acceptance)",
+      "payments": "Payments",
+      "viewProof": "view proof",
+      "fieldTeam": "Field team",
+      "chooseStaff": "Choose staff member…",
+      "assign": "Assign",
+      "assigned": "Assigned.",
+      "extraCosts": "Extra-cost requests from the field",
+      "forwardToClient": "Send to client for approval",
+      "reject": "Reject",
+      "supplierQuotes": "Supplier quotes",
+      "supplierName": "Supplier",
+      "amountUsd": "Amount $",
+      "supplierDetails": "Details",
+      "addSupplier": "Add",
+      "supplierAdded": "Supplier quote added.",
+      "reports": "Reports",
+      "author": "Author",
+      "publish": "Publish to client",
+      "requestChanges": "Request changes",
+      "changesNote": "Note to the author (optional)",
+      "selfPublishBlocked": "You are the author of this report — nobody signs off their own work. Another admin must publish it.",
+      "done": "Done.",
+      "markCallBooked": "Mark call booked",
+      "markDone": "Mark done",
+      "markCancelled": "Cancel request",
+      "media": "Field media"
+    },
+    "payments": {
+      "title": "Payments",
+      "exportCsv": "Export CSV",
+      "request": "Request",
+      "kind": "Kind",
+      "amount": "Amount",
+      "method": "Method",
+      "status": "Status",
+      "reference": "Reference",
+      "confirmPayment": "Confirm received"
+    },
+    "interest": {
+      "title": "“Notify me” interest",
+      "hint": "People who asked to hear when coming-soon services go live.",
+      "service": "Service",
+      "email": "Email",
+      "date": "Date"
+    },
+    "settings": {
+      "title": "Settings",
+      "saved": "Settings saved.",
+      "perKmRate": "Travel rate ($ per km)",
+      "depositPct": "Deposit %",
+      "whatsapp": "WhatsApp number (digits only, with country code)",
+      "email": "Contact email",
+      "callSlots": "Available call slots (one per line)",
+      "callSlotsHint": "Shown to clients when they book a free call.",
+      "bannedWords": "Banned words (comma-separated)",
+      "save": "Save settings",
+      "inviteStaffTitle": "Invite staff",
+      "staffName": "Full name",
+      "staffEmail": "Email",
+      "staffRole": "Role",
+      "roleField": "Field team",
+      "roleAdmin": "Admin",
+      "invite": "Send invite",
+      "staffInvited": "Invite sent.",
+      "mfaNote": "Staff must set a password and enrol two-factor authentication on first login."
+    },
+    "audit": {
+      "title": "Audit log",
+      "when": "When",
+      "actor": "Actor",
+      "action": "Action",
+      "entity": "Entity",
+      "data": "Data"
+    },
+    "translations": {
+      "title": "Translation review",
+      "remaining": "{count} strings still need native-speaker review",
+      "fileReviewed": "This language file is marked as reviewed.",
+      "key": "Key",
+      "reviewed": "Reviewed",
+      "markReviewed": "Mark reviewed",
+      "fileNote": "When every string is reviewed by a native speaker, set needs_review to false in the language file and redeploy."
+    }
   }
 }
