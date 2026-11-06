@@ -53,15 +53,17 @@ Staff accounts are asked to set up an authenticator app (Google Authenticator, A
 
 ### Payments in test mode
 
-With `PAYNOW_INTEGRATION_ID` / `PAYNOW_INTEGRATION_KEY` empty, "Pay online" opens a
-clearly labelled **simulated checkout** where you choose success or failure. No money
-moves. Set real Paynow credentials (test keys first) to switch to the real checkout;
-the simulator then switches itself off.
+With `PAYNOW_INTEGRATION_ID` / `PAYNOW_INTEGRATION_KEY` empty **and**
+`PAYMENTS_TEST_MODE=true`, "Pay online" opens a clearly labelled **simulated
+checkout** where you choose success or failure. No money moves. Without that flag
+(e.g. a production deploy that has no Paynow keys yet) online payment is simply
+hidden and clients use "I paid via Remitly / WorldRemit / bank" instead. Once real
+Paynow credentials are set (test keys first), the simulator is switched off for good.
 
 ## Tests
 
 ```bash
-npm test            # unit tests + 29 database permission tests (needs `npx supabase start`)
+npm test            # unit tests + 43 database permission tests (needs `npx supabase start`)
 npm run lint
 
 # full browser end-to-end run of every flow:
@@ -71,8 +73,10 @@ npm run test:e2e                                          # in another
 
 The permission tests sign in as each sample role and call the database directly, proving
 the rules hold even if someone bypasses the website: clients only see their own data,
-field staff never see prices, nobody publishes their own report, approvals and quote
-acceptance only by the owning client, and the 2FA requirement.
+field staff never see prices or client contact details, nobody publishes their own
+report (and the author can't be swapped to get round it), approvals and quote acceptance
+only by the owning client, and **staff without 2FA get no data at all** — even with the
+correct password.
 
 ## Project conventions
 
@@ -86,7 +90,9 @@ acceptance only by the owning client, and the 2FA requirement.
 - **Money** is USD integer cents everywhere; every money event is in the audit log.
 - **Photos**: drop final photos into `public/images/` with the same names
   (`hero.jpg`, `land.jpg`, `materials.jpg`, `monitoring.jpg`, `camera.jpg`,
-  `live-feed.jpg`). The current files are cut from the approved mockups as stand-ins.
+  `live-feed.jpg`). The current files are cut from the approved mockups as stand-ins;
+  they are low resolution, so replace them before launch (hero: at least 2000 px wide,
+  building on the right half of the frame).
 
 ## Deploying (when ready)
 
@@ -95,7 +101,8 @@ acceptance only by the owning client, and the 2FA requirement.
    seed file in production. In the dashboard enable TOTP MFA, set the site URL, and
    configure SMTP for auth emails.
 2. Deploy to **Vercel Pro** (Hobby does not allow commercial use) with the env vars
-   from `.env.example`. `SUPABASE_SERVICE_ROLE_KEY` is server-only.
+   from `.env.example`. `SUPABASE_SERVICE_ROLE_KEY` is server-only, and
+   `PAYMENTS_TEST_MODE` must be unset or `false` in production.
 3. Paynow: add the merchant integration ID/key and set `PAYNOW_RESULT_URL` to
    `https://<domain>/api/paynow/result`.
 4. Create the first admin: invite them in Supabase Auth, then set
