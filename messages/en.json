@@ -1,0 +1,246 @@
+{
+  "_meta": {
+    "language": "English",
+    "needs_review": false
+  },
+  "common": {
+    "brand": "Let's Build Home",
+    "brandUpper": "LET'S BUILD HOME",
+    "tagline": "Build back home — without being there.",
+    "promise": "Your money never moves without your permission.",
+    "footerLine": "You can't be there. We can.",
+    "bookCall": "Book a free call",
+    "bookFirstCall": "Book a free first call",
+    "login": "Log in",
+    "comingSoon": "Coming soon",
+    "notifyMe": "Notify me",
+    "whatsapp": "Chat on WhatsApp",
+    "basedIn": "Based in Zimbabwe",
+    "menu": "Open menu",
+    "closeMenu": "Close menu",
+    "language": "Language",
+    "learnMore": "Learn more"
+  },
+  "nav": {
+    "services": "Services",
+    "howItWorks": "How it works",
+    "about": "About",
+    "contact": "Contact",
+    "terms": "Terms",
+    "privacy": "Privacy"
+  },
+  "home": {
+    "hero": {
+      "headline": "Build safely from abroad",
+      "subline": "Build back home — without being there.",
+      "trustLine": "Your money never moves without your permission.",
+      "cta": "Book a free first call"
+    },
+    "problems": {
+      "one": "Is your stand real?",
+      "two": "Is your money being used right?",
+      "three": "Is the work really being done?"
+    },
+    "services": {
+      "title": "Our Services"
+    },
+    "how": {
+      "title": "How it works",
+      "step1": "Free first call",
+      "step2": "Written quote",
+      "step3": "We go on site",
+      "step4": "You get a full report with photos"
+    },
+    "live": {
+      "title": "Watch your build live",
+      "subtitle": "See your site 24/7 — from London, Johannesburg or Texas.",
+      "liveBadge": "LIVE"
+    },
+    "trust": {
+      "title": "You can count on us",
+      "one": "Council-confirmed pegs",
+      "two": "Qualified lawyer",
+      "three": "Every receipt shared",
+      "four": "Nothing happens without your approval"
+    },
+    "cta": {
+      "title": "Book your free first call"
+    }
+  },
+  "servicesData": {
+    "land": {
+      "title": "Land Verification & Due Diligence",
+      "bullet1": "Lawyer checks the title",
+      "bullet2": "Council confirms the pegs",
+      "bullet3": "Measurements, GPS & photos",
+      "bullet4": "Written report with red flags",
+      "description": "Before you pay for a stand, we make sure it is real, properly pegged and legally clean. A qualified lawyer checks the title (included in the service). A council officer confirms the pegs on site. Our team measures the stand, records GPS coordinates and takes dated photos and video. You receive a written report with any red flags explained in plain words."
+    },
+    "materials": {
+      "title": "Materials Procurement",
+      "bullet1": "We compare quotes",
+      "bullet2": "Nothing is bought without your approval",
+      "bullet3": "Every receipt photographed",
+      "description": "Tell us what your build needs and we gather quotes from suppliers, side by side. Nothing is bought until you approve it in writing. Every receipt is photographed and shared with you, and delivery is documented with photos."
+    },
+    "monitoring": {
+      "title": "Site Visits & Construction Monitoring",
+      "bullet1": "Scheduled site visits",
+      "bullet2": "Progress photos & measurements",
+      "bullet3": "Honest written updates",
+      "description": "Regular visits to your site with dated photos, measurements and plain-word updates on progress — so you always know what is really happening."
+    },
+    "camera": {
+      "title": "Live Site Camera (24/7)",
+      "bullet1": "Watch your build live from anywhere",
+      "bullet2": "Solar-powered, works during power cuts",
+      "bullet3": "Recorded to the cloud",
+      "bullet4": "Protects your materials",
+      "description": "A solar-powered camera on your site, streaming live and recording to the cloud — so you can watch your build from anywhere and your materials are protected while builders are on site."
+    }
+  },
+  "servicesPage": {
+    "metaTitle": "Our Services",
+    "title": "Our Services",
+    "intro": "LBH is a service company — our own team in Zimbabwe does the work on your behalf. Every job starts with a free first call, followed by a written quote. No prices are shown publicly; your quote is personal to you.",
+    "notifyHint": "This service is coming soon. Tap “Notify me” on your free call and we will let you know the moment it is live."
+  },
+  "howPage": {
+    "metaTitle": "How it works",
+    "title": "How it works",
+    "intro": "One clear journey, from first call to finished report. You approve every step — nothing moves without you.",
+    "note": "You pay for every trip we make on your behalf. If we make a mistake, we fix it at our own cost. No extra trip or extra cost ever happens without your approval in the portal.",
+    "stage1Title": "Book a free first call",
+    "stage1Text": "30–45 minutes, phone or video. You tell us about your land or your build. It costs nothing.",
+    "stage2Title": "We send a written quote",
+    "stage2Text": "After the call you receive a written quote — the service fee and estimated travel, in plain figures. Only LBH sets prices; prices never appear on this website.",
+    "stage3Title": "You accept and pay a 50% deposit",
+    "stage3Text": "Accept the quote in your portal — your name and the time are recorded as written acceptance. You pay a 50% deposit by card, EcoCash and other methods, or tell us you paid by bank transfer or remittance.",
+    "stage4Title": "Our team goes on site",
+    "stage4Text": "Our own field team does the work — with dated, GPS-tagged photos and video. Field staff never see prices and never sign off their own work.",
+    "stage5Title": "Admin reviews the findings",
+    "stage5Text": "Every field report goes to LBH admin first. Admin reviews it and publishes it to you — nobody signs off their own work.",
+    "stage6Title": "You get a full written report",
+    "stage6Text": "A clear verdict at the top, findings in plain words, measurements, dated photos and every receipt. If travel cost less than estimated, you are credited.",
+    "stage7Title": "You pay the balance",
+    "stage7Text": "Once the report is published, you pay the remaining 50%. Done — and we are ready for your next step."
+  },
+  "aboutPage": {
+    "metaTitle": "About us",
+    "title": "About LBH",
+    "intro": "LBH — Let's Build Home — helps Zimbabweans living abroad verify land, buy building materials and follow their build back home, without being there.",
+    "whoTitle": "Who we are",
+    "whoText": "We are a Zimbabwe-based service company. We are not a marketplace and we do not sell land — our own team does the work on your behalf: a qualified lawyer for title checks, an architect/project manager, and trusted field agents on the ground.",
+    "whyTitle": "Why we exist",
+    "whyText": "Too many people in the diaspora have lost money to fake stands, missing materials and builds that never move. LBH exists so that your money never moves without your permission — and so you can see, in photos and reports, exactly what is happening on your land.",
+    "valuesTitle": "How we work",
+    "value1": "Your money never moves without your permission.",
+    "value2": "Nobody signs off their own work — every report is reviewed before you see it.",
+    "value3": "Every receipt is photographed and shared.",
+    "value4": "If we make a mistake, we fix it at our own cost.",
+    "teamTitle": "The team",
+    "teamText": "A qualified lawyer (title and legal checks), an architect / project manager, and field agents across Zimbabwe. Full team profiles are coming soon."
+  },
+  "contactPage": {
+    "metaTitle": "Contact us",
+    "title": "Contact us",
+    "intro": "The fastest way to reach us is WhatsApp — or book a free first call and we will call you.",
+    "emailLabel": "Email",
+    "whatsappLabel": "WhatsApp",
+    "formTitle": "Send us a message",
+    "name": "Your name",
+    "email": "Your email",
+    "message": "Your message",
+    "send": "Send message",
+    "orBook": "Prefer to talk? Book a free first call — 30–45 minutes, phone or video, no cost."
+  },
+  "bookPage": {
+    "metaTitle": "Book a free first call",
+    "title": "Book your free first call",
+    "intro": "30–45 minutes, phone or video. You tell us about your land or build; we explain exactly how we can help. No cost, no obligation — and no account needed.",
+    "name": "Full name",
+    "email": "Email address",
+    "whatsapp": "WhatsApp number (with country code)",
+    "whatsappHint": "e.g. +44 7… or +1 …",
+    "country": "Country of residence",
+    "countryPlaceholder": "Select your country",
+    "countryUK": "United Kingdom",
+    "countryUSA": "United States",
+    "countrySA": "South Africa",
+    "countryOther": "Other",
+    "service": "Service you are interested in",
+    "servicePlaceholder": "Select a service",
+    "serviceLand": "Land Verification & Due Diligence",
+    "serviceMaterials": "Materials Procurement",
+    "serviceMonitoring": "Site Visits & Construction Monitoring (coming soon)",
+    "serviceCamera": "Live Site Camera (coming soon)",
+    "serviceNotSure": "Not sure yet — let's talk",
+    "description": "Tell us briefly about your land or build",
+    "descriptionHint": "A few sentences is plenty.",
+    "slot": "Preferred call time",
+    "slotHint": "We will confirm the exact slot by email and WhatsApp.",
+    "slotMorning": "Morning (Zimbabwe time)",
+    "slotAfternoon": "Afternoon (Zimbabwe time)",
+    "slotEvening": "Evening (Zimbabwe time)",
+    "slotWeekend": "Weekend",
+    "callType": "Call type",
+    "callPhone": "Phone / WhatsApp call",
+    "callVideo": "Video call",
+    "submit": "Book my free call",
+    "successTitle": "Thank you — your call request is in!",
+    "successText": "We will confirm your slot by email and WhatsApp shortly.",
+    "successWhatsapp": "Want to talk sooner? Chat with us on WhatsApp now.",
+    "errorRequired": "Please fill in all required fields.",
+    "errorEmail": "Please enter a valid email address.",
+    "errorWhatsapp": "Please enter a valid WhatsApp number with country code.",
+    "errorGeneric": "Something went wrong. Please try again, or reach us on WhatsApp.",
+    "slotPlaceholder": "Select a time"
+  },
+  "termsPage": {
+    "metaTitle": "Terms of Service",
+    "title": "Terms of Service",
+    "updated": "Last updated",
+    "intro": "These terms govern the services provided by LBH (Let's Build Home). Plain-English summaries appear first in each section; they are part of the terms.",
+    "s1Title": "1. Who we are and what we do",
+    "s1Text": "LBH is a service company based in Zimbabwe, operated by [LBH ZIMBABWE ENTITY NAME · REG NUMBER]. We act on your written instructions: verifying land, procuring materials and monitoring construction on your behalf. We are not a marketplace, an estate agent, or a seller of land or materials.",
+    "s2Title": "2. Quotes, deposits and payment",
+    "s2Text": "Every job starts with a free first call, after which we send you a written quote. Work begins only after you accept the quote and pay a 50% deposit. The balance is due when your report is published. All amounts are in US dollars.",
+    "s3Title": "3. Trips and travel costs",
+    "s3Text": "You pay for every trip we make on your behalf, as itemised in your quote. Travel is reconciled against receipts: if actual travel costs less than estimated, the difference is credited to you.",
+    "s4Title": "4. Extra costs need your approval",
+    "s4Text": "No extra trip, fine, council charge or any other extra cost will be incurred without your prior approval in the client portal. Work pauses until you approve or decline.",
+    "s5Title": "5. Our mistakes are our cost",
+    "s5Text": "If LBH makes a mistake, LBH fixes it at its own cost. This does not cover issues caused by third parties, authorities, or information you provided that proves inaccurate.",
+    "s6Title": "6. Reports are not a guarantee",
+    "s6Text": "A land verification report is a physical and documentary check carried out on a specific date. It is not a guarantee of title, value or future events, and it is not legal advice beyond the lawyer's findings stated in it.",
+    "s7Title": "7. We act on your instructions",
+    "s7Text": "LBH acts on the client's instructions. You are responsible for the accuracy of the instructions and documents you give us.",
+    "s8Title": "8. Contact",
+    "s8Text": "Questions about these terms: contact us by email or WhatsApp via the Contact page."
+  },
+  "privacyPage": {
+    "metaTitle": "Privacy Policy",
+    "title": "Privacy Policy",
+    "updated": "Last updated",
+    "intro": "LBH respects your privacy. This policy explains what we collect, why, and your rights. It is written to comply with Zimbabwe's Cyber and Data Protection Act [Chapter 12:07] and, because most of our clients live abroad, the UK GDPR.",
+    "s1Title": "1. What we collect",
+    "s1Text": "Contact details (name, email, WhatsApp number, country), details about your land or build that you choose to share, documents you upload (such as title deeds and agreements of sale), payment records, and messages you send us.",
+    "s2Title": "2. Why we collect it",
+    "s2Text": "To provide the services you ask for: booking calls, preparing quotes, verifying land, procuring materials, reporting back to you, and processing payments. We do not sell your data and we do not use it for third-party advertising.",
+    "s3Title": "3. Where it is stored",
+    "s3Text": "Your data is stored with reputable cloud providers. Documents are kept in private storage, accessible only via time-limited signed links by you and authorised LBH staff.",
+    "s4Title": "4. Who can see it",
+    "s4Text": "Only you and the LBH staff who need it for your job. Field staff see only the job details they need — never your prices, quotes or payments.",
+    "s5Title": "5. Your rights",
+    "s5Text": "You may request a copy of your data, correction of inaccurate data, or deletion of your account and data. Export and deletion tools are available in your portal settings, or contact us and we will do it for you.",
+    "s6Title": "6. Retention",
+    "s6Text": "We keep records of completed jobs (including reports and payment records) as long as the law requires for tax and audit purposes, then delete them.",
+    "s7Title": "7. Contact",
+    "s7Text": "For any privacy question or request, contact us by email or WhatsApp via the Contact page."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "The page you are looking for does not exist.",
+    "home": "Back to the homepage"
+  }
+}

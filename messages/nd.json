@@ -1,0 +1,247 @@
+{
+  "_meta": {
+    "language": "Ndebele",
+    "needs_review": true,
+    "note": "Machine-drafted translation. Every string below needs native-speaker review before launch."
+  },
+  "common": {
+    "brand": "Let's Build Home",
+    "brandUpper": "LET'S BUILD HOME",
+    "tagline": "Yakha ekhaya — ungekho khona.",
+    "promise": "Imali yakho kayihambi ungavumanga.",
+    "footerLine": "Wena awungeke ube khona. Thina singaba khona.",
+    "bookCall": "Bhuka ucingo lwamahala",
+    "bookFirstCall": "Bhuka ucingo lwakuqala lwamahala",
+    "login": "Ngena",
+    "comingSoon": "Kuyeza",
+    "notifyMe": "Ngazisa",
+    "whatsapp": "Khuluma lathi kuWhatsApp",
+    "basedIn": "SiseZimbabwe",
+    "menu": "Vula imenyu",
+    "closeMenu": "Vala imenyu",
+    "language": "Ulimi",
+    "learnMore": "Funda okunengi"
+  },
+  "nav": {
+    "services": "Imisebenzi yethu",
+    "howItWorks": "Kusebenza njani",
+    "about": "Ngathi",
+    "contact": "Sithinte",
+    "terms": "Imithetho",
+    "privacy": "Ubumfihlo"
+  },
+  "home": {
+    "hero": {
+      "headline": "Yakha uvikelekile usemzini",
+      "subline": "Yakha ekhaya — ungekho khona.",
+      "trustLine": "Imali yakho kayihambi ungavumanga.",
+      "cta": "Bhuka ucingo lwakuqala lwamahala"
+    },
+    "problems": {
+      "one": "Isitandi sakho ngesiqotho yini?",
+      "two": "Imali yakho isetshenziswa kuhle yini?",
+      "three": "Umsebenzi uyenziwa sibili yini?"
+    },
+    "services": {
+      "title": "Imisebenzi yethu"
+    },
+    "how": {
+      "title": "Kusebenza njani",
+      "step1": "Ucingo lwakuqala lwamahala",
+      "step2": "Ikhotheshini ebhaliweyo",
+      "step3": "Siya endaweni",
+      "step4": "Uthola umbiko ogcweleyo olezithombe"
+    },
+    "live": {
+      "title": "Bukela ukwakhiwa kwakho live",
+      "subtitle": "Bona isayithi yakho 24/7 — useLondon, eJohannesburg loba eTexas.",
+      "liveBadge": "LIVE"
+    },
+    "trust": {
+      "title": "Ungathembela kithi",
+      "one": "Izikhonkwane eziqinisekiswa likhansili",
+      "two": "Ummeli oleziqu",
+      "three": "Irisidi yinye ngayinye iyabiwa",
+      "four": "Akulalutho olwenzakalayo ungavumanga"
+    },
+    "cta": {
+      "title": "Bhuka ucingo lwakho lwakuqala lwamahala"
+    }
+  },
+  "servicesData": {
+    "land": {
+      "title": "Ukuhlolwa kweSitandi & Due Diligence",
+      "bullet1": "Ummeli uhlola i-title",
+      "bullet2": "Ikhansili iqinisekisa izikhonkwane",
+      "bullet3": "Izilinganiso, GPS lezithombe",
+      "bullet4": "Umbiko obhaliweyo olezixwayiso",
+      "description": "Ungakabhadali isitandi, siqinisekisa ukuthi singesiqotho, sibekwe izikhonkwane kuhle njalo sihlanzekile emthethweni. Ummeli oleziqu uhlola i-title (kugoqelwe emsebenzini). Isikhulu sekhansili siqinisekisa izikhonkwane endaweni. Iqembu lethu lilinganisa isitandi, libhale i-GPS, lithathe izithombe lamavidiyo alosuku. Uthola umbiko obhaliweyo olezixwayiso zonke zichasiswa ngamazwi alula."
+    },
+    "materials": {
+      "title": "Ukuthenga Impahla Yokwakha",
+      "bullet1": "Siqathanisa amakhotheshini",
+      "bullet2": "Akulalutho oluthengwayo ungavumanga",
+      "bullet3": "Irisidi yinye ngayinye ithathwa isithombe",
+      "description": "Sitshele okudingwa yikwakha kwakho, sibuthe amakhotheshini kubathengisi, eqathaniswe. Akulalutho oluthengwayo uze uvume ngombhalo. Irisidi yinye ngayinye ithathwa isithombe yabiwe lawe, lokulethwa kwempahla kubhalwa ngezithombe."
+    },
+    "monitoring": {
+      "title": "Ukuvakatshelwa kweSayithi & Ukugadwa koKwakha",
+      "bullet1": "Ukuvakatsha okuhleliweyo",
+      "bullet2": "Izithombe zenqubekela phambili lezilinganiso",
+      "bullet3": "Imibiko ebhaliweyo eqotho",
+      "description": "Ukuvakatshelwa kwesayithi yakho njalonjalo ngezithombe ezilosuku, izilinganiso lemibiko elula yenqubekela phambili — ukuze uhlale usazi okwenzakalayo sibili."
+    },
+    "camera": {
+      "title": "Ikhamera yeSayithi Live (24/7)",
+      "bullet1": "Bukela ukwakhiwa kwakho live loba ungaphi",
+      "bullet2": "Isebenza ngelanga, isebenza lanxa kucitshwe amagetsi",
+      "bullet3": "Irekhodwa kucloud",
+      "bullet4": "Ivikela impahla yakho",
+      "description": "Ikhamera esebenza ngelanga esayithini yakho, ebonisa live njalo irekhode kucloud — ukuze ubukele ukwakhiwa kwakho loba ungaphi, lempahla yakho ivikelwe lapho abakhi besesayithini."
+    }
+  },
+  "servicesPage": {
+    "metaTitle": "Imisebenzi yethu",
+    "title": "Imisebenzi yethu",
+    "intro": "I-LBH yinkampani yemisebenzi — iqembu lethu eZimbabwe lenza umsebenzi wakho. Umsebenzi munye ngamunye uqala ngocingo lwamahala, kulandele ikhotheshini ebhaliweyo. Akulantengo eboniswa obala; ikhotheshini yakho ngeyakho wedwa.",
+    "notifyHint": "Lo umsebenzi uyeza. Tshono \"Ngazisa\" ocingweni lwakho lwamahala, sizakwazisa usuqalile."
+  },
+  "howPage": {
+    "metaTitle": "Kusebenza njani",
+    "title": "Kusebenza njani",
+    "intro": "Uhambo olulodwa olucacileyo, kusukela ocingweni lwakuqala kusiya embikweni ophelileyo. Uvuma isinyathelo sinye ngasinye — akulalutho oluhambayo ungekho.",
+    "note": "Ubhadala uhambo lunye ngalunye esiluhambayo sikumele. Nxa siphambanisa, silungisa ngemali yethu. Akulahambo lokwengeza loba intengo yokwengeza eyenzakalayo ungavumanga kuportal.",
+    "stage1Title": "Bhuka ucingo lwakuqala lwamahala",
+    "stage1Text": "Imizuzu engu-30–45, ucingo loba ividiyo. Usitshela ngesitandi sakho loba ukwakha kwakho. Akubhadalwa.",
+    "stage2Title": "Sikuthumela ikhotheshini ebhaliweyo",
+    "stage2Text": "Ngemva kocingo uthola ikhotheshini ebhaliweyo — imbadalo yomsebenzi lemali yohambo elinganisiweyo, ngezinombolo ezicacileyo. YiLBH kuphela ebeka intengo; intengo kaziboniswa kuwebhusayithi le.",
+    "stage3Title": "Uyavuma ubhadale idiphozithi engu-50%",
+    "stage3Text": "Vuma ikhotheshini kuportal yakho — ibizo lakho lesikhathi kubhalwa njengokuvuma okubhaliweyo. Ubhadala idiphozithi engu-50% ngekhadi, i-EcoCash lezinye izindlela, loba usitshele ukuthi ubhadale ngebhanga loba nge-remittance.",
+    "stage4Title": "Iqembu lethu liya esayithini",
+    "stage4Text": "Iqembu lethu lenza umsebenzi — ngezithombe lamavidiyo alosuku le-GPS. Abasebenzi basensimini kabaziboni intengo njalo kabasayini umsebenzi wabo ngokwabo.",
+    "stage5Title": "I-admin ihlola okutholakeleyo",
+    "stage5Text": "Umbiko munye ngamunye wasensimini uqala uye ku-admin yeLBH. I-admin iyawuhlola iwukhiphe kuwe — kakho osayina umsebenzi wakhe ngokwakhe.",
+    "stage6Title": "Uthola umbiko ogcweleyo obhaliweyo",
+    "stage6Text": "Isinqumo esicacileyo phezulu, okutholakeleyo ngamazwi alula, izilinganiso, izithombe ezilosuku lerisidi yinye ngayinye. Nxa uhambo lubize okuncane kulokulinganisiweyo, uyabuyiselwa imali.",
+    "stage7Title": "Ubhadala eseleyo",
+    "stage7Text": "Nxa umbiko usukhitshiwe, ubhadala u-50% oseleyo. Kuphelile — njalo silungele isinyathelo sakho esilandelayo."
+  },
+  "aboutPage": {
+    "metaTitle": "Ngathi",
+    "title": "Nge-LBH",
+    "intro": "I-LBH — Let's Build Home — isiza abantu beZimbabwe abahlala emzini ukuhlola isitandi, ukuthenga impahla yokwakha lokulandela ukwakha kwabo ekhaya, bengekho khona.",
+    "whoTitle": "Singobani",
+    "whoText": "Siyinkampani yemisebenzi eseZimbabwe. Kasisiso isimakethe njalo kasithengisi umhlabathi — iqembu lethu lenza umsebenzi wakho: ummeli oleziqu wokuhlola i-title, i-architect/project manager, labameli basensimini abathembekileyo.",
+    "whyTitle": "Kungani sikhona",
+    "whyText": "Abantu abanengi kakhulu abasemzini balahlekelwa yimali ngezitandi zamanga, impahla enyamalalayo lokwakha okungahambiyo. I-LBH ikhona ukuze imali yakho ingahambi ungavumanga — njalo ubone, ngezithombe lemibiko, okwenzakalayo sibili emhlabathini wakho.",
+    "valuesTitle": "Sisebenza njani",
+    "value1": "Imali yakho kayihambi ungavumanga.",
+    "value2": "Kakho osayina umsebenzi wakhe ngokwakhe — umbiko munye ngamunye uyahlolwa ungakawuboni.",
+    "value3": "Irisidi yinye ngayinye ithathwa isithombe yabiwe.",
+    "value4": "Nxa siphambanisa, silungisa ngemali yethu.",
+    "teamTitle": "Iqembu",
+    "teamText": "Ummeli oleziqu (i-title lokuhlola komthetho), i-architect / project manager, labameli basensimini kulo lonke eleZimbabwe. Imininingwane egcweleyo yeqembu iyeza."
+  },
+  "contactPage": {
+    "metaTitle": "Sithinte",
+    "title": "Sithinte",
+    "intro": "Indlela ephangisayo yokusithola yiWhatsApp — loba ubhuke ucingo lwakuqala lwamahala sizakufonela.",
+    "emailLabel": "I-email",
+    "whatsappLabel": "WhatsApp",
+    "formTitle": "Sithumele umlayezo",
+    "name": "Ibizo lakho",
+    "email": "I-email yakho",
+    "message": "Umlayezo wakho",
+    "send": "Thumela umlayezo",
+    "orBook": "Ufuna ukukhuluma? Bhuka ucingo lwakuqala lwamahala — imizuzu engu-30–45, ucingo loba ividiyo, akubhadalwa."
+  },
+  "bookPage": {
+    "metaTitle": "Bhuka ucingo lwakuqala lwamahala",
+    "title": "Bhuka ucingo lwakho lwakuqala lwamahala",
+    "intro": "Imizuzu engu-30–45, ucingo loba ividiyo. Usitshela ngesitandi sakho loba ukwakha kwakho; sichasisa ukuthi singakusiza njani. Akubhadalwa, akulasibopho — njalo kawudingi i-akhawunti.",
+    "name": "Ibizo eligcweleyo",
+    "email": "I-email",
+    "whatsapp": "Inombolo yeWhatsApp (lekhodi yelizwe)",
+    "whatsappHint": "isibonelo +44 7… loba +1 …",
+    "country": "Ilizwe ohlala kulo",
+    "countryPlaceholder": "Khetha ilizwe lakho",
+    "countryUK": "United Kingdom",
+    "countryUSA": "United States",
+    "countrySA": "South Africa",
+    "countryOther": "Elinye",
+    "service": "Umsebenzi owufunayo",
+    "servicePlaceholder": "Khetha umsebenzi",
+    "serviceLand": "Ukuhlolwa kweSitandi & Due Diligence",
+    "serviceMaterials": "Ukuthenga Impahla Yokwakha",
+    "serviceMonitoring": "Ukuvakatshelwa kweSayithi & Ukugadwa (kuyeza)",
+    "serviceCamera": "Ikhamera yeSayithi Live (kuyeza)",
+    "serviceNotSure": "Angikazi — asikhulume",
+    "description": "Sitshele kafitshane ngesitandi loba ukwakha kwakho",
+    "descriptionHint": "Imitsho embalwa yanele.",
+    "slot": "Isikhathi ofuna ukufonelwa ngaso",
+    "slotHint": "Sizaqinisekisa isikhathi esiqondileyo nge-email leWhatsApp.",
+    "slotMorning": "Ekuseni (isikhathi seZimbabwe)",
+    "slotAfternoon": "Emini (isikhathi seZimbabwe)",
+    "slotEvening": "Kusihlwa (isikhathi seZimbabwe)",
+    "slotWeekend": "Ngempelaviki",
+    "callType": "Uhlobo locingo",
+    "callPhone": "Ucingo / WhatsApp",
+    "callVideo": "Ividiyo",
+    "submit": "Bhuka ucingo lwami lwamahala",
+    "successTitle": "Siyabonga — isicelo sakho singenile!",
+    "successText": "Sizaqinisekisa isikhathi sakho nge-email leWhatsApp masinyane.",
+    "successWhatsapp": "Ufuna ukukhuluma khathesi? Khuluma lathi kuWhatsApp.",
+    "errorRequired": "Gcwalisa konke okudingekayo.",
+    "errorEmail": "Faka i-email eqondileyo.",
+    "errorWhatsapp": "Faka inombolo yeWhatsApp eqondileyo lekhodi yelizwe.",
+    "errorGeneric": "Kukhona okungahambanga kuhle. Zama futhi, loba usithinte kuWhatsApp.",
+    "slotPlaceholder": "Khetha isikhathi"
+  },
+  "termsPage": {
+    "metaTitle": "Imithetho yoMsebenzi",
+    "title": "Imithetho yoMsebenzi",
+    "updated": "Ivuselelwe",
+    "intro": "Le mithetho ibusa imisebenzi eyenziwa yiLBH (Let's Build Home). Izichasiso ezilula ziqala esigabeni sinye ngasinye; ziyingxenye yemithetho.",
+    "s1Title": "1. Singobani njalo senzani",
+    "s1Text": "I-LBH yinkampani yemisebenzi eseZimbabwe, eqhutshwa yi-[LBH ZIMBABWE ENTITY NAME · REG NUMBER]. Sisebenza ngemilayo yakho ebhaliweyo: ukuhlola isitandi, ukuthenga impahla yokwakha lokugada ukwakha sikumele. Kasisiso isimakethe, i-estate agent, loba umthengisi womhlabathi loba impahla.",
+    "s2Title": "2. Amakhotheshini, idiphozithi lokubhadala",
+    "s2Text": "Umsebenzi munye ngamunye uqala ngocingo lwamahala, besesikuthumela ikhotheshini ebhaliweyo. Umsebenzi uqala kuphela ngemva kokuvuma ikhotheshini lokubhadala idiphozithi engu-50%. Eseleyo ibhadalwa nxa umbiko wakho usukhitshiwe. Imali yonke ingama-US dollars.",
+    "s3Title": "3. Izinhambo lemali yohambo",
+    "s3Text": "Ubhadala uhambo lunye ngalunye esiluhambayo sikumele, njengoba kubhaliwe ekhotheshinini yakho. Uhambo luqathaniswa lamarisidi: nxa uhambo lubize okuncane kulokulinganisiweyo, umahluko uyabuyiselwa kuwe.",
+    "s4Title": "4. Intengo zokwengeza zidinga imvumo yakho",
+    "s4Text": "Akulahambo lokwengeza, inhlawulo, imbadalo yekhansili loba enye intengo yokwengeza eyenziwayo ungakavumi kuportal. Umsebenzi uyama uze uvume loba wale.",
+    "s5Title": "5. Amaphutha ethu yimali yethu",
+    "s5Text": "Nxa i-LBH iphambanisa, i-LBH ilungisa ngemali yayo. Lokhu kakugoqeli inkinga ezibangelwa ngabanye, iziphathamandla, loba ulwazi owasinika lona olungaqondanga.",
+    "s6Title": "6. Imibiko kayisiso isiqinisekiso",
+    "s6Text": "Umbiko wokuhlola isitandi luhlolo lwenyama lolwamaphepha olwenziwa ngosuku oluthile. Kayisiso isiqinisekiso se-title, inani loba izehlakalo zakusasa, njalo kayisiso iseluleko somthetho ngaphandle kokutholwe ngummeli okubhaliweyo kuwo.",
+    "s7Title": "7. Sisebenza ngemilayo yakho",
+    "s7Text": "I-LBH isebenza ngemilayo yeklayenti. Nguwe olomlandu wokuqinisekisa ukuthi imilayo lamaphepha owasinika wona aqondile.",
+    "s8Title": "8. Sithinte",
+    "s8Text": "Imibuzo ngale mithetho: sithinte nge-email loba iWhatsApp ekhasini lokuSithinta."
+  },
+  "privacyPage": {
+    "metaTitle": "Umthetho weBumfihlo",
+    "title": "Umthetho weBumfihlo",
+    "updated": "Ivuselelwe",
+    "intro": "I-LBH ihlonipha ubumfihlo bakho. Lo umthetho uchasisa esikubuthayo, kungani, lamalungelo akho. Ubhalwe ukuthi uhambelane leCyber and Data Protection Act yeZimbabwe [Chapter 12:07] njalo, ngoba amaklayenti ethu amanengi ahlala emzini, i-UK GDPR.",
+    "s1Title": "1. Esikubuthayo",
+    "s1Text": "Imininingwane yokuthintana (ibizo, i-email, inombolo yeWhatsApp, ilizwe), imininingwane ngesitandi loba ukwakha kwakho okhetha ukuyabelana, amaphepha owafakayo (njengama-title deeds lezivumelwano zokuthengisa), imibhalo yokubhadala, lemilayezo osithumela yona.",
+    "s2Title": "2. Kungani sikubutha",
+    "s2Text": "Ukwenza imisebenzi oyicelayo: ukubhuka izingcingo, ukulungisa amakhotheshini, ukuhlola isitandi, ukuthenga impahla, ukubika kuwe, lokubhadalisa. Kasithengisi i-data yakho njalo kasiyisebenzisi ekukhangisweni kwabanye.",
+    "s3Title": "3. Igcinwa ngaphi",
+    "s3Text": "I-data yakho igcinwa labagcini be-cloud abathembekileyo. Amaphepha agcinwa endaweni eyimfihlo, efinyelelwa kuphela ngama-link alesikhathi esibekiweyo nguwe labasebenzi beLBH abavunyelweyo.",
+    "s4Title": "4. Ngubani ongayibona",
+    "s4Text": "Nguwe kuphela labasebenzi beLBH abayidingayo emsebenzini wakho. Abasebenzi basensimini babona kuphela imininingwane yomsebenzi abayidingayo — hatshi intengo, amakhotheshini loba izimbadalo zakho.",
+    "s5Title": "5. Amalungelo akho",
+    "s5Text": "Ungacela ikhophi ye-data yakho, ukulungiswa kwe-data engaqondanga, loba ukucitshwa kwe-akhawunti le-data yakho. Izixhobo zokukhipha lokucitsha zikhona kuzilungiselelo zeportal yakho, loba usithinte sizakwenzela.",
+    "s6Title": "6. Ukugcinwa",
+    "s6Text": "Sigcina imibhalo yemisebenzi ephelileyo (kugoqela imibiko lemibhalo yokubhadala) okwesikhathi esifunwa ngumthetho wemithelo le-audit, besesiyicitsha.",
+    "s7Title": "7. Sithinte",
+    "s7Text": "Ngombuzo munye ngamunye wobumfihlo, sithinte nge-email loba iWhatsApp ekhasini lokuSithinta."
+  },
+  "notFound": {
+    "title": "Ikhasi kalitholakalanga",
+    "text": "Ikhasi olidingayo kalikho.",
+    "home": "Buyela ekhasini lokuqala"
+  }
+}

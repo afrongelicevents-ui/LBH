@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+/* LBH design tokens (brief §4) */
+@theme {
+  --color-forest: #163a2b;
+  --color-forest-dark: #0f2a1f;
+  --color-forest-light: #1d4a37;
+  --color-gold: #c9a227;
+  --color-gold-dark: #a9871d;
+  --color-offwhite: #f8f6f1;
+  --color-ink: #1b1f1c;
+  --color-muted: #5e6862;
+  --color-line: #e4e1d8;
+  --color-whatsapp: #25d366;
+
+  --font-sans: var(--font-inter-tight), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Arial, sans-serif;
+
+  --radius-card: 16px;
+
+  --shadow-card: 0 2px 12px rgba(22, 58, 43, 0.08), 0 1px 3px rgba(22, 58, 43, 0.06);
+  --shadow-card-hover: 0 6px 24px rgba(22, 58, 43, 0.14), 0 2px 6px rgba(22, 58, 43, 0.08);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-offwhite);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Headline styling: extra bold, tight letter-spacing (brief §4 typography) */
+.headline {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+/* Pill buttons — minimum 44px touch target (brief §4 shapes) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.625rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  line-height: 1.2;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease,
+    box-shadow 0.15s ease;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-gold {
+  background: var(--color-gold);
+  color: var(--color-forest);
+}
+.btn-gold:hover {
+  background: var(--color-gold-dark);
+}
+
+.btn-outline-green {
+  border: 2px solid var(--color-forest);
+  color: var(--color-forest);
+  background: transparent;
+}
+.btn-outline-green:hover {
+  background: var(--color-forest);
+  color: #ffffff;
+}
+
+.btn-outline-white {
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  background: transparent;
+}
+.btn-outline-white:hover {
+  background: #ffffff;
+  color: var(--color-forest);
+}
+
+.btn-green {
+  background: var(--color-forest);
+  color: #ffffff;
+}
+.btn-green:hover {
+  background: var(--color-forest-dark);
+}
+
+/* "Coming soon" pill */
+.pill-soon {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  background: var(--color-gold);
+  color: var(--color-forest);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  padding: 0.375rem 0.875rem;
+}
+
+/* Cards (brief §4): white, radius 16px, soft shadow */
+.card {
+  background: #ffffff;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+/* Focus visibility for accessibility */
+:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 2px;
+}

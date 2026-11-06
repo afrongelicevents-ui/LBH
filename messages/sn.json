@@ -1,0 +1,247 @@
+{
+  "_meta": {
+    "language": "Shona",
+    "needs_review": true,
+    "note": "Machine-drafted translation. Every string below needs native-speaker review before launch."
+  },
+  "common": {
+    "brand": "Let's Build Home",
+    "brandUpper": "LET'S BUILD HOME",
+    "tagline": "Vaka kumusha — usipo ikoko.",
+    "promise": "Mari yako haifambi usina kubvumira.",
+    "footerLine": "Iwe haugoni kuvapo. Isu tinogona.",
+    "bookCall": "Bhuka runhare rwemahara",
+    "bookFirstCall": "Bhuka runhare rwekutanga rwemahara",
+    "login": "Pinda",
+    "comingSoon": "Chiri kuuya",
+    "notifyMe": "Ndizivise",
+    "whatsapp": "Taura nesu paWhatsApp",
+    "basedIn": "Tiri muZimbabwe",
+    "menu": "Vhura menyu",
+    "closeMenu": "Vhara menyu",
+    "language": "Mutauro",
+    "learnMore": "Dzidza zvakawanda"
+  },
+  "nav": {
+    "services": "Mabasa edu",
+    "howItWorks": "Zvinofamba sei",
+    "about": "Nezvedu",
+    "contact": "Taura nesu",
+    "terms": "Mitemo",
+    "privacy": "Kuvanzika"
+  },
+  "home": {
+    "hero": {
+      "headline": "Vaka wakachengeteka uri kunze kwenyika",
+      "subline": "Vaka kumusha — usipo ikoko.",
+      "trustLine": "Mari yako haifambi usina kubvumira.",
+      "cta": "Bhuka runhare rwekutanga rwemahara"
+    },
+    "problems": {
+      "one": "Stendi yako ndeyechokwadi here?",
+      "two": "Mari yako iri kushandiswa zvakanaka here?",
+      "three": "Basa riri kuitwa zvechokwadi here?"
+    },
+    "services": {
+      "title": "Mabasa edu"
+    },
+    "how": {
+      "title": "Zvinofamba sei",
+      "step1": "Runhare rwekutanga rwemahara",
+      "step2": "Kotesheni yakanyorwa",
+      "step3": "Tinoenda panzvimbo",
+      "step4": "Unowana gwaro rizere nemifananidzo"
+    },
+    "live": {
+      "title": "Ona kuvakwa kwemba yako live",
+      "subtitle": "Ona saiti yako 24/7 — uri kuLondon, Johannesburg kana Texas.",
+      "liveBadge": "LIVE"
+    },
+    "trust": {
+      "title": "Unogona kuvimba nesu",
+      "one": "Zvipandi zvinosimbiswa nekanzuru",
+      "two": "Gweta rine ruzivo",
+      "three": "Risiti yega yega inogoverwa",
+      "four": "Hapana chinoitika usina kubvumira"
+    },
+    "cta": {
+      "title": "Bhuka runhare rwako rwekutanga rwemahara"
+    }
+  },
+  "servicesData": {
+    "land": {
+      "title": "Kuongororwa kweStendi & Due Diligence",
+      "bullet1": "Gweta rinoongorora title",
+      "bullet2": "Kanzuru inosimbisa zvipandi",
+      "bullet3": "Zviyero, GPS nemifananidzo",
+      "bullet4": "Gwaro rakanyorwa rine yambiro",
+      "description": "Usati wabhadhara stendi, tinoita shuwa kuti ndeyechokwadi, yakaiswa zvipandi zvakanaka uye yakachena pamutemo. Gweta rine ruzivo rinoongorora title (zviri mubasa redu). Mukuru wekanzuru anosimbisa zvipandi panzvimbo. Timu yedu inoyera stendi, inonyora GPS, uye inotora mifananidzo nevhidhiyo zvine zuva. Unogamuchira gwaro rakanyorwa rine yambiro dzese dzichitsanangurwa nemashoko ari nyore."
+    },
+    "materials": {
+      "title": "Kutenga Zvivakwa",
+      "bullet1": "Tinoenzanisa makotesheni",
+      "bullet2": "Hapana chinotengwa usina kubvumira",
+      "bullet3": "Risiti yega yega inotorwa mufananidzo",
+      "description": "Tiudze zvinodiwa pakuvaka kwako, tinounganidza makotesheni kubva kuvatengesi, akaenzaniswa. Hapana chinotengwa kusvika wabvumira nechinyorwa. Risiti yega yega inotorwa mufananidzo yogoverwa newe, uye kusvitswa kwezvinhu kunonyorwa nemifananidzo."
+    },
+    "monitoring": {
+      "title": "Kushanyirwa kweSaiti & Kutariswa kweKuvaka",
+      "bullet1": "Kushanya kwakarongwa",
+      "bullet2": "Mifananidzo yekufambira mberi nezviyero",
+      "bullet3": "Mashoko akanyorwa echokwadi",
+      "description": "Kushanyirwa kwenguva nenguva kwesaiti yako nemifananidzo ine zuva, zviyero uye mashoko ari nyore ekufambira mberi — kuti ugare uchiziva zviri kuitika chaizvo."
+    },
+    "camera": {
+      "title": "Kamera yeSaiti Live (24/7)",
+      "bullet1": "Ona kuvakwa kwako live kubva chero kupi",
+      "bullet2": "Inoshanda nesolar, inoshanda pakudzima magetsi",
+      "bullet3": "Inorekodwa kucloud",
+      "bullet4": "Inochengetedza zvivakwa zvako",
+      "description": "Kamera inoshanda nesolar pasaiti yako, inoratidza live uye inorekoda kucloud — kuti uone kuvakwa kwako kubva chero kupi, uye zvivakwa zvako zvichengetedzwe apo vavaki vari pasaiti."
+    }
+  },
+  "servicesPage": {
+    "metaTitle": "Mabasa edu",
+    "title": "Mabasa edu",
+    "intro": "LBH ikambani yemabasa — timu yedu pachedu muZimbabwe inoita basa rako. Basa rega rega rinotanga nerunhare rwemahara, rwoteverwa nekotesheni yakanyorwa. Hapana mitengo inoratidzwa pachena; kotesheni yako ndeyako wega.",
+    "notifyHint": "Iri basa riri kuuya. Taura \"Ndizivise\" parunhare rwako rwemahara, tokuzivisa richangotanga."
+  },
+  "howPage": {
+    "metaTitle": "Zvinofamba sei",
+    "title": "Zvinofamba sei",
+    "intro": "Rwendo rumwe rwakajeka, kubva parunhare rwekutanga kusvika pagwaro rakapera. Unobvumira nhanho yega yega — hapana chinofamba usipo.",
+    "note": "Unobhadhara rwendo rwega rwega rwatinofamba tichikumiririra. Kana tikakanganisa, tinogadzirisa nemari yedu. Hapana rwendo rwekuwedzera kana mutengo wekuwedzera unoitika usina kubvumira muportal.",
+    "stage1Title": "Bhuka runhare rwekutanga rwemahara",
+    "stage1Text": "Maminitsi 30–45, runhare kana vhidhiyo. Unotiudza nezvestendi yako kana kuvaka kwako. Hazvibhadharwi.",
+    "stage2Title": "Tinokutumira kotesheni yakanyorwa",
+    "stage2Text": "Mushure merunhare unogamuchira kotesheni yakanyorwa — muripo webasa nemari yerwendo inofungidzirwa, nenhamba dziri pachena. LBH chete ndiyo inoisa mitengo; mitengo haimboonekwi pawebsite ino.",
+    "stage3Title": "Unobvuma wobhadhara dhipoziti ye50%",
+    "stage3Text": "Bvuma kotesheni muportal yako — zita rako nenguva zvinonyorwa sekubvuma kwakanyorwa. Unobhadhara dhipoziti ye50% nekadhi, EcoCash nedzimwe nzira, kana kutiudza kuti wabhadhara nebhanga kana remittance.",
+    "stage4Title": "Timu yedu inoenda pasaiti",
+    "stage4Text": "Timu yedu pachedu inoita basa — nemifananidzo nevhidhiyo zvine zuva neGPS. Vashandi vemumunda havamboona mitengo uye havambosaini basa ravo pachavo.",
+    "stage5Title": "Admin inoongorora zvakawanikwa",
+    "stage5Text": "Gwaro rega rega remumunda rinotanga raenda kuadmin yeLBH. Admin inoriongorora yoriburitsa kwauri — hapana anosaina basa rake pachake.",
+    "stage6Title": "Unowana gwaro rizere rakanyorwa",
+    "stage6Text": "Mhedziso yakajeka pamusoro, zvakawanikwa nemashoko ari nyore, zviyero, mifananidzo ine zuva nerisiti yega yega. Kana rwendo rwadhura zvishoma pane zvaifungidzirwa, unodzorerwa mari.",
+    "stage7Title": "Unobhadhara yasara",
+    "stage7Text": "Kana gwaro raburitswa, unobhadhara 50% yasara. Zvapera — uye takagadzirira nhanho yako inotevera."
+  },
+  "aboutPage": {
+    "metaTitle": "Nezvedu",
+    "title": "Nezve LBH",
+    "intro": "LBH — Let's Build Home — inobatsira vaZimbabwe vanogara kunze kwenyika kuongorora stendi, kutenga zvivakwa nekutevera kuvaka kwavo kumusha, vasipo ikoko.",
+    "whoTitle": "Tiri vanaani",
+    "whoText": "Tiri kambani yemabasa iri muZimbabwe. Hatisi musika uye hatitengesi minda — timu yedu pachedu inoita basa rako: gweta rine ruzivo rekuongorora title, architect/project manager, nevamiririri vemumunda vakavimbika.",
+    "whyTitle": "Sei tiripo",
+    "whyText": "Vanhu vakawandisa vari kunze kwenyika vakarasikirwa nemari nestendi dzenhema, zvivakwa zvinoshaikwa nekuvaka kusingafambi. LBH iripo kuti mari yako isafamba usina kubvumira — uye kuti uone, mumifananidzo nemagwaro, zviri kuitika chaizvo pamunda wako.",
+    "valuesTitle": "Tinoshanda sei",
+    "value1": "Mari yako haifambi usina kubvumira.",
+    "value2": "Hapana anosaina basa rake pachake — gwaro rega rega rinoongororwa usati wariona.",
+    "value3": "Risiti yega yega inotorwa mufananidzo yogoverwa.",
+    "value4": "Kana tikakanganisa, tinogadzirisa nemari yedu.",
+    "teamTitle": "Timu",
+    "teamText": "Gweta rine ruzivo (title nekuongorora kwemutemo), architect / project manager, nevamiririri vemumunda muZimbabwe yese. Ruzivo rwuzere rwetimu rwuri kuuya."
+  },
+  "contactPage": {
+    "metaTitle": "Taura nesu",
+    "title": "Taura nesu",
+    "intro": "Nzira inokurumidza kutisvikira ndeyeWhatsApp — kana kubhuka runhare rwekutanga rwemahara tokufonera.",
+    "emailLabel": "Email",
+    "whatsappLabel": "WhatsApp",
+    "formTitle": "Titumire shoko",
+    "name": "Zita rako",
+    "email": "Email yako",
+    "message": "Shoko rako",
+    "send": "Tumira shoko",
+    "orBook": "Unoda kutaura? Bhuka runhare rwekutanga rwemahara — maminitsi 30–45, runhare kana vhidhiyo, hazvibhadharwi."
+  },
+  "bookPage": {
+    "metaTitle": "Bhuka runhare rwekutanga rwemahara",
+    "title": "Bhuka runhare rwako rwekutanga rwemahara",
+    "intro": "Maminitsi 30–45, runhare kana vhidhiyo. Unotiudza nezvestendi yako kana kuvaka kwako; tinotsanangura kuti tingakubatsira sei. Hazvibhadharwi, hapana chisungo — uye haudi account.",
+    "name": "Zita rizere",
+    "email": "Email",
+    "whatsapp": "Nhamba yeWhatsApp (ine kodhi yenyika)",
+    "whatsappHint": "semuenzaniso +44 7… kana +1 …",
+    "country": "Nyika yaunogara",
+    "countryPlaceholder": "Sarudza nyika yako",
+    "countryUK": "United Kingdom",
+    "countryUSA": "United States",
+    "countrySA": "South Africa",
+    "countryOther": "Imwe",
+    "service": "Basa raunoda",
+    "servicePlaceholder": "Sarudza basa",
+    "serviceLand": "Kuongororwa kweStendi & Due Diligence",
+    "serviceMaterials": "Kutenga Zvivakwa",
+    "serviceMonitoring": "Kushanyirwa kweSaiti & Kutariswa (chiri kuuya)",
+    "serviceCamera": "Kamera yeSaiti Live (chiri kuuya)",
+    "serviceNotSure": "Handisati ndaziva — ngatitaure",
+    "description": "Tiudze muchidimbu nezvestendi kana kuvaka kwako",
+    "descriptionHint": "Mitsara mishoma inokwana.",
+    "slot": "Nguva yaunoda kufonerwa",
+    "slotHint": "Tichasimbisa nguva chaiyo neemail neWhatsApp.",
+    "slotMorning": "Mangwanani (nguva yeZimbabwe)",
+    "slotAfternoon": "Masikati (nguva yeZimbabwe)",
+    "slotEvening": "Manheru (nguva yeZimbabwe)",
+    "slotWeekend": "Weekend",
+    "callType": "Rudzi rwerunhare",
+    "callPhone": "Runhare / WhatsApp",
+    "callVideo": "Vhidhiyo",
+    "submit": "Bhuka runhare rwangu rwemahara",
+    "successTitle": "Tatenda — chikumbiro chako chapinda!",
+    "successText": "Tichasimbisa nguva yako neemail neWhatsApp munguva pfupi.",
+    "successWhatsapp": "Unoda kutaura izvozvi? Taura nesu paWhatsApp.",
+    "errorRequired": "Zadza zvese zvinodiwa.",
+    "errorEmail": "Isa email chaiyo.",
+    "errorWhatsapp": "Isa nhamba yeWhatsApp chaiyo ine kodhi yenyika.",
+    "errorGeneric": "Pane chakanganisika. Edza zvakare, kana utisvikire paWhatsApp.",
+    "slotPlaceholder": "Sarudza nguva"
+  },
+  "termsPage": {
+    "metaTitle": "Mitemo yeBasa",
+    "title": "Mitemo yeBasa",
+    "updated": "Yakagadziridzwa",
+    "intro": "Mitemo iyi inotonga mabasa anoitwa neLBH (Let's Build Home). Tsanangudzo dziri nyore dzinotanga pachikamu chega chega; idzo chikamu chemitemo.",
+    "s1Title": "1. Tiri vanaani uye tinoitei",
+    "s1Text": "LBH ikambani yemabasa iri muZimbabwe, inoshandiswa ne[LBH ZIMBABWE ENTITY NAME · REG NUMBER]. Tinoshanda nemirairo yako yakanyorwa: kuongorora stendi, kutenga zvivakwa nekutarisa kuvaka tichikumiririra. Hatisi musika, estate agent, kana mutengesi weminda kana zvivakwa.",
+    "s2Title": "2. Makotesheni, dhipoziti nekubhadhara",
+    "s2Text": "Basa rega rega rinotanga nerunhare rwemahara, mushure tokutumira kotesheni yakanyorwa. Basa rinotanga chete mushure mekubvuma kotesheni nekubhadhara dhipoziti ye50%. Yasara inobhadharwa kana gwaro rako raburitswa. Mari yese iri muUS dollars.",
+    "s3Title": "3. Nzendo nemari yerwendo",
+    "s3Text": "Unobhadhara rwendo rwega rwega rwatinofamba tichikumiririra, sezvakanyorwa mukotesheni yako. Rwendo rwunoenzaniswa nerisiti: kana rwendo rwadhura zvishoma pane zvaifungidzirwa, mari yakasara inodzorerwa kwauri.",
+    "s4Title": "4. Mitengo yekuwedzera inoda mvumo yako",
+    "s4Text": "Hapana rwendo rwekuwedzera, faini, muripo wekanzuru kana umwe mutengo wekuwedzera unoitwa usina kutanga wabvumira muportal. Basa rinomira kusvika wabvuma kana kuramba.",
+    "s5Title": "5. Kukanganisa kwedu imari yedu",
+    "s5Text": "Kana LBH ikakanganisa, LBH inogadzirisa nemari yayo. Izvi hazvibati matambudziko anokonzerwa nevamwe, zviremera, kana ruzivo rwawakapa rwusina kururama.",
+    "s6Title": "6. Magwaro haasi vimbiso",
+    "s6Text": "Gwaro rekuongorora stendi iongororo yepanyama neyemagwaro yakaitwa pazuva chairo. Harisi vimbiso yetitle, kukosha kana zvichaitika mberi, uye harisi zano remutemo kunze kwezvakawanikwa negweta zvakanyorwa mariri.",
+    "s7Title": "7. Tinoshanda nemirairo yako",
+    "s7Text": "LBH inoshanda nemirairo yemutengi. Ndiwe une basa rekuona kuti mirairo nemagwaro zvawatipa zvakarurama.",
+    "s8Title": "8. Taura nesu",
+    "s8Text": "Mibvunzo nezvemitemo iyi: tisvikire neemail kana WhatsApp papeji yeTaura Nesu."
+  },
+  "privacyPage": {
+    "metaTitle": "Mutemo weKuvanzika",
+    "title": "Mutemo weKuvanzika",
+    "updated": "Yakagadziridzwa",
+    "intro": "LBH inoremekedza kuvanzika kwako. Mutemo uyu unotsanangura zvatinotora, sei, nekodzero dzako. Wakanyorwa kuti uenderane neCyber and Data Protection Act yeZimbabwe [Chapter 12:07] uye, nekuti vatengi vedu vazhinji vanogara kunze, UK GDPR.",
+    "s1Title": "1. Zvatinotora",
+    "s1Text": "Ruzivo rwekubata (zita, email, nhamba yeWhatsApp, nyika), ruzivo nezvestendi kana kuvaka kwako rwaunosarudza kugovera, magwaro aunoisa (seititle deeds nezvibvumirano zvekutengesa), zvinyorwa zvekubhadhara, nemashoko aunotitumira.",
+    "s2Title": "2. Sei tichizvitora",
+    "s2Text": "Kuita mabasa aunokumbira: kubhuka runhare, kugadzira makotesheni, kuongorora stendi, kutenga zvivakwa, kukupira mhinduro, nekubhadharisa. Hatitengesi data rako uye hatirishandisi kushambadzira kwevamwe.",
+    "s3Title": "3. Rinochengeterwa kupi",
+    "s3Text": "Data rako rinochengetwa nevachengetedzi vecloud vakavimbika. Magwaro anochengetwa munzvimbo yakavanzika, inosvikika chete nemalink ane nguva yakatarwa newe nevashandi veLBH vakabvumirwa.",
+    "s4Title": "4. Ndiani anogona kuriona",
+    "s4Text": "Iwe chete nevashandi veLBH vanorida pabasa rako. Vashandi vemumunda vanoona chete ruzivo rwebasa rwavanoda — kwete mitengo, makotesheni kana kubhadhara kwako.",
+    "s5Title": "5. Kodzero dzako",
+    "s5Text": "Unogona kukumbira kopi yedata rako, kugadziriswa kwedata risina kururama, kana kudzimwa kweaccount nedata rako. Zvishandiso zvekuburitsa nekudzima zviri musettings yeportal yako, kana utiudze isu tozviita.",
+    "s6Title": "6. Kuchengetwa",
+    "s6Text": "Tinochengeta zvinyorwa zvemabasa akapera (kusanganisira magwaro nezvinyorwa zvekubhadhara) kwenguva inodiwa nemutemo yemitero neaudit, tozvidzima.",
+    "s7Title": "7. Taura nesu",
+    "s7Text": "Pamubvunzo wese wekuvanzika, tisvikire neemail kana WhatsApp papeji yeTaura Nesu."
+  },
+  "notFound": {
+    "title": "Peji haina kuwanikwa",
+    "text": "Peji yauri kutsvaga haipo.",
+    "home": "Dzokera kupeji yekutanga"
+  }
+}
