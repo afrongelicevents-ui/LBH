@@ -37,17 +37,24 @@ export async function submitBooking(
   const admin = createAdminClient();
 
   try {
-    // Existing account with this email?
-    const { data: existing } = await admin
-      .from("profiles")
-      .select("id, role")
-      .eq("email", d.email.toLowerCase())
-      .maybeSingle();
+    // Existing account? Matched on the verified auth email (auth.users),
+    // never on the user-editable profile row.
+    const { data: existingId } = await admin.rpc("find_user_id_by_email", {
+      p_email: d.email,
+    });
 
-    let clientId: string | null = existing?.id ?? null;
+    let clientId: string | null = null;
     let inviteNote = "";
 
-    if (!existing) {
+    if (existingId) {
+      const { data: existingProfile } = await admin
+        .from("profiles")
+        .select("role")
+        .eq("id", existingId)
+        .single();
+      // Only attach bookings to client accounts, never to staff.
+      if (existingProfile?.role === "client") clientId = existingId as string;
+    } else {
       const { data: created, error: createErr } =
         await admin.auth.admin.createUser({
           email: d.email.toLowerCase(),

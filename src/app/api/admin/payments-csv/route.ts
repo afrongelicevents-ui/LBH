@@ -1,7 +1,9 @@
 import { requireAdminAction } from "@/lib/auth/admin-guard";
 
 function csvEscape(v: unknown): string {
-  const s = String(v ?? "");
+  let s = String(v ?? "");
+  // Neutralise spreadsheet formulas (client-controlled titles end up here)
+  if (/^[=+\-@\t\r]/.test(s)) s = `'${s}`;
   return /[",\n]/.test(s) ? `"${s.replaceAll('"', '""')}"` : s;
 }
 

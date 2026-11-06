@@ -17,7 +17,7 @@ export default async function FieldJobsPage({
   const { data: jobs } = await supabase
     .from("jobs")
     .select(
-      "id, status, created_at, service_requests(id, type, title, details, profiles:client_id(full_name))"
+      "id, status, created_at, client_first_name, service_requests(id, type, title, details)"
     )
     .order("created_at", { ascending: false });
 
@@ -33,9 +33,8 @@ export default async function FieldJobsPage({
               id: string;
               type: string;
               title: string;
-              profiles: { full_name: string } | null;
             } | null;
-            const firstName = req?.profiles?.full_name?.split(" ")[0] ?? "";
+            const firstName = job.client_first_name;
             return (
               <li key={job.id}>
                 <Link

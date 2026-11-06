@@ -22,6 +22,16 @@ export function paynowConfigured(): boolean {
   );
 }
 
+/**
+ * The simulated checkout lets a client mark their own payment as paid, so it
+ * must be an explicit opt-in (PAYMENTS_TEST_MODE=true) and is always off once
+ * real Paynow credentials exist. A production deploy that forgets the keys
+ * gets "online payments unavailable", never free payments.
+ */
+export function simulatedPaymentsEnabled(): boolean {
+  return !paynowConfigured() && process.env.PAYMENTS_TEST_MODE === "true";
+}
+
 /** Uppercase SHA512 hex of concatenated values + integration key. */
 export function paynowHash(values: string[], integrationKey: string): string {
   return createHash("sha512")
@@ -71,6 +81,9 @@ export async function initiatePaynowPayment(opts: {
   returnUrl: string;
 }): Promise<InitiateResult> {
   if (!paynowConfigured()) {
+    if (!simulatedPaymentsEnabled()) {
+      throw new Error("online payments unavailable");
+    }
     // Simulated test checkout, handled inside the app.
     return {
       redirectUrl: `/pay/simulate?ref=${encodeURIComponent(opts.merchantReference)}`,

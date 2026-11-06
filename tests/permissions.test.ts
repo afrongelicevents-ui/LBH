@@ -12,6 +12,7 @@
  */
 import { beforeAll, describe, expect, it } from "vitest";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { createHmac } from "node:crypto";
 
 const URL = process.env.SUPABASE_TEST_URL ?? "http://127.0.0.1:54321";
 // Standard public demo keys of every local Supabase stack (not secrets).
@@ -23,6 +24,7 @@ const PASSWORD = "Lbh-Sample-2026";
 
 const IDS = {
   admin: "00000000-0000-4000-a000-000000000001",
+  lawyer: "00000000-0000-4000-a000-000000000002",
   agent: "00000000-0000-4000-a000-000000000003",
   client: "00000000-0000-4000-a000-000000000004",
   client2: "00000000-0000-4000-a000-000000000005",
@@ -49,6 +51,43 @@ async function signIn(email: string): Promise<SupabaseClient> {
   return c;
 }
 
+// ---- RFC 6238 TOTP, so staff can complete real 2FA in tests ----
+function base32Decode(s: string): Buffer {
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+  let bits = "";
+  for (const ch of s.replace(/=+$/, "").toUpperCase()) {
+    const v = alphabet.indexOf(ch);
+    if (v >= 0) bits += v.toString(2).padStart(5, "0");
+  }
+  const bytes: number[] = [];
+  for (let i = 0; i + 8 <= bits.length; i += 8) bytes.push(parseInt(bits.slice(i, i + 8), 2));
+  return Buffer.from(bytes);
+}
+function totp(secret: string): string {
+  const buf = Buffer.alloc(8);
+  buf.writeBigUInt64BE(BigInt(Math.floor(Date.now() / 30000)));
+  const h = createHmac("sha1", base32Decode(secret)).update(buf).digest();
+  const o = h[h.length - 1] & 0xf;
+  return ((h.readUInt32BE(o) & 0x7fffffff) % 1_000_000).toString().padStart(6, "0");
+}
+
+/** Staff sign-in that completes TOTP enrollment → an aal2 session. */
+async function signInStaff(email: string, userId: string, service: SupabaseClient) {
+  const { data: existing } = await service.auth.admin.mfa.listFactors({ userId });
+  for (const f of existing?.factors ?? []) {
+    await service.auth.admin.mfa.deleteFactor({ id: f.id, userId });
+  }
+  const c = await signIn(email);
+  const { data: enrolled, error } = await c.auth.mfa.enroll({ factorType: "totp" });
+  if (error || !enrolled) throw new Error(`enroll ${email}: ${error?.message}`);
+  const { error: vErr } = await c.auth.mfa.challengeAndVerify({
+    factorId: enrolled.id,
+    code: totp(enrolled.totp.secret),
+  });
+  if (vErr) throw new Error(`verify ${email}: ${vErr.message}`);
+  return c;
+}
+
 const up = await stackUp();
 const d = up ? describe : describe.skip;
 
@@ -72,9 +111,9 @@ d("RLS & business rules (local Supabase)", () => {
     await service.from("reports").delete().eq("job_id", IDS.jobLand);
 
     [admin, agent, lawyer, client, client2] = await Promise.all([
-      signIn("admin@lbh.test"),
-      signIn("agent@lbh.test"),
-      signIn("lawyer@lbh.test"),
+      signInStaff("admin@lbh.test", IDS.admin, service),
+      signInStaff("agent@lbh.test", IDS.agent, service),
+      signInStaff("lawyer@lbh.test", IDS.lawyer, service),
       signIn("client@lbh.test"),
       signIn("client2@lbh.test"),
     ]);
@@ -300,6 +339,146 @@ d("RLS & business rules (local Supabase)", () => {
 
     it("cannot decide twice", async () => {
       const { error } = await client.rpc("decide_approval", { p_approval_id: approvalId, p_approve: false });
+      expect(error).not.toBeNull();
+    });
+  });
+
+  // ---------- security-review regressions ----------
+  describe("2FA is enforced by the database, not just the website", () => {
+    it("admin with password only (no TOTP) gets no data", async () => {
+      // admin has a verified factor (signInStaff above) → password login is aal1
+      const aal1 = await signIn("admin@lbh.test");
+      const { data: p } = await aal1.from("payments").select("id");
+      expect(p ?? []).toEqual([]);
+      const { data: profiles } = await aal1.from("profiles").select("id");
+      expect((profiles ?? []).map((r) => r.id)).toEqual([IDS.admin]); // own row only
+      await aal1.from("settings").update({ deposit_pct: 1 }).eq("id", 1);
+      const { data: s } = await service.from("settings").select("deposit_pct").eq("id", 1).single();
+      expect(s?.deposit_pct).not.toBe(1);
+    });
+
+    it("field agent with password only (no TOTP) sees no jobs", async () => {
+      const aal1 = await signIn("agent@lbh.test");
+      const { data } = await aal1.from("jobs").select("id");
+      expect(data ?? []).toEqual([]);
+    });
+
+    it("the same admin WITH TOTP has full access", async () => {
+      const { data } = await admin.from("payments").select("id");
+      expect((data ?? []).length).toBeGreaterThan(0);
+    });
+  });
+
+  describe("audit log cannot be forged", () => {
+    it("anon cannot call log_audit", async () => {
+      const { error } = await anon.rpc("log_audit", {
+        p_action: "payment.confirmed", p_entity: "payment", p_entity_id: "x", p_data: {},
+      });
+      expect(error).not.toBeNull();
+    });
+
+    it("clients cannot call log_audit or admin_log_audit", async () => {
+      const a = await client.rpc("log_audit", { p_action: "x", p_entity: "x", p_entity_id: "x", p_data: {} });
+      expect(a.error).not.toBeNull();
+      const b = await client.rpc("admin_log_audit", { p_action: "x", p_entity: "x", p_entity_id: "x", p_data: {} });
+      expect(b.error).not.toBeNull();
+    });
+
+    it("anon cannot touch the rate limiter", async () => {
+      const { error } = await anon.rpc("rate_limit_hit", { p_bucket: "x", p_max: 1, p_window_seconds: 0 });
+      expect(error).not.toBeNull();
+    });
+  });
+
+  describe("profiles", () => {
+    it("client cannot change their profile email", async () => {
+      await client.from("profiles").update({ email: "victim@example.test" }).eq("id", IDS.client);
+      const { data } = await service.from("profiles").select("email").eq("id", IDS.client).single();
+      expect(data?.email).toBe("client@lbh.test");
+    });
+
+    it("client can still edit their name", async () => {
+      const { error } = await client.from("profiles").update({ full_name: "SAMPLE Tatenda Moyo" }).eq("id", IDS.client);
+      expect(error).toBeNull();
+    });
+
+    it("field staff cannot read client profiles (no email/WhatsApp)", async () => {
+      const { data } = await agent.from("profiles").select("email, whatsapp").eq("id", IDS.client);
+      expect(data).toEqual([]);
+    });
+
+    it("field staff see only the client's first name on the job", async () => {
+      const { data } = await agent.from("jobs").select("client_first_name").eq("id", IDS.jobLand).single();
+      expect(data?.client_first_name).toBe("SAMPLE");
+    });
+  });
+
+  describe("field rows are pinned to the job's own request", () => {
+    it("media/extra costs attached to another client's request are re-pinned", async () => {
+      const { data: m } = await agent
+        .from("media")
+        .insert({
+          job_id: IDS.jobLand,
+          request_id: IDS.reqDone, // someone else's request
+          uploader_id: IDS.agent,
+          kind: "receipt",
+          storage_path: `jobs/${IDS.jobLand}/test.jpg`,
+          amount_cents: 100,
+        })
+        .select("request_id")
+        .single();
+      expect(m?.request_id).toBe(IDS.reqLand);
+
+      const { data: e } = await agent
+        .from("extra_cost_requests")
+        .insert({
+          job_id: IDS.jobLand,
+          request_id: IDS.reqDone,
+          requested_by: IDS.agent,
+          title: "TEST",
+          reason: "TEST",
+          amount_cents: 100,
+        })
+        .select("request_id")
+        .single();
+      expect(e?.request_id).toBe(IDS.reqLand);
+    });
+
+    it("media cannot point at another job's storage files", async () => {
+      const { error } = await agent.from("media").insert({
+        job_id: IDS.jobLand,
+        request_id: IDS.reqLand,
+        uploader_id: IDS.agent,
+        kind: "photo",
+        storage_path: "jobs/30000000-0000-4000-a000-000000000002/someone-else.jpg",
+      });
+      expect(error).not.toBeNull();
+    });
+  });
+
+  describe("no self sign-off cannot be dodged", () => {
+    it("admin cannot reassign a report's author to publish their own work", async () => {
+      const { data: own } = await service
+        .from("reports")
+        .insert({ request_id: IDS.reqLand, author_id: IDS.admin, status: "submitted", verdict: "clear", sections: {} })
+        .select("id")
+        .single();
+      const { error } = await admin
+        .from("reports")
+        .update({ author_id: IDS.agent, status: "published" })
+        .eq("id", own!.id);
+      expect(error).not.toBeNull();
+      await service.from("reports").delete().eq("id", own!.id);
+    });
+
+    it("admin cannot insert a report that is already published", async () => {
+      const { error } = await admin.from("reports").insert({
+        request_id: IDS.reqLand,
+        author_id: IDS.agent,
+        status: "published",
+        verdict: "clear",
+        sections: {},
+      });
       expect(error).not.toBeNull();
     });
   });

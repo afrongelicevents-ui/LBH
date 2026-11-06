@@ -25,7 +25,7 @@ export default async function FieldJobPage({
   const { data: job } = await supabase
     .from("jobs")
     .select(
-      "id, status, checklist, visit, request_id, service_requests(id, type, title, details, profiles:client_id(full_name))"
+      "id, status, checklist, visit, request_id, client_first_name, service_requests(id, type, title, details)"
     )
     .eq("id", id)
     .maybeSingle();
@@ -36,7 +36,6 @@ export default async function FieldJobPage({
     type: string;
     title: string;
     details: Record<string, unknown>;
-    profiles: { full_name: string } | null;
   };
 
   const [{ data: documents }, { data: media }, { data: extraCosts }, { data: report }] =
@@ -68,7 +67,7 @@ export default async function FieldJobPage({
   );
 
   const details = (req.details ?? {}) as Record<string, unknown>;
-  const firstName = req.profiles?.full_name?.split(" ")[0] ?? "";
+  const firstName = job.client_first_name;
 
   return (
     <div className="mx-auto max-w-2xl space-y-5">

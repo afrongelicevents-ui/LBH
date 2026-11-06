@@ -233,7 +233,7 @@ export async function approveSupplierQuoteAction(id: string): Promise<ActionResu
 // ---------- payments ----------
 /** Start an online payment (Paynow, or the simulated test checkout). */
 export async function startPayment(paymentId: string, locale: string) {
-  const { supabase, user, profile } = await requireClient();
+  const { supabase, profile } = await requireClient();
 
   // RLS limits this to the client's own payments.
   const { data: payment } = await supabase
@@ -253,15 +253,14 @@ export async function startPayment(paymentId: string, locale: string) {
   });
 
   if (!result.simulated) {
-    // store poll URL server-side (service role not needed: admin policy only…
-    // payments update is admin-only by RLS, so use the admin client)
+    // Payment updates are admin-only under RLS; ownership was verified above
+    // by reading the row through the client's own RLS-bound session.
     const { createAdminClient } = await import("@/lib/supabase/admin");
     const admin = createAdminClient();
     await admin
       .from("payments")
       .update({ paynow_poll_url: result.pollUrl, method: "paynow" })
-      .eq("id", payment.id)
-      .eq("created_by", user.id);
+      .eq("id", payment.id);
     redirect(result.redirectUrl);
   }
   redirect(`/${locale}/pay/simulate?ref=${encodeURIComponent(payment.merchant_reference)}`);

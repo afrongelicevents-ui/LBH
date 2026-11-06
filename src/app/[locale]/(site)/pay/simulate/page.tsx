@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth/guard";
-import { paynowConfigured } from "@/lib/paynow";
+import { simulatedPaymentsEnabled } from "@/lib/paynow";
 import { formatCents } from "@/lib/money";
 import SimulateButtons from "@/components/portal/SimulateButtons";
 
@@ -19,7 +19,7 @@ export default async function SimulatePayPage({
   const { locale } = await params;
   const { ref } = await searchParams;
   setRequestLocale(locale);
-  if (paynowConfigured() || !ref) notFound();
+  if (!simulatedPaymentsEnabled() || !ref) notFound();
 
   const { supabase } = await requireRole(locale, ["client"]);
   const t = await getTranslations("pay");

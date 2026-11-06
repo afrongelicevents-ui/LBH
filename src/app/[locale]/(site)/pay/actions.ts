@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { getUserProfile } from "@/lib/supabase/server";
-import { paynowConfigured } from "@/lib/paynow";
+import { simulatedPaymentsEnabled } from "@/lib/paynow";
 import {
   confirmPaymentByReference,
   failPaymentByReference,
@@ -17,7 +17,7 @@ export async function simulatePaymentOutcome(
   outcome: "paid" | "failed",
   locale: string
 ) {
-  if (paynowConfigured()) throw new Error("simulation disabled in live mode");
+  if (!simulatedPaymentsEnabled()) throw new Error("simulation disabled");
 
   const { supabase, user, profile } = await getUserProfile();
   if (!user || !profile || profile.role !== "client") {

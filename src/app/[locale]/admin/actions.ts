@@ -27,7 +27,7 @@ export async function setBookingStatus(
       .update({ status })
       .eq("id", bookingId);
     if (error) return { ok: false, error: "db" };
-    await supabase.rpc("log_audit", {
+    await supabase.rpc("admin_log_audit", {
       p_action: `booking.${status}`,
       p_entity: "call_booking",
       p_entity_id: bookingId,
@@ -131,7 +131,7 @@ export async function saveQuote(
       }
     }
 
-    await supabase.rpc("log_audit", {
+    await supabase.rpc("admin_log_audit", {
       p_action: sending ? "quote.sent" : "quote.drafted",
       p_entity: "quote",
       p_entity_id: quote.id,
@@ -199,7 +199,7 @@ export async function assignStaff(
       .eq("id", requestId)
       .eq("status", "deposit_paid");
 
-    await supabase.rpc("log_audit", {
+    await supabase.rpc("admin_log_audit", {
       p_action: "job.assigned",
       p_entity: "job",
       p_entity_id: job.id,
@@ -250,7 +250,7 @@ export async function forwardExtraCost(ecrId: string): Promise<ActionResult> {
       });
     }
 
-    await supabase.rpc("log_audit", {
+    await supabase.rpc("admin_log_audit", {
       p_action: "extra_cost.forwarded",
       p_entity: "extra_cost_request",
       p_entity_id: ecrId,
@@ -324,7 +324,7 @@ export async function requestReportChanges(
       .eq("id", reportId)
       .eq("status", "submitted");
     if (error) return { ok: false, error: "db" };
-    await supabase.rpc("log_audit", {
+    await supabase.rpc("admin_log_audit", {
       p_action: "report.changes_requested",
       p_entity: "report",
       p_entity_id: reportId,
@@ -426,7 +426,7 @@ export async function publishReport(reportId: string): Promise<ActionResult> {
       });
     }
 
-    await supabase.rpc("log_audit", {
+    await supabase.rpc("admin_log_audit", {
       p_action: "report.published",
       p_entity: "report",
       p_entity_id: reportId,
@@ -477,7 +477,7 @@ export async function setRequestStatus(
       .update({ status })
       .eq("id", requestId);
     if (error) return { ok: false, error: "db" };
-    await supabase.rpc("log_audit", {
+    await supabase.rpc("admin_log_audit", {
       p_action: `request.${status}`,
       p_entity: "service_request",
       p_entity_id: requestId,
@@ -542,7 +542,7 @@ export async function saveSettings(
       })
       .eq("id", 1);
     if (error) return { ok: false, error: "db" };
-    await supabase.rpc("log_audit", {
+    await supabase.rpc("admin_log_audit", {
       p_action: "settings.updated",
       p_entity: "settings",
       p_entity_id: "1",
@@ -592,7 +592,7 @@ export async function inviteStaff(
       text: `Hi ${d.full_name},\n\nAn LBH ${d.role} account was created for you. Set your password here:\n${link?.properties?.action_link ?? site.url}\n\nYou will be asked to set up two-factor authentication on first login.\n\nLBH`,
     });
 
-    await supabase.rpc("log_audit", {
+    await supabase.rpc("admin_log_audit", {
       p_action: "staff.invited",
       p_entity: "profile",
       p_entity_id: created.user.id,

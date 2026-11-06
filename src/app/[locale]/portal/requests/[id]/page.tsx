@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { requireRole } from "@/lib/auth/guard";
 import { formatCents, depositSplit } from "@/lib/money";
 import { signedUrl } from "@/lib/uploads";
+import { paynowConfigured, simulatedPaymentsEnabled } from "@/lib/paynow";
 import type { RequestStatus } from "@/lib/status";
 import StatusTimeline from "@/components/portal/StatusTimeline";
 import {
@@ -65,6 +66,7 @@ export default async function RequestDetailPage({
     supabase.from("invoices").select("*").eq("request_id", id).order("issued_at"),
   ]);
 
+  const onlinePayments = paynowConfigured() || simulatedPaymentsEnabled();
   const details = (req.details ?? {}) as Record<string, unknown>;
   const items = Array.isArray(details.items)
     ? (details.items as { item: string; quantity: string; notes?: string }[])
@@ -260,7 +262,7 @@ export default async function RequestDetailPage({
                 <p className="mt-1 text-xs text-muted">{p.merchant_reference}</p>
                 {["pending", "failed"].includes(p.status) && (
                   <div className="mt-3 flex flex-wrap items-start gap-3">
-                    <PayButton paymentId={p.id} />
+                    {onlinePayments && <PayButton paymentId={p.id} />}
                     <ManualProofForm paymentId={p.id} />
                   </div>
                 )}
