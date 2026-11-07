@@ -3,7 +3,8 @@ import type { EmailOtpType } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import { safeNextPath } from "@/lib/signup";
 
-const TYPES: EmailOtpType[] = ["email", "signup", "recovery", "invite", "email_change"];
+// Only sign-up confirmation links start a session here.
+const TYPES: EmailOtpType[] = ["email", "signup"];
 
 /**
  * Email confirmation link → verify the one-time token, start the session,
@@ -29,7 +30,8 @@ export async function GET(request: NextRequest) {
   }
 
   const prefix = locale === "en" ? "" : `/${locale}`;
-  const target = new URL(ok ? next : `${prefix}/login?confirm=failed`, url.origin);
+  let target = new URL(ok ? next : `${prefix}/login?confirm=failed`, url.origin);
+  if (target.origin !== url.origin) target = new URL(`${prefix}/portal`, url.origin);
   if (ok) target.searchParams.set("welcome", "1");
   return NextResponse.redirect(target);
 }

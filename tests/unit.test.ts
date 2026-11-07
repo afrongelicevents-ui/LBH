@@ -143,6 +143,9 @@ describe("sign-up", () => {
     expect(safeNextPath("https://evil.example")).toBe("/portal");
     expect(safeNextPath("//evil.example")).toBe("/portal");
     expect(safeNextPath("/\\evil.example")).toBe("/portal");
+    expect(safeNextPath("/\t/evil.example/x")).toBe("/portal");
+    expect(safeNextPath("/\n/evil.example")).toBe("/portal");
+    expect(safeNextPath("/sn/portal?welcome=1")).toBe("/sn/portal?welcome=1");
   });
 
   it("requires matching passwords of 10+ characters and accepted terms", () => {

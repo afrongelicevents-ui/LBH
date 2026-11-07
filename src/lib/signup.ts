@@ -28,5 +28,15 @@ export function safeNextPath(next: string | null | undefined, fallback = "/porta
   if (!next || !next.startsWith("/") || next.startsWith("//") || next.includes("\\")) {
     return fallback;
   }
-  return next;
+  // Control characters/whitespace are stripped by URL parsers ("/\t/evil.com"
+  // would become "//evil.com"): refuse them, then check where it really resolves.
+  if (/[\u0000-\u0020\u007f]/.test(next)) return fallback;
+  try {
+    const base = "https://lbh.invalid";
+    const u = new URL(next, base);
+    if (u.origin !== base) return fallback;
+    return u.pathname + u.search + u.hash;
+  } catch {
+    return fallback;
+  }
 }

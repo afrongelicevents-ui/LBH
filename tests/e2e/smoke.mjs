@@ -67,7 +67,7 @@ async function step(name, fn) {
     console.log(`  ✓ ${name}`);
   } catch (e) {
     failures.push(name);
-    console.log(`  ✗ ${name}\n      ${e instanceof Error ? e.message.split("\n")[0] : e}`);
+    console.log(`  ✗ ${name}\n      ${e instanceof Error ? e.message.split("\n").slice(0, process.env.E2E_VERBOSE ? 12 : 1).join("\n      ") : e}`);
   }
 }
 function assert(cond, msg) {
