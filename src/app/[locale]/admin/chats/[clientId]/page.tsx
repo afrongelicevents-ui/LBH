@@ -34,7 +34,7 @@ export default async function AdminChatThreadPage({
         <Link href="/admin/chats" className="text-xs font-semibold text-muted hover:text-forest">
           ← {t("title")}
         </Link>
-        <h1 className="headline mt-1 text-2xl text-forest">
+        <h1 className="section-title mt-1 text-2xl">
           {client.full_name || client.email}
         </h1>
       </div>

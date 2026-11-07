@@ -20,11 +20,11 @@ export default async function PortalLayout({
       profile={profile}
       areaKey="client"
       nav={[
-        { href: "/portal", label: t("dashboard") },
-        { href: "/portal/build", label: t("myBuild") },
-        { href: "/portal/requests/new-land", label: t("newLand") },
-        { href: "/portal/requests/new-materials", label: t("newMaterials") },
-        { href: "/portal/chat", label: t("chat") },
+        { href: "/portal", label: t("dashboard"), icon: "home" },
+        { href: "/portal/build", label: t("myBuild"), icon: "hammer" },
+        { href: "/portal/requests/new-land", label: t("newLand"), icon: "pin" },
+        { href: "/portal/requests/new-materials", label: t("newMaterials"), icon: "truck" },
+        { href: "/portal/chat", label: t("chat"), icon: "chat" },
       ]}
     >
       {children}

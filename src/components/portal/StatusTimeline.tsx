@@ -31,7 +31,7 @@ export default function StatusTimeline({ status }: { status: RequestStatus }) {
             <span
               key={step}
               className={`h-1.5 flex-1 rounded-full ${
-                current > i || status === "done" ? "bg-forest" : current === i ? "bg-accent" : "bg-line"
+                current > i || status === "done" ? "bg-forest" : current === i ? "bg-prog-line" : "bg-line"
               }`}
             />
           ))}
@@ -48,7 +48,7 @@ export default function StatusTimeline({ status }: { status: RequestStatus }) {
                 done
                   ? "bg-forest text-white"
                   : active
-                    ? "bg-accent text-white"
+                    ? "bg-prog-soft text-prog"
                     : "bg-line/60 text-muted"
               }`}
             >

@@ -14,7 +14,7 @@ export default async function ClientChatPage({
 
   return (
     <div className="mx-auto max-w-2xl">
-      <h1 className="headline mb-4 text-2xl text-forest">{t("title")}</h1>
+      <h1 className="section-title mb-4 text-2xl">{t("title")}</h1>
       <ChatPanel clientId={user.id} meId={user.id} />
     </div>
   );

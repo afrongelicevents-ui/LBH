@@ -24,7 +24,7 @@ export default async function MyBuildsPage({
 
   return (
     <div className="mx-auto max-w-2xl space-y-4">
-      <h1 className="headline text-2xl text-forest">{t("myBuild")}</h1>
+      <h1 className="section-title text-2xl">{t("myBuild")}</h1>
       {!builds?.length ? (
         <p className="rounded-xl bg-info p-4 text-sm text-ink">{t("noBuildYet")}</p>
       ) : (

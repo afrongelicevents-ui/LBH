@@ -8,6 +8,7 @@ import { confirmPaymentByReference } from "@/lib/payments";
 import { parseDollarsToCents } from "@/lib/money";
 import { sendEmail } from "@/lib/email";
 import { site } from "@/config/site";
+import { parseUploadRefs, storeQuoteFile, uploadErrorCode } from "@/lib/uploads";
 
 export type ActionResult = { ok: true; id?: string } | { ok: false; error: string };
 
@@ -172,11 +173,15 @@ export async function sendDraftQuote(quoteId: string): Promise<ActionResult> {
 export async function assignStaff(
   requestId: string,
   staffId: string,
-  jobType: "site_visit" | "title_check" = "site_visit"
+  jobType: "site_visit" | "title_check" = "site_visit",
+  dueDate: string = ""
 ): Promise<ActionResult> {
   try {
     const { supabase, user } = await requireAdminAction();
     if (!["site_visit", "title_check"].includes(jobType)) return { ok: false, error: "invalid" };
+    if (dueDate && (!/^\d{4}-\d{2}-\d{2}$/.test(dueDate) || Number.isNaN(Date.parse(dueDate)))) {
+      return { ok: false, error: "invalid" };
+    }
     const { data: staff } = await supabase
       .from("profiles")
       .select("id, role")
@@ -190,6 +195,7 @@ export async function assignStaff(
         request_id: requestId,
         assigned_to: staffId,
         job_type: jobType,
+        due_date: dueDate || null,
         created_by: user.id,
       })
       .select("id")
@@ -206,7 +212,7 @@ export async function assignStaff(
       p_action: "job.assigned",
       p_entity: "job",
       p_entity_id: job.id,
-      p_data: { request_id: requestId, assigned_to: staffId, job_type: jobType },
+      p_data: { request_id: requestId, assigned_to: staffId, job_type: jobType, due_date: dueDate || null },
     });
     revalidateAdmin();
     return { ok: true, id: job.id };
@@ -295,22 +301,27 @@ export async function addSupplierQuote(
   formData: FormData
 ): Promise<ActionResult> {
   try {
-    const { supabase } = await requireAdminAction();
+    const { supabase, user } = await requireAdminAction();
     const parsed = supplierSchema.safeParse(Object.fromEntries(formData.entries()));
     if (!parsed.success) return { ok: false, error: "invalid" };
     const cents = parseDollarsToCents(parsed.data.amount);
     if (!cents) return { ok: false, error: "invalid" };
+    // Optional: photo/PDF of the supplier's own quote
+    const [ref] = parseUploadRefs(formData.get("uploads_json"));
+    const filePath = ref ? await storeQuoteFile(user.id, ref, parsed.data.request_id) : null;
     const { error } = await supabase.from("supplier_quotes").insert({
       request_id: parsed.data.request_id,
       supplier_name: parsed.data.supplier_name,
       amount_cents: cents,
       details: parsed.data.details,
+      file_path: filePath,
     });
     if (error) return { ok: false, error: "db" };
     revalidateAdmin();
     return { ok: true };
-  } catch {
-    return { ok: false, error: "auth" };
+  } catch (e) {
+    const code = uploadErrorCode(e);
+    return { ok: false, error: code === "error" ? "auth" : code };
   }
 }
 

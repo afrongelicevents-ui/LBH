@@ -38,6 +38,8 @@ export interface Profile {
   whatsapp: string | null;
   country: string | null;
   locale: string;
+  /** field staff only: which portal they see */
+  staff_kind: "field_agent" | "lawyer" | null;
 }
 
 /** Authenticated user + profile, or nulls. Uses getUser() (server-verified). */
@@ -50,7 +52,7 @@ export async function getUserProfile() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("id, role, full_name, email, whatsapp, country, locale")
+    .select("id, role, full_name, email, whatsapp, country, locale, staff_kind")
     .eq("id", user.id)
     .single();
 

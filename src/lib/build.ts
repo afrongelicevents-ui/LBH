@@ -28,6 +28,9 @@ export interface StageView {
     items: string;
     status: string;
     approved_by_name: string | null;
+    /** supplier's own quote (photo/PDF), signed short-lived URL */
+    file_url: string | null;
+    file_is_pdf: boolean;
   }[];
   payment: { id: string; status: string; amount_cents: number; merchant_reference: string } | null;
   purchases: { id: string; supplier_name: string; amount_cents: number; purchased_by: string; created_at: string; note: string }[];
@@ -72,7 +75,7 @@ export async function loadBuild(
       opts.withPrices
         ? supabase
             .from("stage_quotes")
-            .select("id, stage_id, supplier_name, amount_cents, items, status, approved_by_name")
+            .select("id, stage_id, supplier_name, amount_cents, items, status, approved_by_name, file_path")
             .eq("request_id", requestId)
             .order("amount_cents")
         : Promise.resolve({ data: [] as never[] }),
@@ -109,6 +112,17 @@ export async function loadBuild(
         .order("uploaded_at"),
     ]);
 
+  const quotes = await Promise.all(
+    ((quotesRes.data ?? []) as (Omit<StageView["quotes"][number], "file_url" | "file_is_pdf"> & {
+      stage_id: string;
+      file_path: string | null;
+    })[]).map(async ({ file_path, ...q }) => ({
+      ...q,
+      file_url: file_path ? await signedUrl("documents", file_path, 900) : null,
+      file_is_pdf: Boolean(file_path?.endsWith(".pdf")),
+    }))
+  );
+
   const signed = await Promise.all(
     (media ?? []).map(async (m) => ({ ...m, url: await signedUrl("media", m.storage_path, 900) }))
   );
@@ -122,8 +136,7 @@ export async function loadBuild(
     stages: (stages ?? []).map((s) => ({
       ...s,
       status: s.status as StageStatus,
-      quotes: ((quotesRes.data ?? []) as StageView["quotes"][number][] & { stage_id: string }[])
-        .filter((q) => (q as unknown as { stage_id: string }).stage_id === s.id),
+      quotes: quotes.filter((q) => q.stage_id === s.id).map(({ stage_id: _sid, ...q }) => q),
       payment:
         ((paymentsRes.data ?? []) as (StageView["payment"] & { stage_id: string })[]).find(
           (p) => p && p.stage_id === s.id

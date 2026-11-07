@@ -11,7 +11,7 @@ export default async function NewLandRequestPage({
   const t = await getTranslations("portal.forms");
   return (
     <div className="mx-auto max-w-2xl">
-      <h1 className="headline mb-2 text-2xl text-forest">{t("landTitle")}</h1>
+      <h1 className="section-title mb-2 text-2xl">{t("landTitle")}</h1>
       <p className="mb-6 text-sm text-muted">{t("landIntro")}</p>
       <LandRequestForm />
     </div>

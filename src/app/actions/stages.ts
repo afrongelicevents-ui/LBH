@@ -13,6 +13,7 @@ import {
   discardIncoming,
   parseUploadRefs,
   storePrivate,
+  storeQuoteFile,
   takeIncoming,
   uploadErrorCode,
   type UploadedRef,
@@ -460,23 +461,67 @@ export async function addStageQuote(
   formData: FormData
 ): Promise<StageResult> {
   try {
-    const { supabase } = await requireAdmin();
+    const { supabase, user } = await requireAdmin();
     const parsed = quoteSchema.safeParse(Object.fromEntries(formData.entries()));
     if (!parsed.success) return { ok: false, error: "invalid" };
     const cents = parseDollarsToCents(parsed.data.amount);
     if (!cents) return { ok: false, error: "invalid" };
+    const { data: stage } = await supabase
+      .from("build_stages")
+      .select("request_id, status")
+      .eq("id", stageId)
+      .single();
+    if (!stage) return { ok: false, error: "invalid" };
+    if (stage.status !== "quoting") return { ok: false, error: "stageLocked" };
+    // Optional: photo/PDF of the supplier's own quote
+    const [ref] = parseUploadRefs(formData.get("uploads_json"));
+    const filePath = ref ? await storeQuoteFile(user.id, ref, stage.request_id) : null;
     const { error } = await supabase.from("stage_quotes").insert({
       stage_id: stageId,
       request_id: "00000000-0000-0000-0000-000000000000", // pinned by trigger
       supplier_name: parsed.data.supplier_name,
       amount_cents: cents,
       items: parsed.data.items,
+      file_path: filePath,
     });
     if (error) return { ok: false, error: dbErrorCode(error.message) };
     revalidateAll();
     return { ok: true };
-  } catch {
-    return { ok: false, error: "auth" };
+  } catch (e) {
+    const code = uploadErrorCode(e);
+    return { ok: false, error: code === "error" ? dbErrorCode((e as Error)?.message) : code };
+  }
+}
+
+/** Admin: attach (or replace) the supplier's quote file on an existing quote. */
+export async function attachQuoteFile(
+  kind: "stage" | "supplier",
+  quoteId: string,
+  _prev: StageResult | null,
+  formData: FormData
+): Promise<StageResult> {
+  try {
+    const { supabase, user } = await requireAdmin();
+    if (!UUID_RE.test(quoteId) || !["stage", "supplier"].includes(kind)) return { ok: false, error: "invalid" };
+    const table = kind === "stage" ? "stage_quotes" : "supplier_quotes";
+    const { data: quote } = await supabase.from(table).select("id, request_id").eq("id", quoteId).single();
+    if (!quote) return { ok: false, error: "invalid" };
+    const [ref] = parseUploadRefs(formData.get("uploads_json"));
+    if (!ref) return { ok: false, error: "invalid" };
+    const filePath = await storeQuoteFile(user.id, ref, quote.request_id);
+    const { error } = await supabase.from(table).update({ file_path: filePath }).eq("id", quoteId);
+    if (error) return { ok: false, error: "db" };
+    await supabase.rpc("admin_log_audit", {
+      p_action: "quote.file_attached",
+      p_entity: table,
+      p_entity_id: quoteId,
+      p_data: {},
+    });
+    revalidateAll();
+    return { ok: true };
+  } catch (e) {
+    const code = uploadErrorCode(e);
+    return { ok: false, error: code === "error" ? dbErrorCode((e as Error)?.message) : code };
   }
 }
 

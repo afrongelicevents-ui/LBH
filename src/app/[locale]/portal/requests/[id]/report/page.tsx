@@ -72,7 +72,7 @@ export default async function ReportPage({
           ← {t("back")}
         </Link>
         <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
-          <h1 className="headline text-2xl text-forest">
+          <h1 className="section-title text-2xl">
             {t("title")} — {req?.title}
           </h1>
           <a

@@ -16,7 +16,7 @@ export default async function AdminSettingsPage({
 
   return (
     <div className="space-y-6">
-      <h1 className="headline text-2xl text-forest">{t("title")}</h1>
+      <h1 className="section-title text-2xl">{t("title")}</h1>
       {settings && (
         <SettingsForm
           settings={{

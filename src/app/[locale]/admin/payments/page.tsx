@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth/guard";
+import { toneFor } from "@/lib/tones";
 import { formatCents } from "@/lib/money";
 import { ConfirmPaymentButton } from "@/components/admin/AdminActions";
 
@@ -22,7 +23,7 @@ export default async function AdminPaymentsPage({
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="headline text-2xl text-forest">{t("title")}</h1>
+        <h1 className="section-title text-2xl">{t("title")}</h1>
         {/* API download, not a page navigation */}
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a href="/api/admin/payments-csv" className="btn btn-outline-green min-h-10 px-4 text-xs">
@@ -54,17 +55,7 @@ export default async function AdminPaymentsPage({
                 </td>
                 <td className="px-4 py-2.5 text-muted">{p.method}</td>
                 <td className="px-4 py-2.5">
-                  <span
-                    className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${
-                      p.status === "confirmed"
-                        ? "bg-forest text-white"
-                        : p.status === "submitted"
-                          ? "bg-accent text-white"
-                          : "bg-line text-muted"
-                    }`}
-                  >
-                    {p.status}
-                  </span>
+                  <span className={`badge badge-dot badge-${toneFor(p.status)}`}>{p.status}</span>
                 </td>
                 <td className="px-4 py-2.5 text-xs text-muted">{p.merchant_reference}</td>
                 <td className="px-4 py-2.5">

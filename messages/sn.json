@@ -332,11 +332,15 @@
   "portal": {
     "shell": {
       "area": {
-        "client": "Portal yemutengi",
-        "field": "Timu yemumunda",
-        "admin": "Admin"
+        "client": "Portal yeMutengi",
+        "field": "Portal yeVashandi veMunda",
+        "admin": "Portal yeAdmin",
+        "lawyer": "Portal yeGweta"
       },
-      "signOut": "Buda"
+      "signOut": "Buda",
+      "menu": "Vhura menyu",
+      "closeMenu": "Vhara menyu",
+      "website": "Webhusaiti yeLBH"
     },
     "nav": {
       "dashboard": "Zvikumbiro zvangu",
@@ -370,7 +374,12 @@
       "welcomeTitle": "Mauya kuLBH, {name}! Email yako yasimbiswa.",
       "welcomeText": "Tanga nekuronga runhare rwemahara, kana titumire chikumbiro chekuongorora ivhu kana zvekuvaka.",
       "nextStepTitle": "Unoda kuitei?",
-      "bookCall": "Ronga runhare rwemahara"
+      "bookCall": "Ronga runhare rwemahara",
+      "tagline": "Ivhu rako, zvekuvaka nekuvaka — pamwe chete.",
+      "tileRequests": "Zvikumbiro zvangu",
+      "tileWaiting": "Zvakakumirira",
+      "tileInProgress": "Zvichiitwa",
+      "tileDone": "Zvapera"
     },
     "status": {
       "call_booked": "Runhare rwabhukwa",
@@ -482,7 +491,9 @@
       "reportReady": "Gwaro rako ragadzirira",
       "readReport": "Verenga gwaro",
       "invoiceLink": "Invoice #{number} (PDF)",
-      "actionFailedUpload": "Kuisa kwakundikana — tarisa network woedza zvakare."
+      "actionFailedUpload": "Kuisa kwakundikana — tarisa network woedza zvakare.",
+      "supplierNotChosen": "Haina kusarudzwa",
+      "viewSupplierQuote": "Ona quote yemutengesi"
     },
     "chat": {
       "title": "Taura neLBH",
@@ -683,6 +694,38 @@
       "findings": "Zvakawanikwa",
       "verdict": "Mhedziso",
       "save": "Chengeta rondedzero"
+    },
+    "home": {
+      "greeting": "Mauya zvakare,",
+      "taglineField": "Vaka • Tungamira • Pedza",
+      "taglineLawyer": "Kuongorora. Kutevedza mutemo. Kuvimbika.",
+      "tileAll": "Mabasa ese",
+      "tileDone": "Zvapera",
+      "search": "Tsvaga nzvimbo, stand kana basa…",
+      "searchLawyer": "Tsvaga pfuma, stand kana mutengi…",
+      "filterAll": "Mabasa ese",
+      "viewDetails": "Ona zvizere",
+      "noMatch": "Hapana basa rinoenderana.",
+      "noPhoto": "Hapana mufananidzo",
+      "overdue": "Yapfuura nguva",
+      "actionReview": "Ongorora faira",
+      "actionContinue": "Enderera",
+      "actionView": "Ona",
+      "due": "Pakupedzisira: {date}",
+      "stand": "Stand",
+      "helpTitle": "Unoda rubatsiro?",
+      "helpText": "Taura neadmin yeLBH",
+      "helpCta": "Wana rubatsiro",
+      "helpWhatsapp": "Mhoro admin yeLBH, ndinoda rubatsiro nebasa riri muportal.",
+      "lawyerFiles": "Mafaira ekuongorora",
+      "lawyerDocsPending": "Magwaro akamirira",
+      "lawyerChecksDone": "Zvaongororwa",
+      "lawyerAwaitingClient": "Kumirira mutengi",
+      "legalTasks": "Mabasa ako ezvemutemo",
+      "recentActivity": "Zvaitika munguva pfupi",
+      "noActivity": "Hapana parizvino.",
+      "activityJob": "{title}: {status}",
+      "activityDoc": "Gwaro idzva rakaiswa pa{title}"
     }
   },
   "admin": {
@@ -710,7 +753,12 @@
         "extras": "Zvikumbiro zvemitengo yekuwedzera",
         "chats": "Hurukuro dzisina kuverengwa",
         "stages": "Nhanho dzekuvaka dzakamirira LBH"
-      }
+      },
+      "tagline": "Zvese zvakamirira LBH, pamwe chete.",
+      "tileRequests": "Zvikumbiro zvitsva",
+      "tileReports": "Mishumo yekuongorora",
+      "tileMoney": "Mubhadharo nezvimwe",
+      "tileStages": "Madanho ekuvaka"
     },
     "common": {
       "error": {
@@ -719,7 +767,10 @@
         "auth": "Hauna mvumo (2FA yakagadzwa here?).",
         "exists": "Email iyi yatova neaccount.",
         "self": "Ndiwe wakanyora gwaro iri — imwe admin inofanira kuriburitsa.",
-        "closed": "Hazvichavhurwi."
+        "closed": "Hazvichavhurwi.",
+        "toobig": "Faira rakakura zvakanyanya.",
+        "filetype": "Shandisa mufananidzo (JPG/PNG) kana PDF.",
+        "error": "Pane chakanganisika — edza zvakare."
       }
     },
     "bookings": {
@@ -734,7 +785,14 @@
       "client": "Mutengi",
       "type": "Rudzi",
       "status": "Mamiriro",
-      "created": "Zvakagadzirwa"
+      "created": "Zvakagadzirwa",
+      "viewDetails": "Ona zvizere",
+      "search": "Tsvaga chikumbiro, mutengi kana rudzi…",
+      "empty": "Hapana chikumbiro chinoenderana.",
+      "filterAll": "Zvese",
+      "filterNew": "Zvitsva",
+      "filterOpen": "Zvichiitwa",
+      "filterDone": "Zvapera"
     },
     "clients": {
       "title": "Vanhu",
@@ -806,7 +864,14 @@
       "jobTypes": {
         "site_visit": "Kushanyira stand",
         "title_check": "Kuongorora gwaro (gweta)"
-      }
+      },
+      "dueDate": "Zuva rekupedzisa",
+      "dueOn": "kupedza {date}",
+      "supplierChosen": "Yasarudzwa",
+      "supplierNotChosen": "Haina kusarudzwa",
+      "supplierPending": "Yakamirira",
+      "viewSupplierQuote": "Ona quote yemutengesi",
+      "supplierQuoteFile": "Quote yemutengesi (mufananidzo kana PDF)"
     },
     "payments": {
       "title": "Kubhadhara",
@@ -986,7 +1051,19 @@
       "building": "Vavaki vari kushanda",
       "inspected": "Yakamirira mvumo yako",
       "approved": "Yabvumirwa"
-    }
+    },
+    "quoteChosen": "Yasarudzwa",
+    "quoteNotChosen": "Haina kusarudzwa",
+    "quotePending": "Yakamirira",
+    "viewQuoteFile": "Ona quote yemutengesi",
+    "quoteFileOf": "Quote kubva ku{supplier}",
+    "supplierQuotesN": "Ma quote evatengesi ({count})",
+    "viewDetails": "Ona zvizere",
+    "quoteFile": "Quote yemutengesi (mufananidzo kana PDF)",
+    "submitQuote": "Tumira quote",
+    "attachQuoteFile": "Isa quote yemutengesi",
+    "replaceQuoteFile": "Chinja faira re quote",
+    "attach": "Isa"
   },
   "financeTracker": {
     "title": "Build Finance Tracker",

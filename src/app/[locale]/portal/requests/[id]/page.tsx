@@ -7,6 +7,8 @@ import { signedUrl } from "@/lib/uploads";
 import { paynowConfigured, simulatedPaymentsEnabled } from "@/lib/paynow";
 import type { RequestStatus } from "@/lib/status";
 import StatusTimeline from "@/components/portal/StatusTimeline";
+import { StatusBadge } from "@/components/ui/Portal";
+import { toneFor } from "@/lib/tones";
 import {
   AcceptQuoteButton,
   ApprovalButtons,
@@ -86,13 +88,22 @@ export default async function RequestDetailPage({
     }))
   );
 
+  const supplierFiles = new Map(
+    await Promise.all(
+      (supplierQuotes ?? [])
+        .filter((sq) => sq.file_path)
+        .map(async (sq) => [sq.id, await signedUrl("documents", sq.file_path as string)] as const)
+    )
+  );
+  const supplierDecided = (supplierQuotes ?? []).some((x) => x.status === "approved");
+
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <div>
         <Link href="/portal" className="text-xs font-semibold text-muted hover:text-forest">
           ← {t("back")}
         </Link>
-        <h1 className="headline mt-1 text-2xl text-forest">{req.title}</h1>
+        <h1 className="section-title mt-1 text-2xl">{req.title}</h1>
         <div className="mt-3">
           <StatusTimeline status={req.status as RequestStatus} />
         </div>
@@ -246,17 +257,7 @@ export default async function RequestDetailPage({
                   <span className="font-bold text-ink">
                     {t(`paymentKind.${p.kind}` as never)} · {formatCents(p.amount_cents)}
                   </span>
-                  <span
-                    className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${
-                      p.status === "confirmed"
-                        ? "bg-forest text-white"
-                        : p.status === "submitted"
-                          ? "bg-accent text-white"
-                          : p.status === "failed"
-                            ? "bg-red-100 text-red-800"
-                            : "bg-line text-muted"
-                    }`}
-                  >
+                  <span className={`badge badge-dot badge-${p.status === "submitted" ? "prog" : toneFor(p.status)}`}>
                     {t(`paymentStatus.${p.status}` as never)}
                   </span>
                 </div>
@@ -341,25 +342,31 @@ export default async function RequestDetailPage({
               <li
                 key={sq.id}
                 className={`flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4 ${
-                  sq.status === "approved" ? "border-forest bg-forest/5" : "border-line"
+                  sq.status === "approved" ? "border-ok-line bg-ok-soft/40" : "border-line"
                 }`}
               >
                 <div>
                   <p className="text-sm font-bold text-ink">{sq.supplier_name}</p>
                   <p className="text-xs text-muted">{sq.details}</p>
+                  {supplierFiles.get(sq.id) && (
+                    <a
+                      href={supplierFiles.get(sq.id) ?? "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-1 inline-block text-xs font-bold text-forest underline underline-offset-2"
+                    >
+                      {t("viewSupplierQuote")}
+                    </a>
+                  )}
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-sm font-bold text-forest">
+                  <span className="text-sm font-bold text-ok">
                     {formatCents(sq.amount_cents)}
                   </span>
-                  {sq.status === "pending" &&
-                    !(supplierQuotes ?? []).some((x) => x.status === "approved") && (
-                      <SupplierQuoteApprove id={sq.id} />
-                    )}
-                  {sq.status === "approved" && (
-                    <span className="rounded-full bg-forest px-2.5 py-0.5 text-[11px] font-bold text-white">
-                      {t("supplierApproved")}
-                    </span>
+                  {sq.status === "pending" && !supplierDecided && <SupplierQuoteApprove id={sq.id} />}
+                  {sq.status === "approved" && <StatusBadge tone="ok">{t("supplierApproved")}</StatusBadge>}
+                  {(sq.status === "rejected" || (sq.status === "pending" && supplierDecided)) && (
+                    <StatusBadge tone="grey">{t("supplierNotChosen")}</StatusBadge>
                   )}
                 </div>
               </li>

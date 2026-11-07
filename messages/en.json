@@ -331,11 +331,15 @@
   "portal": {
     "shell": {
       "area": {
-        "client": "Client portal",
-        "field": "Field team",
-        "admin": "Admin"
+        "client": "Client Portal",
+        "field": "Field Portal",
+        "admin": "Admin Portal",
+        "lawyer": "Lawyer Portal"
       },
-      "signOut": "Sign out"
+      "signOut": "Sign out",
+      "menu": "Open menu",
+      "closeMenu": "Close menu",
+      "website": "LBH website"
     },
     "nav": {
       "dashboard": "My requests",
@@ -369,7 +373,12 @@
       "welcomeTitle": "Welcome to LBH, {name}! Your email is confirmed.",
       "welcomeText": "Start by booking a free call, or send us a request for land verification or materials.",
       "nextStepTitle": "What would you like to do?",
-      "bookCall": "Book a free call"
+      "bookCall": "Book a free call",
+      "tagline": "Your land, materials and build — in one place.",
+      "tileRequests": "My requests",
+      "tileWaiting": "Waiting for you",
+      "tileInProgress": "In progress",
+      "tileDone": "Done"
     },
     "status": {
       "call_booked": "Call booked",
@@ -481,7 +490,9 @@
       "reportReady": "Your report is ready",
       "readReport": "Read the report",
       "invoiceLink": "Invoice #{number} (PDF)",
-      "actionFailedUpload": "Upload failed — check your connection and try again."
+      "actionFailedUpload": "Upload failed — check your connection and try again.",
+      "supplierNotChosen": "Not chosen",
+      "viewSupplierQuote": "View supplier's quote"
     },
     "chat": {
       "title": "Chat with LBH",
@@ -682,6 +693,38 @@
       "findings": "Findings",
       "verdict": "Verdict",
       "save": "Save legal checklist"
+    },
+    "home": {
+      "greeting": "Welcome back,",
+      "taglineField": "Build • Manage • Deliver",
+      "taglineLawyer": "Due Diligence. Compliance. Trust.",
+      "tileAll": "All jobs",
+      "tileDone": "Done",
+      "search": "Search location, stand or job…",
+      "searchLawyer": "Search property, stand or client…",
+      "filterAll": "All jobs",
+      "viewDetails": "View details",
+      "noMatch": "No jobs match your search.",
+      "noPhoto": "No site photo yet",
+      "overdue": "Overdue",
+      "actionReview": "Review file",
+      "actionContinue": "Continue",
+      "actionView": "View",
+      "due": "Due: {date}",
+      "stand": "Stand",
+      "helpTitle": "Need assistance?",
+      "helpText": "Contact LBH admin",
+      "helpCta": "Get help",
+      "helpWhatsapp": "Hello LBH admin, I need help with a job in the portal.",
+      "lawyerFiles": "Files to review",
+      "lawyerDocsPending": "Documents pending",
+      "lawyerChecksDone": "Checks done",
+      "lawyerAwaitingClient": "Awaiting client",
+      "legalTasks": "Your legal tasks",
+      "recentActivity": "Recent activity",
+      "noActivity": "Nothing yet.",
+      "activityJob": "{title}: {status}",
+      "activityDoc": "New document uploaded for {title}"
     }
   },
   "admin": {
@@ -709,7 +752,12 @@
         "extras": "Extra-cost requests",
         "chats": "Unread chats",
         "stages": "Build stages waiting for LBH"
-      }
+      },
+      "tagline": "Everything waiting for LBH, in one place.",
+      "tileRequests": "New requests",
+      "tileReports": "Reports to review",
+      "tileMoney": "Payments & extras",
+      "tileStages": "Build stages"
     },
     "common": {
       "error": {
@@ -718,7 +766,10 @@
         "auth": "Not authorised (is 2FA set up?).",
         "exists": "That email already has an account.",
         "self": "You wrote this report — another admin must publish it.",
-        "closed": "No longer open."
+        "closed": "No longer open.",
+        "toobig": "File too large.",
+        "filetype": "Use a photo (JPG/PNG) or PDF.",
+        "error": "Something went wrong — try again."
       }
     },
     "bookings": {
@@ -733,7 +784,14 @@
       "client": "Client",
       "type": "Type",
       "status": "Status",
-      "created": "Created"
+      "created": "Created",
+      "viewDetails": "View details",
+      "search": "Search request, client or type…",
+      "empty": "No requests match.",
+      "filterAll": "All",
+      "filterNew": "New",
+      "filterOpen": "In progress",
+      "filterDone": "Done"
     },
     "clients": {
       "title": "People",
@@ -805,7 +863,14 @@
       "jobTypes": {
         "site_visit": "Site visit",
         "title_check": "Title check (lawyer)"
-      }
+      },
+      "dueDate": "Due date",
+      "dueOn": "due {date}",
+      "supplierChosen": "Chosen",
+      "supplierNotChosen": "Not chosen",
+      "supplierPending": "Pending",
+      "viewSupplierQuote": "View supplier's quote",
+      "supplierQuoteFile": "Supplier's quote (photo or PDF, optional)"
     },
     "payments": {
       "title": "Payments",
@@ -985,7 +1050,19 @@
       "building": "Builders working",
       "inspected": "Ready for your approval",
       "approved": "Approved"
-    }
+    },
+    "quoteChosen": "Chosen",
+    "quoteNotChosen": "Not chosen",
+    "quotePending": "Pending",
+    "viewQuoteFile": "View supplier's quote",
+    "quoteFileOf": "Quote from {supplier}",
+    "supplierQuotesN": "Supplier quotes ({count})",
+    "viewDetails": "View details",
+    "quoteFile": "Supplier's quote (photo or PDF, optional)",
+    "submitQuote": "Submit quote",
+    "attachQuoteFile": "Attach supplier's quote",
+    "replaceQuoteFile": "Replace supplier's quote file",
+    "attach": "Attach"
   },
   "financeTracker": {
     "title": "Build Finance Tracker",

@@ -19,8 +19,8 @@ export default async function FieldLayout({
     <PortalShell
       locale={locale}
       profile={profile}
-      areaKey="field"
-      nav={[{ href: "/field", label: t("myJobs") }]}
+      areaKey={profile.staff_kind === "lawyer" ? "lawyer" : "field"}
+      nav={[{ href: "/field", label: t("myJobs"), icon: "briefcase" }]}
     >
       <OutboxProvider userId={profile.id}>{children}</OutboxProvider>
     </PortalShell>

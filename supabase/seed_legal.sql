@@ -41,3 +41,11 @@ begin
      v_admin)
   on conflict (id) do nothing;
 end $$;
+
+-- The lawyer sees the Lawyer Portal; sample due dates on open jobs.
+update public.profiles set staff_kind = 'lawyer'
+  where id = '00000000-0000-4000-a000-000000000002';
+update public.jobs set due_date = current_date + 5
+  where id = '30000000-0000-4000-a000-000000000003' and due_date is null;
+update public.jobs set due_date = current_date + 3
+  where id = '30000000-0000-4000-a000-000000000001' and due_date is null;

@@ -14,6 +14,9 @@ import {
   ReportDraftForm,
 } from "@/components/field/JobForms";
 import { readLegal } from "@/lib/legal";
+import { toneFor } from "@/lib/tones";
+import { StatusBadge } from "@/components/ui/Portal";
+import { CalendarIcon } from "@/components/ui/PortalIcons";
 
 /** Field job detail — stand details + documents, NO prices (brief §6). */
 export default async function FieldJobPage({
@@ -25,15 +28,31 @@ export default async function FieldJobPage({
   setRequestLocale(locale);
   const { supabase, user } = await requireRole(locale, ["field"]);
   const t = await getTranslations("field");
+  const th = await getTranslations("field.home");
 
   const { data: job } = await supabase
     .from("jobs")
     .select(
-      "id, job_type, status, checklist, visit, request_id, client_first_name, service_requests(id, type, title, details)"
+      "id, job_type, status, due_date, checklist, visit, request_id, client_first_name, service_requests(id, type, title, details)"
     )
     .eq("id", id)
     .maybeSingle();
   if (!job) notFound();
+  const statusLine = (
+    <div className="mt-2 flex flex-wrap items-center gap-2">
+      <StatusBadge tone={toneFor(job.status)}>{t(`jobStatus.${job.status}` as never)}</StatusBadge>
+      {job.due_date && (
+        <span className="badge badge-grey" data-testid="job-due">
+          <CalendarIcon size={14} />
+          {th("due", {
+            date: new Intl.DateTimeFormat(locale === "en" ? "en-GB" : locale, { day: "numeric", month: "short", year: "numeric" }).format(
+              new Date(`${job.due_date}T12:00:00`)
+            ),
+          })}
+        </span>
+      )}
+    </div>
+  );
 
   const req = job.service_requests as unknown as {
     id: string;
@@ -52,11 +71,12 @@ export default async function FieldJobPage({
           <Link href="/field" className="text-xs font-semibold text-muted hover:text-forest">
             ← {t("myJobs")}
           </Link>
-          <h1 className="headline mt-1 text-2xl text-forest">{build.title}</h1>
+          <h1 className="section-title mt-1 text-2xl">{build.title}</h1>
           <p className="text-xs text-muted">
             {String(build.details.site_address ?? "")}
             {job.client_first_name ? ` · ${t("client")}: ${job.client_first_name}` : ""}
           </p>
+          {statusLine}
         </div>
         <StageList build={build} role="field" meId={user.id} />
       </div>
@@ -102,12 +122,12 @@ export default async function FieldJobPage({
         <Link href="/field" className="text-xs font-semibold text-muted hover:text-forest">
           ← {t("myJobs")}
         </Link>
-        <h1 className="headline mt-1 text-2xl text-forest">{req.title}</h1>
+        <h1 className="section-title mt-1 text-2xl">{req.title}</h1>
         <p className="text-xs text-muted">
           {isTitleCheck ? t("jobType.title_check") : t(`requestType.${req.type}` as never)}
-          {firstName && ` · ${t("client")}: ${firstName}`} ·{" "}
-          {t(`jobStatus.${job.status}` as never)}
+          {firstName && ` · ${t("client")}: ${firstName}`}
         </p>
+        {statusLine}
       </div>
 
       <section className="card p-5">

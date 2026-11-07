@@ -55,7 +55,7 @@ export default async function AdminTranslationsPage({
 
   return (
     <div className="space-y-4">
-      <h1 className="headline text-2xl text-forest">{t("title")}</h1>
+      <h1 className="section-title text-2xl">{t("title")}</h1>
       <div className="flex items-center gap-3 text-sm">
         <a
           href="?lang=sn"

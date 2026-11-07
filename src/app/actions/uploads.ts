@@ -11,7 +11,7 @@ import {
 } from "@/lib/uploads";
 
 const schema = z.object({
-  purpose: z.enum(["client-document", "staff-media"]),
+  purpose: z.enum(["client-document", "staff-media", "quote-file"]),
   files: z
     .array(
       z.object({
@@ -48,6 +48,9 @@ export async function requestUploadSlots(input: {
     return { ok: false, error: "auth" };
   }
   if (purpose === "staff-media" && (!isStaff || aal !== "aal2")) {
+    return { ok: false, error: "auth" };
+  }
+  if (purpose === "quote-file" && (profile.role !== "admin" || aal !== "aal2")) {
     return { ok: false, error: "auth" };
   }
 

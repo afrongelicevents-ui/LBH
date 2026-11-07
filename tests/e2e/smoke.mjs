@@ -474,7 +474,25 @@ let offlineShotAt = 0;
   await step("login forces TOTP enrollment, then lands on My jobs", async () => {
     await loginStaff(page, "agent@lbh.test");
     await page.waitForURL(/\/field/);
-    await page.getByText("SAMPLE — Stand 412").waitFor();
+    await page.getByText("SAMPLE — Stand 412").first().waitFor();
+  });
+
+  await step("Field Portal: banner, 4 stat tiles, search + filter pills, due date, no stock photos", async () => {
+    assert((await page.getByTestId("portal-name").innerText()) === "Field Portal", "portal name");
+    await page.getByText("Welcome back,").waitFor();
+    assert((await page.getByTestId("stat-tile").count()) === 4, "stat tiles");
+    const cards = page.getByTestId("job-card");
+    assert((await cards.count()) === 3, `${await cards.count()} job cards`);
+    await page.getByText("Due: ").first().waitFor();
+    // no photos yet on the land job → placeholder, never a stock image
+    assert((await cards.locator('img[src^="/images/"]').count()) === 0, "stock photo on a job card");
+    await page.getByRole("button", { name: /^Completed/ }).click();
+    assert((await cards.count()) === 1, "Completed filter");
+    await page.getByRole("button", { name: /^All jobs/ }).click();
+    await page.getByPlaceholder("Search location, stand or job…").fill("Bulawayo");
+    assert((await cards.count()) === 1, "search");
+    await page.getByPlaceholder("Search location, stand or job…").fill("");
+    await shot(page, "field-home");
   });
 
   await step("job page shows stand + documents but NO prices", async () => {
@@ -528,6 +546,14 @@ let offlineShotAt = 0;
       assert(m.flagged_far === true, `not flagged (distance ${m.distance_from_pin_m})`);
     }
     await page.getByText("in-app camera").first().waitFor();
+  });
+
+  await step("job card shows that job's LATEST site photo", async () => {
+    await page.goto(`${BASE}/en/field`);
+    const card = page.getByTestId("job-card").filter({ hasText: "Stand 412, Harare South" });
+    const src = await card.locator("img").first().getAttribute("src");
+    assert(src && src.includes("/storage/v1/object/sign/media/jobs/"), `job photo ${src}`);
+    await page.goto(`${BASE}/en/field/jobs/${IDS.jobLand}`);
   });
 
   await step("record a short video in the app", async () => {
@@ -633,9 +659,14 @@ console.log("\nLawyer (lawyer@lbh.test) — title checks");
   await step("lawyer sees their sample title-check jobs (Stand 412 + Stand 88)", async () => {
     await loginStaff(page, "lawyer@lbh.test");
     await page.waitForURL(/\/field/);
-    await page.getByText("SAMPLE — Stand 412").waitFor();
-    await page.getByText("SAMPLE — Stand 88").waitFor();
-    assert((await page.getByText("Title check (legal)").count()) === 2, "job type not shown");
+    await page.getByText("SAMPLE — Stand 412").first().waitFor();
+    await page.getByText("SAMPLE — Stand 88").first().waitFor();
+    assert((await page.getByTestId("portal-name").innerText()) === "Lawyer Portal", "portal name");
+    for (const label of ["Files to review", "Documents pending", "Checks done", "Awaiting client"]) {
+      await page.getByTestId("stat-tile").filter({ hasText: label }).waitFor();
+    }
+    await page.getByText("Contact LBH admin").waitFor();
+    await page.getByText("Due: ").first().waitFor();
     await shot(page, "lawyer-jobs");
   });
 
@@ -685,8 +716,34 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
   await step("login forces TOTP enrollment, then Needs-you queue", async () => {
     await loginStaff(page, "admin@lbh.test");
     await page.waitForURL(/\/admin/);
-    await page.getByText("Reports to review").waitFor();
+    await page.getByText("Reports to review").first().waitFor();
+    assert((await page.getByTestId("portal-name").innerText()) === "Admin Portal", "admin header must say Admin Portal");
+    assert((await page.getByTestId("stat-tile").count()) === 4, "admin stat tiles missing");
     await shot(page, "admin-needs-you");
+  });
+
+  await step("assign a job with a DUE DATE → shown to the lawyer", async () => {
+    await page.goto(`${BASE}/en/admin/requests/${IDS.reqMat}`);
+    const section = page.locator("section", { hasText: "Field team" });
+    await section.locator("select").first().selectOption({ label: "SAMPLE Lawyer" });
+    await section.locator("select").nth(1).selectOption("title_check");
+    await section.locator('input[type="date"]').fill("2026-12-24");
+    await section.locator('button:has-text("Assign")').click();
+    await section.getByText("Assigned").first().waitFor({ timeout: 15000 });
+    const { data } = await db.from("jobs").select("job_type, due_date").eq("request_id", IDS.reqMat).eq("assigned_to", IDS.lawyer).single();
+    assert(data.job_type === "title_check" && data.due_date === "2026-12-24", `job ${JSON.stringify(data)}`);
+  });
+
+  await step("materials supplier quote with the supplier's quote file attached (photo/PDF)", async () => {
+    await page.goto(`${BASE}/en/admin/requests/${IDS.reqMat}`);
+    const form = page.locator("form", { has: page.locator('input[name="supplier_name"]') }).first();
+    await form.locator('input[name="supplier_name"]').fill("E2E Supplier C");
+    await form.locator('input[name="amount"]').fill("990");
+    await form.locator('input[name="quote_file"]').setInputFiles(pdfPath);
+    await form.locator('button[type="submit"]').click();
+    await page.getByText("Supplier quote added", { exact: false }).first().waitFor({ timeout: 20000 });
+    const { data } = await db.from("supplier_quotes").select("file_path").eq("supplier_name", "E2E Supplier C").single();
+    assert(/^quotes\/10000000-0000-4000-a000-000000000002\/[0-9a-f-]{36}\.pdf$/.test(data.file_path ?? ""), `file ${data.file_path}`);
   });
 
   await step("confirm the manual payment proof", async () => {
@@ -771,12 +828,24 @@ console.log("\nBuild stages (Foundation → Finishes)");
     await shot(cpage, "client-build");
   });
 
+  await step("build tracker shows all 6 stages with check marks", async () => {
+    const tracker = cpage.getByTestId("build-tracker");
+    for (const name of ["Foundation", "Slab", "Window level", "Wall plate", "Roof", "Finishes"]) {
+      await tracker.getByText(name, { exact: true }).waitFor();
+    }
+    assert((await tracker.locator("li").count()) === 6, "tracker stages");
+    assert((await tracker.locator("li").first().locator("svg").count()) === 1, "Foundation not ticked");
+  });
+
   await step("client chooses ONE supplier for Slab, then pays (test mode)", async () => {
     const msasa = slabCard(cpage).locator("li", { hasText: "SAMPLE Msasa Hardware" });
     await msasa.locator('button:has-text("Choose this supplier")').click();
     await msasa.locator('button:has-text("Yes, choose")').click();
     await waitStatus(cpage, IDS.slab, "quote_approved");
     await cpage.reload();
+    const other = slabCard(cpage).getByTestId("quote-card").filter({ hasText: "SAMPLE BuildMart Harare" });
+    await other.getByText("Not chosen").waitFor();
+    await slabCard(cpage).getByTestId("quote-card").filter({ hasText: "SAMPLE Msasa Hardware" }).getByText("Chosen", { exact: true }).waitFor();
     await Promise.all([
       cpage.waitForURL(/\/pay\/simulate/, { timeout: 20000 }),
       slabCard(cpage).locator('button:has-text("Pay online")').click(),
@@ -853,7 +922,7 @@ console.log("\nBuild stages (Foundation → Finishes)");
 
   await step("locked stages can't take supplier quotes", async () => {
     await apage.reload();
-    assert((await apage.locator("#stage-4").locator('button:has-text("Add quote")').count()) === 0, "quote form on locked stage");
+    assert((await apage.locator("#stage-4").locator('button:has-text("Submit quote")').count()) === 0, "quote form on locked stage");
   });
 
   await step("client sees inspection + materials, taps Approve stage → Window level unlocks", async () => {
@@ -871,11 +940,16 @@ console.log("\nBuild stages (Foundation → Finishes)");
 
   await step("admin can now add a supplier quote to Window level", async () => {
     await apage.goto(`${BASE}/en/admin/builds/${IDS.build}`);
-    const form = apage.locator("#stage-3 form", { has: apage.locator('button:has-text("Add quote")') });
+    const form = apage.locator("#stage-3 form", { has: apage.locator('button:has-text("Submit quote")') });
     await form.locator('input[name="supplier_name"]').fill("E2E Brick Supplier");
     await form.locator('input[name="amount"]').fill("2100");
-    await form.locator('button:has-text("Add quote")').click();
-    await form.getByText("Saved.").waitFor({ timeout: 15000 });
+    await form.locator('input[name="quote_file"]').setInputFiles(photoPath);
+    await form.locator('button:has-text("Submit quote")').click();
+    await form.getByText("Saved.").waitFor({ timeout: 30000 });
+    const { data } = await db.from("stage_quotes").select("file_path").eq("supplier_name", "E2E Brick Supplier").single();
+    assert(/^quotes\/50000000-0000-4000-a000-000000000001\/[0-9a-f-]{36}\.jpg$/.test(data.file_path ?? ""), `file ${data.file_path}`);
+    await apage.reload();
+    await apage.locator("#stage-3").getByTestId("quote-card").filter({ hasText: "E2E Brick Supplier" }).locator("img").waitFor();
   });
   await cctx.close(); await fctx.close(); await actx.close();
 }

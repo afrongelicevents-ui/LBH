@@ -20,7 +20,7 @@ export default async function AdminBookingsPage({
 
   return (
     <div className="space-y-4">
-      <h1 className="headline text-2xl text-forest">{t("title")}</h1>
+      <h1 className="section-title text-2xl">{t("title")}</h1>
       <ul className="space-y-3">
         {(bookings ?? []).map((b) => (
           <li key={b.id} className="card p-4">
@@ -36,7 +36,7 @@ export default async function AdminBookingsPage({
                 {b.description && <p className="mt-1 text-sm text-ink">{b.description}</p>}
               </div>
               <div className="flex flex-col items-end gap-2">
-                <span className="rounded-full bg-offwhite px-2.5 py-1 text-[11px] font-bold text-forest">
+                <span className={`badge badge-dot badge-${b.status === "confirmed" ? "ok" : b.status === "completed" ? "done" : b.status === "cancelled" ? "grey" : "prog"}`}>
                   {b.status}
                 </span>
                 {["new", "confirmed"].includes(b.status) && (

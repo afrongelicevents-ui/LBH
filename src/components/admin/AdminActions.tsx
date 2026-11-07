@@ -1,5 +1,7 @@
 "use client";
 
+import { useDirectUpload } from "@/lib/useDirectUpload";
+
 import { useState, useTransition, useActionState } from "react";
 import { useTranslations } from "next-intl";
 import {
@@ -261,6 +263,7 @@ export function AssignStaffForm({
   const t = useTranslations("admin.request");
   const [staffId, setStaffId] = useState("");
   const [jobType, setJobType] = useState<"site_visit" | "title_check">("site_visit");
+  const [dueDate, setDueDate] = useState("");
   const { pending, result, run } = useAct();
   if (result?.ok) return <p className="text-xs font-bold text-forest">{t("assigned")}</p>;
   return (
@@ -282,10 +285,20 @@ export function AssignStaffForm({
         <option value="site_visit">{t("jobTypes.site_visit")}</option>
         <option value="title_check">{t("jobTypes.title_check")}</option>
       </select>
+      <label className="flex items-center gap-2 text-xs font-semibold text-ink">
+        {t("dueDate")}
+        <input
+          type="date"
+          name="due_date"
+          value={dueDate}
+          onChange={(e) => setDueDate(e.target.value)}
+          className={`${inputCls} w-40`}
+        />
+      </label>
       <button
         type="button"
         disabled={!staffId || pending}
-        onClick={() => run(() => assignStaff(requestId, staffId, jobType))}
+        onClick={() => run(() => assignStaff(requestId, staffId, jobType, dueDate))}
         className="btn btn-primary min-h-10 px-4 text-xs disabled:opacity-60"
       >
         {t("assign")}
@@ -309,8 +322,18 @@ export function ExtraCostControls({ ecrId }: { ecrId: string }) {
 // ---------- supplier quote ----------
 export function SupplierQuoteForm({ requestId }: { requestId: string }) {
   const t = useTranslations("admin.request");
+  const { upload } = useDirectUpload();
   const [state, formAction, pending] = useActionState<ActionResult | null, FormData>(
-    addSupplierQuote,
+    async (prev, fd) => {
+      const file = fd.get("quote_file");
+      fd.delete("quote_file");
+      if (file instanceof File && file.size > 0) {
+        const up = await upload("quote-file", [file]);
+        if (!up.ok) return { ok: false, error: up.error === "size" ? "toobig" : up.error === "type" ? "filetype" : "error" };
+        fd.set("uploads_json", JSON.stringify(up.refs));
+      }
+      return addSupplierQuote(prev, fd);
+    },
     null
   );
   if (state?.ok) return <p className="text-xs font-bold text-forest">{t("supplierAdded")}</p>;
@@ -328,6 +351,15 @@ export function SupplierQuoteForm({ requestId }: { requestId: string }) {
       <label className="flex-1">
         <span className={labelCls}>{t("supplierDetails")}</span>
         <input name="details" className={inputCls} maxLength={2000} />
+      </label>
+      <label className="w-full">
+        <span className={labelCls}>{t("supplierQuoteFile")}</span>
+        <input
+          type="file"
+          name="quote_file"
+          accept="image/jpeg,image/png,image/webp,application/pdf"
+          className="block w-full text-xs text-muted file:mr-3 file:rounded-full file:border-0 file:bg-forest file:px-3 file:py-2 file:text-xs file:font-semibold file:text-white"
+        />
       </label>
       <button type="submit" disabled={pending} className="btn btn-outline-green min-h-10 px-4 text-xs disabled:opacity-60">
         {t("addSupplier")}

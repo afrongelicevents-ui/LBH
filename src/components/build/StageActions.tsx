@@ -8,6 +8,7 @@ import CameraCapture, { type Captured } from "@/components/field/CameraCapture";
 import { useOutbox } from "@/components/field/OutboxProvider";
 import { QueuedNote } from "@/components/field/JobForms";
 import type { OutboxAction, OutboxFile } from "@/lib/field/outbox";
+import { DollarIcon, LayersIcon, PaperclipIcon, PlusIcon, SendIcon, TruckIcon } from "@/components/ui/PortalIcons";
 import {
   approveStageQuoteAction,
   approveStageAction,
@@ -16,6 +17,7 @@ import {
   advanceStage,
   submitInspection,
   addStageQuote,
+  attachQuoteFile,
   updateStage,
   addStage,
   deleteStage,
@@ -55,14 +57,15 @@ function useAct() {
 /** Upload chosen files directly to storage, then call the action with refs. */
 function useUploadingAction(
   action: (prev: StageResult | null, fd: FormData) => Promise<StageResult>,
-  fileField = "photos"
+  fileField = "photos",
+  purpose: "staff-media" | "quote-file" = "staff-media"
 ) {
   const { upload, progress } = useDirectUpload();
   const [state, formAction, pending] = useActionState<StageResult | null, FormData>(
     async (prev, fd) => {
       const files = fd.getAll(fileField).filter((f): f is File => f instanceof File && f.size > 0);
       fd.delete(fileField);
-      const up = await upload("staff-media", files);
+      const up = await upload(purpose, files);
       if (!up.ok) {
         return { ok: false, error: up.error === "size" ? "toobig" : up.error === "type" ? "filetype" : "upload" };
       }
@@ -393,22 +396,110 @@ export function InspectionForm({
 
 // ======================== admin ========================
 
+const iconInputCls =
+  "w-full rounded-full border border-[#dfe3e1] bg-white py-2.5 pr-4 pl-12 text-sm text-ink focus:border-forest focus:outline-none";
+
+function IconField({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
+  return (
+    <label className="relative block">
+      <span className="pointer-events-none absolute top-1/2 left-1.5 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-offwhite text-forest">
+        {icon}
+      </span>
+      {children}
+    </label>
+  );
+}
+
+/** Admin: add a supplier quote, optionally with the supplier's own quote (photo/PDF). */
 export function AddQuoteForm({ stageId }: { stageId: string }) {
   const t = useTranslations("build");
-  const [state, formAction, pending] = useActionState<StageResult | null, FormData>(
+  const { state, formAction, pending, progress } = useUploadingAction(
     (prev, fd) => addStageQuote(stageId, prev, fd),
-    null
+    "quote_file",
+    "quote-file"
   );
   return (
-    <form action={formAction} className="space-y-2 rounded-xl border border-line p-3">
-      <p className="text-xs font-bold text-forest">{t("addQuote")}</p>
-      <div className="grid gap-2 sm:grid-cols-2">
-        <input name="supplier_name" required maxLength={200} placeholder={t("supplier")} className={inputCls} />
-        <input name="amount" required inputMode="decimal" placeholder={t("amountUsd")} className={inputCls} />
-      </div>
-      <textarea name="items" rows={3} maxLength={4000} placeholder={t("quoteItems")} className={inputCls} />
-      <button type="submit" disabled={pending} className="btn btn-outline-green min-h-10 px-4 text-sm disabled:opacity-60">
-        {t("addQuoteButton")}
+    <form action={formAction} className="space-y-2.5 rounded-2xl border border-[#e6e9e7] bg-portal p-3 sm:p-4">
+      <p className="flex items-center gap-2 text-base font-extrabold text-ink">
+        <span className="icon-round icon-forest h-8 w-8">
+          <PlusIcon size={18} />
+        </span>
+        {t("addQuote")}
+      </p>
+      <IconField icon={<TruckIcon size={16} />}>
+        <input name="supplier_name" required maxLength={200} placeholder={t("supplier")} aria-label={t("supplier")} className={iconInputCls} />
+      </IconField>
+      <IconField icon={<DollarIcon size={16} />}>
+        <input name="amount" required inputMode="decimal" placeholder={t("amountUsd")} aria-label={t("amountUsd")} className={iconInputCls} />
+      </IconField>
+      <IconField icon={<LayersIcon size={16} />}>
+        <textarea
+          name="items"
+          rows={3}
+          maxLength={4000}
+          placeholder={t("quoteItems")}
+          aria-label={t("quoteItems")}
+          className={`${iconInputCls} rounded-2xl`}
+        />
+      </IconField>
+      <label className="block">
+        <span className={`${labelCls} flex items-center gap-1`}>
+          <PaperclipIcon size={14} />
+          {t("quoteFile")}
+        </span>
+        <input type="file" name="quote_file" accept="image/jpeg,image/png,image/webp,application/pdf" className={fileCls} />
+      </label>
+      <button type="submit" disabled={pending} className="btn btn-green w-full disabled:opacity-60">
+        <SendIcon size={18} />
+        {pending && progress ? t("uploading", { done: progress.done, total: progress.total }) : t("submitQuote")}
+      </button>
+      <Msg state={state} />
+    </form>
+  );
+}
+
+/** Admin: attach / replace the supplier's quote file on an existing quote. */
+export function AttachQuoteFileForm({
+  kind,
+  quoteId,
+  hasFile,
+}: {
+  kind: "stage" | "supplier";
+  quoteId: string;
+  hasFile: boolean;
+}) {
+  const t = useTranslations("build");
+  const [open, setOpen] = useState(false);
+  const { state, formAction, pending } = useUploadingAction(
+    (prev, fd) => attachQuoteFile(kind, quoteId, prev, fd),
+    "quote_file",
+    "quote-file"
+  );
+  if (state?.ok) return <p className="mt-1 text-xs font-bold text-forest">{t("saved")}</p>;
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="mt-1.5 inline-flex items-center gap-1 text-xs font-bold text-forest underline underline-offset-2"
+      >
+        <PaperclipIcon size={14} />
+        {hasFile ? t("replaceQuoteFile") : t("attachQuoteFile")}
+      </button>
+    );
+  }
+  return (
+    <form action={formAction} className="mt-2 flex flex-wrap items-center gap-2">
+      <input
+        type="file"
+        name="quote_file"
+        required
+        accept="image/jpeg,image/png,image/webp,application/pdf"
+        aria-label={t("quoteFile")}
+        className={fileCls}
+      />
+      <button type="submit" disabled={pending} className="btn btn-outline-green min-h-10 px-4 text-xs disabled:opacity-60">
+        {t("attach")}
       </button>
       <Msg state={state} />
     </form>

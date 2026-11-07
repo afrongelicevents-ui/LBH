@@ -23,10 +23,10 @@ export default async function ClientBuildPage({
   return (
     <div className="mx-auto max-w-2xl space-y-4">
       <div>
-        <h1 className="headline text-2xl text-forest">{build.title}</h1>
+        <h1 className="section-title text-2xl">{build.title}</h1>
         <p className="text-xs text-muted">{String(build.details.site_address ?? "")}</p>
       </div>
-      <div className="rounded-xl bg-info p-3 text-sm text-ink">
+      <div className="rounded-2xl bg-ok-soft/60 p-3 text-sm text-ink">
         <p className="font-bold">
           {t("progress", { done, total: build.stages.length })}
           {current ? ` · ${t("currentStage", { stage: current.name })}` : ""}

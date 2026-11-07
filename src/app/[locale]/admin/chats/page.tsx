@@ -38,7 +38,7 @@ export default async function AdminChatsPage({
 
   return (
     <div className="mx-auto max-w-2xl space-y-4">
-      <h1 className="headline text-2xl text-forest">{t("title")}</h1>
+      <h1 className="section-title text-2xl">{t("title")}</h1>
       {threads.size === 0 && <p className="card p-6 text-center text-sm text-muted">{t("empty")}</p>}
       <ul className="space-y-2">
         {Array.from(threads.entries()).map(([clientId, th]) => (

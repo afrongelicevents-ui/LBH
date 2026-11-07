@@ -20,17 +20,17 @@ export default async function AdminLayout({
       profile={profile}
       areaKey="admin"
       nav={[
-        { href: "/admin", label: t("needsYou") },
-        { href: "/admin/requests", label: t("requests") },
-        { href: "/admin/builds", label: t("builds") },
-        { href: "/admin/bookings", label: t("bookings") },
-        { href: "/admin/clients", label: t("clients") },
-        { href: "/admin/chats", label: t("chats") },
-        { href: "/admin/payments", label: t("payments") },
-        { href: "/admin/interest", label: t("interest") },
-        { href: "/admin/settings", label: t("settings") },
-        { href: "/admin/translations", label: t("translations") },
-        { href: "/admin/audit", label: t("audit") },
+        { href: "/admin", label: t("needsYou"), icon: "home" },
+        { href: "/admin/requests", label: t("requests"), icon: "doc" },
+        { href: "/admin/builds", label: t("builds"), icon: "hammer" },
+        { href: "/admin/bookings", label: t("bookings"), icon: "calendar" },
+        { href: "/admin/clients", label: t("clients"), icon: "users" },
+        { href: "/admin/chats", label: t("chats"), icon: "chat" },
+        { href: "/admin/payments", label: t("payments"), icon: "card" },
+        { href: "/admin/interest", label: t("interest"), icon: "bell" },
+        { href: "/admin/settings", label: t("settings"), icon: "cog" },
+        { href: "/admin/translations", label: t("translations"), icon: "globe" },
+        { href: "/admin/audit", label: t("audit"), icon: "list" },
       ]}
     >
       {children}

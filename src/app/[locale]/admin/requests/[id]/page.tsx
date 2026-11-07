@@ -7,6 +7,9 @@ import { signedUrl } from "@/lib/uploads";
 import StatusTimeline from "@/components/portal/StatusTimeline";
 import type { RequestStatus } from "@/lib/status";
 import { LEGAL_ITEMS, readLegal } from "@/lib/legal";
+import { toneFor } from "@/lib/tones";
+import { StatusBadge } from "@/components/ui/Portal";
+import { AttachQuoteFileForm } from "@/components/build/StageActions";
 import {
   QuoteBuilder,
   SendDraftQuoteButton,
@@ -83,13 +86,21 @@ export default async function AdminRequestDetailPage({
 
   const details = (req.details ?? {}) as Record<string, unknown>;
 
+  const supplierFiles = new Map(
+    await Promise.all(
+      (supplierQuotes ?? [])
+        .filter((sq) => sq.file_path)
+        .map(async (sq) => [sq.id, await signedUrl("documents", sq.file_path as string)] as const)
+    )
+  );
+
   return (
     <div className="mx-auto max-w-4xl space-y-5">
       <div>
         <Link href="/admin/requests" className="text-xs font-semibold text-muted hover:text-forest">
           ← {t("allRequests")}
         </Link>
-        <h1 className="headline mt-1 text-2xl text-forest">{req.title}</h1>
+        <h1 className="section-title mt-1 text-2xl">{req.title}</h1>
         <p className="text-xs text-muted">
           {client.full_name} · {client.email}
           {client.whatsapp && ` · ${client.whatsapp}`}
@@ -236,6 +247,7 @@ export default async function AdminRequestDetailPage({
                 {(j.profiles as unknown as { full_name: string })?.full_name} ·{" "}
                 <span className="text-muted">
                   {t(`jobTypes.${j.job_type}` as never)} · {j.status}
+                  {j.due_date ? ` · ${t("dueOn", { date: j.due_date })}` : ""}
                 </span>
               </p>
               {legal && (
@@ -292,11 +304,30 @@ export default async function AdminRequestDetailPage({
           <h2 className="text-base font-bold text-forest">{t("supplierQuotes")}</h2>
           <ul className="mt-2 space-y-2 text-sm">
             {(supplierQuotes ?? []).map((sq) => (
-              <li key={sq.id} className="flex justify-between rounded-xl border border-line p-3">
-                <span className="text-ink">
-                  {sq.supplier_name} · {formatCents(sq.amount_cents)}
-                </span>
-                <span className="font-bold text-muted">{sq.status}</span>
+              <li key={sq.id} className="rounded-xl border border-line p-3">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-ink">
+                    {sq.supplier_name} · {formatCents(sq.amount_cents)}
+                  </span>
+                  <StatusBadge tone={toneFor(sq.status)}>
+                    {sq.status === "approved"
+                      ? t("supplierChosen")
+                      : sq.status === "rejected"
+                        ? t("supplierNotChosen")
+                        : t("supplierPending")}
+                  </StatusBadge>
+                </div>
+                {supplierFiles.get(sq.id) && (
+                  <a
+                    href={supplierFiles.get(sq.id) ?? "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 inline-block text-xs font-bold text-forest underline underline-offset-2"
+                  >
+                    {t("viewSupplierQuote")}
+                  </a>
+                )}
+                <AttachQuoteFileForm kind="supplier" quoteId={sq.id} hasFile={Boolean(sq.file_path)} />
               </li>
             ))}
           </ul>

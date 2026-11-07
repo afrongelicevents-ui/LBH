@@ -2,6 +2,27 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { requireRole } from "@/lib/auth/guard";
 import { formatCents } from "@/lib/money";
+import { WelcomeBanner, StatTiles } from "@/components/ui/Portal";
+import {
+  CalendarIcon,
+  CardIcon,
+  ChatIcon,
+  ChevronRightIcon,
+  DocIcon,
+  DollarIcon,
+  FileSearchIcon,
+  HammerIcon,
+} from "@/components/ui/PortalIcons";
+
+const BLOCK_ICON = {
+  bookings: { icon: CalendarIcon, tone: "prog" },
+  requests: { icon: DocIcon, tone: "ok" },
+  reports: { icon: FileSearchIcon, tone: "done" },
+  proofs: { icon: CardIcon, tone: "ok" },
+  extras: { icon: DollarIcon, tone: "prog" },
+  stages: { icon: HammerIcon, tone: "forest" },
+  chats: { icon: ChatIcon, tone: "prog" },
+} as const;
 
 /** Admin "Needs you" queue (brief §8). */
 export default async function AdminNeedsYouPage({
@@ -11,8 +32,9 @@ export default async function AdminNeedsYouPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const { supabase } = await requireRole(locale, ["admin"]);
+  const { supabase, profile } = await requireRole(locale, ["admin"]);
   const t = await getTranslations("admin.needsYou");
+  const th = await getTranslations("field.home");
   const tb = await getTranslations("build");
 
   const [
@@ -129,40 +151,64 @@ export default async function AdminNeedsYouPage({
     },
   ];
 
+  const count = (k: string) => blocks.find((b) => b.key === k)?.count ?? 0;
+
   return (
-    <div className="space-y-5">
-      <h1 className="headline text-2xl text-forest">{t("title")}</h1>
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {blocks.map((b) => (
-          <section key={b.key} className="card p-5">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-bold text-forest">{t(`block.${b.key}` as never)}</h2>
-              <span
-                className={`flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-xs font-extrabold ${
-                  b.count > 0 ? "bg-accent text-white" : "bg-info text-muted"
-                }`}
-              >
-                {b.count}
-              </span>
-            </div>
-            {b.items.length > 0 ? (
-              <ul className="mt-3 space-y-1.5">
-                {b.items.slice(0, 6).map((item, i) => (
-                  <li key={i}>
-                    <Link
-                      href={item.href}
-                      className="block truncate text-sm font-semibold text-ink hover:text-forest"
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="mt-3 text-xs text-muted">{t("nothing")}</p>
-            )}
-          </section>
-        ))}
+    <div className="space-y-4">
+      <WelcomeBanner
+        greeting={th("greeting")}
+        name={(profile.full_name || profile.email).replace(/\s*\(.*\)$/, "")}
+        tagline={t("tagline")}
+        image="/images/materials.jpg"
+      />
+      <StatTiles
+        tiles={[
+          { label: t("tileRequests"), value: count("requests") + count("bookings"), icon: <DocIcon size={22} />, tone: "forest" },
+          { label: t("tileReports"), value: count("reports"), icon: <FileSearchIcon size={22} />, tone: "done" },
+          { label: t("tileMoney"), value: count("proofs") + count("extras"), icon: <CardIcon size={22} />, tone: "ok" },
+          { label: t("tileStages"), value: count("stages"), icon: <HammerIcon size={22} />, tone: "prog" },
+        ]}
+      />
+      <h1 className="section-title">{t("title")}</h1>
+      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        {blocks.map((b) => {
+          const meta = BLOCK_ICON[b.key as keyof typeof BLOCK_ICON];
+          const Icon = meta.icon;
+          return (
+            <section key={b.key} className="card p-4">
+              <div className="flex items-center gap-3">
+                <span className={`icon-round icon-${meta.tone} h-10 w-10`}>
+                  <Icon size={20} />
+                </span>
+                <h2 className="flex-1 text-[15px] font-extrabold text-ink">{t(`block.${b.key}` as never)}</h2>
+                <span
+                  className={`flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-xs font-extrabold ${
+                    b.count > 0 ? "bg-forest text-white" : "bg-info text-muted"
+                  }`}
+                >
+                  {b.count}
+                </span>
+              </div>
+              {b.items.length > 0 ? (
+                <ul className="mt-3 divide-y divide-[#eef0ef]">
+                  {b.items.slice(0, 6).map((item, i) => (
+                    <li key={i}>
+                      <Link
+                        href={item.href}
+                        className="flex items-center gap-2 py-2 text-sm font-semibold text-ink hover:text-forest"
+                      >
+                        <span className="min-w-0 flex-1 truncate">{item.label}</span>
+                        <ChevronRightIcon size={16} className="shrink-0 text-muted" />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-3 text-xs text-muted">{t("nothing")}</p>
+              )}
+            </section>
+          );
+        })}
       </div>
     </div>
   );

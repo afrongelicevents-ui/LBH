@@ -32,7 +32,7 @@ export default async function AdminBuildPage({
         <Link href="/admin/builds" className="text-xs font-semibold text-muted hover:text-forest">
           ← {t("buildStages")}
         </Link>
-        <h1 className="headline mt-1 text-2xl text-forest">{build.title}</h1>
+        <h1 className="section-title mt-1 text-2xl">{build.title}</h1>
         <p className="text-xs text-muted">
           {client?.full_name} · {client?.email}
           {client?.whatsapp ? ` · ${client.whatsapp}` : ""} · {String(build.details.site_address ?? "")}

@@ -332,11 +332,15 @@
   "portal": {
     "shell": {
       "area": {
-        "client": "Iportal yeklayenti",
-        "field": "Iqembu lasensimini",
-        "admin": "I-admin"
+        "client": "I-Portal yeKhasimende",
+        "field": "I-Portal yaBasebenzi beNsimu",
+        "admin": "I-Portal ye-Admin",
+        "lawyer": "I-Portal yoMmeli"
       },
-      "signOut": "Phuma"
+      "signOut": "Phuma",
+      "menu": "Vula imenyu",
+      "closeMenu": "Vala imenyu",
+      "website": "Iwebhusayithi ye-LBH"
     },
     "nav": {
       "dashboard": "Izicelo zami",
@@ -370,7 +374,12 @@
       "welcomeTitle": "Siyakwamukela ku-LBH, {name}! I-email yakho iqinisekisiwe.",
       "welcomeText": "Qala ngokubhuka ucingo lwamahala, kumbe usithumelele isicelo sokuhlola umhlabathi kumbe izinto zokwakha.",
       "nextStepTitle": "Ufuna ukwenzani?",
-      "bookCall": "Bhuka ucingo lwamahala"
+      "bookCall": "Bhuka ucingo lwamahala",
+      "tagline": "Umhlabathi wakho, izinto zokwakha lokwakha — ndawonye.",
+      "tileRequests": "Izicelo zami",
+      "tileWaiting": "Kulindele wena",
+      "tileInProgress": "Kuyaqhubeka",
+      "tileDone": "Kuqediwe"
     },
     "status": {
       "call_booked": "Ucingo lubhukiwe",
@@ -482,7 +491,9 @@
       "reportReady": "Umbiko wakho usulungile",
       "readReport": "Bala umbiko",
       "invoiceLink": "I-invoice #{number} (PDF)",
-      "actionFailedUpload": "Ukufaka kwehlulekile — khangela inethiwekhi uzame futhi."
+      "actionFailedUpload": "Ukufaka kwehlulekile — khangela inethiwekhi uzame futhi.",
+      "supplierNotChosen": "Ayikhethwanga",
+      "viewSupplierQuote": "Bona i-quote yomthengisi"
     },
     "chat": {
       "title": "Khuluma leLBH",
@@ -683,6 +694,38 @@
       "findings": "Okutholakeleyo",
       "verdict": "Isinqumo",
       "save": "Londoloza uhlu"
+    },
+    "home": {
+      "greeting": "Siyakwamukela futhi,",
+      "taglineField": "Yakha • Phatha • Qedela",
+      "taglineLawyer": "Ukuhlola. Ukulandela umthetho. Ukwethembeka.",
+      "tileAll": "Yonke imisebenzi",
+      "tileDone": "Kuqediwe",
+      "search": "Dinga indawo, i-stand kumbe umsebenzi…",
+      "searchLawyer": "Dinga impahla, i-stand kumbe ikhasimende…",
+      "filterAll": "Yonke imisebenzi",
+      "viewDetails": "Bona imininingwane",
+      "noMatch": "Akulamsebenzi ofanayo.",
+      "noPhoto": "Akukabi lesithombe",
+      "overdue": "Isedlulile",
+      "actionReview": "Hlola ifayela",
+      "actionContinue": "Qhubeka",
+      "actionView": "Bona",
+      "due": "Kumele kuqedwe: {date}",
+      "stand": "I-stand",
+      "helpTitle": "Udinga uncedo?",
+      "helpText": "Xhumana le-admin ye-LBH",
+      "helpCta": "Thola uncedo",
+      "helpWhatsapp": "Sawubona admin ye-LBH, ngidinga uncedo ngomsebenzi ku-portal.",
+      "lawyerFiles": "Amafayela okuhlola",
+      "lawyerDocsPending": "Amadokhumenti alindile",
+      "lawyerChecksDone": "Okuhloliweyo",
+      "lawyerAwaitingClient": "Kulindwe ikhasimende",
+      "legalTasks": "Imisebenzi yakho yezomthetho",
+      "recentActivity": "Okwenzeke kamuva",
+      "noActivity": "Akukabi lalutho.",
+      "activityJob": "{title}: {status}",
+      "activityDoc": "Idokhumenti entsha ilayishelwe {title}"
     }
   },
   "admin": {
@@ -710,7 +753,12 @@
         "extras": "Izicelo zentengo yokwengeza",
         "chats": "Izingxoxo ezingafundwanga",
         "stages": "Izigaba zokwakha ezilindele i-LBH"
-      }
+      },
+      "tagline": "Konke okulindele i-LBH, ndawonye.",
+      "tileRequests": "Izicelo ezintsha",
+      "tileReports": "Imibiko yokuhlola",
+      "tileMoney": "Izinkokhelo lokunye",
+      "tileStages": "Izigaba zokwakha"
     },
     "common": {
       "error": {
@@ -719,7 +767,10 @@
         "auth": "Awulamvumo (i-2FA isilungisiwe yini?).",
         "exists": "Le-email isilayo i-akhawunti.",
         "self": "Nguwe obhale lo mbiko — enye i-admin kumele iwukhiphe.",
-        "closed": "Kakusavulekanga."
+        "closed": "Kakusavulekanga.",
+        "toobig": "Ifayela likhulu kakhulu.",
+        "filetype": "Sebenzisa isithombe (JPG/PNG) kumbe i-PDF.",
+        "error": "Kukhona okungahambanga kahle — zama futhi."
       }
     },
     "bookings": {
@@ -734,7 +785,14 @@
       "client": "Iklayenti",
       "type": "Uhlobo",
       "status": "Isimo",
-      "created": "Kwenziwe"
+      "created": "Kwenziwe",
+      "viewDetails": "Bona imininingwane",
+      "search": "Dinga isicelo, ikhasimende kumbe uhlobo…",
+      "empty": "Akulasicelo esifanayo.",
+      "filterAll": "Konke",
+      "filterNew": "Okutsha",
+      "filterOpen": "Kuyaqhubeka",
+      "filterDone": "Kuqediwe"
     },
     "clients": {
       "title": "Abantu",
@@ -806,7 +864,14 @@
       "jobTypes": {
         "site_visit": "Ukuvakatshela i-stand",
         "title_check": "Ukuhlola itayitili (ummeli)"
-      }
+      },
+      "dueDate": "Usuku lokuqedela",
+      "dueOn": "kuqedwe {date}",
+      "supplierChosen": "Ikhethiwe",
+      "supplierNotChosen": "Ayikhethwanga",
+      "supplierPending": "Kulindile",
+      "viewSupplierQuote": "Bona i-quote yomthengisi",
+      "supplierQuoteFile": "I-quote yomthengisi (isithombe kumbe i-PDF)"
     },
     "payments": {
       "title": "Izimbadalo",
@@ -986,7 +1051,19 @@
       "building": "Abakhi bayasebenza",
       "inspected": "Kulindele imvumo yakho",
       "approved": "Kuvunyiwe"
-    }
+    },
+    "quoteChosen": "Ikhethiwe",
+    "quoteNotChosen": "Ayikhethwanga",
+    "quotePending": "Kulindile",
+    "viewQuoteFile": "Bona i-quote yomthengisi",
+    "quoteFileOf": "I-quote evela ku-{supplier}",
+    "supplierQuotesN": "Ama-quote abathengisi ({count})",
+    "viewDetails": "Bona imininingwane",
+    "quoteFile": "I-quote yomthengisi (isithombe kumbe i-PDF)",
+    "submitQuote": "Thumela i-quote",
+    "attachQuoteFile": "Faka i-quote yomthengisi",
+    "replaceQuoteFile": "Tshintsha ifayela le-quote",
+    "attach": "Faka"
   },
   "financeTracker": {
     "title": "Build Finance Tracker",

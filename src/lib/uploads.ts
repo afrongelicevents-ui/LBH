@@ -132,7 +132,7 @@ export function extForType(type: string): string {
 // Direct uploads: browser → private "incoming" bucket → server finalises
 // ======================================================================
 
-export type UploadPurpose = "client-document" | "staff-media";
+export type UploadPurpose = "client-document" | "staff-media" | "quote-file";
 
 export interface UploadedRef {
   path: string;
@@ -152,7 +152,7 @@ export interface UploadedRef {
 const UUID = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
 
 export function allowedTypesFor(purpose: UploadPurpose): string[] {
-  return purpose === "client-document" ? DOC_TYPES : [...IMAGE_TYPES, ...VIDEO_TYPES];
+  return purpose === "staff-media" ? [...IMAGE_TYPES, ...VIDEO_TYPES] : DOC_TYPES;
 }
 
 export function maxBytesFor(type: string): number {
@@ -348,4 +348,14 @@ export function uploadErrorCode(
   if (m === "file too large") return "toobig";
   if (m === "invalid file type") return "filetype";
   return "error";
+}
+
+/**
+ * Admin: claim an uploaded supplier quote (photo/PDF) and store it in the
+ * private documents bucket under quotes/<requestId>/. Returns the path.
+ */
+export async function storeQuoteFile(userId: string, ref: UploadedRef, requestId: string): Promise<string> {
+  if (!new RegExp(`^${UUID}$`).test(requestId)) throw new Error("invalid request");
+  const f = await takeIncoming(userId, ref, "quote-file");
+  return storePrivate("documents", `quotes/${requestId}`, f.buffer, f.contentType, f.ext);
 }

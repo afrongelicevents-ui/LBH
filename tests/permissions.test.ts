@@ -502,6 +502,49 @@ d("RLS & business rules (local Supabase)", () => {
     });
   });
 
+  describe("due dates, lawyer portal flag, supplier quote files", () => {
+    it("field staff cannot move their own due date; admin can", async () => {
+      const { error } = await lawyer.from("jobs").update({ due_date: "2030-01-01" }).eq("id", IDS.jobLegal412);
+      expect(error?.message).toMatch(/only admin/);
+      const { error: aErr } = await admin.from("jobs").update({ due_date: "2026-12-01" }).eq("id", IDS.jobLegal412);
+      expect(aErr).toBeNull();
+    });
+
+    it("nobody can make themselves a lawyer (staff_kind has no update grant)", async () => {
+      const { error } = await agent.from("profiles").update({ staff_kind: "lawyer" }).eq("id", IDS.agent);
+      expect(error).not.toBeNull();
+      const { data } = await service.from("profiles").select("staff_kind").eq("id", IDS.lawyer).single();
+      expect(data?.staff_kind).toBe("lawyer");
+    });
+
+    it("quote files must live under quotes/<that request>/", async () => {
+      const other = "10000000-0000-4000-a000-000000000001";
+      const { data: sq } = await service.from("supplier_quotes").select("id").eq("request_id", IDS.reqMat).limit(1).single();
+      const bad = await admin
+        .from("supplier_quotes")
+        .update({ file_path: `quotes/${other}/${crypto.randomUUID()}.pdf` })
+        .eq("id", sq!.id);
+      expect(bad.error).not.toBeNull();
+      const traversal = await admin
+        .from("supplier_quotes")
+        .update({ file_path: `quotes/${IDS.reqMat}/../x.pdf` })
+        .eq("id", sq!.id);
+      expect(traversal.error).not.toBeNull();
+      const ok = await admin
+        .from("supplier_quotes")
+        .update({ file_path: `quotes/${IDS.reqMat}/${crypto.randomUUID()}.pdf` })
+        .eq("id", sq!.id);
+      expect(ok.error).toBeNull();
+    });
+
+    it("field staff never see supplier quotes (or their files)", async () => {
+      const { data } = await agent.from("supplier_quotes").select("id, file_path");
+      expect(data ?? []).toEqual([]);
+      const { data: sq } = await lawyer.from("stage_quotes").select("id, file_path");
+      expect(sq ?? []).toEqual([]);
+    });
+  });
+
   describe("offline uploads are stored once", () => {
     it("the same capture (client_ref) can't be stored twice", async () => {
       const ref = crypto.randomUUID();

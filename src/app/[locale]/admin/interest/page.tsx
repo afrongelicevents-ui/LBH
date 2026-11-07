@@ -19,7 +19,7 @@ export default async function AdminInterestPage({
 
   return (
     <div className="space-y-4">
-      <h1 className="headline text-2xl text-forest">{t("title")}</h1>
+      <h1 className="section-title text-2xl">{t("title")}</h1>
       <p className="text-sm text-muted">{t("hint")}</p>
       <div className="card overflow-x-auto">
         <table className="w-full text-sm">
