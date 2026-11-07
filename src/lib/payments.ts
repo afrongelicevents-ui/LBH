@@ -24,7 +24,7 @@ export async function confirmPaymentByReference(
     })
     .eq("merchant_reference", merchantReference)
     .in("status", ["pending", "submitted"])
-    .select("id, request_id, kind, amount_cents, quote_id")
+    .select("id, request_id, kind, amount_cents, quote_id, stage_id")
     .maybeSingle();
 
   if (error) {
@@ -62,6 +62,16 @@ export async function confirmPaymentByReference(
       .update({ status: "balance_paid" })
       .eq("id", updated.request_id)
       .eq("status", "report_ready");
+  }
+
+  // Materials for a build stage: paid → LBH may now buy them
+  if (updated.kind === "materials" && updated.stage_id) {
+    const { error: stageErr } = await admin
+      .from("build_stages")
+      .update({ status: "paid" })
+      .eq("id", updated.stage_id)
+      .eq("status", "quote_approved");
+    if (stageErr) console.error(`[payments] stage paid: ${stageErr.message}`);
   }
 
   // Invoice for extra payments (deposit/balance invoices are created

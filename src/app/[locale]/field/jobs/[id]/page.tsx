@@ -4,6 +4,8 @@ import { Link } from "@/i18n/navigation";
 import { requireRole } from "@/lib/auth/guard";
 import { signedUrl } from "@/lib/uploads";
 import { formatCents } from "@/lib/money";
+import { loadBuild } from "@/lib/build";
+import StageList from "@/components/build/StageList";
 import {
   VisitForm,
   MediaUploadForm,
@@ -37,6 +39,27 @@ export default async function FieldJobPage({
     title: string;
     details: Record<string, unknown>;
   };
+
+  // Construction build: stage-by-stage work (never any prices for field staff)
+  if (req.type === "build") {
+    const build = await loadBuild(supabase, req.id, { withPrices: false });
+    if (!build) notFound();
+    return (
+      <div className="mx-auto max-w-2xl space-y-4">
+        <div>
+          <Link href="/field" className="text-xs font-semibold text-muted hover:text-forest">
+            ← {t("myJobs")}
+          </Link>
+          <h1 className="headline mt-1 text-2xl text-forest">{build.title}</h1>
+          <p className="text-xs text-muted">
+            {String(build.details.site_address ?? "")}
+            {job.client_first_name ? ` · ${t("client")}: ${job.client_first_name}` : ""}
+          </p>
+        </div>
+        <StageList build={build} role="field" meId={user.id} />
+      </div>
+    );
+  }
 
   const [{ data: documents }, { data: media }, { data: extraCosts }, { data: report }] =
     await Promise.all([

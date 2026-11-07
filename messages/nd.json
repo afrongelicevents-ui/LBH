@@ -310,7 +310,8 @@
       "newLand": "Hlola isitandi",
       "newMaterials": "Odola impahla",
       "chat": "Khuluma leLBH",
-      "myJobs": "Imisebenzi yami"
+      "myJobs": "Imisebenzi yami",
+      "myBuild": "Ukwakha kwami"
     },
     "dashboard": {
       "title": "Izicelo zami",
@@ -406,7 +407,8 @@
       "paymentKind": {
         "deposit": "Idiphozithi",
         "balance": "Eseleyo",
-        "extra": "Eyokwengeza evunyiweyo"
+        "extra": "Eyokwengeza evunyiweyo",
+        "materials": "Impahla yesigaba"
       },
       "paymentStatus": {
         "pending": "Ilindele ukubhadalwa",
@@ -488,7 +490,8 @@
     "client": "Iklayenti",
     "requestType": {
       "land_verification": "Ukuhlola isitandi",
-      "materials": "Impahla"
+      "materials": "Impahla",
+      "build": "Ukwakha"
     },
     "jobStatus": {
       "assigned": "Wabelwe",
@@ -577,7 +580,8 @@
       "interest": "Intshisekelo",
       "settings": "Izilungiselelo",
       "translations": "Izihumutsho",
-      "audit": "I-audit log"
+      "audit": "I-audit log",
+      "builds": "Izigaba zokwakha"
     },
     "needsYou": {
       "title": "Kudinga wena",
@@ -588,7 +592,8 @@
         "reports": "Imibiko okumele ihlolwe",
         "proofs": "Ubufakazi bokubhadala obokuqinisekiswa",
         "extras": "Izicelo zentengo yokwengeza",
-        "chats": "Izingxoxo ezingafundwanga"
+        "chats": "Izingxoxo ezingafundwanga",
+        "stages": "Izigaba zokwakha ezilindele i-LBH"
       }
     },
     "common": {
@@ -679,7 +684,8 @@
       "markCallBooked": "Beka ucingo lubhukiwe",
       "markDone": "Beka kuphelile",
       "markCancelled": "Khansela isicelo",
-      "media": "Okwasensimini"
+      "media": "Okwasensimini",
+      "openBuildStages": "Vula izigaba zokwakha"
     },
     "payments": {
       "title": "Izimbadalo",
@@ -736,6 +742,129 @@
       "reviewed": "Kuhloliwe",
       "markReviewed": "Beka kuhloliwe",
       "fileNote": "Nxa yonke imitsho isihloliwe ngokhuluma ulimi, beka i-needs_review ibe yi-false efayeleni lolimi ubusudeploya futhi."
+    }
+  },
+  "build": {
+    "myBuild": "Ukwakha kwami",
+    "buildStages": "Izigaba zokwakha",
+    "noBuildYet": "Awukabi lephrojekthi yokwakha. Bhuka ucingo lwamahala siyilungise lawe.",
+    "noBuilds": "Akulamaphrojekthi okwakha.",
+    "stageN": "Isigaba {n}",
+    "progress": "Izigaba ezingu-{done} kwezingu-{total} seziphelile",
+    "currentStage": "khathesi: {stage}",
+    "howItWorksShort": "Isigaba ngasinye: ukhetha ikhotheshini → uyabhadala → siyathenga (isithombe serisidi) → isithombe sokulethwa → abakhi bayasebenza → siyahlola (izithombe + yonke impahla esetshenzisiweyo) → uyavuma. Besekuvuleka isigaba esilandelayo.",
+    "lockedUntil": "Siyavuleka nxa “{stage}” sesivunyiwe.",
+    "lockedStart": "Siyavuleka nxa ukwakha sekuqalile.",
+    "waitQuotes": "Silindele iklayenti ukuthi likhethe umthengisi.",
+    "collectingQuotes": "Sibutha amakhotheshini abathengisi walesi sigaba.",
+    "noQuotesYet": "Akulamakhotheshini — engeza amabili okungenani.",
+    "pickSupplier": "Qathanisa amakhotheshini ukhethe umthengisi OYEDWA. Akulalutho oluthengwayo ungakabhadali.",
+    "chooseSupplier": "Khetha lo mthengisi",
+    "chooseSupplierConfirm": "Ukhetha u-{supplier}? Sizakucela ukubhadala impahla yalesi sigaba.",
+    "yesChoose": "Yebo, khetha",
+    "cancel": "Khansela",
+    "waitPayment": "Silindele imbadalo yeklayenti.",
+    "chosenSupplier": "Umthengisi okhethiweyo: {supplier}",
+    "paidNowBuying": "Kubhadaliwe — i-LBH ithenga impahla khathesi.",
+    "boughtWaitingDelivery": "Impahla ithengiwe — ilindele ukulethwa.",
+    "deliveryStep": "Ukulethwa: faka isithombe sempahla esayithini",
+    "deliveredWaitingBuilders": "Impahla ilethiwe esayithini.",
+    "buildersWorking": "Abakhi basebenza kulesi sigaba.",
+    "inspectionStep": "Ukuhlola (ngomunye ONGAYITHENGANGA impahla)",
+    "inspectionReport": "Umbiko wokuhlola",
+    "materialsUsed": "Yonke impahla esetshenzisiweyo kulesi sigaba",
+    "materialsHint": "Okukodwa emugqeni, isibonelo “Cement 42.5N — 58 bags”.",
+    "inspectionPhotos": "Izithombe zokuhlola",
+    "inspectionNotes": "Amanothi okuhlola",
+    "submitInspection": "Thumela ukuhlola",
+    "waitClientApproval": "Silindele iklayenti ukuthi livume lesi sigaba.",
+    "approveStage": "Vuma isigaba",
+    "approveStageConfirm": "Uvuma “{stage}”? Lokhu kuqinisekisa ukuthi umsebenzi lempahla kunjengoba kutshengisiwe, kuvule isigaba esilandelayo.",
+    "yesApprove": "Yebo, vuma",
+    "stageApprovedMsg": "Kuvunyiwe — isigaba esilandelayo sesivulekile.",
+    "approvedBy": "Kuvunywe ngu-{name} · {date}",
+    "photos": "Izithombe ({count})",
+    "mediaKind": {
+      "receipt": "Amarisidi",
+      "delivery": "Ukulethwa",
+      "progress": "Umsebenzi wabakhi",
+      "inspection": "Ukuhlola"
+    },
+    "supplier": "Umthengisi",
+    "amountPaid": "Imali ebhadaliweyo (USD)",
+    "receiptPhoto": "Isithombe serisidi",
+    "photoNote": "Inothi (akubanjwa ngamandla)",
+    "recordPurchase": "Bhala ukuthenga",
+    "uploading": "Kufakwa {done} ku-{total}…",
+    "addPhotos": {
+      "delivery": "Faka isithombe sokulethwa",
+      "progress": "Faka izithombe zomsebenzi",
+      "inspection": "Faka izithombe zokuhlola"
+    },
+    "advance": {
+      "delivered": "Impahla ilethiwe",
+      "building": "Abakhi sebeqalile"
+    },
+    "addQuote": "Engeza ikhotheshini yomthengisi",
+    "amountUsd": "Imali (USD)",
+    "quoteItems": "Impahla (okukodwa emugqeni)",
+    "addQuoteButton": "Engeza ikhotheshini",
+    "edit": "Lungisa",
+    "moveUp": "Khuphula",
+    "moveDown": "Ehlisa",
+    "remove": "Susa",
+    "save": "Gcina",
+    "addStage": "Engeza isigaba",
+    "stageName": "Ibizo lesigaba",
+    "stageDescription": "Okwenzakala kulesi sigaba",
+    "addStageButton": "Engeza isigaba",
+    "newBuild": "Qala iphrojekthi entsha yokwakha",
+    "client": "Iklayenti",
+    "fieldStaff": "Abasebenzi basensimini",
+    "projectTitle": "Ibizo lephrojekthi",
+    "siteAddress": "Ikheli lesayithi",
+    "newBuildHint": "Kwenza izigaba ezingu-6 ezijwayelekileyo (Foundation → Finishes). Ungalungisa, wengeze, ususe loba uhlele kabusha izigaba ezingakaqali.",
+    "createBuild": "Yenza iphrojekthi",
+    "paymentsAndChat": "Izimbadalo lobufakazi balephrojekthi",
+    "buyerRule": "Umthetho: othenga impahla yesigaba kangeke asihlole lesosigaba.",
+    "saved": "Kugciniwe.",
+    "paymentStatus": {
+      "pending": "Ilindele ukubhadalwa",
+      "submitted": "Ubufakazi buyahlolwa",
+      "confirmed": "Ibhadaliwe",
+      "failed": "Yehlulekile",
+      "cancelled": "Ikhanselisiwe"
+    },
+    "error": {
+      "buyerCannotInspect": "Nguwe othenge impahla yalesi sigaba, ngakho omunye kumele asihlole.",
+      "stageLocked": "Lesi sigaba sivaliwe — amakhotheshini engezwa esigabeni esikhona kuphela.",
+      "notPaid": "Iklayenti kalikabhadali lesi sigaba.",
+      "needDeliveryPhoto": "Qala ufake isithombe sokulethwa.",
+      "needInspectionPhoto": "Faka isithombe sokuhlola esisodwa okungenani.",
+      "needMaterials": "Bhala yonke impahla esetshenzisiweyo (okukodwa emugqeni) lamanothi.",
+      "needReceipt": "Faka isithombe serisidi.",
+      "stageStarted": "Izigaba ezingakaqali kuphela ezingahanjiswa loba zisuswe.",
+      "stageApproved": "Isigaba esivunyiweyo kasiguqulwa.",
+      "wrongStep": "Lesi sinyathelo kasitholakali khathesi — vuselela ikhasi.",
+      "db": "Kakugcinwanga — zama futhi.",
+      "invalid": "Khangela okubhalileyo.",
+      "auth": "Akuvunyelwa (i-2FA isilungisiwe yini?).",
+      "toobig": "Ifayela likhulu kakhulu (izithombe 30 MB, amavidiyo 50 MB).",
+      "filetype": "Sebenzisa isithombe (JPG/PNG) loba ividiyo.",
+      "heic": "Izithombe ze-HEIC kazisekelwa — beka ikhamera ku-Most Compatible.",
+      "upload": "Ukufaka kwehlulekile — khangela inethiwekhi.",
+      "error": "Kukhona okungahambanga kuhle — zama futhi."
+    },
+    "status": {
+      "locked": "Kuvaliwe",
+      "quoting": "Amakhotheshini abathengisi",
+      "quote_approved": "Kulindele ukubhadalwa",
+      "paid": "Kubhadaliwe — kuyathengwa",
+      "purchased": "Kuthengiwe",
+      "delivered": "Kulethiwe",
+      "building": "Abakhi bayasebenza",
+      "inspected": "Kulindele imvumo yakho",
+      "approved": "Kuvunyiwe"
     }
   }
 }

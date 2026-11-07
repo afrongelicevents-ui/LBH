@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
+import { Link, redirect } from "@/i18n/navigation";
 import { requireRole } from "@/lib/auth/guard";
 import { formatCents, depositSplit } from "@/lib/money";
 import { signedUrl } from "@/lib/uploads";
@@ -31,6 +31,7 @@ export default async function RequestDetailPage({
     .eq("id", id)
     .maybeSingle();
   if (!req) notFound();
+  if (req.type === "build") redirect({ href: `/portal/build/${id}`, locale });
 
   const [
     { data: documents },

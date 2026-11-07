@@ -309,7 +309,8 @@
       "newLand": "Verify land",
       "newMaterials": "Order materials",
       "chat": "Chat with LBH",
-      "myJobs": "My jobs"
+      "myJobs": "My jobs",
+      "myBuild": "My build"
     },
     "dashboard": {
       "title": "My requests",
@@ -405,7 +406,8 @@
       "paymentKind": {
         "deposit": "Deposit",
         "balance": "Balance",
-        "extra": "Approved extra"
+        "extra": "Approved extra",
+        "materials": "Stage materials"
       },
       "paymentStatus": {
         "pending": "Awaiting payment",
@@ -487,7 +489,8 @@
     "client": "Client",
     "requestType": {
       "land_verification": "Land verification",
-      "materials": "Materials"
+      "materials": "Materials",
+      "build": "Construction build"
     },
     "jobStatus": {
       "assigned": "Assigned",
@@ -576,7 +579,8 @@
       "interest": "Interest",
       "settings": "Settings",
       "translations": "Translations",
-      "audit": "Audit log"
+      "audit": "Audit log",
+      "builds": "Build stages"
     },
     "needsYou": {
       "title": "Needs you",
@@ -587,7 +591,8 @@
         "reports": "Reports to review",
         "proofs": "Payment proofs to confirm",
         "extras": "Extra-cost requests",
-        "chats": "Unread chats"
+        "chats": "Unread chats",
+        "stages": "Build stages waiting for LBH"
       }
     },
     "common": {
@@ -678,7 +683,8 @@
       "markCallBooked": "Mark call booked",
       "markDone": "Mark done",
       "markCancelled": "Cancel request",
-      "media": "Field media"
+      "media": "Field media",
+      "openBuildStages": "Open build stages"
     },
     "payments": {
       "title": "Payments",
@@ -735,6 +741,129 @@
       "reviewed": "Reviewed",
       "markReviewed": "Mark reviewed",
       "fileNote": "When every string is reviewed by a native speaker, set needs_review to false in the language file and redeploy."
+    }
+  },
+  "build": {
+    "myBuild": "My build",
+    "buildStages": "Build stages",
+    "noBuildYet": "You don't have a build project yet. Book a free call and we'll set one up with you.",
+    "noBuilds": "No build projects yet.",
+    "stageN": "Stage {n}",
+    "progress": "{done} of {total} stages done",
+    "currentStage": "now: {stage}",
+    "howItWorksShort": "Each stage: you choose a supplier quote → you pay → we buy (receipt photo) → delivery photo → builders work → we inspect (photos + all materials used) → you approve. Then the next stage unlocks.",
+    "lockedUntil": "Unlocks when “{stage}” is approved.",
+    "lockedStart": "Unlocks when the build starts.",
+    "waitQuotes": "Waiting for the client to choose a supplier.",
+    "collectingQuotes": "We are collecting supplier quotes for this stage.",
+    "noQuotesYet": "No quotes yet — add at least two.",
+    "pickSupplier": "Compare the quotes and choose ONE supplier. Nothing is bought until you pay.",
+    "chooseSupplier": "Choose this supplier",
+    "chooseSupplierConfirm": "Choose {supplier}? We'll then ask you to pay for this stage's materials.",
+    "yesChoose": "Yes, choose",
+    "cancel": "Cancel",
+    "waitPayment": "Waiting for the client's payment.",
+    "chosenSupplier": "Chosen supplier: {supplier}",
+    "paidNowBuying": "Paid — LBH is buying the materials now.",
+    "boughtWaitingDelivery": "Materials bought — waiting for delivery.",
+    "deliveryStep": "Delivery: add a photo of the materials on site",
+    "deliveredWaitingBuilders": "Materials delivered to site.",
+    "buildersWorking": "Builders are working on this stage.",
+    "inspectionStep": "Inspection (by someone who did NOT buy the materials)",
+    "inspectionReport": "Inspection report",
+    "materialsUsed": "All materials used on this stage",
+    "materialsHint": "One per line, e.g. “Cement 42.5N — 58 bags”.",
+    "inspectionPhotos": "Inspection photos",
+    "inspectionNotes": "Inspection notes",
+    "submitInspection": "Submit inspection",
+    "waitClientApproval": "Waiting for the client to approve this stage.",
+    "approveStage": "Approve stage",
+    "approveStageConfirm": "Approve “{stage}”? This confirms the work and materials are as shown, and unlocks the next stage.",
+    "yesApprove": "Yes, approve",
+    "stageApprovedMsg": "Approved — the next stage is now open.",
+    "approvedBy": "Approved by {name} · {date}",
+    "photos": "Photos ({count})",
+    "mediaKind": {
+      "receipt": "Receipts",
+      "delivery": "Delivery",
+      "progress": "Builders' progress",
+      "inspection": "Inspection"
+    },
+    "supplier": "Supplier",
+    "amountPaid": "Amount paid (USD)",
+    "receiptPhoto": "Receipt photo",
+    "photoNote": "Note (optional)",
+    "recordPurchase": "Record purchase",
+    "uploading": "Uploading {done} of {total}…",
+    "addPhotos": {
+      "delivery": "Add delivery photo",
+      "progress": "Add progress photos",
+      "inspection": "Add inspection photos"
+    },
+    "advance": {
+      "delivered": "Mark materials delivered",
+      "building": "Builders have started"
+    },
+    "addQuote": "Add a supplier quote",
+    "amountUsd": "Amount (USD)",
+    "quoteItems": "Materials (one per line)",
+    "addQuoteButton": "Add quote",
+    "edit": "Edit",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "remove": "Remove",
+    "save": "Save",
+    "addStage": "Add a stage",
+    "stageName": "Stage name",
+    "stageDescription": "What happens in this stage",
+    "addStageButton": "Add stage",
+    "newBuild": "Start a new build project",
+    "client": "Client",
+    "fieldStaff": "Field staff",
+    "projectTitle": "Project name",
+    "siteAddress": "Site address",
+    "newBuildHint": "Creates the 6 standard stages (Foundation → Finishes). You can rename, add, remove or reorder stages that haven't started.",
+    "createBuild": "Create build",
+    "paymentsAndChat": "Payments & proofs for this project",
+    "buyerRule": "Rule: whoever buys a stage's materials cannot inspect that stage.",
+    "saved": "Saved.",
+    "paymentStatus": {
+      "pending": "Awaiting payment",
+      "submitted": "Proof under review",
+      "confirmed": "Paid",
+      "failed": "Failed",
+      "cancelled": "Cancelled"
+    },
+    "error": {
+      "buyerCannotInspect": "You bought this stage's materials, so someone else must inspect it.",
+      "stageLocked": "This stage is locked — quotes can only be added to the current stage.",
+      "notPaid": "The client hasn't paid for this stage yet.",
+      "needDeliveryPhoto": "Add a delivery photo first.",
+      "needInspectionPhoto": "Add at least one inspection photo.",
+      "needMaterials": "List all materials used (one per line) and add notes.",
+      "needReceipt": "Add a photo of the receipt.",
+      "stageStarted": "Only stages that haven't started can be moved or removed.",
+      "stageApproved": "An approved stage can't be changed.",
+      "wrongStep": "That step isn't available right now — refresh the page.",
+      "db": "Could not save — try again.",
+      "invalid": "Please check the fields.",
+      "auth": "Not allowed (is 2FA set up?).",
+      "toobig": "File too big (photos 30 MB, videos 50 MB).",
+      "filetype": "Use a photo (JPG/PNG) or video.",
+      "heic": "HEIC photos aren't supported — set the camera to Most Compatible.",
+      "upload": "Upload failed — check your connection.",
+      "error": "Something went wrong — try again."
+    },
+    "status": {
+      "locked": "Locked",
+      "quoting": "Supplier quotes",
+      "quote_approved": "Awaiting payment",
+      "paid": "Paid — buying",
+      "purchased": "Bought",
+      "delivered": "Delivered",
+      "building": "Builders working",
+      "inspected": "Ready for your approval",
+      "approved": "Approved"
     }
   }
 }

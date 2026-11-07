@@ -13,6 +13,7 @@ export default async function AdminNeedsYouPage({
   setRequestLocale(locale);
   const { supabase } = await requireRole(locale, ["admin"]);
   const t = await getTranslations("admin.needsYou");
+  const tb = await getTranslations("build");
 
   const [
     { data: newBookings },
@@ -21,6 +22,7 @@ export default async function AdminNeedsYouPage({
     { data: paymentProofs },
     { data: pendingExtraCosts },
     { data: unreadChats },
+    { data: stageWork },
   ] = await Promise.all([
     supabase
       .from("call_bookings")
@@ -48,6 +50,11 @@ export default async function AdminNeedsYouPage({
       .from("messages")
       .select("client_id, profiles:client_id(full_name)")
       .eq("read_by_admin", false),
+    supabase
+      .from("build_stages")
+      .select("request_id, name, status, service_requests(title)")
+      .in("status", ["quoting", "paid", "purchased", "delivered", "building"])
+      .order("updated_at"),
   ]);
 
   const chatClients = Array.from(
@@ -102,6 +109,14 @@ export default async function AdminNeedsYouPage({
       items: (pendingExtraCosts ?? []).map((e) => ({
         label: `${(e.service_requests as unknown as { title: string })?.title ?? ""} · ${e.title} · ${formatCents(e.amount_cents)}`,
         href: `/admin/requests/${e.request_id}#extras`,
+      })),
+    },
+    {
+      key: "stages",
+      count: stageWork?.length ?? 0,
+      items: (stageWork ?? []).map((st) => ({
+        label: `${(st.service_requests as unknown as { title: string })?.title ?? ""} · ${st.name}: ${tb(`status.${st.status}` as never)}`,
+        href: `/admin/builds/${st.request_id}`,
       })),
     },
     {

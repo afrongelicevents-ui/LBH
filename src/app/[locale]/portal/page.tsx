@@ -79,7 +79,7 @@ export default async function PortalDashboard({
             {requests.map((r) => (
               <li key={r.id}>
                 <Link
-                  href={`/portal/requests/${r.id}`}
+                  href={r.type === "build" ? `/portal/build/${r.id}` : `/portal/requests/${r.id}`}
                   className="card flex flex-col gap-3 p-4 transition-shadow hover:shadow-(--shadow-card-hover)"
                 >
                   <div className="flex items-center justify-between gap-2">

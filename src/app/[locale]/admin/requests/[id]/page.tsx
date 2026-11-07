@@ -95,6 +95,13 @@ export default async function AdminRequestDetailPage({
         <div className="mt-3">
           <StatusTimeline status={req.status as RequestStatus} />
         </div>
+        {req.type === "build" && (
+          <p className="mt-2">
+            <Link href={`/admin/builds/${req.id}`} className="btn btn-gold min-h-9 px-4 text-xs">
+              {t("openBuildStages")}
+            </Link>
+          </p>
+        )}
         <div className="mt-3">
           <RequestStatusButtons requestId={req.id} />
         </div>

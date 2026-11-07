@@ -310,7 +310,8 @@
       "newLand": "Ongorora stendi",
       "newMaterials": "Odha zvivakwa",
       "chat": "Taura neLBH",
-      "myJobs": "Mabasa angu"
+      "myJobs": "Mabasa angu",
+      "myBuild": "Kuvaka kwangu"
     },
     "dashboard": {
       "title": "Zvikumbiro zvangu",
@@ -406,7 +407,8 @@
       "paymentKind": {
         "deposit": "Dhipoziti",
         "balance": "Yasara",
-        "extra": "Yekuwedzera yakabvumwa"
+        "extra": "Yekuwedzera yakabvumwa",
+        "materials": "Zvivakwa zvenhanho"
       },
       "paymentStatus": {
         "pending": "Yakamirira kubhadharwa",
@@ -488,7 +490,8 @@
     "client": "Mutengi",
     "requestType": {
       "land_verification": "Kuongorora stendi",
-      "materials": "Zvivakwa"
+      "materials": "Zvivakwa",
+      "build": "Kuvaka"
     },
     "jobStatus": {
       "assigned": "Rakapiwa",
@@ -577,7 +580,8 @@
       "interest": "Chido",
       "settings": "Masettings",
       "translations": "Shanduro",
-      "audit": "Audit log"
+      "audit": "Audit log",
+      "builds": "Nhanho dzekuvaka"
     },
     "needsYou": {
       "title": "Zvinoda iwe",
@@ -588,7 +592,8 @@
         "reports": "Magwaro ekuongorora",
         "proofs": "Umbowo hwekubhadhara hwekusimbisa",
         "extras": "Zvikumbiro zvemitengo yekuwedzera",
-        "chats": "Hurukuro dzisina kuverengwa"
+        "chats": "Hurukuro dzisina kuverengwa",
+        "stages": "Nhanho dzekuvaka dzakamirira LBH"
       }
     },
     "common": {
@@ -679,7 +684,8 @@
       "markCallBooked": "Isa runhare rwabhukwa",
       "markDone": "Isa zvapera",
       "markCancelled": "Kanzura chikumbiro",
-      "media": "Zvemumunda"
+      "media": "Zvemumunda",
+      "openBuildStages": "Vhura nhanho dzekuvaka"
     },
     "payments": {
       "title": "Kubhadhara",
@@ -736,6 +742,129 @@
       "reviewed": "Yaongororwa",
       "markReviewed": "Isa yaongororwa",
       "fileNote": "Kana mitsara yese yaongororwa nemutauri wechizvarwa, isa needs_review kuita false mufaira remutauro wodeploya zvakare."
+    }
+  },
+  "build": {
+    "myBuild": "Kuvaka kwangu",
+    "buildStages": "Nhanho dzekuvaka",
+    "noBuildYet": "Hauna purojekiti yekuvaka parizvino. Bhuka runhare rwemahara tigoigadzira newe.",
+    "noBuilds": "Hapana purojekiti dzekuvaka.",
+    "stageN": "Nhanho {n}",
+    "progress": "Nhanho {done} pa{total} dzapera",
+    "currentStage": "izvozvi: {stage}",
+    "howItWorksShort": "Nhanho imwe neimwe: unosarudza kotesheni → unobhadhara → tinotenga (mufananidzo werisiti) → mufananidzo wekusvitswa → vavaki vanoshanda → tinoongorora (mifananidzo + zvese zvashandiswa) → unobvumira. Ipapo nhanho inotevera inovhurwa.",
+    "lockedUntil": "Inovhurwa kana “{stage}” yabvumirwa.",
+    "lockedStart": "Inovhurwa kana kuvaka kwatanga.",
+    "waitQuotes": "Takamirira mutengi kuti asarudze mutengesi.",
+    "collectingQuotes": "Tiri kuunganidza makotesheni evatengesi enhanho iyi.",
+    "noQuotesYet": "Hapana makotesheni — wedzera maviri zvishoma.",
+    "pickSupplier": "Enzanisa makotesheni usarudze mutengesi MUMWE. Hapana chinotengwa usati wabhadhara.",
+    "chooseSupplier": "Sarudza mutengesi uyu",
+    "chooseSupplierConfirm": "Sarudza {supplier}? Tichakukumbira kubhadhara zvivakwa zvenhanho iyi.",
+    "yesChoose": "Hongu, sarudza",
+    "cancel": "Kanzura",
+    "waitPayment": "Takamirira kubhadhara kwemutengi.",
+    "chosenSupplier": "Mutengesi asarudzwa: {supplier}",
+    "paidNowBuying": "Zvabhadharwa — LBH iri kutenga zvivakwa izvozvi.",
+    "boughtWaitingDelivery": "Zvivakwa zvatengwa — zvakamirira kusvitswa.",
+    "deliveryStep": "Kusvitswa: isa mufananidzo wezvivakwa pasaiti",
+    "deliveredWaitingBuilders": "Zvivakwa zvasvitswa pasaiti.",
+    "buildersWorking": "Vavaki vari kushanda panhanho iyi.",
+    "inspectionStep": "Kuongorora (nemumwe munhu ASINA kutenga zvivakwa)",
+    "inspectionReport": "Gwaro rekuongorora",
+    "materialsUsed": "Zvivakwa zvese zvashandiswa panhanho iyi",
+    "materialsHint": "Chimwe pamutsara, semuenzaniso “Cement 42.5N — 58 bags”.",
+    "inspectionPhotos": "Mifananidzo yekuongorora",
+    "inspectionNotes": "Zvinyorwa zvekuongorora",
+    "submitInspection": "Tumira kuongorora",
+    "waitClientApproval": "Takamirira mutengi kuti abvumire nhanho iyi.",
+    "approveStage": "Bvumira nhanho",
+    "approveStageConfirm": "Bvumira “{stage}”? Izvi zvinosimbisa kuti basa nezvivakwa zvakaita sezvinoratidzwa, uye zvinovhura nhanho inotevera.",
+    "yesApprove": "Hongu, bvumira",
+    "stageApprovedMsg": "Zvabvumirwa — nhanho inotevera yavhurwa.",
+    "approvedBy": "Yakabvumirwa na{name} · {date}",
+    "photos": "Mifananidzo ({count})",
+    "mediaKind": {
+      "receipt": "Marisiti",
+      "delivery": "Kusvitswa",
+      "progress": "Basa revavaki",
+      "inspection": "Kuongorora"
+    },
+    "supplier": "Mutengesi",
+    "amountPaid": "Mari yabhadharwa (USD)",
+    "receiptPhoto": "Mufananidzo werisiti",
+    "photoNote": "Shoko (hazvimanikidzwi)",
+    "recordPurchase": "Nyora kutenga",
+    "uploading": "Kuisa {done} pa{total}…",
+    "addPhotos": {
+      "delivery": "Isa mufananidzo wekusvitswa",
+      "progress": "Isa mifananidzo yebasa",
+      "inspection": "Isa mifananidzo yekuongorora"
+    },
+    "advance": {
+      "delivered": "Zvivakwa zvasvitswa",
+      "building": "Vavaki vatanga"
+    },
+    "addQuote": "Wedzera kotesheni yemutengesi",
+    "amountUsd": "Mari (USD)",
+    "quoteItems": "Zvivakwa (chimwe pamutsara)",
+    "addQuoteButton": "Wedzera kotesheni",
+    "edit": "Gadzirisa",
+    "moveUp": "Kwidza",
+    "moveDown": "Burutsa",
+    "remove": "Bvisa",
+    "save": "Chengeta",
+    "addStage": "Wedzera nhanho",
+    "stageName": "Zita renhanho",
+    "stageDescription": "Zvinoitika munhanho iyi",
+    "addStageButton": "Wedzera nhanho",
+    "newBuild": "Tanga purojekiti itsva yekuvaka",
+    "client": "Mutengi",
+    "fieldStaff": "Vashandi vemumunda",
+    "projectTitle": "Zita repurojekiti",
+    "siteAddress": "Kero yesaiti",
+    "newBuildHint": "Inogadzira nhanho 6 dzakajairwa (Foundation → Finishes). Unogona kugadzirisa, kuwedzera, kubvisa kana kuronga patsva nhanho dzisati dzatanga.",
+    "createBuild": "Gadzira purojekiti",
+    "paymentsAndChat": "Kubhadhara neumbowo hwepurojekiti iyi",
+    "buyerRule": "Mutemo: anotenga zvivakwa zvenhanho haagoni kuongorora nhanho iyoyo.",
+    "saved": "Zvachengetwa.",
+    "paymentStatus": {
+      "pending": "Yakamirira kubhadharwa",
+      "submitted": "Umbowo huri kuongororwa",
+      "confirmed": "Yabhadharwa",
+      "failed": "Yakundikana",
+      "cancelled": "Yakanzurwa"
+    },
+    "error": {
+      "buyerCannotInspect": "Ndiwe wakatenga zvivakwa zvenhanho iyi, saka mumwe munhu ndiye anofanira kuiongorora.",
+      "stageLocked": "Nhanho iyi yakakiyiwa — makotesheni anowedzerwa panhanho iripo chete.",
+      "notPaid": "Mutengi haasati abhadhara nhanho iyi.",
+      "needDeliveryPhoto": "Tanga waisa mufananidzo wekusvitswa.",
+      "needInspectionPhoto": "Isa mufananidzo wekuongorora umwe zvishoma.",
+      "needMaterials": "Nyora zvivakwa zvese zvashandiswa (chimwe pamutsara) nezvinyorwa.",
+      "needReceipt": "Isa mufananidzo werisiti.",
+      "stageStarted": "Nhanho dzisati dzatanga chete ndidzo dzinogona kufambiswa kana kubviswa.",
+      "stageApproved": "Nhanho yabvumirwa haichachinjwi.",
+      "wrongStep": "Nhanho iyi haiwanikwe izvozvi — vandudza peji.",
+      "db": "Hazvina kuchengetwa — edza zvakare.",
+      "invalid": "Tarisa zvawanyora.",
+      "auth": "Hazvibvumirwe (2FA yakagadzwa here?).",
+      "toobig": "Faira rakakurisa (mifananidzo 30 MB, mavhidhiyo 50 MB).",
+      "filetype": "Shandisa mufananidzo (JPG/PNG) kana vhidhiyo.",
+      "heic": "Mifananidzo yeHEIC haitsigirwi — isa kamera pa Most Compatible.",
+      "upload": "Kuisa kwakundikana — tarisa network.",
+      "error": "Pane chakanganisika — edza zvakare."
+    },
+    "status": {
+      "locked": "Yakakiyiwa",
+      "quoting": "Makotesheni evatengesi",
+      "quote_approved": "Yakamirira kubhadharwa",
+      "paid": "Yabhadharwa — kutenga",
+      "purchased": "Zvatengwa",
+      "delivered": "Zvasvitswa",
+      "building": "Vavaki vari kushanda",
+      "inspected": "Yakamirira mvumo yako",
+      "approved": "Yabvumirwa"
     }
   }
 }

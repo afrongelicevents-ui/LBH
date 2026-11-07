@@ -21,6 +21,7 @@ export default async function PortalLayout({
       areaKey="client"
       nav={[
         { href: "/portal", label: t("dashboard") },
+        { href: "/portal/build", label: t("myBuild") },
         { href: "/portal/requests/new-land", label: t("newLand") },
         { href: "/portal/requests/new-materials", label: t("newMaterials") },
         { href: "/portal/chat", label: t("chat") },

@@ -123,9 +123,11 @@ d("RLS & business rules (local Supabase)", () => {
   // ---------- client isolation ----------
   describe("clients see only their own data", () => {
     it("client sees own requests only", async () => {
-      const { data } = await client.from("service_requests").select("id");
-      const ids = (data ?? []).map((r) => r.id).sort();
-      expect(ids).toEqual([IDS.reqLand, IDS.reqMat].sort());
+      const { data } = await client.from("service_requests").select("id, client_id");
+      const ids = (data ?? []).map((r) => r.id);
+      expect(ids).toEqual(expect.arrayContaining([IDS.reqLand, IDS.reqMat]));
+      expect(ids).not.toContain(IDS.reqDone); // client2's
+      expect((data ?? []).every((r) => r.client_id === IDS.client)).toBe(true);
     });
 
     it("client2 cannot read client1's request, quote or messages", async () => {
@@ -178,8 +180,9 @@ d("RLS & business rules (local Supabase)", () => {
   // ---------- field staff: assigned only, never prices ----------
   describe("field staff", () => {
     it("sees only assigned jobs", async () => {
-      const { data: agentJobs } = await agent.from("jobs").select("id");
-      expect((agentJobs ?? []).length).toBe(2);
+      const { data: agentJobs } = await agent.from("jobs").select("id, assigned_to");
+      expect((agentJobs ?? []).length).toBeGreaterThanOrEqual(2);
+      expect((agentJobs ?? []).every((j) => j.assigned_to === IDS.agent)).toBe(true);
       const { data: lawyerJobs } = await lawyer.from("jobs").select("id");
       expect(lawyerJobs).toEqual([]);
     });
@@ -480,6 +483,175 @@ d("RLS & business rules (local Supabase)", () => {
         sections: {},
       });
       expect(error).not.toBeNull();
+    });
+  });
+
+  // ---------- construction build stages ----------
+  describe("build stages: strict order, client decides, buyer never inspects", () => {
+    let req: string, s1: string, s2: string, s3: string, quoteA: string;
+
+    beforeAll(async () => {
+      req = crypto.randomUUID();
+      [s1, s2, s3] = [crypto.randomUUID(), crypto.randomUUID(), crypto.randomUUID()];
+      await service.from("service_requests").insert({
+        id: req, client_id: IDS.client, type: "build", status: "on_site", title: "TEST build " + req.slice(0, 6),
+      });
+      await service.from("jobs").insert({ request_id: req, assigned_to: IDS.agent, created_by: IDS.admin });
+      const { error } = await service.from("build_stages").insert([
+        { id: s1, request_id: req, position: 1, name: "Foundation", status: "locked" },
+        { id: s2, request_id: req, position: 2, name: "Slab", status: "locked" },
+        { id: s3, request_id: req, position: 3, name: "Window level", status: "locked" },
+      ]);
+      if (error) throw new Error(error.message);
+    });
+
+    it("admin starts the build → first stage opens for quotes", async () => {
+      const { error } = await admin.rpc("start_build", { p_request_id: req });
+      expect(error).toBeNull();
+      const { data } = await service.from("build_stages").select("status").eq("id", s1).single();
+      expect(data?.status).toBe("quoting");
+    });
+
+    it("locked stages can't be bought for (no quotes on a locked stage)", async () => {
+      const { error } = await admin.from("stage_quotes").insert({ stage_id: s2, request_id: req, supplier_name: "X", amount_cents: 100 });
+      expect(error).not.toBeNull();
+    });
+
+    it("admin adds supplier quotes to the current stage", async () => {
+      const { data, error } = await admin.from("stage_quotes")
+        .insert({ stage_id: s1, request_id: req, supplier_name: "TEST Supplier A", amount_cents: 50000, items: "Cement x 10" })
+        .select("id").single();
+      expect(error).toBeNull();
+      quoteA = data!.id;
+      await admin.from("stage_quotes").insert({ stage_id: s1, request_id: req, supplier_name: "TEST Supplier B", amount_cents: 55000 });
+    });
+
+    it("field staff see the stages but NEVER the quote prices; others see nothing", async () => {
+      const { data: st } = await agent.from("build_stages").select("id").eq("request_id", req);
+      expect(st?.length).toBe(3);
+      const { data: q } = await agent.from("stage_quotes").select("amount_cents").eq("request_id", req);
+      expect(q ?? []).toEqual([]);
+      const { data: other } = await lawyer.from("build_stages").select("id").eq("request_id", req);
+      expect(other ?? []).toEqual([]);
+      const { data: c2 } = await client2.from("build_stages").select("id").eq("request_id", req);
+      expect(c2 ?? []).toEqual([]);
+    });
+
+    it("admin cannot approve a quote or skip steps for the client", async () => {
+      const { error: e1 } = await admin.from("stage_quotes").update({ status: "approved" }).eq("id", quoteA);
+      expect(e1).not.toBeNull();
+      const { error: e2 } = await admin.from("build_stages").update({ status: "quote_approved" }).eq("id", s1);
+      expect(e2).not.toBeNull();
+    });
+
+    it("another client cannot approve this client's quote", async () => {
+      const { error } = await client2.rpc("approve_stage_quote", { p_quote_id: quoteA });
+      expect(error).not.toBeNull();
+    });
+
+    it("client approves ONE quote → materials payment created, other quote rejected", async () => {
+      const { data: paymentId, error } = await client.rpc("approve_stage_quote", { p_quote_id: quoteA });
+      expect(error).toBeNull();
+      const { data: p } = await service.from("payments").select("kind, amount_cents, stage_id, status").eq("id", paymentId).single();
+      expect(p).toEqual({ kind: "materials", amount_cents: 50000, stage_id: s1, status: "pending" });
+      const { data: qs } = await service.from("stage_quotes").select("status").eq("stage_id", s1).order("amount_cents");
+      expect(qs?.map((q) => q.status)).toEqual(["approved", "rejected"]);
+    });
+
+    it("nothing can be bought before the client has paid", async () => {
+      const { error } = await agent.from("stage_purchases").insert({ stage_id: s1, request_id: req, purchased_by: IDS.agent, supplier_name: "X", amount_cents: 1 });
+      expect(error).not.toBeNull();
+    });
+
+    it("payment confirmed (server) → stage paid", async () => {
+      const { error } = await service.from("build_stages").update({ status: "paid" }).eq("id", s1);
+      expect(error).toBeNull();
+    });
+
+    it("field agent buys the materials with a receipt photo → purchased", async () => {
+      const { data: m, error: mErr } = await agent.from("media").insert({
+        stage_id: s1, request_id: req, uploader_id: IDS.agent, kind: "receipt",
+        storage_path: `stages/${s1}/r.jpg`, amount_cents: 50000,
+      }).select("id").single();
+      expect(mErr).toBeNull();
+      const { error } = await agent.from("stage_purchases").insert({
+        stage_id: s1, request_id: req, purchased_by: IDS.admin /* forged */, supplier_name: "TEST Supplier A",
+        amount_cents: 50000, receipt_media_id: m!.id,
+      });
+      expect(error).toBeNull();
+      const { data: pur } = await service.from("stage_purchases").select("purchased_by").eq("stage_id", s1).single();
+      expect(pur?.purchased_by).toBe(IDS.agent); // buyer is always the real user
+      const { data: st } = await service.from("build_stages").select("status").eq("id", s1).single();
+      expect(st?.status).toBe("purchased");
+    });
+
+    it("can't mark delivered without a delivery photo", async () => {
+      const { error } = await agent.rpc("advance_stage_work", { p_stage_id: s1, p_to: "delivered" });
+      expect(error).not.toBeNull();
+    });
+
+    it("delivery photo → delivered → builders working", async () => {
+      await agent.from("media").insert({ stage_id: s1, request_id: req, uploader_id: IDS.agent, kind: "delivery", storage_path: `stages/${s1}/d.jpg` });
+      expect((await agent.rpc("advance_stage_work", { p_stage_id: s1, p_to: "delivered" })).error).toBeNull();
+      expect((await agent.rpc("advance_stage_work", { p_stage_id: s1, p_to: "building" })).error).toBeNull();
+    });
+
+    it("the person who bought the materials CANNOT inspect the stage", async () => {
+      await agent.from("media").insert({ stage_id: s1, request_id: req, uploader_id: IDS.agent, kind: "inspection", storage_path: `stages/${s1}/i.jpg` });
+      const { error } = await agent.from("stage_inspections").insert({
+        stage_id: s1, request_id: req, inspector_id: IDS.agent, notes: "x",
+        materials_used: [{ item: "Cement", quantity: "10" }],
+      });
+      expect(error?.message).toMatch(/bought/);
+    });
+
+    it("client cannot approve a stage before it is inspected", async () => {
+      const { error } = await client.rpc("approve_stage", { p_stage_id: s1 });
+      expect(error).not.toBeNull();
+    });
+
+    it("inspection needs the full materials list", async () => {
+      const { error } = await admin.from("stage_inspections").insert({
+        stage_id: s1, request_id: req, inspector_id: IDS.admin, notes: "x", materials_used: [],
+      });
+      expect(error).not.toBeNull();
+    });
+
+    it("someone else (admin) inspects → inspected", async () => {
+      const { error } = await admin.from("stage_inspections").insert({
+        stage_id: s1, request_id: req, inspector_id: IDS.admin, notes: "OK",
+        materials_used: [{ item: "Cement", quantity: "10 bags" }],
+      });
+      expect(error).toBeNull();
+    });
+
+    it("admin cannot approve the stage on the client's behalf", async () => {
+      const { error } = await admin.from("build_stages").update({ status: "approved" }).eq("id", s1);
+      expect(error).not.toBeNull();
+    });
+
+    it("client approves the stage → next stage unlocks; the one after stays locked", async () => {
+      const { error } = await client.rpc("approve_stage", { p_stage_id: s1 });
+      expect(error).toBeNull();
+      const { data } = await service.from("build_stages").select("position, status, approved_by_name").eq("request_id", req).order("position");
+      expect(data?.map((d) => d.status)).toEqual(["approved", "quoting", "locked"]);
+      expect(data?.[0].approved_by_name).toBe("SAMPLE Tatenda Moyo");
+    });
+
+    it("admin can rename/reorder/remove only stages that haven't started", async () => {
+      expect((await admin.from("build_stages").update({ name: "Slab & floor" }).eq("id", s2)).error).toBeNull();
+      expect((await admin.rpc("move_stage", { p_stage_id: s3, p_dir: -1 })).error).not.toBeNull(); // s2 started
+      expect((await admin.from("build_stages").update({ name: "Changed" }).eq("id", s1)).error).not.toBeNull(); // approved
+      await admin.from("build_stages").delete().eq("id", s1);
+      const { data } = await service.from("build_stages").select("id").eq("id", s1);
+      expect(data?.length).toBe(1);
+    });
+
+    it("clients and field staff cannot change stages directly", async () => {
+      await client.from("build_stages").update({ name: "hacked" }).eq("id", s3);
+      await agent.from("build_stages").update({ name: "hacked" }).eq("id", s3);
+      const { data } = await service.from("build_stages").select("name").eq("id", s3).single();
+      expect(data?.name).toBe("Window level");
     });
   });
 

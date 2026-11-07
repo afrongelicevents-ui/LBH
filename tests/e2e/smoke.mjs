@@ -33,6 +33,9 @@ const IDS = {
   reqLand: "10000000-0000-4000-a000-000000000001",
   reqMat: "10000000-0000-4000-a000-000000000002",
   reqDone: "10000000-0000-4000-a000-000000000003",
+  build: "50000000-0000-4000-a000-000000000001",
+  slab: "51000000-0000-4000-a000-000000000002",
+  windowLevel: "51000000-0000-4000-a000-000000000003",
   jobLand: "30000000-0000-4000-a000-000000000001",
 };
 
@@ -88,6 +91,22 @@ async function login(page, email) {
     page.waitForURL((u) => !u.pathname.endsWith("/login"), { timeout: 20000 }),
     page.click('button[type="submit"]'),
   ]);
+}
+
+const secrets = {};
+async function challengeMfa(page, secret) {
+  await page.waitForURL(/\/mfa/, { timeout: 15000 });
+  await page.locator('input[inputmode="numeric"]').waitFor({ timeout: 15000 });
+  await page.fill('input[inputmode="numeric"]', totp(secret));
+  await Promise.all([
+    page.waitForURL((u) => !u.pathname.endsWith("/mfa"), { timeout: 20000 }),
+    page.click('form button[type="submit"]'),
+  ]);
+}
+async function loginStaff(page, email) {
+  await login(page, email);
+  if (secrets[email]) await challengeMfa(page, secrets[email]);
+  else secrets[email] = await enrollMfa(page);
 }
 
 async function enrollMfa(page) {
@@ -334,8 +353,7 @@ console.log("\nField portal (agent@lbh.test) — 2FA required");
   const page = await ctx.newPage();
 
   await step("login forces TOTP enrollment, then lands on My jobs", async () => {
-    await login(page, "agent@lbh.test");
-    await enrollMfa(page);
+    await loginStaff(page, "agent@lbh.test");
     await page.waitForURL(/\/field/);
     await page.getByText("SAMPLE — Stand 412").waitFor();
   });
@@ -413,8 +431,7 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
   const page = await ctx.newPage();
 
   await step("login forces TOTP enrollment, then Needs-you queue", async () => {
-    await login(page, "admin@lbh.test");
-    await enrollMfa(page);
+    await loginStaff(page, "admin@lbh.test");
     await page.waitForURL(/\/admin/);
     await page.getByText("Reports to review").waitFor();
     await shot(page, "admin-needs-you");
@@ -473,6 +490,135 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
     await page.getByText("payment.confirmed").first().waitFor();
   });
   await ctx.close();
+}
+
+
+// ======================================================================
+console.log("\nBuild stages (Foundation → Finishes)");
+{
+  const stageStatus = async (id) => (await db.from("build_stages").select("status").eq("id", id).single()).data?.status;
+  const waitStatus = async (page, id, want) => {
+    for (let i = 0; i < 40; i++) {
+      if ((await stageStatus(id)) === want) return;
+      await page.waitForTimeout(500);
+    }
+    throw new Error(`stage is ${await stageStatus(id)}, expected ${want}`);
+  };
+  const slabCard = (page) => page.locator("#stage-2");
+
+  const cctx = await newCtx();
+  const cpage = await cctx.newPage();
+  await step("client: My build shows Foundation approved, Slab quotes, later stages locked", async () => {
+    await login(cpage, "client@lbh.test");
+    await cpage.goto(`${BASE}/en/portal/build`);
+    await cpage.waitForURL(/\/portal\/build\/50000000/);
+    await cpage.getByText("1 of 6 stages done").waitFor();
+    await cpage.locator("#stage-1").getByText("Approved by SAMPLE Tatenda Moyo").waitFor();
+    await slabCard(cpage).getByText("SAMPLE Msasa Hardware").waitFor();
+    await cpage.locator("#stage-3").getByText("Unlocks when").waitFor();
+    await shot(cpage, "client-build");
+  });
+
+  await step("client chooses ONE supplier for Slab, then pays (test mode)", async () => {
+    const msasa = slabCard(cpage).locator("li", { hasText: "SAMPLE Msasa Hardware" });
+    await msasa.locator('button:has-text("Choose this supplier")').click();
+    await msasa.locator('button:has-text("Yes, choose")').click();
+    await waitStatus(cpage, IDS.slab, "quote_approved");
+    await cpage.reload();
+    await Promise.all([
+      cpage.waitForURL(/\/pay\/simulate/, { timeout: 20000 }),
+      slabCard(cpage).locator('button:has-text("Pay online")').click(),
+    ]);
+    await cpage.getByText("$1,365.00").waitFor();
+    await Promise.all([
+      cpage.waitForURL(/\/pay\/return/, { timeout: 20000 }),
+      cpage.click('button:has-text("Simulate successful payment")'),
+    ]);
+    await waitStatus(cpage, IDS.slab, "paid");
+  });
+
+  const fctx = await newCtx();
+  const fpage = await fctx.newPage();
+  await step("field agent: no prices; records purchase with receipt photo", async () => {
+    await loginStaff(fpage, "agent@lbh.test");
+    const { data: job } = await db.from("jobs").select("id").eq("request_id", IDS.build).single();
+    await fpage.goto(`${BASE}/en/field/jobs/${job.id}`);
+    await slabCard(fpage).getByText("Paid — LBH is buying").waitFor();
+    const text = await fpage.locator("body").innerText();
+    assert(!text.includes("1,365") && !text.includes("1,420") && !text.includes("$"), "a price leaked to field staff");
+    const card = slabCard(fpage);
+    await card.locator('input[name="supplier_name"]').fill("SAMPLE Msasa Hardware");
+    await card.locator('input[name="amount"]').fill("1365");
+    await card.locator('input[name="receipt"]').setInputFiles(photoPath);
+    await card.locator('button:has-text("Record purchase")').click();
+    await waitStatus(fpage, IDS.slab, "purchased");
+  });
+
+  await step("field agent: delivery photo → delivered → builders started → progress photo", async () => {
+    await fpage.reload();
+    const card = slabCard(fpage);
+    const delivery = card.locator("form", { has: fpage.locator('button:has-text("Add delivery photo")') });
+    await delivery.locator('input[type="file"]').setInputFiles(photoPath);
+    await delivery.locator('button[type="submit"]').click();
+    await card.locator('button:has-text("Mark materials delivered")').waitFor({ timeout: 30000 });
+    await card.locator('button:has-text("Mark materials delivered")').click();
+    await waitStatus(fpage, IDS.slab, "delivered");
+    await fpage.reload();
+    await slabCard(fpage).locator('button:has-text("Builders have started")').click();
+    await waitStatus(fpage, IDS.slab, "building");
+    await fpage.reload();
+    const progress = slabCard(fpage).locator("form", { has: fpage.locator('button:has-text("Add progress photos")') });
+    await progress.locator('input[type="file"]').setInputFiles(photoPath);
+    await progress.locator('button[type="submit"]').click();
+    await progress.getByText("Saved.").waitFor({ timeout: 30000 });
+  });
+
+  await step("the agent who BOUGHT the materials cannot inspect", async () => {
+    await fpage.reload();
+    await slabCard(fpage).getByText("someone else must inspect").waitFor();
+    assert((await slabCard(fpage).locator('button:has-text("Submit inspection")').count()) === 0, "inspection form shown to buyer");
+  });
+
+  const actx = await newCtx();
+  const apage = await actx.newPage();
+  await step("admin inspects: photos + all materials used → ready for client", async () => {
+    await loginStaff(apage, "admin@lbh.test");
+    await apage.goto(`${BASE}/en/admin/builds/${IDS.build}`);
+    const card = slabCard(apage);
+    await card.locator('input[name="photos"]').last().setInputFiles(photoPath);
+    await card.locator('textarea[name="notes"]').fill("E2E — slab level and thickness checked.");
+    await card.locator('button:has-text("Submit inspection")').click();
+    await waitStatus(apage, IDS.slab, "inspected");
+    await shot(apage, "admin-build");
+  });
+
+  await step("locked stages can't take supplier quotes", async () => {
+    await apage.reload();
+    assert((await apage.locator("#stage-4").locator('button:has-text("Add quote")').count()) === 0, "quote form on locked stage");
+  });
+
+  await step("client sees inspection + materials, taps Approve stage → Window level unlocks", async () => {
+    await cpage.goto(`${BASE}/en/portal/build/${IDS.build}`);
+    const card = slabCard(cpage);
+    await card.getByText("slab level and thickness checked").waitFor();
+    await card.getByText("All materials used on this stage").first().waitFor();
+    await card.locator('button:has-text("Approve stage")').click();
+    await card.locator('button:has-text("Yes, approve")').click();
+    await waitStatus(cpage, IDS.slab, "approved");
+    assert((await stageStatus(IDS.windowLevel)) === "quoting", "next stage did not unlock");
+    const { data: locked } = await db.from("build_stages").select("status").eq("request_id", IDS.build).gt("position", 3);
+    assert(locked.every((s) => s.status === "locked"), "later stages unlocked too early");
+  });
+
+  await step("admin can now add a supplier quote to Window level", async () => {
+    await apage.goto(`${BASE}/en/admin/builds/${IDS.build}`);
+    const form = apage.locator("#stage-3 form", { has: apage.locator('button:has-text("Add quote")') });
+    await form.locator('input[name="supplier_name"]').fill("E2E Brick Supplier");
+    await form.locator('input[name="amount"]').fill("2100");
+    await form.locator('button:has-text("Add quote")').click();
+    await form.getByText("Saved.").waitFor({ timeout: 15000 });
+  });
+  await cctx.close(); await fctx.close(); await actx.close();
 }
 
 // ======================================================================
