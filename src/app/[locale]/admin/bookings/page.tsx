@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth/guard";
+import { countryLabel } from "@/lib/country";
 import { BookingStatusButtons } from "@/components/admin/AdminActions";
 
 export default async function AdminBookingsPage({
@@ -12,6 +13,7 @@ export default async function AdminBookingsPage({
   const { supabase } = await requireRole(locale, ["admin"]);
   const t = await getTranslations("admin.bookings");
   const tbk = await getTranslations("portal.dashboard.booking");
+  const tbook = await getTranslations("bookPage");
 
   const { data: bookings } = await supabase
     .from("call_bookings")
@@ -31,7 +33,7 @@ export default async function AdminBookingsPage({
                   {b.name} <span className="font-normal text-muted">· {b.email}</span>
                 </p>
                 <p className="text-xs text-muted">
-                  {b.whatsapp} · {b.country} · {b.service} · {b.preferred_slot} ·{" "}
+                  {b.whatsapp} · {countryLabel(b.country, (k) => tbook(k as never), "—")} · {b.service} · {b.preferred_slot} ·{" "}
                   {b.call_type} · {new Date(b.created_at).toLocaleString()}
                 </p>
                 {b.description && <p className="mt-1 text-sm text-ink">{b.description}</p>}

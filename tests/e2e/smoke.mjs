@@ -293,14 +293,17 @@ console.log("\nPublic website");
     await page.fill('input[name="name"]', "E2E Test Booker");
     await page.fill('input[name="email"]', email);
     await page.fill('input[name="whatsapp"]', "+44 7700 900999");
-    await page.selectOption('select[name="country"]', "uk");
+    // "Other" asks for the real country
+    await page.selectOption('select[name="country"]', "other");
+    await page.getByTestId("country-other").fill("botswana");
     await page.selectOption('select[name="service"]', "land");
     await page.selectOption('select[name="slot"]', "evening");
     await page.fill('textarea[name="description"]', "E2E booking test");
     await page.click('button[type="submit"]');
     await page.getByText("your call request is in").waitFor({ timeout: 15000 });
-    const { data } = await db.from("call_bookings").select("id, client_id").eq("email", email).single();
+    const { data } = await db.from("call_bookings").select("id, client_id, country").eq("email", email).single();
     assert(data?.id, "booking row not created");
+    assert(data.country === "Botswana", `typed country not stored (${data.country})`);
     assert(data?.client_id, "client account not created from email");
   });
 
@@ -863,6 +866,14 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
     await page.getByTestId("photo-slot-land").getByTestId("photo-reset").click();
     await page.getByTestId("photo-slot-land").getByTestId("photo-reset-yes").click();
     await page.getByTestId("photo-slot-land").getByText("Default photo", { exact: true }).waitFor({ timeout: 20000 });
+  });
+
+  await step("People: 'Where our clients are from' counts the typed countries", async () => {
+    await page.goto(`${BASE}/en/admin/clients`);
+    const box = page.getByTestId("clients-by-country");
+    await box.getByText("Where our clients are from").waitFor();
+    await box.getByText("Botswana").waitFor();
+    await box.getByText("United Kingdom").first().waitFor();
   });
 
   await step("assign a job with a DUE DATE → shown to the lawyer", async () => {

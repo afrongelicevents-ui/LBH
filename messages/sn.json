@@ -169,7 +169,7 @@
     "countryUK": "United Kingdom",
     "countryUSA": "United States",
     "countrySA": "South Africa",
-    "countryOther": "Imwe",
+    "countryOther": "Imwe (nyora nyika yako)",
     "service": "Basa raunoda",
     "servicePlaceholder": "Sarudza basa",
     "serviceLand": "Kuongororwa kweStendi & Due Diligence",
@@ -197,7 +197,11 @@
     "errorWhatsapp": "Isa nhamba yeWhatsApp chaiyo ine kodhi yenyika.",
     "errorGeneric": "Pane chakanganisika. Edza zvakare, kana utisvikire paWhatsApp.",
     "slotPlaceholder": "Sarudza nguva",
-    "errorRate": "Zvikumbiro zvakawandisa — edza zvakare paawa rinotevera, kana utisvikire paWhatsApp."
+    "errorRate": "Zvikumbiro zvakawandisa — edza zvakare paawa rinotevera, kana utisvikire paWhatsApp.",
+    "countryZW": "Zimbabwe",
+    "countryOtherName": "Unogara munyika ipi?",
+    "countryOtherPlaceholder": "semuenzaniso Botswana, Australia, Canada",
+    "errorCountry": "Nyora nyika yaunogara."
   },
   "termsPage": {
     "metaTitle": "Mitemo yeBasa",
@@ -813,7 +817,10 @@
       "name": "Zita",
       "email": "Email",
       "country": "Nyika",
-      "role": "Basa"
+      "role": "Basa",
+      "byCountry": "Vatengi vedu vanobva kupi",
+      "byCountryHint": "{count} vatengi nezvikumbiro (maakaundi + kuronga runhare)",
+      "notSpecified": "Imwe (haina kutaurwa)"
     },
     "chats": {
       "title": "Hurukuro",
@@ -1175,7 +1182,8 @@
     "error": {
       "invalid": "Tarisa zvawanyora wedzazve.",
       "auth": "Pinda zvakare.",
-      "db": "Hazvina kuchengetwa — edza zvakare."
+      "db": "Hazvina kuchengetwa — edza zvakare.",
+      "country": "Nyora nyika yaunogara."
     }
   },
   "labels": {

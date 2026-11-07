@@ -169,7 +169,7 @@
     "countryUK": "United Kingdom",
     "countryUSA": "United States",
     "countrySA": "South Africa",
-    "countryOther": "Elinye",
+    "countryOther": "Elinye (bhala ilizwe lakho)",
     "service": "Umsebenzi owufunayo",
     "servicePlaceholder": "Khetha umsebenzi",
     "serviceLand": "Ukuhlolwa kweSitandi & Due Diligence",
@@ -197,7 +197,11 @@
     "errorWhatsapp": "Faka inombolo yeWhatsApp eqondileyo lekhodi yelizwe.",
     "errorGeneric": "Kukhona okungahambanga kuhle. Zama futhi, loba usithinte kuWhatsApp.",
     "slotPlaceholder": "Khetha isikhathi",
-    "errorRate": "Izicelo ezinengi kakhulu — zama futhi ngemva kwehora, loba usithinte kuWhatsApp."
+    "errorRate": "Izicelo ezinengi kakhulu — zama futhi ngemva kwehora, loba usithinte kuWhatsApp.",
+    "countryZW": "IZimbabwe",
+    "countryOtherName": "Uhlala kuliphi ilizwe?",
+    "countryOtherPlaceholder": "isibonelo iBotswana, iAustralia, iCanada",
+    "errorCountry": "Bhala ilizwe ohlala kulo."
   },
   "termsPage": {
     "metaTitle": "Imithetho yoMsebenzi",
@@ -813,7 +817,10 @@
       "name": "Ibizo",
       "email": "I-email",
       "country": "Ilizwe",
-      "role": "Indima"
+      "role": "Indima",
+      "byCountry": "Amakhasimende ethu avela ngaphi",
+      "byCountryHint": "{count} amakhasimende lezicelo (ama-akhawunti + ukubhuka ucingo)",
+      "notSpecified": "Elinye (alichazwanga)"
     },
     "chats": {
       "title": "Ibhokisi lezingxoxo",
@@ -1175,7 +1182,8 @@
     "error": {
       "invalid": "Hlola okubhaliweyo uzame futhi.",
       "auth": "Ngena futhi.",
-      "db": "Akulondolozwanga — zama futhi."
+      "db": "Akulondolozwanga — zama futhi.",
+      "country": "Bhala ilizwe ohlala kulo."
     }
   },
   "labels": {

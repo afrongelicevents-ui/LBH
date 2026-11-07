@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { countryFields, refineCountry } from "@/lib/country";
 
 /** Client self sign-up (staff and admin accounts stay invite-only). */
 export const signupSchema = z
@@ -9,7 +10,7 @@ export const signupSchema = z
       .string()
       .trim()
       .regex(/^\+?[0-9\s\-()]{7,20}$/, "invalid phone"),
-    country: z.enum(["uk", "usa", "sa", "other"]),
+    ...countryFields,
     password: z.string().min(10).max(72),
     confirm_password: z.string(),
     terms: z.literal("on"),
@@ -19,7 +20,8 @@ export const signupSchema = z
   .refine((d) => d.password === d.confirm_password, {
     path: ["confirm_password"],
     message: "mismatch",
-  });
+  })
+  .superRefine(refineCountry);
 
 export type SignupInput = z.infer<typeof signupSchema>;
 

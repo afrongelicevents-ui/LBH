@@ -4,6 +4,7 @@ import { useSubmitKeepingValues } from "@/lib/useSubmitKeepingValues";
 
 import { useActionState } from "react";
 import { useTranslations } from "next-intl";
+import CountryField from "@/components/CountryField";
 import { updateMyProfile, type ProfileResult } from "@/app/[locale]/(site)/account/actions";
 
 const inputCls =
@@ -29,17 +30,7 @@ export default function ProfileForm({
         <span className={labelCls}>{t("whatsapp")}</span>
         <input name="whatsapp" type="tel" defaultValue={defaults.whatsapp} placeholder={tb("whatsappHint")} className={inputCls} />
       </label>
-      <label className="block">
-        <span className={labelCls}>{t("country")}</span>
-        <select name="country" defaultValue={defaults.country} className={inputCls}>
-          <option value="">—</option>
-          <option value="uk">{tb("countryUK")}</option>
-          <option value="usa">{tb("countryUSA")}</option>
-          <option value="sa">{tb("countrySA")}</option>
-          <option value="zw">{t("countryZW")}</option>
-          <option value="other">{tb("countryOther")}</option>
-        </select>
-      </label>
+      <CountryField label={t("country")} required={false} defaultValue={defaults.country} inputCls={inputCls} labelCls={labelCls} />
       <button type="submit" disabled={pending} className="btn btn-green w-full disabled:opacity-60">
         {t("save")}
       </button>

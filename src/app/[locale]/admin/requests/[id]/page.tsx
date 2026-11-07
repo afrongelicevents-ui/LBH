@@ -7,6 +7,7 @@ import { signedUrl } from "@/lib/uploads";
 import StatusTimeline from "@/components/portal/StatusTimeline";
 import type { RequestStatus } from "@/lib/status";
 import { LEGAL_ITEMS, readLegal } from "@/lib/legal";
+import { countryLabel } from "@/lib/country";
 import { toneFor } from "@/lib/tones";
 import { StatusBadge } from "@/components/ui/Portal";
 import { AttachQuoteFileForm } from "@/components/build/StageActions";
@@ -31,6 +32,7 @@ export default async function AdminRequestDetailPage({
   const { supabase, user } = await requireRole(locale, ["admin"]);
   const t = await getTranslations("admin.request");
   const tl = await getTranslations("field.legal");
+  const tbook = await getTranslations("bookPage");
   const tf = await getTranslations("field");
   const tl2 = await getTranslations("labels");
   const tpr = await getTranslations("portal.request");
@@ -107,7 +109,7 @@ export default async function AdminRequestDetailPage({
         <p className="text-xs text-muted">
           {client.full_name} · {client.email}
           {client.whatsapp && ` · ${client.whatsapp}`}
-          {client.country && ` · ${client.country}`}
+          {client.country && ` · ${countryLabel(client.country, (k) => tbook(k as never), "—")}`}
         </p>
         <div className="mt-3">
           <StatusTimeline status={req.status as RequestStatus} />

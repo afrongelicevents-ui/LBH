@@ -1,6 +1,7 @@
 "use server";
 
 import { bookingSchema } from "@/lib/booking";
+import { resolveCountry } from "@/lib/country";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { rateLimited } from "@/lib/ratelimit";
 import { sendEmail } from "@/lib/email";
@@ -62,7 +63,7 @@ export async function submitBooking(
           user_metadata: {
             full_name: d.name,
             whatsapp: d.whatsapp,
-            country: d.country,
+            country: resolveCountry(d) ?? "other",
           },
         });
       if (createErr) {
@@ -87,7 +88,7 @@ export async function submitBooking(
       name: d.name,
       email: d.email.toLowerCase(),
       whatsapp: d.whatsapp,
-      country: d.country,
+      country: resolveCountry(d) ?? "other",
       service: d.service,
       description: d.description ?? "",
       preferred_slot: d.slot,

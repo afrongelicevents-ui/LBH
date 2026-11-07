@@ -168,3 +168,33 @@ describe("sign-up", () => {
     expect(signupSchema.safeParse({ ...base, terms: undefined }).success).toBe(false);
   });
 });
+
+// ---------- country: "Other" means typing the real country ----------
+import { resolveCountry, cleanCountryName } from "@/lib/country";
+import { bookingSchema } from "@/lib/booking";
+
+describe("country of residence", () => {
+  it("stores the code for listed countries and the typed name for Other", () => {
+    expect(resolveCountry({ country: "uk" })).toBe("uk");
+    expect(resolveCountry({ country: "other", country_other: "  botswana " })).toBe("Botswana");
+    expect(cleanCountryName("united   arab emirates")).toBe("United Arab Emirates");
+    expect(resolveCountry({ country: "other", country_other: "Côte d'Ivoire" })).toBe("Côte d'Ivoire");
+  });
+
+  it("Other without a real country name is refused", () => {
+    expect(resolveCountry({ country: "other", country_other: "" })).toBeNull();
+    expect(resolveCountry({ country: "other", country_other: "<script>" })).toBeNull();
+    const base = {
+      name: "Test Person",
+      email: "t@example.com",
+      whatsapp: "+44 7700 900123",
+      service: "land",
+      slot: "morning",
+      callType: "phone",
+    };
+    const bad = bookingSchema.safeParse({ ...base, country: "other", country_other: "" });
+    expect(bad.success).toBe(false);
+    expect(bad.success ? "" : bad.error.issues[0].path[0]).toBe("country_other");
+    expect(bookingSchema.safeParse({ ...base, country: "other", country_other: "Canada" }).success).toBe(true);
+  });
+});

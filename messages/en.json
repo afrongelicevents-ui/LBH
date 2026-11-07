@@ -168,7 +168,7 @@
     "countryUK": "United Kingdom",
     "countryUSA": "United States",
     "countrySA": "South Africa",
-    "countryOther": "Other",
+    "countryOther": "Other (write your country)",
     "service": "Service you are interested in",
     "servicePlaceholder": "Select a service",
     "serviceLand": "Land Verification & Due Diligence",
@@ -196,7 +196,11 @@
     "errorWhatsapp": "Please enter a valid WhatsApp number with country code.",
     "errorGeneric": "Something went wrong. Please try again, or reach us on WhatsApp.",
     "slotPlaceholder": "Select a time",
-    "errorRate": "Too many requests from your connection — please try again in an hour, or reach us on WhatsApp."
+    "errorRate": "Too many requests from your connection — please try again in an hour, or reach us on WhatsApp.",
+    "countryZW": "Zimbabwe",
+    "countryOtherName": "Which country do you live in?",
+    "countryOtherPlaceholder": "e.g. Botswana, Australia, Canada",
+    "errorCountry": "Please write the country you live in."
   },
   "termsPage": {
     "metaTitle": "Terms of Service",
@@ -812,7 +816,10 @@
       "name": "Name",
       "email": "Email",
       "country": "Country",
-      "role": "Role"
+      "role": "Role",
+      "byCountry": "Where our clients are from",
+      "byCountryHint": "{count, plural, one {# client or enquiry} other {# clients and enquiries}} (accounts + call bookings)",
+      "notSpecified": "Other (not specified)"
     },
     "chats": {
       "title": "Chat inbox",
@@ -1174,7 +1181,8 @@
     "error": {
       "invalid": "Check the fields and try again.",
       "auth": "Please log in again.",
-      "db": "Could not save — try again."
+      "db": "Could not save — try again.",
+      "country": "Please write the country you live in."
     }
   },
   "labels": {

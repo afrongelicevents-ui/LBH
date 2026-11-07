@@ -5,6 +5,7 @@ import { useSubmitKeepingValues } from "@/lib/useSubmitKeepingValues";
 import { useActionState } from "react";
 import { useTranslations } from "next-intl";
 import { waLink } from "@/config/site";
+import CountryField from "./CountryField";
 import {
   submitBooking,
   type BookingResult,
@@ -59,7 +60,9 @@ export default function BookCallForm({ defaults = {} }: { defaults?: BookingDefa
           {state.status === "invalid"
             ? state.field === "email"
               ? t("errorEmail")
-              : state.field === "whatsapp"
+              : state.field === "country_other"
+                ? t("errorCountry")
+                : state.field === "whatsapp"
                 ? t("errorWhatsapp")
                 : t("errorRequired")
             : state.status === "rate"
@@ -99,23 +102,9 @@ export default function BookCallForm({ defaults = {} }: { defaults?: BookingDefa
           />
         </label>
 
-        <label className="block">
-          <span className={labelCls}>{t("country")} *</span>
-          <select
-            name="country"
-            required
-            defaultValue={["uk", "usa", "sa", "other"].includes(defaults.country ?? "") ? defaults.country : ""}
-            className={inputCls}
-          >
-            <option value="" disabled>
-              {t("countryPlaceholder")}
-            </option>
-            <option value="uk">{t("countryUK")}</option>
-            <option value="usa">{t("countryUSA")}</option>
-            <option value="sa">{t("countrySA")}</option>
-            <option value="other">{t("countryOther")}</option>
-          </select>
-        </label>
+        <div className="block">
+          <CountryField label={t("country")} defaultValue={defaults.country} inputCls={inputCls} labelCls={labelCls} />
+        </div>
 
         <label className="block">
           <span className={labelCls}>{t("service")} *</span>

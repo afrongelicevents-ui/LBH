@@ -2,6 +2,7 @@
 
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { signupSchema } from "@/lib/signup";
+import { resolveCountry } from "@/lib/country";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { rateLimited } from "@/lib/ratelimit";
 import { site } from "@/config/site";
@@ -69,7 +70,7 @@ export async function signUpClient(
         data: {
           full_name: d.full_name,
           whatsapp: d.whatsapp,
-          country: d.country,
+          country: resolveCountry(d),
           locale: d.locale,
         },
       },

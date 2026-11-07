@@ -9,6 +9,7 @@ import {
   signUpClient,
   type SignupResult,
 } from "@/app/[locale]/(site)/signup/actions";
+import CountryField from "@/components/CountryField";
 import { ArrowRightIcon, CheckCircleIcon, LockIcon } from "@/components/icons";
 
 const inputCls =
@@ -47,7 +48,9 @@ export default function SignupForm() {
           ? t("errorWhatsapp")
           : state.field === "password"
             ? t("errorPassword")
-            : state.field === "confirm_password"
+            : state.field === "country_other"
+              ? tb("errorCountry")
+              : state.field === "confirm_password"
               ? t("errorMismatch")
               : state.field === "terms"
                 ? t("errorTerms")
@@ -101,18 +104,7 @@ export default function SignupForm() {
             className={inputCls}
           />
         </label>
-        <label className="block">
-          <span className={labelCls}>{t("country")} *</span>
-          <select name="country" required defaultValue="" className={inputCls}>
-            <option value="" disabled>
-              {tb("countryPlaceholder")}
-            </option>
-            <option value="uk">{tb("countryUK")}</option>
-            <option value="usa">{tb("countryUSA")}</option>
-            <option value="sa">{tb("countrySA")}</option>
-            <option value="other">{tb("countryOther")}</option>
-          </select>
-        </label>
+        <CountryField label={t("country")} inputCls={inputCls} labelCls={labelCls} />
         <label className="block">
           <span className={labelCls}>{t("password")} *</span>
           <input
