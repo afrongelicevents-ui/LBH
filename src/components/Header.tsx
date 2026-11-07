@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import LocaleSwitcher from "./LocaleSwitcher";
 import LocaleDropdown from "./LocaleDropdown";
 import { MenuIcon, CloseIcon } from "./icons";
-import { ICONS, UserIcon, HomeIcon, LogOutIcon } from "./ui/PortalIcons";
+import { ICONS, UserIcon, HomeIcon, LogOutIcon, CalendarIcon } from "./ui/PortalIcons";
 import SignOutButton from "./portal/SignOutButton";
 import { signOut } from "@/lib/auth/actions";
 import { homeForRole } from "@/lib/auth/roles";
@@ -77,6 +77,12 @@ function SignedInMenu({ profile, onNavigate }: { profile: HeaderProfile; onNavig
       <p className="pt-3 pb-1 text-[11px] font-bold tracking-wide text-muted uppercase">{t("account.website")}</p>
       <ul>
         <li>
+          <Link href="/book-a-call" onClick={onNavigate} className="flex items-center gap-3 rounded-lg px-1 py-2.5 text-sm font-bold text-forest hover:bg-offwhite" data-testid="menu-book-call">
+            <CalendarIcon size={18} />
+            {t("common.bookCall")}
+          </Link>
+        </li>
+        <li>
           <Link href="/" onClick={onNavigate} className="flex items-center gap-3 rounded-lg px-1 py-2.5 text-sm font-semibold text-ink hover:bg-offwhite">
             <HomeIcon size={18} className="text-forest" />
             {t("account.home")}
@@ -129,13 +135,19 @@ export default function Header({ logo = "/images/logo.jpg" }: { logo?: string })
   }, [desktopOpen]);
 
   const signedIn = auth.status === "in" ? auth.profile : null;
-  // Until we know, reserve the space (no "Log in" flash for signed-in users)
-  const pending = auth.status === "loading";
+  // While the session is being read, guess from the auth cookie so signed-in
+  // users don't see a "Log in" row flash (and logged-out users no jump).
+  const hasAuthCookie = useSyncExternalStore(
+    () => () => {},
+    () => /(^|;\s*)sb-[^=]*-auth-token/.test(document.cookie),
+    () => false
+  );
+  const showAuthRow = auth.status === "out" || (auth.status === "loading" && !hasAuthCookie);
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-white" data-auth={auth.status}>
       {/* ---------- Mobile: logo · EN ▾ · avatar · burger, then the pills ---------- */}
-      <div className="px-4 pt-2 pb-3 lg:hidden">
+      <div className={`px-4 pt-2 lg:hidden ${showAuthRow ? "pb-3" : "pb-2"}`}>
         <div className="flex items-center justify-between">
           <Link href="/" onClick={() => setOpen(false)} aria-label={t("common.brand")}>
             <Image src={logo} alt="" width={96} height={76} priority className="h-11 w-auto" />
@@ -154,28 +166,19 @@ export default function Header({ logo = "/images/logo.jpg" }: { logo?: string })
             </button>
           </div>
         </div>
-        {!(signedIn && signedIn.role !== "client") && (
-        <div className="mt-1 flex min-h-10 flex-wrap justify-end gap-2">
-          {auth.status === "out" && (
-            <>
-              <Link href="/login" onClick={() => setOpen(false)} className="btn btn-outline-green min-h-10 px-4 py-1.5 text-sm">
-                {t("common.login")}
-              </Link>
-              <Link href="/signup" onClick={() => setOpen(false)} className="btn btn-outline-green min-h-10 px-4 py-1.5 text-sm">
-                {t("common.createAccount")}
-              </Link>
-            </>
-          )}
-          {(!signedIn || signedIn.role === "client") && (
-            <Link
-              href="/book-a-call"
-              onClick={() => setOpen(false)}
-              className={`btn btn-primary min-h-10 px-4 py-1.5 text-sm ${pending ? "invisible" : ""}`}
-            >
-              {t("common.bookCall")}
-            </Link>
-          )}
-        </div>
+        {showAuthRow && (
+          <div className="mt-1 flex min-h-10 flex-wrap justify-end gap-2">
+            {auth.status === "out" && (
+              <>
+                <Link href="/login" onClick={() => setOpen(false)} className="btn btn-outline-green min-h-10 px-4 py-1.5 text-sm">
+                  {t("common.login")}
+                </Link>
+                <Link href="/signup" onClick={() => setOpen(false)} className="btn btn-outline-green min-h-10 px-4 py-1.5 text-sm">
+                  {t("common.createAccount")}
+                </Link>
+              </>
+            )}
+          </div>
         )}
       </div>
 
@@ -186,6 +189,11 @@ export default function Header({ logo = "/images/logo.jpg" }: { logo?: string })
             <SignedInMenu profile={signedIn} onNavigate={() => setOpen(false)} />
           ) : (
             <ul className="flex flex-col">
+              <li>
+                <Link href="/book-a-call" onClick={() => setOpen(false)} className="block border-b border-line py-3 text-base font-bold text-forest" data-testid="menu-book-call">
+                  {t("common.bookCall")} →
+                </Link>
+              </li>
               {navItems.map((item) => (
                 <li key={item.key}>
                   <Link href={item.href} onClick={() => setOpen(false)} className="block border-b border-line py-3 text-base font-semibold text-ink">
@@ -240,6 +248,10 @@ export default function Header({ logo = "/images/logo.jpg" }: { logo?: string })
               </Link>
             )
           )}
+          {/* a plain link (no button) so booking stays reachable from every page */}
+          <Link href="/book-a-call" className="text-sm font-bold text-forest underline-offset-4 hover:underline" data-testid="nav-book-call">
+            {t("common.bookCall")}
+          </Link>
         </nav>
 
         <div className="flex items-center gap-3 xl:gap-5">
@@ -253,12 +265,6 @@ export default function Header({ logo = "/images/logo.jpg" }: { logo?: string })
                 {t("common.createAccount")}
               </Link>
             </>
-          )}
-          {pending && <span aria-hidden className="inline-block h-11 w-24" />}
-          {(!signedIn || signedIn.role === "client") && !pending && (
-            <Link href="/book-a-call" className="btn btn-primary px-5 text-sm">
-              {t("common.bookCall")}
-            </Link>
           )}
           {signedIn && (
             <div ref={desktopRef} className="relative flex items-center gap-2">

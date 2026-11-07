@@ -256,6 +256,21 @@ console.log("\nPublic website");
     assert((await page.locator('[data-testid="header-avatar"]').count()) === 0, "avatar while logged out");
   });
 
+  await step("header: no black 'Book a free call' button; booking reachable from the menu", async () => {
+    await page.goto(`${BASE}/en/services`);
+    await page.locator('header[data-auth="out"]').waitFor({ timeout: 15000 });
+    assert((await page.locator('header a.btn-primary[href$="/book-a-call"]').count()) === 0, "black header button still there");
+    await page.getByTestId("nav-book-call").waitFor(); // desktop menu link
+    const m = await (await newCtx({ viewport: { width: 390, height: 844 } })).newPage();
+    await m.goto(`${BASE}/en/services`);
+    await m.locator('header[data-auth="out"]').waitFor({ timeout: 15000 });
+    assert((await m.locator('header a.btn-primary[href$="/book-a-call"]').count()) === 0, "black button on phone");
+    await m.locator('header button[aria-expanded]:visible').last().click();
+    await m.getByTestId("menu-book-call").click();
+    await m.waitForURL(/book-a-call/);
+    await m.context().close();
+  });
+
   await step("homepage renders with no prices", async () => {
     await page.goto(`${BASE}/en`);
     const text = await page.locator("body").innerText();
