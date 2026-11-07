@@ -116,7 +116,7 @@ async function StageBody({
                       <p className="text-sm font-bold text-ink">{q.supplier_name}</p>
                       {q.items && <p className="mt-0.5 text-xs whitespace-pre-line text-muted">{q.items}</p>}
                     </div>
-                    <div className="flex flex-col items-end gap-2">
+                    <div className="flex w-full items-center justify-between gap-2 sm:w-auto sm:flex-col sm:items-end">
                       <span className="text-sm font-extrabold text-forest">{formatCents(q.amount_cents)}</span>
                       {role === "client" && q.status === "pending" && (
                         <ApproveQuoteButton quoteId={q.id} supplier={q.supplier_name} />

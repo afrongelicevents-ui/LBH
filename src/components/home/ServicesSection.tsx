@@ -28,10 +28,10 @@ export default function ServicesSection() {
               <Link
                 key={svc.key}
                 href={`/services#${svc.key}`}
-                className="card group flex p-2 transition-shadow hover:shadow-(--shadow-card-hover) md:flex-col md:p-0"
+                className="card group flex p-1.5 transition-shadow hover:shadow-(--shadow-card-hover) md:flex-col md:p-0"
               >
                 {/* Photo: rounded thumbnail left on mobile, full-width top from md */}
-                <div className="relative w-[35%] shrink-0 self-stretch overflow-hidden rounded-lg md:aspect-3/2 md:w-full md:self-auto md:rounded-none">
+                <div className="relative w-[33%] shrink-0 self-stretch overflow-hidden rounded-lg md:aspect-3/2 md:w-full md:self-auto md:rounded-none">
                   <Image
                     src={svc.image}
                     alt=""
@@ -41,14 +41,14 @@ export default function ServicesSection() {
                   />
                 </div>
 
-                <div className="flex min-h-[104px] flex-1 items-center gap-1 py-1 pr-0.5 pl-3 md:min-h-0 md:items-stretch md:p-5">
+                <div className="flex min-h-[100px] flex-1 items-center gap-1 py-0.5 pr-0.5 pl-2.5 md:min-h-0 md:items-stretch md:p-5">
                   <div className="flex-1">
-                    <h3 className="text-base leading-snug font-bold text-forest md:text-lg">
+                    <h3 className="text-[15px] leading-tight font-bold text-forest md:text-lg md:leading-snug">
                       {t(`servicesData.${svc.key}.title`)}
                     </h3>
 
                     {svc.homeBullets && (
-                      <ul className="mt-1.5 space-y-1 md:mt-3 md:space-y-2">
+                      <ul className="mt-1 space-y-0.5 md:mt-3 md:space-y-2">
                         {bullets.map((b) => (
                           <li key={b} className="flex items-start gap-1.5 md:gap-2">
                             <CheckCircleIcon
@@ -56,7 +56,7 @@ export default function ServicesSection() {
                               height={15}
                               className="mt-0.5 shrink-0 text-accent"
                             />
-                            <span className="text-xs leading-snug text-muted md:text-sm">
+                            <span className="text-xs leading-tight text-muted md:text-sm md:leading-snug">
                               {b}
                             </span>
                           </li>
@@ -65,7 +65,7 @@ export default function ServicesSection() {
                     )}
 
                     {svc.comingSoon && (
-                      <span className="pill-soon mt-2 md:mt-3">
+                      <span className="pill-soon mt-1.5 md:mt-3">
                         {t("common.comingSoon")}
                       </span>
                     )}

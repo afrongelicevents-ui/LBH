@@ -106,15 +106,43 @@ export default function Header() {
         </Link>
 
         <nav aria-label="Main" className="flex items-center gap-7">
-          {navItems.map((item) => (
-            <Link
-              key={item.key}
-              href={item.href}
-              className="text-sm font-semibold text-ink transition-colors hover:text-forest"
-            >
-              {t(`nav.${item.key}`)}
-            </Link>
-          ))}
+          {navItems.map((item) =>
+            item.key === "services" ? (
+              <div key={item.key} className="group relative">
+                <Link
+                  href={item.href}
+                  className="flex items-center gap-1 text-sm font-semibold text-ink transition-colors hover:text-forest"
+                >
+                  {t(`nav.${item.key}`)}
+                  <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                    <path d="M2.5 4.5L6 8l3.5-3.5" />
+                  </svg>
+                </Link>
+                <div className="invisible absolute top-full left-1/2 z-50 w-72 -translate-x-1/2 pt-3 opacity-0 transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+                  <ul className="rounded-2xl border border-line bg-white p-2 shadow-lg">
+                    {(["land", "materials", "monitoring", "camera"] as const).map((key) => (
+                      <li key={key}>
+                        <Link
+                          href={`/services#${key}`}
+                          className="block rounded-xl px-3 py-2.5 text-sm font-semibold text-ink hover:bg-offwhite"
+                        >
+                          {t(`servicesData.${key}.title`)}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ) : (
+              <Link
+                key={item.key}
+                href={item.href}
+                className="text-sm font-semibold text-ink transition-colors hover:text-forest"
+              >
+                {t(`nav.${item.key}`)}
+              </Link>
+            )
+          )}
         </nav>
 
         <div className="flex items-center gap-5">

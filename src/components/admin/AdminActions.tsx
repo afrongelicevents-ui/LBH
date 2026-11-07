@@ -61,7 +61,7 @@ export function ActButton({
         type="button"
         disabled={pending}
         onClick={() => run(action)}
-        className={`btn min-h-9 px-4 text-xs disabled:opacity-60 ${primary ? "btn-primary" : "btn-outline-green"}`}
+        className={`btn min-h-10 px-4 text-xs disabled:opacity-60 ${primary ? "btn-primary" : "btn-outline-green"}`}
       >
         {label}
       </button>
@@ -145,7 +145,7 @@ export function QuoteBuilder({
     <form action={formAction} className="space-y-3">
       <input type="hidden" name="request_id" value={requestId} />
       {lines.map((l, i) => (
-        <div key={i} className="grid grid-cols-[90px_1fr_70px_80px_auto] items-end gap-2">
+        <div key={i} className="grid grid-cols-[1fr_1fr_1fr_auto] items-end gap-2 border-b border-line pb-2 sm:grid-cols-[110px_1fr_70px_80px_auto] sm:border-0 sm:pb-0">
           <label>
             <span className={labelCls}>{t("kind")}</span>
             <select
@@ -158,7 +158,7 @@ export function QuoteBuilder({
               <option value="other">{t("kinds.other")}</option>
             </select>
           </label>
-          <label>
+          <label className="col-span-3 sm:col-span-1">
             <span className={labelCls}>{t("description")}</span>
             <input
               value={l.description}
@@ -276,7 +276,7 @@ export function AssignStaffForm({
         type="button"
         disabled={!staffId || pending}
         onClick={() => run(() => assignStaff(requestId, staffId))}
-        className="btn btn-primary min-h-9 px-4 text-xs disabled:opacity-60"
+        className="btn btn-primary min-h-10 px-4 text-xs disabled:opacity-60"
       >
         {t("assign")}
       </button>
@@ -319,7 +319,7 @@ export function SupplierQuoteForm({ requestId }: { requestId: string }) {
         <span className={labelCls}>{t("supplierDetails")}</span>
         <input name="details" className={inputCls} maxLength={2000} />
       </label>
-      <button type="submit" disabled={pending} className="btn btn-outline-green min-h-9 px-4 text-xs disabled:opacity-60">
+      <button type="submit" disabled={pending} className="btn btn-outline-green min-h-10 px-4 text-xs disabled:opacity-60">
         {t("addSupplier")}
       </button>
       {state && !state.ok && <Err result={state} />}
@@ -352,7 +352,7 @@ export function ReportReviewControls({
             type="button"
             disabled={pending}
             onClick={() => run(() => publishReport(reportId))}
-            className="btn btn-primary min-h-9 px-4 text-xs disabled:opacity-60"
+            className="btn btn-primary min-h-10 px-4 text-xs disabled:opacity-60"
           >
             {t("publish")}
           </button>
@@ -368,7 +368,7 @@ export function ReportReviewControls({
           type="button"
           disabled={pending}
           onClick={() => run(() => requestReportChanges(reportId, note))}
-          className="btn btn-outline-green min-h-9 px-4 text-xs disabled:opacity-60"
+          className="btn btn-outline-green min-h-10 px-4 text-xs disabled:opacity-60"
         >
           {t("requestChanges")}
         </button>

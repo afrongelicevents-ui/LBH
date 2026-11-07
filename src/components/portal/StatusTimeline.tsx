@@ -13,8 +13,31 @@ export default function StatusTimeline({ status }: { status: RequestStatus }) {
     );
   }
 
+  const stepNo = status === "done" ? REQUEST_TIMELINE.length : Math.max(current + 1, 0);
+  const label = status === "new" ? t("new") : t(status as (typeof REQUEST_TIMELINE)[number]);
+
   return (
-    <ol className="flex flex-wrap items-center gap-y-2">
+    <>
+      {/* Phones: one compact line + progress bar */}
+      <div className="sm:hidden">
+        <p className="flex items-center justify-between text-xs">
+          <span className="font-bold text-forest">{label}</span>
+          <span className="text-muted">
+            {t("stepOf", { n: stepNo, total: REQUEST_TIMELINE.length })}
+          </span>
+        </p>
+        <div className="mt-1.5 flex gap-0.5" aria-hidden>
+          {REQUEST_TIMELINE.map((step, i) => (
+            <span
+              key={step}
+              className={`h-1.5 flex-1 rounded-full ${
+                current > i || status === "done" ? "bg-forest" : current === i ? "bg-accent" : "bg-line"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+    <ol className="hidden flex-wrap items-center gap-y-2 sm:flex">
       {REQUEST_TIMELINE.map((step, i) => {
         const done = current > i || status === "done";
         const active = current === i && status !== "done";
@@ -42,5 +65,6 @@ export default function StatusTimeline({ status }: { status: RequestStatus }) {
         );
       })}
     </ol>
+    </>
   );
 }

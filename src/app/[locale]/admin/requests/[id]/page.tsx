@@ -97,7 +97,7 @@ export default async function AdminRequestDetailPage({
         </div>
         {req.type === "build" && (
           <p className="mt-2">
-            <Link href={`/admin/builds/${req.id}`} className="btn btn-primary min-h-9 px-4 text-xs">
+            <Link href={`/admin/builds/${req.id}`} className="btn btn-primary min-h-10 px-4 text-xs">
               {t("openBuildStages")}
             </Link>
           </p>
@@ -110,9 +110,28 @@ export default async function AdminRequestDetailPage({
       {/* details + documents */}
       <section className="card p-5">
         <h2 className="text-base font-bold text-forest">{t("details")}</h2>
-        <pre className="mt-2 overflow-x-auto rounded-xl bg-offwhite p-3 text-xs whitespace-pre-wrap text-ink">
-          {JSON.stringify(details, null, 2)}
-        </pre>
+        <dl className="mt-2 space-y-1 text-sm">
+          {Object.entries(details).map(([k, v]) =>
+            v === null || v === "" ? null : (
+              <div key={k} className="flex flex-wrap gap-x-2">
+                <dt className="font-semibold text-muted">{k.replaceAll("_", " ")}:</dt>
+                <dd className="text-ink">
+                  {Array.isArray(v)
+                    ? v
+                        .map((it) =>
+                          typeof it === "object" && it
+                            ? Object.values(it as Record<string, unknown>).filter(Boolean).join(" — ")
+                            : String(it)
+                        )
+                        .join("; ")
+                    : typeof v === "object"
+                      ? JSON.stringify(v)
+                      : String(v)}
+                </dd>
+              </div>
+            )
+          )}
+        </dl>
         {docLinks.length > 0 && (
           <ul className="mt-2 space-y-1 text-sm">
             {docLinks.map((d) =>

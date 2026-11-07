@@ -19,7 +19,7 @@ export default function TrustStrip() {
   ];
 
   return (
-    <section className="bg-offwhite py-10 md:py-12">
+    <section className="hidden bg-offwhite py-10 md:block md:py-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionTitle>{t("title")}</SectionTitle>
         <div className="mt-7 grid grid-cols-2 gap-y-6 md:grid-cols-4">

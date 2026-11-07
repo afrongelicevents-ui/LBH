@@ -59,13 +59,13 @@ export default async function AdminTranslationsPage({
       <div className="flex items-center gap-3 text-sm">
         <a
           href="?lang=sn"
-          className={`btn min-h-9 px-4 text-xs ${target === "sn" ? "btn-green" : "btn-outline-green"}`}
+          className={`btn min-h-10 px-4 text-xs ${target === "sn" ? "btn-green" : "btn-outline-green"}`}
         >
           Shona
         </a>
         <a
           href="?lang=nd"
-          className={`btn min-h-9 px-4 text-xs ${target === "nd" ? "btn-green" : "btn-outline-green"}`}
+          className={`btn min-h-10 px-4 text-xs ${target === "nd" ? "btn-green" : "btn-outline-green"}`}
         >
           Ndebele
         </a>

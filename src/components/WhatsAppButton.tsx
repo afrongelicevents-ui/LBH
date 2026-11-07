@@ -11,7 +11,7 @@ export default function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={t("whatsapp")}
-      className="fixed right-4 bottom-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-whatsapp text-white shadow-lg transition-transform hover:scale-105 sm:right-6 sm:bottom-6"
+      className="fixed right-3 bottom-3 z-50 flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-full bg-whatsapp text-white shadow-lg transition-transform hover:scale-105 sm:right-6 sm:bottom-6"
     >
       <WhatsAppIcon width={30} height={30} />
     </a>

@@ -292,8 +292,8 @@ export function StageEditor({
       </button>
       {canMove && (
         <>
-          <button type="button" disabled={pending} onClick={() => run(() => moveStage(stageId, -1))} aria-label={t("moveUp")} className="h-8 w-8 rounded-full border border-line text-xs">↑</button>
-          <button type="button" disabled={pending} onClick={() => run(() => moveStage(stageId, 1))} aria-label={t("moveDown")} className="h-8 w-8 rounded-full border border-line text-xs">↓</button>
+          <button type="button" disabled={pending} onClick={() => run(() => moveStage(stageId, -1))} aria-label={t("moveUp")} className="h-10 w-10 rounded-full border border-line text-sm">↑</button>
+          <button type="button" disabled={pending} onClick={() => run(() => moveStage(stageId, 1))} aria-label={t("moveDown")} className="h-10 w-10 rounded-full border border-line text-sm">↓</button>
         </>
       )}
       {canDelete && (
@@ -306,7 +306,7 @@ export function StageEditor({
         <form action={formAction} className="mt-2 w-full space-y-2">
           <input name="name" defaultValue={name} required maxLength={80} className={inputCls} />
           <textarea name="description" defaultValue={description} rows={2} maxLength={1000} className={inputCls} />
-          <button type="submit" disabled={saving} className="btn btn-outline-green min-h-9 px-4 text-xs">{t("save")}</button>
+          <button type="submit" disabled={saving} className="btn btn-outline-green min-h-10 px-4 text-xs">{t("save")}</button>
           <Msg state={state} />
         </form>
       )}

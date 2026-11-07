@@ -343,7 +343,9 @@
       "report_ready": "Report ready",
       "balance_paid": "Balance paid",
       "done": "Done",
-      "cancelled": "Cancelled"
+      "cancelled": "Cancelled",
+      "new": "New request",
+      "stepOf": "Step {n} of {total}"
     },
     "forms": {
       "landTitle": "Land verification request",

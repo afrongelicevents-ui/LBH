@@ -94,7 +94,7 @@ export function SupplierQuoteApprove({ id }: { id: string }) {
       type="button"
       disabled={pending}
       onClick={() => start(async () => setResult(await approveSupplierQuoteAction(id)))}
-      className="btn btn-primary min-h-9 px-4 text-xs disabled:opacity-60"
+      className="btn btn-primary min-h-10 px-4 text-xs disabled:opacity-60"
     >
       {t("approveSupplier")}
     </button>
@@ -177,7 +177,7 @@ export function ManualProofForm({ paymentId }: { paymentId: string }) {
           className="block w-full text-xs text-muted file:mr-3 file:rounded-full file:border-0 file:bg-forest file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white"
         />
       </label>
-      <button type="submit" disabled={pending} className="btn btn-primary mt-3 min-h-9 px-4 text-xs disabled:opacity-60">
+      <button type="submit" disabled={pending} className="btn btn-primary mt-3 min-h-10 px-4 text-xs disabled:opacity-60">
         {t("submitProof")}
       </button>
     </form>

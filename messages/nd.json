@@ -344,7 +344,9 @@
       "report_ready": "Umbiko usulungile",
       "balance_paid": "Eseleyo ibhadalwe",
       "done": "Kuphelile",
-      "cancelled": "Kukhanselisiwe"
+      "cancelled": "Kukhanselisiwe",
+      "new": "Isicelo esitsha",
+      "stepOf": "Isinyathelo {n} ku-{total}"
     },
     "forms": {
       "landTitle": "Isicelo sokuhlola isitandi",

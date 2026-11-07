@@ -344,7 +344,9 @@
       "report_ready": "Gwaro ragadzirira",
       "balance_paid": "Yasara yabhadharwa",
       "done": "Zvapera",
-      "cancelled": "Zvakanzurwa"
+      "cancelled": "Zvakanzurwa",
+      "new": "Chikumbiro chitsva",
+      "stepOf": "Nhanho {n} pa{total}"
     },
     "forms": {
       "landTitle": "Chikumbiro chekuongorora stendi",

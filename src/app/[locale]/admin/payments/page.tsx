@@ -25,7 +25,7 @@ export default async function AdminPaymentsPage({
         <h1 className="headline text-2xl text-forest">{t("title")}</h1>
         {/* API download, not a page navigation */}
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-        <a href="/api/admin/payments-csv" className="btn btn-outline-green min-h-9 px-4 text-xs">
+        <a href="/api/admin/payments-csv" className="btn btn-outline-green min-h-10 px-4 text-xs">
           {t("exportCsv")}
         </a>
       </div>
