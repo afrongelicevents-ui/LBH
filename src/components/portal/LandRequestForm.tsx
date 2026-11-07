@@ -8,6 +8,7 @@ import {
   createLandRequest,
   type ActionResult,
 } from "@/app/[locale]/portal/actions";
+import { useDirectUpload } from "@/lib/useDirectUpload";
 import { ArrowRightIcon } from "@/components/icons";
 
 const MapPicker = dynamic(() => import("./MapPicker"), { ssr: false });
@@ -20,9 +21,15 @@ export default function LandRequestForm() {
   const t = useTranslations("portal.forms");
   const locale = useLocale();
   const router = useRouter();
+  const { upload, progress } = useDirectUpload();
 
   const [state, formAction, pending] = useActionState<ActionResult | null, FormData>(
     async (prev, fd) => {
+      const files = fd.getAll("documents").filter((f): f is File => f instanceof File && f.size > 0);
+      fd.delete("documents");
+      const up = await upload("client-document", files);
+      if (!up.ok) return { ok: false as const, error: up.error === "size" ? "toobig" : up.error === "type" ? "filetype" : "error" };
+      fd.set("uploads_json", JSON.stringify(up.refs));
       const res = await createLandRequest(prev, fd);
       if (res.ok && res.id) router.push(`/portal/requests/${res.id}`, { locale });
       return res;
@@ -80,6 +87,11 @@ export default function LandRequestForm() {
         {t("submitLand")}
         <ArrowRightIcon width={18} height={18} />
       </button>
+      {pending && progress && progress.total > 0 && (
+        <p className="text-xs text-muted" aria-live="polite">
+          {t("uploadingFiles", { done: progress.done, total: progress.total })}
+        </p>
+      )}
     </form>
   );
 }

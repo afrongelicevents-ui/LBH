@@ -113,9 +113,21 @@ async function clearFactors(userId) {
 // ---------- fixtures ----------
 const dir = mkdtempSync(join(tmpdir(), "lbh-e2e-"));
 const photoPath = join(dir, "site-photo.jpg");
-await sharp({ create: { width: 800, height: 600, channels: 3, background: "#7a8b6f" } })
-  .jpeg()
-  .toFile(photoPath);
+// A realistic phone photo: ~8 MB (well over Vercel's 4.5 MB request limit),
+// with capture time + GPS in EXIF like a real camera writes them.
+{
+  const w = 3600, h = 2800;
+  const raw = Buffer.alloc(w * h * 3);
+  for (let i = 0; i < raw.length; i++) raw[i] = (Math.random() * 255) | 0;
+  await sharp(raw, { raw: { width: w, height: h, channels: 3 } })
+    .withExif({
+      IFD0: { Make: "E2E Phone" },
+      IFD2: { DateTimeOriginal: "2026:11:05 10:15:00" },
+      IFD3: { GPSLatitudeRef: "S", GPSLatitude: "17/1 54/1 0/1", GPSLongitudeRef: "E", GPSLongitude: "31/1 2/1 0/1" },
+    })
+    .jpeg({ quality: 92 })
+    .toFile(photoPath);
+}
 const pdfPath = join(dir, "title-deed.pdf");
 writeFileSync(
   pdfPath,
@@ -349,7 +361,7 @@ console.log("\nField portal (agent@lbh.test) — 2FA required");
     assert(data.visit.measurements.area_sqm === 300 && data.status === "in_progress", "visit not saved");
   });
 
-  await step("upload photo: server records time + GPS, flags >300 m from pin", async () => {
+  await step("upload a BIG phone photo (~8 MB): time + GPS read, flagged >300 m from pin", async () => {
     const photoForm = page.locator("form", { has: page.locator('input[name="kind"][value="photo"]') });
     await photoForm.locator('input[type="file"]').setInputFiles(photoPath);
     await page.waitForTimeout(1500); // GPS capture
@@ -357,6 +369,8 @@ console.log("\nField portal (agent@lbh.test) — 2FA required");
     await photoForm.getByText("Saved.").waitFor({ timeout: 20000 });
     const { data } = await db.from("media").select("*").eq("job_id", IDS.jobLand).eq("kind", "photo").single();
     assert(data.gps_lat !== null && data.uploaded_at, "GPS/time not stored");
+    assert(data.taken_at && data.taken_at.startsWith("2026-11-05"), `EXIF capture time not read (${data.taken_at})`);
+    assert(Math.abs(data.gps_lat - -17.9) < 0.001, `EXIF GPS not read (${data.gps_lat})`);
     assert(data.flagged_far === true, `not flagged (distance ${data.distance_from_pin_m})`);
   });
 
@@ -438,8 +452,12 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
   await step("publish the field report (different person than author)", async () => {
     await page.goto(`${BASE}/en/admin/requests/${IDS.reqLand}`);
     await page.locator('#report button:has-text("Publish to client")').click();
-    await page.getByText("Done.").waitFor({ timeout: 10000 });
-    const { data } = await db.from("reports").select("status, published_by").eq("job_id", IDS.jobLand).single();
+    let data;
+    for (let i = 0; i < 30; i++) {
+      ({ data } = await db.from("reports").select("status, published_by").eq("job_id", IDS.jobLand).single());
+      if (data?.status === "published") break;
+      await page.waitForTimeout(500);
+    }
     assert(data.status === "published" && data.published_by === IDS.admin, "not published");
     const { data: bal } = await db.from("payments").select("amount_cents").eq("request_id", IDS.reqLand).eq("kind", "balance").single();
     assert(bal.amount_cents === 21000, "balance payment not created");
@@ -469,7 +487,7 @@ console.log("\nClient reads the published report");
     await page.getByText("boundary peg on the east side").waitFor();
     await page.getByText("Dated photos & video").waitFor();
     await page.getByText("taken far from the stand pin").first().waitFor();
-    await page.getByText(/Uploaded \d/).first().waitFor();
+    await page.getByText(/(Taken|Uploaded) \d/).first().waitFor();
     await page.getByText("not a guarantee").waitFor();
     await shot(page, "client-report");
   });

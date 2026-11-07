@@ -376,8 +376,13 @@
         "invalid": "Khangela okubhalileyo uzame futhi.",
         "db": "Kakugcinwanga — zama futhi.",
         "error": "Kukhona okungahambanga kuhle — zama futhi.",
-        "rate": "Izicelo ezinengi kakhulu — zama emva kwesikhathi."
-      }
+        "rate": "Izicelo ezinengi kakhulu — zama emva kwesikhathi.",
+        "heic": "Lolu hlobo lwesithombe (HEIC) kalusekelwa. Ku-iPhone: Settings → Camera → Formats → Most Compatible, ubusuzama futhi.",
+        "toobig": "Ifayela likhulu kakhulu (izithombe lama-PDF kufika ku-30 MB, amavidiyo kufika ku-50 MB).",
+        "filetype": "Lolu hlobo lwefayela kalwamukelwa — sebenzisa isithombe (JPG/PNG), i-PDF loba ividiyo.",
+        "upload": "Ukufaka kwehlulekile — khangela inethiwekhi uzame futhi."
+      },
+      "uploadingFiles": "Kufakwa kwamafayela… {done} ku-{total}"
     },
     "request": {
       "back": "Izicelo zami",
@@ -435,7 +440,8 @@
       "receipt": "Irisidi",
       "reportReady": "Umbiko wakho usulungile",
       "readReport": "Bala umbiko",
-      "invoiceLink": "I-invoice #{number} (PDF)"
+      "invoiceLink": "I-invoice #{number} (PDF)",
+      "actionFailedUpload": "Ukufaka kwehlulekile — khangela inethiwekhi uzame futhi."
     },
     "chat": {
       "title": "Khuluma leLBH",
@@ -496,7 +502,10 @@
       "db": "Kakugcinwanga — zama futhi.",
       "error": "Kukhona okungahambanga kuhle.",
       "toobig": "Ifayela likhulu kakhulu.",
-      "locked": "Umbiko uku-admin — kawusalungiseki."
+      "locked": "Umbiko uku-admin — kawusalungiseki.",
+      "heic": "Izithombe ze-HEIC kazisekelwa — beka ikhamera ku-Most Compatible.",
+      "filetype": "Lolu hlobo lwefayela kalwamukelwa.",
+      "upload": "Ukufaka kwehlulekile — khangela inethiwekhi uzame futhi."
     },
     "standDetails": "Imininingwane yesitandi / yesicelo",
     "clientDocuments": "Amaphepha eklayenti",

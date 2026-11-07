@@ -74,3 +74,21 @@ describe("paynow", () => {
     expect(normalizePaynowStatus(undefined)).toBe("unknown");
   });
 });
+
+describe("upload type sniffing (magic bytes, not the browser's label)", async () => {
+  const { sniffType } = await import("../src/lib/uploads");
+  const pad = (b: number[]) => Buffer.concat([Buffer.from(b), Buffer.alloc(16)]);
+
+  it("detects real file types", () => {
+    expect(sniffType(pad([0xff, 0xd8, 0xff, 0xe0]))).toBe("image/jpeg");
+    expect(sniffType(pad([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))).toBe("image/png");
+    expect(sniffType(Buffer.from("%PDF-1.7 rest of file"))).toBe("application/pdf");
+    expect(sniffType(Buffer.from("\0\0\0\x18ftypqt  0000", "latin1"))).toBe("video/quicktime");
+    expect(sniffType(Buffer.from("\0\0\0\x18ftypisom0000", "latin1"))).toBe("video/mp4");
+    expect(sniffType(Buffer.from("\0\0\0\x18ftypheic0000", "latin1"))).toBe("image/heic");
+  });
+
+  it("rejects HTML/script disguised as an image", () => {
+    expect(sniffType(Buffer.from("<html><script>alert(1)</script></html>"))).toBeNull();
+  });
+});

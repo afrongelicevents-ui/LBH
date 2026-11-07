@@ -10,6 +10,7 @@ import {
   submitManualProof,
   type ActionResult,
 } from "@/app/[locale]/portal/actions";
+import { useDirectUpload } from "@/lib/useDirectUpload";
 import { ArrowRightIcon } from "@/components/icons";
 
 export function AcceptQuoteButton({ quoteId }: { quoteId: string }) {
@@ -120,9 +121,16 @@ export function PayButton({ paymentId }: { paymentId: string }) {
 export function ManualProofForm({ paymentId }: { paymentId: string }) {
   const t = useTranslations("portal.request");
   const [open, setOpen] = useState(false);
-  const boundAction = submitManualProof.bind(null, paymentId);
+  const { upload } = useDirectUpload();
   const [state, formAction, pending] = useActionState<ActionResult | null, FormData>(
-    boundAction,
+    async (prev, fd) => {
+      const file = fd.get("proof");
+      fd.delete("proof");
+      const up = await upload("client-document", file instanceof File ? [file] : []);
+      if (!up.ok || up.refs.length === 0) return { ok: false as const, error: "upload" };
+      fd.set("uploads_json", JSON.stringify(up.refs));
+      return submitManualProof(paymentId, prev, fd);
+    },
     null
   );
 

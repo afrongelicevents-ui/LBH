@@ -4,14 +4,10 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { getUserProfile } from "@/lib/supabase/server";
 import {
-  IMAGE_TYPES,
-  VIDEO_TYPES,
-  MAX_IMAGE_BYTES,
-  MAX_VIDEO_BYTES,
-  extForType,
-  readImageExif,
-  reencodeImage,
+  parseUploadRefs,
   storePrivate,
+  takeIncoming,
+  uploadErrorCode,
 } from "@/lib/uploads";
 import { distanceMeters, FAR_PHOTO_THRESHOLD_M } from "@/lib/geo";
 import { parseDollarsToCents } from "@/lib/money";
@@ -114,34 +110,21 @@ export async function uploadMedia(
     if (!parsed.success) return { ok: false, error: "invalid" };
     const d = parsed.data;
 
-    const file = formData.get("file");
-    if (!(file instanceof File) || !file.size) return { ok: false, error: "invalid" };
-
-    const isImage = IMAGE_TYPES.includes(file.type);
-    const isVideo = VIDEO_TYPES.includes(file.type);
-    if (d.kind === "video" ? !isVideo : !isImage) {
+    // The file was uploaded by the browser straight to private storage;
+    // claim it (owner, real type, size), reading EXIF before it's stripped.
+    const [ref] = parseUploadRefs(formData.get("uploads_json"));
+    if (!ref) return { ok: false, error: "invalid" };
+    const f = await takeIncoming(user.id, ref, "staff-media");
+    if (d.kind === "video" ? f.isImage : !f.isImage) {
       return { ok: false, error: "invalid" };
     }
-    if (isImage && file.size > MAX_IMAGE_BYTES) return { ok: false, error: "toobig" };
-    if (isVideo && file.size > MAX_VIDEO_BYTES) return { ok: false, error: "toobig" };
+    const buffer = f.buffer;
+    const contentType = f.contentType;
+    const ext = f.ext;
+    const takenAt: Date | null = f.exif.takenAt;
+    let gpsLat: number | null = f.exif.gpsLat;
+    let gpsLng: number | null = f.exif.gpsLng;
 
-    let buffer: Buffer = Buffer.from(await file.arrayBuffer());
-    let contentType = file.type;
-    let ext = extForType(file.type);
-    let takenAt: Date | null = null;
-    let gpsLat: number | null = null;
-    let gpsLng: number | null = null;
-
-    if (isImage) {
-      // Read provenance BEFORE stripping (brief §11)
-      const exif = await readImageExif(buffer);
-      takenAt = exif.takenAt;
-      gpsLat = exif.gpsLat;
-      gpsLng = exif.gpsLng;
-      buffer = await reencodeImage(buffer);
-      contentType = "image/jpeg";
-      ext = "jpg";
-    }
     // Device GPS captured by the browser at upload time as fallback
     if (gpsLat === null && d.device_lat !== "" && d.device_lat !== undefined) {
       gpsLat = Number(d.device_lat);
@@ -180,7 +163,7 @@ export async function uploadMedia(
       uploader_id: user.id,
       kind: d.kind,
       storage_path: path,
-      original_name: file.name.slice(0, 200),
+      original_name: f.originalName,
       taken_at: takenAt?.toISOString() ?? null,
       gps_lat: gpsLat,
       gps_lng: gpsLng,
@@ -195,7 +178,7 @@ export async function uploadMedia(
     return { ok: true };
   } catch (e) {
     console.error(`[media] ${e instanceof Error ? e.message : e}`);
-    return { ok: false, error: "error" };
+    return { ok: false, error: uploadErrorCode(e) };
   }
 }
 

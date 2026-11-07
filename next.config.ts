@@ -54,13 +54,12 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["pdfkit", "sharp"],
   experimental: {
     serverActions: {
-      // Document/photo uploads go through server actions (videos up to the
-      // MAX_VIDEO_BYTES limit enforced in src/lib/uploads.ts).
-      bodySizeLimit: "125mb",
+      // Files never pass through server actions: the browser uploads them
+      // straight to Supabase Storage (src/lib/useDirectUpload.ts), so forms
+      // only carry small references. Kept below Vercel's 4.5 MB body cap.
+      bodySizeLimit: "2mb",
     },
-    // The proxy (middleware) buffers request bodies too — default 10 MB
-    // would truncate uploads before they reach the server action.
-    proxyClientMaxBodySize: "125mb",
+    proxyClientMaxBodySize: "2mb",
   },
   turbopack: {
     rules: {

@@ -376,8 +376,13 @@
         "invalid": "Tarisa zvawanyora woedza zvakare.",
         "db": "Hazvina kuchengetwa — edza zvakare.",
         "error": "Pane chakanganisika — edza zvakare.",
-        "rate": "Zvikumbiro zvakawandisa — edza gare gare."
-      }
+        "rate": "Zvikumbiro zvakawandisa — edza gare gare.",
+        "heic": "Rudzi urwu rwemufananidzo (HEIC) harutsigirwi. PaiPhone: Settings → Camera → Formats → Most Compatible, wozoedza zvakare.",
+        "toobig": "Faira iri rakakurisa (mifananidzo nemaPDF kusvika 30 MB, mavhidhiyo kusvika 50 MB).",
+        "filetype": "Rudzi rwefaira iri harugamuchirwi — shandisa mufananidzo (JPG/PNG), PDF kana vhidhiyo.",
+        "upload": "Kuisa kwakundikana — tarisa network woedza zvakare."
+      },
+      "uploadingFiles": "Kuisa mafaira… {done} pa{total}"
     },
     "request": {
       "back": "Zvikumbiro zvangu",
@@ -435,7 +440,8 @@
       "receipt": "Risiti",
       "reportReady": "Gwaro rako ragadzirira",
       "readReport": "Verenga gwaro",
-      "invoiceLink": "Invoice #{number} (PDF)"
+      "invoiceLink": "Invoice #{number} (PDF)",
+      "actionFailedUpload": "Kuisa kwakundikana — tarisa network woedza zvakare."
     },
     "chat": {
       "title": "Taura neLBH",
@@ -496,7 +502,10 @@
       "db": "Hazvina kuchengetwa — edza zvakare.",
       "error": "Pane chakanganisika.",
       "toobig": "Faira rakakurisa.",
-      "locked": "Gwaro riri kuadmin — harichagadziriswi."
+      "locked": "Gwaro riri kuadmin — harichagadziriswi.",
+      "heic": "Mifananidzo yeHEIC haitsigirwi — isa kamera pa Most Compatible.",
+      "filetype": "Rudzi rwefaira iri harugamuchirwi.",
+      "upload": "Kuisa kwakundikana — tarisa network woedza zvakare."
     },
     "standDetails": "Ruzivo rwestendi / chikumbiro",
     "clientDocuments": "Magwaro emutengi",

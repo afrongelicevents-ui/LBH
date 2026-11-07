@@ -7,6 +7,7 @@ import {
   createMaterialsRequest,
   type ActionResult,
 } from "@/app/[locale]/portal/actions";
+import { useDirectUpload } from "@/lib/useDirectUpload";
 import { ArrowRightIcon, CloseIcon } from "@/components/icons";
 
 const inputCls =
@@ -23,6 +24,7 @@ export default function MaterialsRequestForm() {
   const t = useTranslations("portal.forms");
   const locale = useLocale();
   const router = useRouter();
+  const { upload, progress } = useDirectUpload();
   const [items, setItems] = useState<Item[]>([{ item: "", quantity: "", notes: "" }]);
 
   const [state, formAction, pending] = useActionState<ActionResult | null, FormData>(
@@ -31,6 +33,11 @@ export default function MaterialsRequestForm() {
         "items_json",
         JSON.stringify(items.filter((i) => i.item.trim() && i.quantity.trim()))
       );
+      const files = fd.getAll("documents").filter((f): f is File => f instanceof File && f.size > 0);
+      fd.delete("documents");
+      const up = await upload("client-document", files);
+      if (!up.ok) return { ok: false as const, error: up.error === "size" ? "toobig" : up.error === "type" ? "filetype" : "error" };
+      fd.set("uploads_json", JSON.stringify(up.refs));
       const res = await createMaterialsRequest(prev, fd);
       if (res.ok && res.id) router.push(`/portal/requests/${res.id}`, { locale });
       return res;
@@ -129,6 +136,11 @@ export default function MaterialsRequestForm() {
         {t("submitMaterials")}
         <ArrowRightIcon width={18} height={18} />
       </button>
+      {pending && progress && progress.total > 0 && (
+        <p className="text-xs text-muted" aria-live="polite">
+          {t("uploadingFiles", { done: progress.done, total: progress.total })}
+        </p>
+      )}
     </form>
   );
 }

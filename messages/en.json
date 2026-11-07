@@ -375,8 +375,13 @@
         "invalid": "Please check the highlighted fields.",
         "db": "Could not save — try again.",
         "error": "Something went wrong — try again.",
-        "rate": "Too many requests — try again later."
-      }
+        "rate": "Too many requests — try again later.",
+        "heic": "This photo format (HEIC) is not supported. On iPhone: Settings → Camera → Formats → Most Compatible, then try again.",
+        "toobig": "That file is too big (photos and PDFs up to 30 MB, videos up to 50 MB).",
+        "filetype": "That file type is not accepted — use a photo (JPG/PNG), PDF or video.",
+        "upload": "Upload failed — check your connection and try again."
+      },
+      "uploadingFiles": "Uploading files… {done} of {total}"
     },
     "request": {
       "back": "My requests",
@@ -434,7 +439,8 @@
       "receipt": "Receipt",
       "reportReady": "Your report is ready",
       "readReport": "Read the report",
-      "invoiceLink": "Invoice #{number} (PDF)"
+      "invoiceLink": "Invoice #{number} (PDF)",
+      "actionFailedUpload": "Upload failed — check your connection and try again."
     },
     "chat": {
       "title": "Chat with LBH",
@@ -495,7 +501,10 @@
       "db": "Could not save — try again.",
       "error": "Something went wrong.",
       "toobig": "File is too large.",
-      "locked": "This report is with admin and can no longer be edited."
+      "locked": "This report is with admin and can no longer be edited.",
+      "heic": "HEIC photos are not supported — set the camera to Most Compatible.",
+      "filetype": "That file type is not accepted.",
+      "upload": "Upload failed — check your connection and try again."
     },
     "standDetails": "Stand / request details",
     "clientDocuments": "Client documents",

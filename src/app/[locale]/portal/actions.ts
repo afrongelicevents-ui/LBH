@@ -5,12 +5,11 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getUserProfile } from "@/lib/supabase/server";
 import {
-  DOC_TYPES,
-  MAX_DOC_BYTES,
-  extForType,
-  reencodeImage,
+  parseUploadRefs,
   storePrivate,
-  IMAGE_TYPES,
+  takeIncoming,
+  uploadErrorCode,
+  type UploadedRef,
 } from "@/lib/uploads";
 import { initiatePaynowPayment } from "@/lib/paynow";
 import { rateLimited } from "@/lib/ratelimit";
@@ -26,38 +25,24 @@ async function requireClient() {
   return { supabase, user, profile };
 }
 
-/** Store validated uploads for a request; images are re-encoded (EXIF stripped). */
+/**
+ * Claim files the browser uploaded directly to storage and attach them to
+ * the request (images re-encoded, EXIF stripped, real type checked).
+ */
 async function storeRequestDocuments(
   requestId: string,
   userId: string,
-  files: File[],
+  refs: UploadedRef[],
   supabase: Awaited<ReturnType<typeof requireClient>>["supabase"]
 ) {
-  for (const file of files.slice(0, 10)) {
-    if (!file.size) continue;
-    if (!DOC_TYPES.includes(file.type) || file.size > MAX_DOC_BYTES) {
-      throw new Error("invalid file");
-    }
-    let buffer: Buffer = Buffer.from(await file.arrayBuffer());
-    let contentType = file.type;
-    let ext = extForType(file.type);
-    if (IMAGE_TYPES.includes(file.type)) {
-      buffer = await reencodeImage(buffer);
-      contentType = "image/jpeg";
-      ext = "jpg";
-    }
-    const path = await storePrivate(
-      "documents",
-      `requests/${requestId}`,
-      buffer,
-      contentType,
-      ext
-    );
+  for (const ref of refs.slice(0, 10)) {
+    const f = await takeIncoming(userId, ref, "client-document");
+    const path = await storePrivate("documents", `requests/${requestId}`, f.buffer, f.contentType, f.ext);
     const { error } = await supabase.from("documents").insert({
       request_id: requestId,
       uploader_id: userId,
       storage_path: path,
-      file_name: file.name.slice(0, 200),
+      file_name: f.originalName || `document.${f.ext}`,
       kind: "client_document",
     });
     if (error) throw new Error(error.message);
@@ -107,14 +92,13 @@ export async function createLandRequest(
       .single();
     if (error || !req) return { ok: false, error: "db" };
 
-    const files = formData.getAll("documents").filter((f): f is File => f instanceof File);
-    await storeRequestDocuments(req.id, user.id, files, supabase);
+    await storeRequestDocuments(req.id, user.id, parseUploadRefs(formData.get("uploads_json")), supabase);
 
     revalidatePath("/[locale]/portal", "layout");
     return { ok: true, id: req.id };
   } catch (e) {
     console.error(`[land-request] ${e instanceof Error ? e.message : e}`);
-    return { ok: false, error: "error" };
+    return { ok: false, error: uploadErrorCode(e) };
   }
 }
 
@@ -175,14 +159,13 @@ export async function createMaterialsRequest(
       .single();
     if (error || !req) return { ok: false, error: "db" };
 
-    const files = formData.getAll("documents").filter((f): f is File => f instanceof File);
-    await storeRequestDocuments(req.id, user.id, files, supabase);
+    await storeRequestDocuments(req.id, user.id, parseUploadRefs(formData.get("uploads_json")), supabase);
 
     revalidatePath("/[locale]/portal", "layout");
     return { ok: true, id: req.id };
   } catch (e) {
     console.error(`[materials-request] ${e instanceof Error ? e.message : e}`);
-    return { ok: false, error: "error" };
+    return { ok: false, error: uploadErrorCode(e) };
   }
 }
 
@@ -290,26 +273,10 @@ export async function submitManualProof(
       return { ok: false, error: "closed" };
     }
 
-    const file = formData.get("proof");
-    if (!(file instanceof File) || !file.size) return { ok: false, error: "invalid" };
-    if (!DOC_TYPES.includes(file.type) || file.size > MAX_DOC_BYTES) {
-      return { ok: false, error: "invalid" };
-    }
-    let buffer: Buffer = Buffer.from(await file.arrayBuffer());
-    let contentType = file.type;
-    let ext = extForType(file.type);
-    if (IMAGE_TYPES.includes(file.type)) {
-      buffer = await reencodeImage(buffer);
-      contentType = "image/jpeg";
-      ext = "jpg";
-    }
-    const path = await storePrivate(
-      "proofs",
-      `payments/${payment.id}`,
-      buffer,
-      contentType,
-      ext
-    );
+    const [ref] = parseUploadRefs(formData.get("uploads_json"));
+    if (!ref) return { ok: false, error: "invalid" };
+    const f = await takeIncoming(user.id, ref, "client-document");
+    const path = await storePrivate("proofs", `payments/${payment.id}`, f.buffer, f.contentType, f.ext);
 
     // Status change is admin-gated by RLS → service role, scoped to this row.
     const { createAdminClient } = await import("@/lib/supabase/admin");
@@ -337,6 +304,6 @@ export async function submitManualProof(
     return { ok: true };
   } catch (e) {
     console.error(`[manual-proof] ${e instanceof Error ? e.message : e}`);
-    return { ok: false, error: "error" };
+    return { ok: false, error: uploadErrorCode(e) };
   }
 }

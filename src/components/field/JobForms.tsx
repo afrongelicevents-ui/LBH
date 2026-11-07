@@ -9,6 +9,7 @@ import {
   saveReportDraft,
   type ActionResult,
 } from "@/app/[locale]/field/actions";
+import { useDirectUpload } from "@/lib/useDirectUpload";
 
 const inputCls =
   "w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm text-ink focus:border-forest focus:outline-none";
@@ -113,9 +114,18 @@ export function MediaUploadForm({
   kind: "photo" | "video" | "receipt";
 }) {
   const t = useTranslations("field");
-  const bound = uploadMedia.bind(null, jobId);
+  const { upload } = useDirectUpload();
   const [state, formAction, pending] = useActionState<ActionResult | null, FormData>(
-    bound,
+    async (prev, fd) => {
+      // Phone photos/videos go straight to storage — no size limit from the web server.
+      const file = fd.get("file");
+      fd.delete("file");
+      const up = await upload("staff-media", file instanceof File ? [file] : []);
+      if (!up.ok) return { ok: false as const, error: up.error === "size" ? "toobig" : up.error === "type" ? "filetype" : "error" };
+      if (up.refs.length === 0) return { ok: false as const, error: "invalid" };
+      fd.set("uploads_json", JSON.stringify(up.refs));
+      return uploadMedia(jobId, prev, fd);
+    },
     null
   );
   const [gps, setGps] = useState<{ lat: number; lng: number } | null>(null);
@@ -143,7 +153,7 @@ export function MediaUploadForm({
         type="file"
         name="file"
         required
-        accept={kind === "video" ? "video/mp4,video/quicktime,video/webm" : "image/*"}
+        accept={kind === "video" ? "video/mp4,video/quicktime,video/webm" : "image/jpeg,image/png,image/webp"}
         capture={kind === "photo" ? "environment" : undefined}
         onChange={captureGps}
         className="block w-full text-xs text-muted file:mr-3 file:rounded-full file:border-0 file:bg-forest file:px-3 file:py-2 file:text-xs file:font-semibold file:text-white"
