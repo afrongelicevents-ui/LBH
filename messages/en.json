@@ -301,7 +301,9 @@
       "errorRequired": "Please fill in all required fields.",
       "errorRate": "Too many attempts from your connection — please try again in an hour.",
       "errorGeneric": "Something went wrong. Please try again, or reach us on WhatsApp."
-    }
+    },
+    "confirmFailedTitle": "That link didn't work",
+    "confirming": "Confirming your email…"
   },
   "notify": {
     "saved": "Saved — we will let you know the moment it is live.",

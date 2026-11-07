@@ -302,7 +302,9 @@
       "errorRequired": "Zadza zvese zvinodiwa.",
       "errorRate": "Kuedza kwawanda — edza zvakare mushure meawa.",
       "errorGeneric": "Pane chakanganisika. Edza zvakare, kana tibate paWhatsApp."
-    }
+    },
+    "confirmFailedTitle": "Link iyi haina kushanda",
+    "confirming": "Kusimbisa email yako…"
   },
   "notify": {
     "saved": "Zvachengetwa — tichakuzivisa richangotanga.",

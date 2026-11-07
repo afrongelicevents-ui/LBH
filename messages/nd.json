@@ -302,7 +302,9 @@
       "errorRequired": "Gcwalisa konke okudingekayo.",
       "errorRate": "Imizamo eminengi — zama futhi ngemva kwehora.",
       "errorGeneric": "Kukhona okungahambanga kahle. Zama futhi, kumbe usithinte ku-WhatsApp."
-    }
+    },
+    "confirmFailedTitle": "Ilinki le kayisebenzanga",
+    "confirming": "Kuqinisekiswa i-email yakho…"
   },
   "notify": {
     "saved": "Kugciniwe — sizakwazisa nxa sesisebenza.",

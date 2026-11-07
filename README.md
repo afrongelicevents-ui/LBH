@@ -71,11 +71,13 @@ accounts; staff and admins are invited from `/admin/settings`. If the email alre
 an account, a password-reset email is sent instead (no account discovery, and nobody can
 set a password on someone else's account).
 
-The confirmation email is sent by **Supabase Auth**. Its template
-(`supabase/templates/confirmation.html`) links to `/api/auth/confirm`, which works on any
-device. In production, set a custom SMTP server in Supabase (Authentication → Emails →
+The confirmation email is Supabase Auth's standard one: its link verifies the address
+and lands on `/auth/callback`, which finishes sign-in on any device and opens the
+portal. In production, set a custom SMTP server in Supabase (Authentication → Emails →
 SMTP, e.g. Resend's SMTP) — Supabase's built-in mailer only delivers to your own team's
-addresses and only a few emails per hour.
+addresses and only a few emails per hour. With custom SMTP you can also switch to the
+branded template in `supabase/templates/confirmation.html` (handled by
+`/api/auth/confirm`).
 
 ## Field capture: camera only, works offline
 

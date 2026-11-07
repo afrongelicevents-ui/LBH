@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { Link } from "@/i18n/navigation";
+import { resendConfirmation } from "@/app/[locale]/(site)/signup/actions";
 import { LockIcon, ArrowRightIcon } from "@/components/icons";
 
 const inputCls =
@@ -41,20 +42,13 @@ export default function LoginForm({ confirmFailed = false }: { confirmFailed?: b
     window.location.assign(`/${locale}/login`);
   }
 
-  async function resendConfirmation() {
+  async function resendConfirmationClick() {
     setError(null);
     setBusy(true);
-    const supabase = createClient();
-    const { error } = await supabase.auth.resend({
-      type: "signup",
-      email,
-      options: {
-        emailRedirectTo: `${window.location.origin}/api/auth/confirm?next=${locale === "en" ? "" : `/${locale}`}/portal`,
-      },
-    });
+    const res = await resendConfirmation(email, locale).catch(() => "error" as const);
     setBusy(false);
     setUnconfirmed(false);
-    if (error) setError(t("errorGeneric"));
+    if (res !== "ok") setError(t("errorGeneric"));
     else setNotice(t("confirmResent"));
   }
 
@@ -92,7 +86,7 @@ export default function LoginForm({ confirmFailed = false }: { confirmFailed?: b
           {unconfirmed && (
             <button
               type="button"
-              onClick={resendConfirmation}
+              onClick={resendConfirmationClick}
               disabled={busy}
               className="mt-2 block font-bold text-forest underline underline-offset-2"
             >

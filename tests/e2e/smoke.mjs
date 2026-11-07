@@ -307,7 +307,8 @@ console.log("\nPublic website");
     await page.getByText("confirm your email first").waitFor({ timeout: 10000 });
 
     const msg = await latestEmailTo(email);
-    const link = /href="([^"]+token_hash=[^"]+)"/.exec(msg.HTML)?.[1]?.replaceAll("&amp;", "&");
+    // Supabase's standard confirmation email (as on the live free plan)
+    const link = /href="([^"]+\/auth\/v1\/verify[^"]+)"/.exec(msg.HTML)?.[1]?.replaceAll("&amp;", "&");
     assert(link, "confirmation link missing from email");
     await page.goto(link);
     await page.waitForURL(/\/portal/, { timeout: 20000 });

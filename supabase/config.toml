@@ -246,9 +246,12 @@ otp_expiry = 3600
 # sender_name = "Admin"
 
 # Uncomment to customize email template
-[auth.email.template.confirmation]
-subject = "Confirm your LBH account"
-content_path = "./supabase/templates/confirmation.html"
+# The live project (free plan, built-in mailer) can't change email templates,
+# so local uses Supabase's standard confirmation email too. Once a custom SMTP
+# provider is set up, supabase/templates/confirmation.html can be enabled:
+# [auth.email.template.confirmation]
+# subject = "Confirm your LBH account"
+# content_path = "./supabase/templates/confirmation.html"
 
 # [auth.email.template.invite]
 # subject = "You have been invited"
