@@ -29,6 +29,7 @@ export default async function FieldJobPage({
   const { supabase, user } = await requireRole(locale, ["field"]);
   const t = await getTranslations("field");
   const th = await getTranslations("field.home");
+  const tl = await getTranslations("labels");
 
   const { data: job } = await supabase
     .from("jobs")
@@ -208,7 +209,7 @@ export default async function FieldJobPage({
           <ul className="mt-4 space-y-1.5 border-t border-line pt-3 text-xs text-muted">
             {(media ?? []).map((m) => (
               <li key={m.id} className="flex flex-wrap items-center gap-2">
-                <span className="font-bold text-forest uppercase">{m.kind}</span>
+                <span className="font-bold text-forest uppercase">{tl(`media.${m.kind}` as never)}</span>
                 <span>{m.original_name || m.note}</span>
                 {m.taken_at && (
                   <span>

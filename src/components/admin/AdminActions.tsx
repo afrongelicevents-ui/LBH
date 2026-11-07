@@ -31,7 +31,13 @@ function useAct() {
   const [pending, start] = useTransition();
   const [result, setResult] = useState<ActionResult | null>(null);
   const run = (fn: () => Promise<ActionResult>) =>
-    start(async () => setResult(await fn()));
+    start(async () => {
+      try {
+        setResult(await fn());
+      } catch {
+        setResult({ ok: false, error: "error" }); // no connection
+      }
+    });
   return { pending, result, run };
 }
 
@@ -258,21 +264,20 @@ export function AssignStaffForm({
   staff,
 }: {
   requestId: string;
-  staff: { id: string; full_name: string }[];
+  staff: { id: string; full_name: string; staff_kind?: string | null }[];
 }) {
   const t = useTranslations("admin.request");
   const [staffId, setStaffId] = useState("");
   const [jobType, setJobType] = useState<"site_visit" | "title_check">("site_visit");
   const [dueDate, setDueDate] = useState("");
   const { pending, result, run } = useAct();
-  if (result?.ok) return <p className="text-xs font-bold text-forest">{t("assigned")}</p>;
   return (
     <div className="flex flex-wrap items-center gap-2">
       <select value={staffId} onChange={(e) => setStaffId(e.target.value)} className={`${inputCls} w-56`}>
         <option value="">{t("chooseStaff")}</option>
         {staff.map((s) => (
           <option key={s.id} value={s.id}>
-            {s.full_name}
+            {s.full_name} · {s.staff_kind === "lawyer" ? t("jobTypes.title_check") : t("jobTypes.site_visit")}
           </option>
         ))}
       </select>
@@ -303,6 +308,7 @@ export function AssignStaffForm({
       >
         {t("assign")}
       </button>
+      {result?.ok && <span className="text-xs font-bold text-forest">{t("assigned")}</span>}
       <Err result={result} />
     </div>
   );
@@ -336,9 +342,9 @@ export function SupplierQuoteForm({ requestId }: { requestId: string }) {
     },
     null
   );
-  if (state?.ok) return <p className="text-xs font-bold text-forest">{t("supplierAdded")}</p>;
   return (
     <form action={formAction} className="flex flex-wrap items-end gap-2">
+      {state?.ok && <p className="w-full text-xs font-bold text-forest">{t("supplierAdded")}</p>}
       <input type="hidden" name="request_id" value={requestId} />
       <label className="flex-1">
         <span className={labelCls}>{t("supplierName")}</span>
@@ -550,6 +556,7 @@ export function InviteStaffForm() {
           <span className={labelCls}>{t("staffRole")}</span>
           <select name="role" className={inputCls}>
             <option value="field">{t("roleField")}</option>
+            <option value="lawyer">{t("roleLawyer")}</option>
             <option value="admin">{t("roleAdmin")}</option>
           </select>
         </label>
@@ -574,12 +581,18 @@ export function TranslationReviewToggle({
 }) {
   const t = useTranslations("admin.translations");
   const { pending, result, run } = useAct();
-  const isReviewed = result?.ok ? !reviewed : reviewed;
+  // Optimistic value from the last click; the refreshed prop wins once it matches
+  const [optimistic, setOptimistic] = useState<boolean | null>(null);
+  const isReviewed = optimistic !== null && result?.ok !== false ? optimistic : reviewed;
   return (
     <button
       type="button"
       disabled={pending}
-      onClick={() => run(() => markTranslationReviewed(locale, messageKey, !isReviewed))}
+      onClick={() => {
+        const next = !isReviewed;
+        setOptimistic(next);
+        run(() => markTranslationReviewed(locale, messageKey, next));
+      }}
       className={`rounded-full px-3 py-1 text-[11px] font-bold ${
         isReviewed ? "bg-forest text-white" : "bg-info text-ink"
       } disabled:opacity-60`}

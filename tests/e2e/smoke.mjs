@@ -175,6 +175,27 @@ async function waitAllUploaded(page, timeout = 30000) {
   await page.getByTestId("outbox-status").getByText("All uploaded ✓").waitFor({ timeout });
 }
 
+/** Public pages while signed in: no "Log in"/"Create account", avatar → own portal. */
+async function assertPublicHeaderSignedIn(page, portalPath) {
+  for (const path of ["/en", "/en/services", "/en/how-it-works"]) {
+    await page.goto(`${BASE}${path}`);
+    await page.locator('header[data-auth="in"]').waitFor({ timeout: 15000 });
+    const visibleLogin = await page.locator('header a[href$="/login"]:visible, header a[href$="/signup"]:visible').count();
+    assert(visibleLogin === 0, `"Log in"/"Create account" still visible on ${path}`);
+    assert((await page.locator('[data-testid="header-avatar"]:visible').count()) === 1, `no avatar on ${path}`);
+  }
+  // menu: profile card, portal pages, website, sign out
+  await page.locator('header button[aria-expanded]:visible').last().click();
+  const menu = page.getByTestId("account-menu").first();
+  await menu.getByText("My profile").waitFor();
+  await menu.getByText("Sign out").waitFor();
+  await menu.getByText("How it works").waitFor();
+  // close the menu again, then tap the avatar in the header bar
+  await page.locator('header button[aria-expanded="true"]:visible').last().click();
+  await page.locator('[data-testid="header-avatar"]:visible').first().click();
+  await page.waitForURL((u) => u.pathname.startsWith(portalPath), { timeout: 15000 });
+}
+
 async function clearFactors(userId) {
   const { data } = await db.auth.admin.mfa.listFactors({ userId });
   for (const f of data?.factors ?? []) {
@@ -225,6 +246,14 @@ console.log("\nPublic website");
   const cspErrors = [];
   page.on("console", (m) => {
     if (m.type() === "error" && /Content Security Policy/i.test(m.text())) cspErrors.push(m.text());
+  });
+
+  await step("logged out: header shows Log in + Create account", async () => {
+    await page.goto(`${BASE}/en`);
+    await page.locator('header[data-auth="out"]').waitFor({ timeout: 15000 });
+    assert((await page.locator('header a[href$="/login"]:visible').count()) >= 1, "no Log in");
+    assert((await page.locator('header a[href$="/signup"]:visible').count()) >= 1, "no Create account");
+    assert((await page.locator('[data-testid="header-avatar"]').count()) === 0, "avatar while logged out");
   });
 
   await step("homepage renders with no prices", async () => {
@@ -356,6 +385,20 @@ console.log("\nClient portal (client@lbh.test)");
     await shot(page, "client-dashboard");
   });
 
+  await step("signed in: public pages show the avatar, not Log in (home, services, how it works)", async () => {
+    await assertPublicHeaderSignedIn(page, "/portal");
+    await shot(page, "client-back-in-portal");
+  });
+
+  await step("My profile: client edits name/WhatsApp", async () => {
+    await page.goto(`${BASE}/en/account`);
+    await page.fill('input[name="whatsapp"]', "+44 7700 900124");
+    await page.click('button:has-text("Save")');
+    await page.getByText("Saved.").waitFor({ timeout: 10000 });
+    const { data } = await db.from("profiles").select("whatsapp").eq("email", "client@lbh.test").single();
+    assert(data.whatsapp === "+44 7700 900124", "profile not saved");
+  });
+
   await step("cannot open the admin or field area", async () => {
     await page.goto(`${BASE}/en/admin`);
     await page.waitForURL(/\/portal/);
@@ -368,9 +411,10 @@ console.log("\nClient portal (client@lbh.test)");
     await page.getByText("$420.00").first().waitFor();
     await page.click('button:has-text("Accept this quote")');
     await Promise.all([
-      page.waitForURL(/\/portal$/, { timeout: 20000 }),
+      page.waitForURL(/\/portal\/requests\/10000000-0000-4000-a000-000000000001/, { timeout: 20000 }),
       page.click('button:has-text("Yes, I accept")'),
     ]);
+    await page.locator('button:has-text("Pay online")').first().waitFor({ timeout: 15000 });
     const { data: q } = await db.from("quotes").select("status, accepted_by_name").eq("request_id", IDS.reqLand).single();
     assert(q.status === "accepted" && q.accepted_by_name === "SAMPLE Tatenda Moyo", "acceptance not recorded");
   });
@@ -458,6 +502,16 @@ console.log("\nClient portal (client@lbh.test)");
   await step("no CSP violations in the portal", async () => {
     assert(cspErrors.length === 0, cspErrors[0] ?? "");
   });
+  await step("sign out from the public header → Log in is back at once", async () => {
+    await page.goto(`${BASE}/en/services`);
+    await page.locator('header[data-auth="in"]').waitFor({ timeout: 15000 });
+    await page.locator('header button[aria-expanded]:visible').last().click();
+    await page.getByTestId("account-menu").first().getByRole("button", { name: "Sign out" }).click();
+    await page.locator('header[data-auth="out"]').waitFor({ timeout: 15000 });
+    assert((await page.locator('header a[href$="/login"]:visible').count()) >= 1, "Log in not back");
+    await page.goto(`${BASE}/en/portal`);
+    await page.waitForURL(/\/login/, { timeout: 15000 });
+  });
   await ctx.close();
 }
 
@@ -476,6 +530,10 @@ let offlineShotAt = 0;
     await loginStaff(page, "agent@lbh.test");
     await page.waitForURL(/\/field/);
     await page.getByText("SAMPLE — Stand 412").first().waitFor();
+  });
+
+  await step("agent on the public site: avatar instead of Log in → back to Field Portal", async () => {
+    await assertPublicHeaderSignedIn(page, "/field");
   });
 
   await step("Field Portal: banner, 4 stat tiles, search + filter pills, due date, no stock photos", async () => {
@@ -668,6 +726,8 @@ console.log("\nLawyer (lawyer@lbh.test) — title checks");
     }
     await page.getByText("Contact LBH admin").waitFor();
     await page.getByText("Due: ").first().waitFor();
+    await assertPublicHeaderSignedIn(page, "/field");
+    await page.getByTestId("portal-name").filter({ hasText: "Lawyer Portal" }).waitFor();
     await shot(page, "lawyer-jobs");
   });
 
@@ -719,6 +779,7 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
     await page.waitForURL(/\/admin/);
     await page.getByText("Reports to review").first().waitFor();
     assert((await page.getByTestId("portal-name").innerText()) === "Admin Portal", "admin header must say Admin Portal");
+    await assertPublicHeaderSignedIn(page, "/admin");
     assert((await page.getByTestId("stat-tile").count()) === 4, "admin stat tiles missing");
     await shot(page, "admin-needs-you");
   });
@@ -726,7 +787,7 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
   await step("assign a job with a DUE DATE → shown to the lawyer", async () => {
     await page.goto(`${BASE}/en/admin/requests/${IDS.reqMat}`);
     const section = page.locator("section", { hasText: "Field team" });
-    await section.locator("select").first().selectOption({ label: "SAMPLE Lawyer" });
+    await section.locator("select").first().selectOption(IDS.lawyer);
     await section.locator("select").nth(1).selectOption("title_check");
     await section.locator('input[type="date"]').fill("2026-12-24");
     await section.locator('button:has-text("Assign")').click();

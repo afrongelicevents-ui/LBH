@@ -32,6 +32,9 @@ export default async function AdminRequestDetailPage({
   const t = await getTranslations("admin.request");
   const tl = await getTranslations("field.legal");
   const tf = await getTranslations("field");
+  const tl2 = await getTranslations("labels");
+  const tpr = await getTranslations("portal.request");
+  const tbs = await getTranslations("build.paymentStatus");
 
   const { data: req } = await supabase
     .from("service_requests")
@@ -60,7 +63,7 @@ export default async function AdminRequestDetailPage({
     { data: media },
   ] = await Promise.all([
     supabase.from("settings").select("*").eq("id", 1).single(),
-    supabase.from("profiles").select("id, full_name").eq("role", "field"),
+    supabase.from("profiles").select("id, full_name, staff_kind").eq("role", "field").order("full_name"),
     supabase.from("documents").select("*").eq("request_id", id),
     supabase.from("quotes").select("*, quote_lines(*)").eq("request_id", id).order("created_at", { ascending: false }),
     supabase.from("payments").select("*").eq("request_id", id).order("created_at"),
@@ -168,7 +171,7 @@ export default async function AdminRequestDetailPage({
           <div key={q.id} className="mt-3 rounded-xl border border-line p-4">
             <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
               <span className="font-bold text-ink">
-                #{q.quote_number} · {formatCents(q.total_cents)} · {q.status}
+                #{q.quote_number} · {formatCents(q.total_cents)} · {tl2(`quote.${q.status}` as never)}
               </span>
               <span className="flex items-center gap-3">
                 <a href={`/api/pdf/quote/${q.id}`} className="text-xs font-semibold text-forest underline">
@@ -210,9 +213,9 @@ export default async function AdminRequestDetailPage({
             <li key={p.id} className="rounded-xl border border-line p-3 text-sm">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="font-bold text-ink">
-                  {p.kind} · {formatCents(p.amount_cents)} · {p.method} ·{" "}
+                  {tpr(`paymentKind.${p.kind}` as never)} · {formatCents(p.amount_cents)} · {tl2(`method.${p.method}` as never)} ·{" "}
                   <span className={p.status === "confirmed" ? "text-forest" : "text-muted"}>
-                    {p.status}
+                    {tbs(p.status as never)}
                   </span>
                 </span>
                 {p.status === "submitted" && <ConfirmPaymentButton paymentId={p.id} />}
@@ -246,7 +249,7 @@ export default async function AdminRequestDetailPage({
               <p>
                 {(j.profiles as unknown as { full_name: string })?.full_name} ·{" "}
                 <span className="text-muted">
-                  {t(`jobTypes.${j.job_type}` as never)} · {j.status}
+                  {t(`jobTypes.${j.job_type}` as never)} · {tf(`jobStatus.${j.status}` as never)}
                   {j.due_date ? ` · ${t("dueOn", { date: j.due_date })}` : ""}
                 </span>
               </p>
@@ -288,7 +291,7 @@ export default async function AdminRequestDetailPage({
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="font-bold text-ink">
                   {ec.title} · {formatCents(ec.amount_cents)} ·{" "}
-                  <span className="text-muted">{ec.status}</span>
+                  <span className="text-muted">{tf(`extraStatus.${ec.status}` as never)}</span>
                 </span>
                 {ec.status === "pending" && <ExtraCostControls ecrId={ec.id} />}
               </div>
@@ -347,8 +350,8 @@ export default async function AdminRequestDetailPage({
           return (
             <div key={r.id} className="mt-3 rounded-xl border border-line p-4">
               <p className="text-sm font-bold text-ink">
-                {t("author")}: {author} · {r.status}
-                {r.verdict && ` · ${r.verdict}`}
+                {t("author")}: {author} · {tl2(`report.${r.status}` as never)}
+                {r.verdict && ` · ${tf(`verdicts.${r.verdict}` as never)}`}
               </p>
               <dl className="mt-2 space-y-2 text-xs">
                 {Object.entries(sections).map(([k, v]) =>
@@ -383,11 +386,11 @@ export default async function AdminRequestDetailPage({
                     <img src={m.url} alt="" className="aspect-square w-full rounded-lg object-cover" />
                   ) : (
                     <span className="flex aspect-square items-center justify-center rounded-lg bg-forest text-[10px] font-bold text-white">
-                      {m.kind}
+                      {tl2(`media.${m.kind}` as never)}
                     </span>
                   )}
                   <span className="block truncate text-[10px] text-muted">
-                    {m.kind}
+                    {tl2(`media.${m.kind}` as never)}
                     {m.flagged_far && " ⚠"}
                     {typeof m.amount_cents === "number" && ` ${formatCents(m.amount_cents)}`}
                   </span>

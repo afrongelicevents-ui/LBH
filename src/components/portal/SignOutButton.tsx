@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { createClient } from "@/lib/supabase/client";
 
 /**
  * Sign-out button. Before signing out it deletes the field pages kept for
@@ -26,6 +27,12 @@ export default function SignOutButton({
       await Promise.all(keys.filter((k) => k.startsWith("lbh-field-")).map((k) => caches.delete(k)));
     } catch {
       /* no cache API */
+    }
+    try {
+      // ends the session (server + this browser), so every header updates
+      await createClient().auth.signOut();
+    } catch {
+      /* offline: the server action still runs when possible */
     }
     cleared.current = true;
     form.requestSubmit();

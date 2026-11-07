@@ -23,7 +23,7 @@ export default async function AdminBuildPage({
   const [{ data: client }, { data: jobs }, { data: staff }] = await Promise.all([
     supabase.from("profiles").select("full_name, email, whatsapp").eq("id", build.client_id).single(),
     supabase.from("jobs").select("id, profiles:assigned_to(full_name)").eq("request_id", id),
-    supabase.from("profiles").select("id, full_name").eq("role", "field"),
+    supabase.from("profiles").select("id, full_name, staff_kind").eq("role", "field").order("full_name"),
   ]);
 
   return (

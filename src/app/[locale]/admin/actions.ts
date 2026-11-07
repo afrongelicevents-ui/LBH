@@ -184,10 +184,22 @@ export async function assignStaff(
     }
     const { data: staff } = await supabase
       .from("profiles")
-      .select("id, role")
+      .select("id, role, staff_kind")
       .eq("id", staffId)
       .single();
     if (!staff || staff.role !== "field") return { ok: false, error: "invalid" };
+    // title checks go to a lawyer; site visits to a field agent
+    if ((jobType === "title_check") !== (staff.staff_kind === "lawyer")) {
+      return { ok: false, error: "wrongKind" };
+    }
+    const { data: dup } = await supabase
+      .from("jobs")
+      .select("id")
+      .eq("request_id", requestId)
+      .eq("assigned_to", staffId)
+      .eq("job_type", jobType)
+      .limit(1);
+    if (dup && dup.length > 0) return { ok: false, error: "alreadyAssigned" };
 
     const { data: job, error } = await supabase
       .from("jobs")
@@ -243,7 +255,11 @@ export async function forwardExtraCost(ecrId: string): Promise<ActionResult> {
       amount_cents: ecr.amount_cents,
       created_by: user.id,
     });
-    if (aprErr) return { ok: false, error: "db" };
+    if (aprErr) {
+      // put it back so admin can try again
+      await supabase.from("extra_cost_requests").update({ status: "pending" }).eq("id", ecr.id);
+      return { ok: false, error: "db" };
+    }
 
     const { data: req } = await supabase
       .from("service_requests")
@@ -338,6 +354,11 @@ export async function requestReportChanges(
       .eq("id", reportId)
       .eq("status", "submitted");
     if (error) return { ok: false, error: "db" };
+    // The job goes back to the field user's "In progress" list
+    const { data: rep } = await supabase.from("reports").select("job_id").eq("id", reportId).single();
+    if (rep?.job_id) {
+      await supabase.from("jobs").update({ status: "in_progress" }).eq("id", rep.job_id).eq("status", "submitted");
+    }
     await supabase.rpc("admin_log_audit", {
       p_action: "report.changes_requested",
       p_entity: "report",
@@ -362,10 +383,13 @@ export async function publishReport(reportId: string): Promise<ActionResult> {
       .update({ status: "published" })
       .eq("id", reportId)
       .in("status", ["submitted", "changes_requested", "draft"])
-      .select("id, request_id, author_id")
+      .select("id, request_id, author_id, job_id")
       .single();
     if (error || !report) {
       return { ok: false, error: error?.message.includes("own author") ? "self" : "db" };
+    }
+    if (report.job_id) {
+      await supabase.from("jobs").update({ status: "completed" }).eq("id", report.job_id);
     }
 
     await supabase
@@ -573,7 +597,7 @@ export async function saveSettings(
 const staffSchema = z.object({
   email: z.string().trim().email().max(254),
   full_name: z.string().trim().min(2).max(120),
-  role: z.enum(["field", "admin"]),
+  role: z.enum(["field", "lawyer", "admin"]),
 });
 
 export async function inviteStaff(
@@ -590,7 +614,8 @@ export async function inviteStaff(
     const { data: created, error } = await admin.auth.admin.createUser({
       email: d.email.toLowerCase(),
       email_confirm: false,
-      app_metadata: { role: d.role },
+      // a lawyer is a field user who sees the Lawyer Portal
+      app_metadata: d.role === "lawyer" ? { role: "field", staff_kind: "lawyer" } : { role: d.role },
       user_metadata: { full_name: d.full_name },
     });
     if (error) return { ok: false, error: "exists" };

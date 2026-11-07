@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { LockIcon } from "@/components/icons";
@@ -17,6 +17,28 @@ export default function PasswordForm() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
+  // Invite / reset links arrive with the session in the URL fragment:
+  // store it (then remove it from the address bar) so the password can be set.
+  useEffect(() => {
+    const hash = new URLSearchParams(window.location.hash.slice(1));
+    const access_token = hash.get("access_token");
+    const refresh_token = hash.get("refresh_token");
+    const linkError = hash.get("error_description");
+    if (window.location.hash) {
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+    if (linkError) {
+      setTimeout(() => setError(t("linkExpired")), 0);
+      return;
+    }
+    if (access_token && refresh_token) {
+      createClient()
+        .auth.setSession({ access_token, refresh_token })
+        .then(({ error }) => error && setError(t("linkExpired")))
+        .catch(() => setError(t("errorNetwork")));
+    }
+  }, [t]);
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (password.length < 10) {
@@ -30,12 +52,25 @@ export default function PasswordForm() {
     setBusy(true);
     setError(null);
     const supabase = createClient();
-    const { error } = await supabase.auth.updateUser({ password });
+    let failed: { message?: string; status?: number } | null = null;
+    try {
+      const { error } = await supabase.auth.updateUser({ password });
+      failed = error;
+    } catch {
+      failed = { status: 0 };
+    }
     setBusy(false);
-    if (error) {
-      setError(t("errorGeneric"));
+    if (failed) {
+      setError(
+        failed.status === 0
+          ? t("errorNetwork")
+          : /session/i.test(failed.message ?? "")
+            ? t("linkExpired")
+            : t("errorGeneric")
+      );
       return;
     }
+    // Signed in now → straight to their portal (the login page routes by role)
     window.location.assign(`/${locale}/login`);
   }
 

@@ -304,7 +304,10 @@
       "errorGeneric": "Pane chakanganisika. Edza zvakare, kana tibate paWhatsApp."
     },
     "confirmFailedTitle": "Link iyi haina kushanda",
-    "confirming": "Kusimbisa email yako…"
+    "confirming": "Kusimbisa email yako…",
+    "errorNetwork": "Hapana network — tarisa internet yako wedzazve.",
+    "errorRate": "Kuedza kwawanda — mira maminitsi mashoma.",
+    "linkExpired": "Link iyi yapera kana kuti yakatoshandiswa. Kumbira imwe papeji rekupinda."
   },
   "notify": {
     "saved": "Zvachengetwa — tichakuzivisa richangotanga.",
@@ -329,7 +332,8 @@
     "failedText": "Hapana chabhadharwa. Unogona kuedza zvakare papeji yechikumbiro chako, kana kutumira umbowo hwebank transfer.",
     "processingTitle": "Kubhadhara kuri kuitwa…",
     "processingText": "Tiri kusimbisa kubhadhara kwako. Peji ino inochinja kana zvapera.",
-    "backToRequest": "Dzokera kuchikumbiro changu"
+    "backToRequest": "Dzokera kuchikumbiro changu",
+    "simulateError": "Hazvina kupera — tarisa network wedzazve."
   },
   "portal": {
     "shell": {
@@ -431,7 +435,8 @@
         "heic": "Rudzi urwu rwemufananidzo (HEIC) harutsigirwi. PaiPhone: Settings → Camera → Formats → Most Compatible, wozoedza zvakare.",
         "toobig": "Faira iri rakakurisa (mifananidzo nemaPDF kusvika 30 MB, mavhidhiyo kusvika 50 MB).",
         "filetype": "Rudzi rwefaira iri harugamuchirwi — shandisa mufananidzo (JPG/PNG), PDF kana vhidhiyo.",
-        "upload": "Kuisa kwakundikana — tarisa network woedza zvakare."
+        "upload": "Kuisa kwakundikana — tarisa network woedza zvakare.",
+        "network": "Hapana network — zvawanyora zvichiripo, edza zvakare."
       },
       "uploadingFiles": "Kuisa mafaira… {done} pa{total}"
     },
@@ -495,14 +500,16 @@
       "invoiceLink": "Invoice #{number} (PDF)",
       "actionFailedUpload": "Kuisa kwakundikana — tarisa network woedza zvakare.",
       "supplierNotChosen": "Haina kusarudzwa",
-      "viewSupplierQuote": "Ona quote yemutengesi"
+      "viewSupplierQuote": "Ona quote yemutengesi",
+      "docsFailed": "Chikumbiro chako chatumirwa, asi gwaro harina kuiswa. Tititumire muchat kana paWhatsApp."
     },
     "chat": {
       "title": "Taura neLBH",
       "empty": "Hapana mashoko — kwazisa!",
       "placeholder": "Nyora shoko…",
       "send": "Tumira",
-      "orWhatsapp": "Unoda WhatsApp? Taura nesu ikoko"
+      "orWhatsapp": "Unoda WhatsApp? Taura nesu ikoko",
+      "sendFailed": "Meseji haina kuenda — tarisa network wobaya send zvakare."
     },
     "report": {
       "back": "Dzokera kuchikumbiro",
@@ -772,7 +779,11 @@
         "closed": "Hazvichavhurwi.",
         "toobig": "Faira rakakura zvakanyanya.",
         "filetype": "Shandisa mufananidzo (JPG/PNG) kana PDF.",
-        "error": "Pane chakanganisika — edza zvakare."
+        "error": "Pane chakanganisika — edza zvakare.",
+        "heic": "HEIC haitenderwe — shandisa JPG/PNG kana PDF.",
+        "wrongKind": "Kuongorora gwaro kunopiwa gweta; kushanyira stand kunopiwa mushandi wemunda.",
+        "camera": "Shandisa kamera yemuapp.",
+        "alreadyAssigned": "Munhu uyu atova nebasa iri."
       }
     },
     "bookings": {
@@ -912,7 +923,8 @@
       "roleAdmin": "Admin",
       "invite": "Tumira kokero",
       "staffInvited": "Kokero yatumirwa.",
-      "mfaNote": "Vashandi vanofanira kuisa password nekugadza 2FA pakupinda kwekutanga."
+      "mfaNote": "Vashandi vanofanira kuisa password nekugadza 2FA pakupinda kwekutanga.",
+      "roleLawyer": "Gweta (kuongorora magwaro)"
     },
     "audit": {
       "title": "Audit log",
@@ -1071,5 +1083,64 @@
     "title": "Build Finance Tracker",
     "tagline": "Tevera dhora rimwe nerimwe rekuvaka kwako, danho nedanho.",
     "comingSoon": "Zvichauya"
+  },
+  "account": {
+    "openPortal": "Vhura portal yangu ({name})",
+    "myProfile": "Profile yangu",
+    "website": "Webhusaiti",
+    "home": "Kumba",
+    "role": {
+      "client": "Mutengi",
+      "field": "Mushandi wemunda",
+      "lawyer": "Gweta",
+      "admin": "Admin"
+    },
+    "openMyPortal": "Vhura portal yangu",
+    "changePassword": "Chinja pasiwedhi",
+    "name": "Zita rizere",
+    "whatsapp": "Nhamba yeWhatsApp (ine kodhi yenyika)",
+    "country": "Nyika yaunogara",
+    "countryZW": "Zimbabwe",
+    "save": "Chengeta",
+    "saved": "Zvachengetwa.",
+    "error": {
+      "invalid": "Tarisa zvawanyora wedzazve.",
+      "auth": "Pinda zvakare.",
+      "db": "Hazvina kuchengetwa — edza zvakare."
+    }
+  },
+  "labels": {
+    "quote": {
+      "draft": "Dhirafiti",
+      "sent": "Yatumirwa",
+      "accepted": "Yabvumirwa",
+      "declined": "Yarambwa",
+      "expired": "Yapera"
+    },
+    "method": {
+      "paynow": "Paynow",
+      "manual": "Bhanga / Remitly / WorldRemit"
+    },
+    "report": {
+      "draft": "Dhirafiti",
+      "submitted": "Iri neadmin",
+      "changes_requested": "Shanduko dzakumbirwa",
+      "published": "Yaburitswa"
+    },
+    "media": {
+      "photo": "Mufananidzo",
+      "video": "Vhidhiyo",
+      "receipt": "Risiti",
+      "document": "Gwaro",
+      "delivery": "Kuunzwa",
+      "progress": "Kufambira mberi",
+      "inspection": "Kuongorora"
+    }
+  },
+  "errorPage": {
+    "title": "Pane chakanganisika",
+    "text": "Izvi zvinogona kuitika kana network yadonha. Hapana chakarasika — edza zvakare.",
+    "retry": "Edza zvakare",
+    "home": "Peji rekutanga"
   }
 }

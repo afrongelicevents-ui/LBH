@@ -106,3 +106,22 @@ export async function resendConfirmation(email: string, locale: string): Promise
   if (error) console.error(`[signup-resend] ${error.message}`);
   return error && /rate|too many/i.test(error.message) ? "rate" : "ok";
 }
+
+/** "Email me a reset link": the link works on any device (opens /account/password). */
+export async function requestPasswordReset(email: string, locale: string): Promise<"ok" | "rate" | "error"> {
+  const parsed = signupSchema.shape.email.safeParse(email);
+  if (!parsed.success) return "error";
+  if (await rateLimited("password-reset", 5, 3600)) return "rate";
+  const loc = ["en", "sn", "nd"].includes(locale) ? locale : "en";
+  const anon = createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { auth: { persistSession: false, autoRefreshToken: false } }
+  );
+  const { error } = await anon.auth.resetPasswordForEmail(parsed.data, {
+    redirectTo: `${site.url}${loc === "en" ? "" : `/${loc}`}/account/password`,
+  });
+  if (error) console.error(`[password-reset] ${error.message}`);
+  // Same answer whether or not the email has an account
+  return error && /rate|too many/i.test(error.message) ? "rate" : "ok";
+}

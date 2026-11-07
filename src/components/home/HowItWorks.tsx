@@ -30,8 +30,8 @@ export default function HowItWorks() {
 
         <div className="mt-4 flex items-start justify-between gap-1 md:mt-10 md:gap-2">
           {steps.map((step, i) => (
-            <div key={i} className="flex flex-1 items-start gap-1 md:items-center md:gap-2">
-              <div className="flex flex-1 flex-col items-center gap-1.5 text-center md:gap-3">
+            <div key={i} className="flex min-w-0 flex-1 items-start gap-1 md:items-center md:gap-2">
+              <div className="flex min-w-0 flex-1 flex-col items-center gap-1.5 text-center md:gap-3">
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-forest text-sm font-extrabold text-white md:h-12 md:w-12 md:text-lg">
                   {i + 1}
                 </span>
@@ -40,7 +40,7 @@ export default function HowItWorks() {
                   height={28}
                   className="hidden shrink-0 text-forest md:block"
                 />
-                <p className="text-xs leading-snug font-bold text-ink md:max-w-40 md:text-base">
+                <p className="text-xs leading-snug font-bold [overflow-wrap:anywhere] hyphens-auto text-ink md:max-w-40 md:text-base">
                   {step.label}
                 </p>
               </div>

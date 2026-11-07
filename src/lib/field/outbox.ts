@@ -143,6 +143,11 @@ export async function enqueue(
     const older = (await listOps(op.userId)).filter(
       (o) => o.action === op.action && o.target === op.target
     );
+    // A report "Submit to admin" still waiting must not be lost when a later
+    // "Save draft" replaces it: the newer save carries the submit forward.
+    if (op.action === "job-report" && older.some((o) => o.fields.submit === "1")) {
+      full.fields = { ...full.fields, submit: "1" };
+    }
     for (const o of older) await tx("readwrite", (s) => s.delete(o.id));
   }
   await putOp(full);

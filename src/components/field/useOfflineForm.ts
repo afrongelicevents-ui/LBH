@@ -12,7 +12,7 @@ import { useOutbox } from "./OutboxProvider";
 export function useOfflineForm(action: OutboxAction, target: string, label: string) {
   const outbox = useOutbox();
   const formRef = useRef<HTMLFormElement>(null);
-  const [saved, setSaved] = useState<null | "queued">(null);
+  const [saved, setSaved] = useState<null | "queued" | "failed">(null);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -50,6 +50,8 @@ export function useOfflineForm(action: OutboxAction, target: string, label: stri
     try {
       await outbox.enqueue({ action, target, label, fields, files: [] });
       setSaved("queued");
+    } catch {
+      setSaved("failed"); // phone storage full / private mode
     } finally {
       setBusy(false);
     }

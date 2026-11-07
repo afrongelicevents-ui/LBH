@@ -15,7 +15,7 @@ import { initiatePaynowPayment } from "@/lib/paynow";
 import { rateLimited } from "@/lib/ratelimit";
 import { site } from "@/config/site";
 
-export type ActionResult = { ok: true; id?: string } | { ok: false; error: string };
+export type ActionResult = { ok: true; id?: string; warning?: string } | { ok: false; error: string };
 
 async function requireClient() {
   const { supabase, user, profile } = await getUserProfile();
@@ -50,11 +50,18 @@ async function storeRequestDocuments(
 }
 
 // ---------- land verification request (brief §5.2) ----------
+/** Optional number field: "" (not filled in) stays empty instead of becoming 0. */
+const optNum = (min: number, max: number) =>
+  z.preprocess(
+    (v) => (v === "" || v === null || v === undefined ? undefined : v),
+    z.coerce.number().min(min).max(max).optional()
+  );
+
 const landSchema = z.object({
   town: z.string().trim().min(2).max(120),
   stand_number: z.string().trim().min(1).max(60),
-  pin_lat: z.coerce.number().min(-90).max(90).optional().or(z.literal("")),
-  pin_lng: z.coerce.number().min(-180).max(180).optional().or(z.literal("")),
+  pin_lat: optNum(-90, 90),
+  pin_lng: optNum(-180, 180),
   introduced_by: z.string().trim().max(500).default(""),
   told_about: z.string().trim().max(2000).default(""),
 });
@@ -82,8 +89,9 @@ export async function createLandRequest(
         details: {
           town: d.town,
           stand_number: d.stand_number,
-          pin_lat: d.pin_lat === "" ? null : d.pin_lat,
-          pin_lng: d.pin_lng === "" ? null : d.pin_lng,
+          // a pin needs both coordinates
+          pin_lat: d.pin_lat !== undefined && d.pin_lng !== undefined ? d.pin_lat : null,
+          pin_lng: d.pin_lat !== undefined && d.pin_lng !== undefined ? d.pin_lng : null,
           introduced_by: d.introduced_by,
           told_about: d.told_about,
         },
@@ -92,10 +100,18 @@ export async function createLandRequest(
       .single();
     if (error || !req) return { ok: false, error: "db" };
 
-    await storeRequestDocuments(req.id, user.id, parseUploadRefs(formData.get("uploads_json")), supabase);
+    // The request exists now: a document problem must not make the client
+    // send it again (that would create a duplicate request).
+    let warning: string | undefined;
+    try {
+      await storeRequestDocuments(req.id, user.id, parseUploadRefs(formData.get("uploads_json")), supabase);
+    } catch (e) {
+      console.error(`[land-request docs] ${e instanceof Error ? e.message : e}`);
+      warning = "docs";
+    }
 
     revalidatePath("/[locale]/portal", "layout");
-    return { ok: true, id: req.id };
+    return { ok: true, id: req.id, warning };
   } catch (e) {
     console.error(`[land-request] ${e instanceof Error ? e.message : e}`);
     return { ok: false, error: uploadErrorCode(e) };
@@ -159,10 +175,16 @@ export async function createMaterialsRequest(
       .single();
     if (error || !req) return { ok: false, error: "db" };
 
-    await storeRequestDocuments(req.id, user.id, parseUploadRefs(formData.get("uploads_json")), supabase);
+    let warning: string | undefined;
+    try {
+      await storeRequestDocuments(req.id, user.id, parseUploadRefs(formData.get("uploads_json")), supabase);
+    } catch (e) {
+      console.error(`[materials-request docs] ${e instanceof Error ? e.message : e}`);
+      warning = "docs";
+    }
 
     revalidatePath("/[locale]/portal", "layout");
-    return { ok: true, id: req.id };
+    return { ok: true, id: req.id, warning };
   } catch (e) {
     console.error(`[materials-request] ${e instanceof Error ? e.message : e}`);
     return { ok: false, error: uploadErrorCode(e) };
@@ -170,15 +192,25 @@ export async function createMaterialsRequest(
 }
 
 // ---------- quote acceptance: RPC records name + timestamp ----------
-export async function acceptQuoteAction(quoteId: string, locale: string) {
-  const { supabase } = await requireClient();
-  const { error } = await supabase.rpc("accept_quote", { p_quote_id: quoteId });
-  if (error) {
-    console.error(`[accept-quote] ${error.message}`);
-    throw new Error("accept failed");
+export async function acceptQuoteAction(quoteId: string, locale: string): Promise<ActionResult> {
+  let requestId: string;
+  try {
+    const { supabase } = await requireClient();
+    const { data: q } = await supabase.from("quotes").select("request_id").eq("id", quoteId).maybeSingle();
+    if (!q) return { ok: false, error: "invalid" };
+    requestId = q.request_id;
+    const { error } = await supabase.rpc("accept_quote", { p_quote_id: quoteId });
+    if (error) {
+      console.error(`[accept-quote] ${error.message}`);
+      return { ok: false, error: "db" };
+    }
+  } catch {
+    return { ok: false, error: "error" };
   }
   revalidatePath("/[locale]/portal", "layout");
-  redirect(`/${locale}/portal`);
+  // Straight to the request, where the deposit can now be paid.
+  const prefix = locale === "en" ? "" : `/${locale}`;
+  redirect(`${prefix}/portal/requests/${requestId}?accepted=1#payments`);
 }
 
 // ---------- extra-cost approval decision ----------
@@ -215,8 +247,14 @@ export async function approveSupplierQuoteAction(id: string): Promise<ActionResu
 
 // ---------- payments ----------
 /** Start an online payment (Paynow, or the simulated test checkout). */
-export async function startPayment(paymentId: string, locale: string) {
-  const { supabase, profile } = await requireClient();
+export async function startPayment(paymentId: string, locale: string): Promise<ActionResult> {
+  let ctx: Awaited<ReturnType<typeof requireClient>>;
+  try {
+    ctx = await requireClient();
+  } catch {
+    return { ok: false, error: "auth" };
+  }
+  const { supabase, profile } = ctx;
 
   // RLS limits this to the client's own payments.
   const { data: payment } = await supabase
@@ -225,15 +263,21 @@ export async function startPayment(paymentId: string, locale: string) {
     .eq("id", paymentId)
     .single();
   if (!payment || !["pending", "failed"].includes(payment.status)) {
-    throw new Error("payment not open");
+    return { ok: false, error: "closed" };
   }
 
-  const result = await initiatePaynowPayment({
-    merchantReference: payment.merchant_reference,
-    amountCents: payment.amount_cents,
-    email: profile.email,
-    returnUrl: `${site.url}/${locale}/pay/return?ref=${encodeURIComponent(payment.merchant_reference)}`,
-  });
+  let result: Awaited<ReturnType<typeof initiatePaynowPayment>>;
+  try {
+    result = await initiatePaynowPayment({
+      merchantReference: payment.merchant_reference,
+      amountCents: payment.amount_cents,
+      email: profile.email,
+      returnUrl: `${site.url}/${locale}/pay/return?ref=${encodeURIComponent(payment.merchant_reference)}`,
+    });
+  } catch (e) {
+    console.error(`[pay] ${e instanceof Error ? e.message : e}`);
+    return { ok: false, error: "paynow" };
+  }
 
   if (!result.simulated) {
     // Payment updates are admin-only under RLS; ownership was verified above

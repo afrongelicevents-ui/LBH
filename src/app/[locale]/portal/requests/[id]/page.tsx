@@ -19,10 +19,13 @@ import {
 
 export default async function RequestDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string; id: string }>;
+  searchParams: Promise<{ docs?: string }>;
 }) {
   const { locale, id } = await params;
+  const { docs } = await searchParams;
   setRequestLocale(locale);
   const { supabase } = await requireRole(locale, ["client"]);
   const t = await getTranslations("portal.request");
@@ -99,6 +102,11 @@ export default async function RequestDetailPage({
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
+      {docs === "failed" && (
+        <p role="alert" className="rounded-2xl bg-prog-soft p-4 text-sm font-semibold text-ink">
+          {t("docsFailed")}
+        </p>
+      )}
       <div>
         <Link href="/portal" className="text-xs font-semibold text-muted hover:text-forest">
           ← {t("back")}

@@ -303,7 +303,10 @@
       "errorGeneric": "Something went wrong. Please try again, or reach us on WhatsApp."
     },
     "confirmFailedTitle": "That link didn't work",
-    "confirming": "Confirming your email…"
+    "confirming": "Confirming your email…",
+    "errorNetwork": "No connection — check your internet and try again.",
+    "errorRate": "Too many attempts — please wait a few minutes and try again.",
+    "linkExpired": "This link has expired or was already used. Ask for a new one from the login page."
   },
   "notify": {
     "saved": "Saved — we will let you know the moment it is live.",
@@ -328,7 +331,8 @@
     "failedText": "Nothing was charged. You can try again from your request page, or send proof of a bank transfer instead.",
     "processingTitle": "Payment processing…",
     "processingText": "We are confirming your payment. This page updates when it is done — you can safely close it.",
-    "backToRequest": "Back to my request"
+    "backToRequest": "Back to my request",
+    "simulateError": "Could not complete — check your connection and try again."
   },
   "portal": {
     "shell": {
@@ -430,7 +434,8 @@
         "heic": "This photo format (HEIC) is not supported. On iPhone: Settings → Camera → Formats → Most Compatible, then try again.",
         "toobig": "That file is too big (photos and PDFs up to 30 MB, videos up to 50 MB).",
         "filetype": "That file type is not accepted — use a photo (JPG/PNG), PDF or video.",
-        "upload": "Upload failed — check your connection and try again."
+        "upload": "Upload failed — check your connection and try again.",
+        "network": "No connection — your details are still here, try again."
       },
       "uploadingFiles": "Uploading files… {done} of {total}"
     },
@@ -494,14 +499,16 @@
       "invoiceLink": "Invoice #{number} (PDF)",
       "actionFailedUpload": "Upload failed — check your connection and try again.",
       "supplierNotChosen": "Not chosen",
-      "viewSupplierQuote": "View supplier's quote"
+      "viewSupplierQuote": "View supplier's quote",
+      "docsFailed": "Your request was sent, but a document could not be uploaded. Please send it to us in the chat or on WhatsApp."
     },
     "chat": {
       "title": "Chat with LBH",
       "empty": "No messages yet — say hello!",
       "placeholder": "Type a message…",
       "send": "Send",
-      "orWhatsapp": "Prefer WhatsApp? Chat with us there"
+      "orWhatsapp": "Prefer WhatsApp? Chat with us there",
+      "sendFailed": "Message not sent — check your connection and tap send again."
     },
     "report": {
       "back": "Back to request",
@@ -771,7 +778,11 @@
         "closed": "No longer open.",
         "toobig": "File too large.",
         "filetype": "Use a photo (JPG/PNG) or PDF.",
-        "error": "Something went wrong — try again."
+        "error": "Something went wrong — try again.",
+        "heic": "HEIC photos aren't supported — use JPG/PNG or PDF.",
+        "wrongKind": "Title checks go to a lawyer; site visits to a field agent.",
+        "camera": "Use the in-app camera.",
+        "alreadyAssigned": "This person already has this job."
       }
     },
     "bookings": {
@@ -911,7 +922,8 @@
       "roleAdmin": "Admin",
       "invite": "Send invite",
       "staffInvited": "Invite sent.",
-      "mfaNote": "Staff must set a password and enrol two-factor authentication on first login."
+      "mfaNote": "Staff must set a password and enrol two-factor authentication on first login.",
+      "roleLawyer": "Lawyer (title checks)"
     },
     "audit": {
       "title": "Audit log",
@@ -1070,5 +1082,64 @@
     "title": "Build Finance Tracker",
     "tagline": "Track every dollar of your build, stage by stage.",
     "comingSoon": "Coming soon"
+  },
+  "account": {
+    "openPortal": "Open my portal ({name})",
+    "myProfile": "My profile",
+    "website": "Website",
+    "home": "Home",
+    "role": {
+      "client": "Client",
+      "field": "Field agent",
+      "lawyer": "Lawyer",
+      "admin": "Admin"
+    },
+    "openMyPortal": "Open my portal",
+    "changePassword": "Change password",
+    "name": "Full name",
+    "whatsapp": "WhatsApp number (with country code)",
+    "country": "Country of residence",
+    "countryZW": "Zimbabwe",
+    "save": "Save",
+    "saved": "Saved.",
+    "error": {
+      "invalid": "Check the fields and try again.",
+      "auth": "Please log in again.",
+      "db": "Could not save — try again."
+    }
+  },
+  "labels": {
+    "quote": {
+      "draft": "Draft",
+      "sent": "Sent",
+      "accepted": "Accepted",
+      "declined": "Declined",
+      "expired": "Expired"
+    },
+    "method": {
+      "paynow": "Paynow",
+      "manual": "Bank / Remitly / WorldRemit"
+    },
+    "report": {
+      "draft": "Draft",
+      "submitted": "With admin",
+      "changes_requested": "Changes requested",
+      "published": "Published"
+    },
+    "media": {
+      "photo": "Photo",
+      "video": "Video",
+      "receipt": "Receipt",
+      "document": "Document",
+      "delivery": "Delivery",
+      "progress": "Progress",
+      "inspection": "Inspection"
+    }
+  },
+  "errorPage": {
+    "title": "Something went wrong",
+    "text": "This can happen when the connection drops. Nothing you saved is lost — please try again.",
+    "retry": "Try again",
+    "home": "Home page"
   }
 }

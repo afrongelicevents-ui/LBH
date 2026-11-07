@@ -1,5 +1,7 @@
 "use client";
 
+import { guardAction, useSubmitKeepingValues } from "@/lib/useSubmitKeepingValues";
+
 import { useActionState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
@@ -24,21 +26,24 @@ export default function LandRequestForm() {
   const { upload, progress } = useDirectUpload();
 
   const [state, formAction, pending] = useActionState<ActionResult | null, FormData>(
-    async (prev, fd) => {
+    guardAction<ActionResult>(async (prev, fd) => {
       const files = fd.getAll("documents").filter((f): f is File => f instanceof File && f.size > 0);
       fd.delete("documents");
       const up = await upload("client-document", files);
       if (!up.ok) return { ok: false as const, error: up.error === "size" ? "toobig" : up.error === "type" ? "filetype" : "error" };
       fd.set("uploads_json", JSON.stringify(up.refs));
       const res = await createLandRequest(prev, fd);
-      if (res.ok && res.id) router.push(`/portal/requests/${res.id}`, { locale });
+      if (res.ok && res.id) {
+        router.push(`/portal/requests/${res.id}${res.warning ? "?docs=failed" : ""}`, { locale });
+      }
       return res;
-    },
+    }, { ok: false, error: "network" }),
     null
   );
+  const submitKeepingValues = useSubmitKeepingValues(formAction);
 
   return (
-    <form action={formAction} className="card space-y-5 p-6 md:p-8">
+    <form onSubmit={submitKeepingValues} className="card space-y-5 p-6 md:p-8">
       {state && !state.ok && (
         <p role="alert" className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm font-semibold text-red-800">
           {t(`error.${state.error}` as never)}

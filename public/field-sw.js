@@ -52,8 +52,24 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  // App code/styles: content-hashed, safe to serve from cache first.
-  if (url.pathname.startsWith("/_next/static/") || url.pathname.startsWith("/images/")) {
+  // Site images: network first (so new photos show), cache as offline fallback.
+  if (url.pathname.startsWith("/images/")) {
+    event.respondWith(
+      fetch(request)
+        .then((res) => {
+          if (res.ok) {
+            const copy = res.clone();
+            caches.open(CACHE).then((c) => c.put(request, copy));
+          }
+          return res;
+        })
+        .catch(() => caches.match(request).then((hit) => hit || Response.error()))
+    );
+    return;
+  }
+
+  // App code/styles: content-hashed file names, safe to serve from cache first.
+  if (url.pathname.startsWith("/_next/static/")) {
     event.respondWith(
       caches.match(request).then(
         (hit) =>

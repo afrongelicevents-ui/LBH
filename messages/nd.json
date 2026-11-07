@@ -304,7 +304,10 @@
       "errorGeneric": "Kukhona okungahambanga kahle. Zama futhi, kumbe usithinte ku-WhatsApp."
     },
     "confirmFailedTitle": "Ilinki le kayisebenzanga",
-    "confirming": "Kuqinisekiswa i-email yakho…"
+    "confirming": "Kuqinisekiswa i-email yakho…",
+    "errorNetwork": "Akula network — hlola i-inthanethi yakho uzame futhi.",
+    "errorRate": "Imizamo eminengi — linda imizuzu embalwa.",
+    "linkExpired": "Ilinki le isiphelelwe kumbe isisetshenzisiwe. Cela enye ekhasini lokungena."
   },
   "notify": {
     "saved": "Kugciniwe — sizakwazisa nxa sesisebenza.",
@@ -329,7 +332,8 @@
     "failedText": "Akulalutho olubhadalwe. Ungazama futhi ekhasini lesicelo sakho, loba uthumele ubufakazi be-bank transfer.",
     "processingTitle": "Ukubhadala kuyenziwa…",
     "processingText": "Siqinisekisa ukubhadala kwakho. Leli khasi liyantshintsha nxa sekuphelile.",
-    "backToRequest": "Buyela esicelweni sami"
+    "backToRequest": "Buyela esicelweni sami",
+    "simulateError": "Akuqedwanga — hlola i-network uzame futhi."
   },
   "portal": {
     "shell": {
@@ -431,7 +435,8 @@
         "heic": "Lolu hlobo lwesithombe (HEIC) kalusekelwa. Ku-iPhone: Settings → Camera → Formats → Most Compatible, ubusuzama futhi.",
         "toobig": "Ifayela likhulu kakhulu (izithombe lama-PDF kufika ku-30 MB, amavidiyo kufika ku-50 MB).",
         "filetype": "Lolu hlobo lwefayela kalwamukelwa — sebenzisa isithombe (JPG/PNG), i-PDF loba ividiyo.",
-        "upload": "Ukufaka kwehlulekile — khangela inethiwekhi uzame futhi."
+        "upload": "Ukufaka kwehlulekile — khangela inethiwekhi uzame futhi.",
+        "network": "Akula network — okubhaliweyo kusekhona, zama futhi."
       },
       "uploadingFiles": "Kufakwa kwamafayela… {done} ku-{total}"
     },
@@ -495,14 +500,16 @@
       "invoiceLink": "I-invoice #{number} (PDF)",
       "actionFailedUpload": "Ukufaka kwehlulekile — khangela inethiwekhi uzame futhi.",
       "supplierNotChosen": "Ayikhethwanga",
-      "viewSupplierQuote": "Bona i-quote yomthengisi"
+      "viewSupplierQuote": "Bona i-quote yomthengisi",
+      "docsFailed": "Isicelo sakho sithunyelwe, kodwa idokhumenti ayilayishwanga. Sithumelele yona ku-chat kumbe ku-WhatsApp."
     },
     "chat": {
       "title": "Khuluma leLBH",
       "empty": "Akulamilayezo — bingelela!",
       "placeholder": "Bhala umlayezo…",
       "send": "Thumela",
-      "orWhatsapp": "Ufuna iWhatsApp? Khuluma lathi khona"
+      "orWhatsapp": "Ufuna iWhatsApp? Khuluma lathi khona",
+      "sendFailed": "Umlayezo awuthunyelwanga — hlola i-network ucindezele futhi."
     },
     "report": {
       "back": "Buyela esicelweni",
@@ -772,7 +779,11 @@
         "closed": "Kakusavulekanga.",
         "toobig": "Ifayela likhulu kakhulu.",
         "filetype": "Sebenzisa isithombe (JPG/PNG) kumbe i-PDF.",
-        "error": "Kukhona okungahambanga kahle — zama futhi."
+        "error": "Kukhona okungahambanga kahle — zama futhi.",
+        "heic": "I-HEIC ayamukelwa — sebenzisa i-JPG/PNG kumbe i-PDF.",
+        "wrongKind": "Ukuhlola itayitili kunikwa ummeli; ukuvakatshela i-stand kunikwa isisebenzi sensimu.",
+        "camera": "Sebenzisa ikhamera ye-app.",
+        "alreadyAssigned": "Lo muntu useselawo lumsebenzi."
       }
     },
     "bookings": {
@@ -912,7 +923,8 @@
       "roleAdmin": "I-admin",
       "invite": "Thumela isinxuso",
       "staffInvited": "Isinxuso sithunyelwe.",
-      "mfaNote": "Abasebenzi kumele babeke iphasiwedi balungise i-2FA ekungeneni kwakuqala."
+      "mfaNote": "Abasebenzi kumele babeke iphasiwedi balungise i-2FA ekungeneni kwakuqala.",
+      "roleLawyer": "Ummeli (ukuhlola amatayitili)"
     },
     "audit": {
       "title": "I-audit log",
@@ -1071,5 +1083,64 @@
     "title": "Build Finance Tracker",
     "tagline": "Landela idola ngalinye lokwakha kwakho, isigaba ngesigaba.",
     "comingSoon": "Kuyeza"
+  },
+  "account": {
+    "openPortal": "Vula i-portal yami ({name})",
+    "myProfile": "Iphrofayili yami",
+    "website": "Iwebhusayithi",
+    "home": "Ekhaya",
+    "role": {
+      "client": "Ikhasimende",
+      "field": "Isisebenzi sensimu",
+      "lawyer": "Ummeli",
+      "admin": "I-Admin"
+    },
+    "openMyPortal": "Vula i-portal yami",
+    "changePassword": "Tshintsha iphasiwedi",
+    "name": "Ibizo eligcweleyo",
+    "whatsapp": "Inombolo ye-WhatsApp (lekhodi yelizwe)",
+    "country": "Ilizwe ohlala kulo",
+    "countryZW": "IZimbabwe",
+    "save": "Londoloza",
+    "saved": "Kulondoloziwe.",
+    "error": {
+      "invalid": "Hlola okubhaliweyo uzame futhi.",
+      "auth": "Ngena futhi.",
+      "db": "Akulondolozwanga — zama futhi."
+    }
+  },
+  "labels": {
+    "quote": {
+      "draft": "Okusalungiswa",
+      "sent": "Ithunyelwe",
+      "accepted": "Yamukelwe",
+      "declined": "Yaliwe",
+      "expired": "Iphelelwe yisikhathi"
+    },
+    "method": {
+      "paynow": "Paynow",
+      "manual": "Ibhange / Remitly / WorldRemit"
+    },
+    "report": {
+      "draft": "Okusalungiswa",
+      "submitted": "Ikhona ku-admin",
+      "changes_requested": "Kucelwe ukutshintsha",
+      "published": "Ishicilelwe"
+    },
+    "media": {
+      "photo": "Isithombe",
+      "video": "Ividiyo",
+      "receipt": "Irisidi",
+      "document": "Idokhumenti",
+      "delivery": "Ukulethwa",
+      "progress": "Inqubekela phambili",
+      "inspection": "Ukuhlola"
+    }
+  },
+  "errorPage": {
+    "title": "Kukhona okungahambanga kahle",
+    "text": "Lokhu kungenzeka uma i-network iphela. Akulalutho olahlekileyo — zama futhi.",
+    "retry": "Zama futhi",
+    "home": "Ikhasi lokuqala"
   }
 }

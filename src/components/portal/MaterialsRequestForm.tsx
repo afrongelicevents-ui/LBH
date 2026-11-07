@@ -1,5 +1,7 @@
 "use client";
 
+import { guardAction, useSubmitKeepingValues } from "@/lib/useSubmitKeepingValues";
+
 import { useState, useActionState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
@@ -28,7 +30,7 @@ export default function MaterialsRequestForm() {
   const [items, setItems] = useState<Item[]>([{ item: "", quantity: "", notes: "" }]);
 
   const [state, formAction, pending] = useActionState<ActionResult | null, FormData>(
-    async (prev, fd) => {
+    guardAction<ActionResult>(async (prev, fd) => {
       fd.set(
         "items_json",
         JSON.stringify(items.filter((i) => i.item.trim() && i.quantity.trim()))
@@ -39,18 +41,21 @@ export default function MaterialsRequestForm() {
       if (!up.ok) return { ok: false as const, error: up.error === "size" ? "toobig" : up.error === "type" ? "filetype" : "error" };
       fd.set("uploads_json", JSON.stringify(up.refs));
       const res = await createMaterialsRequest(prev, fd);
-      if (res.ok && res.id) router.push(`/portal/requests/${res.id}`, { locale });
+      if (res.ok && res.id) {
+        router.push(`/portal/requests/${res.id}${res.warning ? "?docs=failed" : ""}`, { locale });
+      }
       return res;
-    },
+    }, { ok: false, error: "network" }),
     null
   );
+  const submitKeepingValues = useSubmitKeepingValues(formAction);
 
   function setItem(i: number, patch: Partial<Item>) {
     setItems((prev) => prev.map((it, idx) => (idx === i ? { ...it, ...patch } : it)));
   }
 
   return (
-    <form action={formAction} className="card space-y-5 p-6 md:p-8">
+    <form onSubmit={submitKeepingValues} className="card space-y-5 p-6 md:p-8">
       {state && !state.ok && (
         <p role="alert" className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm font-semibold text-red-800">
           {t(`error.${state.error}` as never)}
@@ -66,28 +71,33 @@ export default function MaterialsRequestForm() {
         <span className={labelCls}>{t("itemList")} *</span>
         <div className="space-y-2">
           {items.map((it, i) => (
-            <div key={i} className="flex gap-2">
-              <input
-                value={it.item}
-                onChange={(e) => setItem(i, { item: e.target.value })}
-                placeholder={t("itemName")}
-                className={`${inputCls} flex-[2]`}
-                maxLength={200}
-              />
-              <input
-                value={it.quantity}
-                onChange={(e) => setItem(i, { quantity: e.target.value })}
-                placeholder={t("itemQty")}
-                className={`${inputCls} flex-1`}
-                maxLength={60}
-              />
-              <input
-                value={it.notes}
-                onChange={(e) => setItem(i, { notes: e.target.value })}
-                placeholder={t("itemNotes")}
-                className={`${inputCls} hidden flex-1 sm:block`}
-                maxLength={300}
-              />
+            <div key={i} className="flex items-start gap-2 rounded-xl border border-line p-2 sm:border-0 sm:p-0">
+              <div className="grid min-w-0 flex-1 grid-cols-3 gap-2 sm:grid-cols-4">
+                <input
+                  value={it.item}
+                  onChange={(e) => setItem(i, { item: e.target.value })}
+                  placeholder={t("itemName")}
+                  aria-label={t("itemName")}
+                  className={`${inputCls} col-span-2 min-w-0`}
+                  maxLength={200}
+                />
+                <input
+                  value={it.quantity}
+                  onChange={(e) => setItem(i, { quantity: e.target.value })}
+                  placeholder={t("itemQty")}
+                  aria-label={t("itemQty")}
+                  className={`${inputCls} min-w-0`}
+                  maxLength={60}
+                />
+                <input
+                  value={it.notes}
+                  onChange={(e) => setItem(i, { notes: e.target.value })}
+                  placeholder={t("itemNotes")}
+                  aria-label={t("itemNotes")}
+                  className={`${inputCls} col-span-3 min-w-0 sm:col-span-1`}
+                  maxLength={300}
+                />
+              </div>
               {items.length > 1 && (
                 <button
                   type="button"

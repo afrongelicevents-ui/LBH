@@ -1,5 +1,7 @@
 "use client";
 
+import { useSubmitKeepingValues } from "@/lib/useSubmitKeepingValues";
+
 import { useActionState } from "react";
 import { useTranslations } from "next-intl";
 import { waLink } from "@/config/site";
@@ -26,6 +28,7 @@ export default function BookCallForm({ defaults = {} }: { defaults?: BookingDefa
     submitBooking,
     null
   );
+  const submitKeepingValues = useSubmitKeepingValues(formAction);
 
   if (state?.status === "ok") {
     return (
@@ -47,7 +50,7 @@ export default function BookCallForm({ defaults = {} }: { defaults?: BookingDefa
   }
 
   return (
-    <form action={formAction} className="card p-6 md:p-8">
+    <form onSubmit={submitKeepingValues} className="card p-6 md:p-8">
       {state && (
         <p
           role="alert"

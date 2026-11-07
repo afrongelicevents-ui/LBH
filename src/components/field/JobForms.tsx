@@ -25,8 +25,16 @@ function Feedback({ state }: { state: ActionResult | null }) {
 }
 
 /** "Saved on this phone" — the outbox bar shows when it has uploaded. */
-export function QueuedNote({ show }: { show: boolean }) {
+export function QueuedNote({ show, failed = false }: { show: boolean; failed?: boolean }) {
   const t = useTranslations("field.outbox");
+  const te = useTranslations("field.error");
+  if (failed) {
+    return (
+      <p role="alert" className="mt-2 text-xs font-bold text-red-700">
+        {te("storage")}
+      </p>
+    );
+  }
   if (!show) return null;
   return (
     <p role="status" className="mt-2 text-xs font-bold text-forest">
@@ -110,7 +118,7 @@ export function VisitForm({
       <button type="submit" disabled={busy} className="btn btn-green min-h-10 text-sm disabled:opacity-60">
         {t("saveVisit")}
       </button>
-      <QueuedNote show={saved === "queued"} />
+      <QueuedNote show={saved === "queued"} failed={saved === "failed"} />
     </form>
   );
 }
@@ -185,7 +193,7 @@ export function LegalChecklistForm({
       <button type="submit" disabled={busy} className="btn btn-green min-h-10 text-sm disabled:opacity-60">
         {t("save")}
       </button>
-      <QueuedNote show={saved === "queued"} />
+      <QueuedNote show={saved === "queued"} failed={saved === "failed"} />
     </form>
   );
 }
@@ -296,9 +304,14 @@ export function MediaUploadForm({
 // ---------- extra cost ----------
 export function ExtraCostForm({ jobId }: { jobId: string }) {
   const t = useTranslations("field");
-  const bound = requestExtraCost.bind(null, jobId);
   const [state, formAction, pending] = useActionState<ActionResult | null, FormData>(
-    bound,
+    async (prev, fd) => {
+      try {
+        return await requestExtraCost(jobId, prev, fd);
+      } catch {
+        return { ok: false, error: "upload" }; // no connection: try again with signal
+      }
+    },
     null
   );
   if (state?.ok) {
@@ -410,7 +423,7 @@ export function ReportDraftForm({
         </button>
       </div>
       <p className="text-[11px] text-muted">{t("submitNote")}</p>
-      <QueuedNote show={saved === "queued"} />
+      <QueuedNote show={saved === "queued"} failed={saved === "failed"} />
     </form>
   );
 }

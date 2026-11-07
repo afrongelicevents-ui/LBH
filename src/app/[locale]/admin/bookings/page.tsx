@@ -11,6 +11,7 @@ export default async function AdminBookingsPage({
   setRequestLocale(locale);
   const { supabase } = await requireRole(locale, ["admin"]);
   const t = await getTranslations("admin.bookings");
+  const tbk = await getTranslations("portal.dashboard.booking");
 
   const { data: bookings } = await supabase
     .from("call_bookings")
@@ -37,7 +38,7 @@ export default async function AdminBookingsPage({
               </div>
               <div className="flex flex-col items-end gap-2">
                 <span className={`badge badge-dot badge-${b.status === "confirmed" ? "ok" : b.status === "completed" ? "done" : b.status === "cancelled" ? "grey" : "prog"}`}>
-                  {b.status}
+                  {tbk(b.status as never)}
                 </span>
                 {["new", "confirmed"].includes(b.status) && (
                   <BookingStatusButtons bookingId={b.id} />

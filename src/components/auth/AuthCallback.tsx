@@ -32,7 +32,8 @@ export default function AuthCallback() {
       .then(({ error }) => {
         if (error) setFailed(true);
         else window.location.replace(`${next}${next.includes("?") ? "&" : "?"}welcome=1`);
-      });
+      })
+      .catch(() => setFailed(true));
   }, []);
 
   return (

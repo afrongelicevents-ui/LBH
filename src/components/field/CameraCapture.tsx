@@ -67,6 +67,7 @@ export default function CameraCapture({
   const recorderRef = useRef<MediaRecorder | null>(null);
   const watchRef = useRef<number | null>(null);
   const fixRef = useRef<Fix | null>(null);
+  const openRef = useRef(false);
   const valueRef = useRef(value);
   valueRef.current = value;
 
@@ -79,10 +80,9 @@ export default function CameraCapture({
 
   useEffect(() => stopAll, [stopAll]);
 
-  // Revoke preview URLs of removed items
+  // Free preview images still held when the form goes away
   useEffect(() => {
-    return () => value.forEach((v) => URL.revokeObjectURL(v.previewUrl));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => valueRef.current.forEach((v) => URL.revokeObjectURL(v.previewUrl));
   }, []);
 
   /** A capture made before the first GPS fix gets the fix that follows it. */
@@ -110,6 +110,7 @@ export default function CameraCapture({
       return;
     }
     setOpen(true);
+    openRef.current = true;
     // GPS: start watching as soon as the camera opens
     if (navigator.geolocation) {
       setGpsState("waiting");
@@ -145,6 +146,11 @@ export default function CameraCapture({
         if (mode !== "video") throw e;
         stream = await navigator.mediaDevices.getUserMedia({ video, audio: false });
       }
+      if (!openRef.current) {
+        // Cancel was tapped while the camera was starting: switch it off again
+        stream.getTracks().forEach((tr) => tr.stop());
+        return;
+      }
       streamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
@@ -157,6 +163,7 @@ export default function CameraCapture({
   }
 
   function close() {
+    openRef.current = false;
     if (recorderRef.current && recorderRef.current.state !== "inactive") {
       recorderRef.current.stop();
     }

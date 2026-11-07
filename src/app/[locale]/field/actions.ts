@@ -50,13 +50,20 @@ function savedAtFrom(raw: FormDataEntryValue | null): number {
 }
 
 // ---------- visit checklist + measurements (brief §6) ----------
+/** Optional number field: "" (not filled in) stays empty instead of becoming 0. */
+const optNum = (min: number, max: number) =>
+  z.preprocess(
+    (v) => (v === "" || v === null || v === undefined ? undefined : v),
+    z.coerce.number().min(min).max(max).optional()
+  );
+
 const visitSchema = z.object({
   arrived: z.coerce.boolean(),
   council_officer_present: z.coerce.boolean(),
   pegs_shown: z.coerce.boolean(),
-  length_m: z.coerce.number().min(0).max(10000).optional().or(z.literal("")),
-  width_m: z.coerce.number().min(0).max(10000).optional().or(z.literal("")),
-  area_sqm: z.coerce.number().min(0).max(100000000).optional().or(z.literal("")),
+  length_m: optNum(0, 10000),
+  width_m: optNum(0, 10000),
+  area_sqm: optNum(0, 100000000),
   title_notes: z.string().trim().max(4000).default(""),
   findings: z.string().trim().max(8000).default(""),
 });
@@ -92,9 +99,9 @@ export async function saveVisit(
           council_officer_present: d.council_officer_present,
           pegs_shown: d.pegs_shown,
           measurements: {
-            length_m: d.length_m === "" ? null : d.length_m,
-            width_m: d.width_m === "" ? null : d.width_m,
-            area_sqm: d.area_sqm === "" ? null : d.area_sqm,
+            length_m: d.length_m ?? null,
+            width_m: d.width_m ?? null,
+            area_sqm: d.area_sqm ?? null,
           },
           title_notes: d.title_notes,
           findings: d.findings,
@@ -105,7 +112,7 @@ export async function saveVisit(
           arrived: d.arrived,
           council_officer_present: d.council_officer_present,
           pegs_shown: d.pegs_shown,
-          measurements_taken: d.length_m !== "" || d.width_m !== "",
+          measurements_taken: d.length_m !== undefined || d.width_m !== undefined,
         },
       })
       .eq("id", jobId);
@@ -184,8 +191,8 @@ export async function saveLegal(
 
 // ---------- media capture (photos/videos with provenance, brief §6) ----------
 const mediaMetaSchema = z.object({
-  device_lat: z.coerce.number().min(-90).max(90).optional().or(z.literal("")),
-  device_lng: z.coerce.number().min(-180).max(180).optional().or(z.literal("")),
+  device_lat: optNum(-90, 90),
+  device_lng: optNum(-180, 180),
   note: z.string().trim().max(500).default(""),
   kind: z.enum(["photo", "video", "receipt"]),
   amount: z.string().trim().max(20).default(""),
@@ -235,9 +242,9 @@ export async function uploadMedia(
     let gpsLng: number | null = prov.gpsLat === null ? null : prov.gpsLng;
 
     // Device GPS captured by the browser at upload time as fallback
-    if (gpsLat === null && d.device_lat !== "" && d.device_lat !== undefined) {
-      gpsLat = Number(d.device_lat);
-      gpsLng = d.device_lng === "" || d.device_lng === undefined ? null : Number(d.device_lng);
+    if (gpsLat === null && d.device_lat !== undefined && d.device_lng !== undefined) {
+      gpsLat = d.device_lat;
+      gpsLng = d.device_lng;
     }
 
     // Distance to the stand pin; flag photos taken too far away
@@ -377,6 +384,8 @@ export async function saveReportDraft(
 
     if (existing) {
       if (!["draft", "changes_requested"].includes(existing.status)) {
+        // A replayed submit (connection dropped after it went through) is fine
+        if (submitting && ["submitted", "published"].includes(existing.status)) return { ok: true };
         return { ok: false, error: "locked" };
       }
       const { error } = await supabase

@@ -9,7 +9,7 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import {
   deleteOp,
@@ -58,6 +58,7 @@ export default function OutboxProvider({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [ops, setOps] = useState<OutboxOp[]>([]);
   const online = useSyncExternalStore(
     subscribeOnline,
@@ -134,6 +135,14 @@ export default function OutboxProvider({
       window.clearTimeout(first);
     };
   }, [reload, flush]);
+
+  // Every field page opened (also by tapping a card) is kept for offline use.
+  useEffect(() => {
+    if (!("serviceWorker" in navigator) || !window.isSecureContext) return;
+    navigator.serviceWorker.ready
+      .then((reg) => reg.active?.postMessage({ type: "precache", urls: [pathname] }))
+      .catch(() => {});
+  }, [pathname]);
 
   return (
     <Ctx.Provider value={{ userId, ops, online, enqueue, flush }}>

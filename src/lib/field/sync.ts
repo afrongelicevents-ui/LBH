@@ -18,6 +18,18 @@ const RETRY = new Set(["auth", "error", "db", "upload", "rate"]);
 const MAX_ATTEMPTS = 6;
 
 class Offline extends Error {}
+/** The page is older than the server (new deploy): reload to get the new code. */
+class Stale extends Error {}
+
+function classify(e: unknown): Error {
+  const msg = e instanceof Error ? e.message : String(e);
+  if (/Server Action|failed-to-find-server-action/i.test(msg)) return new Stale(msg);
+  // fetch() network failures are TypeErrors; also trust navigator.onLine
+  if ((typeof navigator !== "undefined" && navigator.onLine === false) || e instanceof TypeError) {
+    return new Offline(msg);
+  }
+  return e instanceof Error ? e : new Error(msg);
+}
 
 function formFrom(op: OutboxOp): FormData {
   const fd = new FormData();
@@ -46,8 +58,8 @@ async function uploadFiles(op: OutboxOp, fd: FormData): Promise<Result | null> {
         },
       }))
     );
-  } catch {
-    throw new Offline();
+  } catch (e) {
+    throw classify(e);
   }
   if (!up.ok) {
     return {
@@ -87,9 +99,8 @@ async function send(op: OutboxOp): Promise<Result> {
       default:
         return { ok: false, error: "invalid" };
     }
-  } catch {
-    // Server action request failed to reach the server.
-    throw new Offline();
+  } catch (e) {
+    throw classify(e);
   }
 }
 
@@ -111,6 +122,18 @@ export function flushOutbox(userId: string): Promise<number> {
         res = await send(op);
       } catch (e) {
         if (e instanceof Offline) break;
+        if (e instanceof Stale) {
+          // Saved items stay on the phone; the reloaded page sends them.
+          if (typeof window !== "undefined") {
+            const last = Number(sessionStorage.getItem("lbh-outbox-reload") ?? 0);
+            if (Date.now() - last > 5 * 60 * 1000) {
+              sessionStorage.setItem("lbh-outbox-reload", String(Date.now()));
+              window.location.reload();
+            }
+          }
+          break;
+        }
+        // Anything else counts as a failed attempt (never blocks the queue forever)
         res = { ok: false, error: "error" };
       }
       if (res.ok) {

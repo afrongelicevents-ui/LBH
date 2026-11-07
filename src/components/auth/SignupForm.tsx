@@ -1,5 +1,7 @@
 "use client";
 
+import { useSubmitKeepingValues } from "@/lib/useSubmitKeepingValues";
+
 import { useActionState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
@@ -22,6 +24,7 @@ export default function SignupForm() {
     signUpClient,
     null
   );
+  const submitKeepingValues = useSubmitKeepingValues(formAction);
 
   if (state?.status === "ok") {
     return (
@@ -56,7 +59,7 @@ export default function SignupForm() {
           : null;
 
   return (
-    <form action={formAction} className="card p-6 md:p-8">
+    <form onSubmit={submitKeepingValues} className="card p-6 md:p-8">
       <div className="mb-5 flex items-center gap-3">
         <span className="flex h-11 w-11 items-center justify-center rounded-full bg-forest text-white">
           <LockIcon width={22} height={22} />

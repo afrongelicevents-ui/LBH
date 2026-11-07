@@ -13,6 +13,9 @@ export default async function AdminPaymentsPage({
   setRequestLocale(locale);
   const { supabase } = await requireRole(locale, ["admin"]);
   const t = await getTranslations("admin.payments");
+  const tl = await getTranslations("labels");
+  const tpr = await getTranslations("portal.request");
+  const tbs = await getTranslations("build.paymentStatus");
 
   const { data: payments } = await supabase
     .from("payments")
@@ -49,13 +52,13 @@ export default async function AdminPaymentsPage({
                 <td className="px-4 py-2.5 font-semibold text-ink">
                   {(p.service_requests as unknown as { title: string })?.title}
                 </td>
-                <td className="px-4 py-2.5 text-muted">{p.kind}</td>
+                <td className="px-4 py-2.5 text-muted">{tpr(`paymentKind.${p.kind}` as never)}</td>
                 <td className="px-4 py-2.5 font-bold text-forest">
                   {formatCents(p.amount_cents)}
                 </td>
-                <td className="px-4 py-2.5 text-muted">{p.method}</td>
+                <td className="px-4 py-2.5 text-muted">{tl(`method.${p.method}` as never)}</td>
                 <td className="px-4 py-2.5">
-                  <span className={`badge badge-dot badge-${toneFor(p.status)}`}>{p.status}</span>
+                  <span className={`badge badge-dot badge-${toneFor(p.status)}`}>{tbs(p.status as never)}</span>
                 </td>
                 <td className="px-4 py-2.5 text-xs text-muted">{p.merchant_reference}</td>
                 <td className="px-4 py-2.5">

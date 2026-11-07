@@ -50,7 +50,14 @@ function useAct() {
   return {
     pending,
     result,
-    run: (fn: () => Promise<StageResult>) => start(async () => setResult(await fn())),
+    run: (fn: () => Promise<StageResult>) =>
+      start(async () => {
+        try {
+          setResult(await fn());
+        } catch {
+          setResult({ ok: false, error: "upload" }); // no connection
+        }
+      }),
   };
 }
 
@@ -63,14 +70,18 @@ function useUploadingAction(
   const { upload, progress } = useDirectUpload();
   const [state, formAction, pending] = useActionState<StageResult | null, FormData>(
     async (prev, fd) => {
-      const files = fd.getAll(fileField).filter((f): f is File => f instanceof File && f.size > 0);
-      fd.delete(fileField);
-      const up = await upload(purpose, files);
-      if (!up.ok) {
-        return { ok: false, error: up.error === "size" ? "toobig" : up.error === "type" ? "filetype" : "upload" };
+      try {
+        const files = fd.getAll(fileField).filter((f): f is File => f instanceof File && f.size > 0);
+        fd.delete(fileField);
+        const up = await upload(purpose, files);
+        if (!up.ok) {
+          return { ok: false, error: up.error === "size" ? "toobig" : up.error === "type" ? "filetype" : "upload" };
+        }
+        fd.set("uploads_json", JSON.stringify(up.refs));
+        return await action(prev, fd);
+      } catch {
+        return { ok: false, error: "upload" }; // no connection
       }
-      fd.set("uploads_json", JSON.stringify(up.refs));
-      return action(prev, fd);
     },
     null
   );
@@ -167,6 +178,7 @@ function toOutboxFile(c: Captured): OutboxFile {
  */
 function useFieldCapture(action: OutboxAction, stageId: string, label: string, extra?: string) {
   const outbox = useOutbox();
+  const storageErr = useTranslations("field")("error.storage");
   const [files, setFiles] = useState<Captured[]>([]);
   const [queued, setQueued] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -195,6 +207,8 @@ function useFieldCapture(action: OutboxAction, stageId: string, label: string, e
       setFiles([]);
       form.reset();
       setQueued(true);
+    } catch {
+      setErr(storageErr);
     } finally {
       setBusy(false);
     }

@@ -30,6 +30,7 @@ export default function ChatPanel({
   const [messages, setMessages] = useState<Message[]>([]);
   const [body, setBody] = useState("");
   const [busy, setBusy] = useState(false);
+  const [sendFailed, setSendFailed] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const load = useCallback(async () => {
@@ -37,9 +38,10 @@ export default function ChatPanel({
       .from("messages")
       .select("id, client_id, sender_id, body, created_at")
       .eq("client_id", clientId)
-      .order("created_at", { ascending: true })
+      .order("created_at", { ascending: false })
       .limit(200);
-    if (data) setMessages(data);
+    // newest 200, shown oldest → newest
+    if (data) setMessages([...data].reverse());
   }, [supabase, clientId]);
 
   useEffect(() => {
@@ -81,15 +83,23 @@ export default function ChatPanel({
     const text = body.trim();
     if (!text) return;
     setBusy(true);
-    const { error } = await supabase.from("messages").insert({
-      client_id: clientId,
-      sender_id: meId,
-      body: text.slice(0, 4000),
-      read_by_client: meId === clientId,
-      read_by_admin: meId !== clientId,
-    });
+    setSendFailed(false);
+    let error: unknown = null;
+    try {
+      ({ error } = await supabase.from("messages").insert({
+        client_id: clientId,
+        sender_id: meId,
+        body: text.slice(0, 4000),
+        read_by_client: meId === clientId,
+        read_by_admin: meId !== clientId,
+      }));
+    } catch (err) {
+      error = err;
+    }
     setBusy(false);
-    if (!error) {
+    if (error) {
+      setSendFailed(true); // keep the text so it can be sent again
+    } else {
       setBody("");
       void load();
     }
@@ -127,8 +137,14 @@ export default function ChatPanel({
         })}
         <div ref={bottomRef} />
       </div>
+      {sendFailed && (
+        <p role="alert" className="border-t border-line px-4 py-2 text-xs font-semibold text-red-700">
+          {t("sendFailed")}
+        </p>
+      )}
       <form onSubmit={send} className="flex gap-2 border-t border-line p-3">
         <input
+          aria-label={t("placeholder")}
           value={body}
           onChange={(e) => setBody(e.target.value)}
           maxLength={4000}

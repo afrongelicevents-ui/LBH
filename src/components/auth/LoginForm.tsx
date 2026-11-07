@@ -4,13 +4,19 @@ import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { Link } from "@/i18n/navigation";
-import { resendConfirmation } from "@/app/[locale]/(site)/signup/actions";
+import { resendConfirmation, requestPasswordReset } from "@/app/[locale]/(site)/signup/actions";
 import { LockIcon, ArrowRightIcon } from "@/components/icons";
 
 const inputCls =
   "w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink focus:border-forest focus:outline-none";
 
-export default function LoginForm({ confirmFailed = false }: { confirmFailed?: boolean }) {
+export default function LoginForm({
+  confirmFailed = false,
+  next = null,
+}: {
+  confirmFailed?: boolean;
+  next?: string | null;
+}) {
   const t = useTranslations("auth");
   const locale = useLocale();
   const [email, setEmail] = useState("");
@@ -27,19 +33,29 @@ export default function LoginForm({ confirmFailed = false }: { confirmFailed?: b
     setUnconfirmed(false);
     setBusy(true);
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    let error: { code?: string; status?: number; name?: string } | null = null;
+    try {
+      ({ error } = await supabase.auth.signInWithPassword({ email, password }));
+    } catch {
+      error = { status: 0 };
+    }
     setBusy(false);
     if (error) {
       if (error.code === "email_not_confirmed") {
         setUnconfirmed(true);
         setError(t("errorUnconfirmed"));
+      } else if (error.status === 0 || error.name === "AuthRetryableFetchError") {
+        setError(t("errorNetwork"));
+      } else if (error.status === 429 || /rate/.test(error.code ?? "")) {
+        setError(t("errorRate"));
       } else {
         setError(t("errorInvalid"));
       }
       return;
     }
-    // Full reload so the server picks up the session, then routes by role.
-    window.location.assign(`/${locale}/login`);
+    // Full reload so the server picks up the session, then routes by role
+    // (or back to the page they were trying to open).
+    window.location.assign(`/${locale}/login${next ? `?next=${encodeURIComponent(next)}` : ""}`);
   }
 
   async function resendConfirmationClick() {
@@ -59,14 +75,12 @@ export default function LoginForm({ confirmFailed = false }: { confirmFailed?: b
     }
     setError(null);
     setBusy(true);
-    const supabase = createClient();
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/${locale}/account/password`,
-    });
+    const res = await requestPasswordReset(email, locale).catch(() => "error" as const);
     setBusy(false);
-    if (error) setError(t("errorGeneric"));
-    else setNotice(t("resetSent"));
+    if (res === "ok") setNotice(t("resetSent"));
+    else setError(res === "rate" ? t("errorRate") : t("errorNetwork"));
   }
+
 
   return (
     <form onSubmit={signIn} className="card p-6 md:p-8">

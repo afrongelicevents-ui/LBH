@@ -18,6 +18,7 @@ export function AcceptQuoteButton({ quoteId }: { quoteId: string }) {
   const locale = useLocale();
   const [pending, start] = useTransition();
   const [confirming, setConfirming] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   if (!confirming) {
     return (
@@ -34,7 +35,17 @@ export function AcceptQuoteButton({ quoteId }: { quoteId: string }) {
         <button
           type="button"
           disabled={pending}
-          onClick={() => start(() => acceptQuoteAction(quoteId, locale))}
+          onClick={() =>
+            start(async () => {
+              setFailed(false);
+              try {
+                const r = await acceptQuoteAction(quoteId, locale);
+                if (r && !r.ok) setFailed(true);
+              } catch {
+                setFailed(true);
+              }
+            })
+          }
           className="btn btn-primary min-h-10 text-sm disabled:opacity-60"
         >
           {t("acceptConfirmYes")}
@@ -48,8 +59,22 @@ export function AcceptQuoteButton({ quoteId }: { quoteId: string }) {
           {t("cancel")}
         </button>
       </div>
+      {failed && (
+        <p role="alert" className="mt-2 text-xs font-semibold text-red-700">
+          {t("actionFailed")}
+        </p>
+      )}
     </div>
   );
+}
+
+/** Run a server action; network failures become an error result instead of a crash. */
+async function safely(fn: () => Promise<ActionResult>): Promise<ActionResult> {
+  try {
+    return await fn();
+  } catch {
+    return { ok: false, error: "network" };
+  }
 }
 
 export function ApprovalButtons({ approvalId }: { approvalId: string }) {
@@ -64,7 +89,7 @@ export function ApprovalButtons({ approvalId }: { approvalId: string }) {
       <button
         type="button"
         disabled={pending}
-        onClick={() => start(async () => setResult(await decideApprovalAction(approvalId, true)))}
+        onClick={() => start(async () => setResult(await safely(() => decideApprovalAction(approvalId, true))))}
         className="btn btn-primary min-h-10 text-sm disabled:opacity-60"
       >
         {t("approve")}
@@ -72,7 +97,7 @@ export function ApprovalButtons({ approvalId }: { approvalId: string }) {
       <button
         type="button"
         disabled={pending}
-        onClick={() => start(async () => setResult(await decideApprovalAction(approvalId, false)))}
+        onClick={() => start(async () => setResult(await safely(() => decideApprovalAction(approvalId, false))))}
         className="btn btn-outline-green min-h-10 text-sm disabled:opacity-60"
       >
         {t("decline")}
@@ -90,14 +115,21 @@ export function SupplierQuoteApprove({ id }: { id: string }) {
   const [result, setResult] = useState<ActionResult | null>(null);
   if (result?.ok) return null;
   return (
-    <button
-      type="button"
-      disabled={pending}
-      onClick={() => start(async () => setResult(await approveSupplierQuoteAction(id)))}
-      className="btn btn-primary min-h-10 px-4 text-xs disabled:opacity-60"
-    >
-      {t("approveSupplier")}
-    </button>
+    <span className="flex flex-col items-end gap-1">
+      <button
+        type="button"
+        disabled={pending}
+        onClick={() => start(async () => setResult(await safely(() => approveSupplierQuoteAction(id))))}
+        className="btn btn-primary min-h-10 px-4 text-xs disabled:opacity-60"
+      >
+        {t("approveSupplier")}
+      </button>
+      {result && !result.ok && (
+        <span role="alert" className="text-xs font-semibold text-red-700">
+          {t("actionFailed")}
+        </span>
+      )}
+    </span>
   );
 }
 
@@ -105,16 +137,34 @@ export function PayButton({ paymentId }: { paymentId: string }) {
   const t = useTranslations("portal.request");
   const locale = useLocale();
   const [pending, start] = useTransition();
+  const [failed, setFailed] = useState(false);
   return (
-    <button
-      type="button"
-      disabled={pending}
-      onClick={() => start(() => startPayment(paymentId, locale))}
-      className="btn btn-primary min-h-10 text-sm disabled:opacity-60"
-    >
-      {t("payNow")}
-      <ArrowRightIcon width={16} height={16} />
-    </button>
+    <span className="inline-flex flex-col gap-1">
+      <button
+        type="button"
+        disabled={pending}
+        onClick={() =>
+          start(async () => {
+            setFailed(false);
+            try {
+              const r = await startPayment(paymentId, locale);
+              if (r && !r.ok) setFailed(true);
+            } catch {
+              setFailed(true);
+            }
+          })
+        }
+        className="btn btn-primary min-h-10 text-sm disabled:opacity-60"
+      >
+        {t("payNow")}
+        <ArrowRightIcon width={16} height={16} />
+      </button>
+      {failed && (
+        <span role="alert" className="text-xs font-semibold text-red-700">
+          {t("actionFailed")}
+        </span>
+      )}
+    </span>
   );
 }
 
@@ -124,15 +174,20 @@ export function ManualProofForm({ paymentId }: { paymentId: string }) {
   const { upload } = useDirectUpload();
   const [state, formAction, pending] = useActionState<ActionResult | null, FormData>(
     async (prev, fd) => {
-      const file = fd.get("proof");
-      fd.delete("proof");
-      const up = await upload("client-document", file instanceof File ? [file] : []);
-      if (!up.ok || up.refs.length === 0) return { ok: false as const, error: "upload" };
-      fd.set("uploads_json", JSON.stringify(up.refs));
-      return submitManualProof(paymentId, prev, fd);
+      try {
+        const file = fd.get("proof");
+        fd.delete("proof");
+        const up = await upload("client-document", file instanceof File ? [file] : []);
+        if (!up.ok || up.refs.length === 0) return { ok: false as const, error: "upload" };
+        fd.set("uploads_json", JSON.stringify(up.refs));
+        return await submitManualProof(paymentId, prev, fd);
+      } catch {
+        return { ok: false as const, error: "network" };
+      }
     },
     null
   );
+  const [, startSubmit] = useTransition();
 
   if (state?.ok) {
     return (
@@ -151,7 +206,15 @@ export function ManualProofForm({ paymentId }: { paymentId: string }) {
     );
   }
   return (
-    <form action={formAction} className="mt-2 w-full rounded-xl border border-line bg-offwhite p-4">
+    <form
+      onSubmit={(e) => {
+        // keep what was typed if it fails (a plain form action resets the fields)
+        e.preventDefault();
+        const fd = new FormData(e.currentTarget);
+        startSubmit(() => formAction(fd));
+      }}
+      className="mt-2 w-full rounded-xl border border-line bg-offwhite p-4"
+    >
       <p className="text-xs text-muted">{t("proofHint")}</p>
       {state && !state.ok && (
         <p role="alert" className="mt-2 text-xs font-semibold text-red-700">
