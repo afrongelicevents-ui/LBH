@@ -154,6 +154,7 @@ export default function Header() {
             </button>
           </div>
         </div>
+        {!(signedIn && signedIn.role !== "client") && (
         <div className="mt-1 flex min-h-10 flex-wrap justify-end gap-2">
           {auth.status === "out" && (
             <>
@@ -175,6 +176,7 @@ export default function Header() {
             </Link>
           )}
         </div>
+        )}
       </div>
 
       {/* Mobile menu */}
