@@ -425,7 +425,7 @@ d("RLS & business rules (local Supabase)", () => {
           request_id: IDS.reqDone, // someone else's request
           uploader_id: IDS.agent,
           kind: "receipt",
-          storage_path: `jobs/${IDS.jobLand}/test.jpg`,
+          storage_path: `jobs/${IDS.jobLand}/${crypto.randomUUID()}.jpg`,
           amount_cents: 100,
         })
         .select("request_id")
@@ -571,7 +571,7 @@ d("RLS & business rules (local Supabase)", () => {
     it("field agent buys the materials with a receipt photo → purchased", async () => {
       const { data: m, error: mErr } = await agent.from("media").insert({
         stage_id: s1, request_id: req, uploader_id: IDS.agent, kind: "receipt",
-        storage_path: `stages/${s1}/r.jpg`, amount_cents: 50000,
+        storage_path: `stages/${s1}/${crypto.randomUUID()}.jpg`, amount_cents: 50000,
       }).select("id").single();
       expect(mErr).toBeNull();
       const { error } = await agent.from("stage_purchases").insert({
@@ -591,13 +591,13 @@ d("RLS & business rules (local Supabase)", () => {
     });
 
     it("delivery photo → delivered → builders working", async () => {
-      await agent.from("media").insert({ stage_id: s1, request_id: req, uploader_id: IDS.agent, kind: "delivery", storage_path: `stages/${s1}/d.jpg` });
+      await agent.from("media").insert({ stage_id: s1, request_id: req, uploader_id: IDS.agent, kind: "delivery", storage_path: `stages/${s1}/${crypto.randomUUID()}.jpg` });
       expect((await agent.rpc("advance_stage_work", { p_stage_id: s1, p_to: "delivered" })).error).toBeNull();
       expect((await agent.rpc("advance_stage_work", { p_stage_id: s1, p_to: "building" })).error).toBeNull();
     });
 
     it("the person who bought the materials CANNOT inspect the stage", async () => {
-      await agent.from("media").insert({ stage_id: s1, request_id: req, uploader_id: IDS.agent, kind: "inspection", storage_path: `stages/${s1}/i.jpg` });
+      await agent.from("media").insert({ stage_id: s1, request_id: req, uploader_id: IDS.agent, kind: "inspection", storage_path: `stages/${s1}/${crypto.randomUUID()}.jpg` });
       const { error } = await agent.from("stage_inspections").insert({
         stage_id: s1, request_id: req, inspector_id: IDS.agent, notes: "x",
         materials_used: [{ item: "Cement", quantity: "10" }],
@@ -645,6 +645,50 @@ d("RLS & business rules (local Supabase)", () => {
       await admin.from("build_stages").delete().eq("id", s1);
       const { data } = await service.from("build_stages").select("id").eq("id", s1);
       expect(data?.length).toBe(1);
+    });
+
+    it("purchases and inspections can't be edited or deleted (buyer ≠ inspector can't be dodged)", async () => {
+      const { data: pur } = await service.from("stage_purchases").select("id").eq("stage_id", s1).single();
+      const up = await admin.from("stage_purchases").update({ purchased_by: IDS.lawyer }).eq("id", pur!.id);
+      expect(up.error).not.toBeNull();
+      const del = await admin.from("stage_purchases").delete().eq("id", pur!.id);
+      expect(del.error).not.toBeNull();
+      const { data: still } = await service.from("stage_purchases").select("purchased_by").eq("id", pur!.id).single();
+      expect(still?.purchased_by).toBe(IDS.agent);
+      const ins = await admin.from("stage_inspections").update({ inspector_id: IDS.agent }).eq("stage_id", s1);
+      expect(ins.error).not.toBeNull();
+    });
+
+    it("admin can't make themselves the client to approve on the client's behalf", async () => {
+      const { error } = await admin.from("service_requests").update({ client_id: IDS.admin }).eq("id", req);
+      expect(error).not.toBeNull();
+      const { error: e2 } = await admin.rpc("approve_stage", { p_stage_id: s2 });
+      expect(e2?.message).toMatch(/only the client|not your project/);
+    });
+
+    it("field staff get purchases without amounts, and can't read others' receipt amounts", async () => {
+      const { data: direct } = await lawyer.from("stage_purchases").select("amount_cents").eq("request_id", req);
+      expect(direct ?? []).toEqual([]);
+      await service.from("jobs").insert({ request_id: req, assigned_to: IDS.lawyer, created_by: IDS.admin });
+      const { data: viaRpc } = await lawyer.rpc("stage_purchases_for_field", { p_request_id: req });
+      expect(viaRpc?.length).toBe(1);
+      expect(Object.keys(viaRpc![0])).not.toContain("amount_cents");
+      const { data: receipts } = await lawyer.from("media").select("amount_cents").eq("stage_id", s1).eq("kind", "receipt");
+      expect(receipts ?? []).toEqual([]); // the agent's receipt, not the lawyer's
+      await service.from("jobs").delete().eq("request_id", req).eq("assigned_to", IDS.lawyer);
+    });
+
+    it("media can't be attached across projects or with a crafted path", async () => {
+      const cross = await agent.from("media").insert({
+        job_id: IDS.jobLand, stage_id: s2, request_id: req, uploader_id: IDS.agent, kind: "inspection",
+        storage_path: `stages/${s2}/${crypto.randomUUID()}.jpg`,
+      });
+      expect(cross.error).not.toBeNull();
+      const dotdot = await agent.from("media").insert({
+        stage_id: s2, request_id: req, uploader_id: IDS.agent, kind: "progress",
+        storage_path: `stages/${s2}/../../jobs/${IDS.jobLand}/x.jpg`,
+      });
+      expect(dotdot.error).not.toBeNull();
     });
 
     it("clients and field staff cannot change stages directly", async () => {

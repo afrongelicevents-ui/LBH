@@ -84,11 +84,19 @@ export async function loadBuild(
             .eq("kind", "materials")
             .order("created_at", { ascending: false })
         : Promise.resolve({ data: [] as never[] }),
-      supabase
-        .from("stage_purchases")
-        .select("id, stage_id, supplier_name, amount_cents, purchased_by, created_at, note")
-        .eq("request_id", requestId)
-        .order("created_at"),
+      opts.withPrices
+        ? supabase
+            .from("stage_purchases")
+            .select("id, stage_id, supplier_name, amount_cents, purchased_by, created_at, note")
+            .eq("request_id", requestId)
+            .order("created_at")
+        : // field staff: same rows, never the amounts
+          supabase.rpc("stage_purchases_for_field", { p_request_id: requestId }).then((r) => ({
+            ...r,
+            data: ((r.data ?? []) as { id: string; stage_id: string; supplier_name: string; purchased_by: string; created_at: string; note: string }[])
+              .map((p) => ({ ...p, amount_cents: 0 }))
+              .sort((a, b) => a.created_at.localeCompare(b.created_at)),
+          })),
       supabase
         .from("stage_inspections")
         .select("stage_id, notes, materials_used, inspector_id, created_at")
@@ -132,7 +140,7 @@ export async function loadBuild(
           note: m.note,
           taken_at: m.taken_at,
           uploaded_at: m.uploaded_at,
-          amount_cents: m.amount_cents,
+          amount_cents: opts.withPrices ? m.amount_cents : null,
         })),
     })),
   };

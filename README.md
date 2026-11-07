@@ -12,9 +12,9 @@ and follow their build — without being there.**
 | Area | URL | Who |
 |---|---|---|
 | Public website (EN / Shona / Ndebele) | `/`, `/services`, `/how-it-works`, `/about`, `/contact`, `/book-a-call`, `/terms`, `/privacy` | Everyone |
-| Client portal | `/portal` | Clients |
+| Client portal (incl. **My build**) | `/portal`, `/portal/build` | Clients |
 | Field team portal | `/field` | Lawyer, field agents (2FA required) |
-| Admin dashboard | `/admin` | LBH admin (2FA required) |
+| Admin dashboard (incl. **Build stages**) | `/admin`, `/admin/builds` | LBH admin (2FA required) |
 
 ## Stack
 
@@ -32,6 +32,7 @@ Requires Node 20+ and Docker.
 npm install
 npx supabase start          # local Postgres/Auth/Storage/Realtime in Docker
 npx supabase db reset       # schema + clearly labelled SAMPLE data
+node scripts/upload-sample-files.mjs  # SAMPLE photos for the sample build
 cp .env.example .env.local  # then paste the keys printed by `npx supabase status`
 npm run dev                 # http://localhost:3000
 ```
@@ -60,10 +61,27 @@ checkout** where you choose success or failure. No money moves. Without that fla
 hidden and clients use "I paid via Remitly / WorldRemit / bank" instead. Once real
 Paynow credentials are set (test keys first), the simulator is switched off for good.
 
+## Construction build stages
+
+A build project runs stage by stage — Foundation → Slab → Window level → Wall plate →
+Roof → Finishes (admin can rename, add, remove or reorder stages that haven't started).
+Each stage: supplier quotes → client approves one → client pays → LBH buys (receipt
+photo) → delivery photo → builders work → LBH inspects (photos + all materials used) →
+client taps **Approve stage** → the next stage unlocks. The database enforces the order,
+that only the client approves, that locked stages can't be bought for, and that whoever
+bought a stage's materials can never inspect it.
+
+## Uploads
+
+Files go from the phone straight to private Supabase Storage (signed one-time upload
+URLs), so big phone photos and short videos work (photos/PDFs up to 30 MB, videos up to
+50 MB). The server then checks the real file type, reads photo GPS/time, strips EXIF and
+re-encodes images.
+
 ## Tests
 
 ```bash
-npm test            # unit tests + 43 database permission tests (needs `npx supabase start`)
+npm test            # unit tests + 67 database permission tests (needs `npx supabase start`)
 npm run lint
 
 # full browser end-to-end run of every flow:
