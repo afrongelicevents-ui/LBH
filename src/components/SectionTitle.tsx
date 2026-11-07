@@ -1,5 +1,5 @@
 /**
- * Centred section title with thin gold lines either side,
+ * Centred section title with thin accent lines either side,
  * like "— Our Services —" in the approved mockups.
  */
 export default function SectionTitle({
@@ -13,7 +13,7 @@ export default function SectionTitle({
 }) {
   return (
     <div className="flex items-center justify-center gap-4 sm:gap-6">
-      <span aria-hidden className="h-px w-10 shrink-0 bg-gold sm:w-24" />
+      <span aria-hidden className={`h-px w-10 shrink-0 sm:w-24 ${light ? "bg-white" : "bg-accent"}`} />
       <Tag
         className={`headline text-center text-2xl sm:text-3xl md:text-4xl ${
           light ? "text-white" : "text-forest"
@@ -21,7 +21,7 @@ export default function SectionTitle({
       >
         {children}
       </Tag>
-      <span aria-hidden className="h-px w-10 shrink-0 bg-gold sm:w-24" />
+      <span aria-hidden className={`h-px w-10 shrink-0 sm:w-24 ${light ? "bg-white" : "bg-accent"}`} />
     </div>
   );
 }

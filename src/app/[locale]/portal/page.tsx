@@ -38,7 +38,7 @@ export default async function PortalDashboard({
       <h1 className="headline text-2xl text-forest">{t("title")}</h1>
 
       {approvals && approvals.length > 0 && (
-        <div className="rounded-2xl border border-gold bg-gold/10 p-4">
+        <div className="rounded-2xl bg-info p-4 text-ink">
           <p className="text-sm font-bold text-forest">
             {t("pendingApprovals", { count: approvals.length })}
           </p>
@@ -63,7 +63,7 @@ export default async function PortalDashboard({
           <div className="card p-6 text-center">
             <p className="text-sm text-muted">{t("noRequests")}</p>
             <div className="mt-4 flex flex-wrap justify-center gap-3">
-              <Link href="/portal/requests/new-land" className="btn btn-gold text-sm">
+              <Link href="/portal/requests/new-land" className="btn btn-primary text-sm">
                 {t("startLand")}
               </Link>
               <Link

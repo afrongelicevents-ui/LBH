@@ -132,7 +132,7 @@ export default function MaterialsRequestForm() {
         </label>
       </div>
 
-      <button type="submit" disabled={pending} className="btn btn-gold w-full disabled:opacity-60 sm:w-auto">
+      <button type="submit" disabled={pending} className="btn btn-primary w-full disabled:opacity-60 sm:w-auto">
         {t("submitMaterials")}
         <ArrowRightIcon width={18} height={18} />
       </button>

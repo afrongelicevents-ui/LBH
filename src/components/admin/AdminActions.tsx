@@ -46,11 +46,11 @@ function Err({ result }: { result: ActionResult | null }) {
 // ---------- generic small action button ----------
 export function ActButton({
   label,
-  gold = false,
+  primary = false,
   action,
 }: {
   label: string;
-  gold?: boolean;
+  primary?: boolean;
   action: () => Promise<ActionResult>;
 }) {
   const { pending, result, run } = useAct();
@@ -61,7 +61,7 @@ export function ActButton({
         type="button"
         disabled={pending}
         onClick={() => run(action)}
-        className={`btn min-h-9 px-4 text-xs disabled:opacity-60 ${gold ? "btn-gold" : "btn-outline-green"}`}
+        className={`btn min-h-9 px-4 text-xs disabled:opacity-60 ${primary ? "btn-primary" : "btn-outline-green"}`}
       >
         {label}
       </button>
@@ -74,7 +74,7 @@ export function BookingStatusButtons({ bookingId }: { bookingId: string }) {
   const t = useTranslations("admin.bookings");
   return (
     <div className="flex flex-wrap gap-2">
-      <ActButton gold label={t("confirm")} action={() => setBookingStatus(bookingId, "confirmed")} />
+      <ActButton primary label={t("confirm")} action={() => setBookingStatus(bookingId, "confirmed")} />
       <ActButton label={t("complete")} action={() => setBookingStatus(bookingId, "completed")} />
       <ActButton label={t("cancel")} action={() => setBookingStatus(bookingId, "cancelled")} />
     </div>
@@ -236,7 +236,7 @@ export function QuoteBuilder({
           name="send"
           value="1"
           disabled={pending}
-          className="btn btn-gold min-h-10 text-sm disabled:opacity-60"
+          className="btn btn-primary min-h-10 text-sm disabled:opacity-60"
         >
           {t("sendToClient")}
         </button>
@@ -247,7 +247,7 @@ export function QuoteBuilder({
 
 export function SendDraftQuoteButton({ quoteId }: { quoteId: string }) {
   const t = useTranslations("admin.quote");
-  return <ActButton gold label={t("sendToClient")} action={() => sendDraftQuote(quoteId)} />;
+  return <ActButton primary label={t("sendToClient")} action={() => sendDraftQuote(quoteId)} />;
 }
 
 // ---------- assign staff ----------
@@ -276,7 +276,7 @@ export function AssignStaffForm({
         type="button"
         disabled={!staffId || pending}
         onClick={() => run(() => assignStaff(requestId, staffId))}
-        className="btn btn-gold min-h-9 px-4 text-xs disabled:opacity-60"
+        className="btn btn-primary min-h-9 px-4 text-xs disabled:opacity-60"
       >
         {t("assign")}
       </button>
@@ -290,7 +290,7 @@ export function ExtraCostControls({ ecrId }: { ecrId: string }) {
   const t = useTranslations("admin.request");
   return (
     <div className="flex flex-wrap gap-2">
-      <ActButton gold label={t("forwardToClient")} action={() => forwardExtraCost(ecrId)} />
+      <ActButton primary label={t("forwardToClient")} action={() => forwardExtraCost(ecrId)} />
       <ActButton label={t("reject")} action={() => rejectExtraCost(ecrId, "")} />
     </div>
   );
@@ -352,7 +352,7 @@ export function ReportReviewControls({
             type="button"
             disabled={pending}
             onClick={() => run(() => publishReport(reportId))}
-            className="btn btn-gold min-h-9 px-4 text-xs disabled:opacity-60"
+            className="btn btn-primary min-h-9 px-4 text-xs disabled:opacity-60"
           >
             {t("publish")}
           </button>
@@ -381,7 +381,7 @@ export function ReportReviewControls({
 export function ConfirmPaymentButton({ paymentId }: { paymentId: string }) {
   const t = useTranslations("admin.payments");
   return (
-    <ActButton gold label={t("confirmPayment")} action={() => confirmManualPayment(paymentId)} />
+    <ActButton primary label={t("confirmPayment")} action={() => confirmManualPayment(paymentId)} />
   );
 }
 
@@ -476,7 +476,7 @@ export function SettingsForm({
           className={inputCls}
         />
       </label>
-      <button type="submit" disabled={pending} className="btn btn-gold min-h-10 text-sm disabled:opacity-60">
+      <button type="submit" disabled={pending} className="btn btn-primary min-h-10 text-sm disabled:opacity-60">
         {t("save")}
       </button>
     </form>
@@ -539,7 +539,7 @@ export function TranslationReviewToggle({
       disabled={pending}
       onClick={() => run(() => markTranslationReviewed(locale, messageKey, !isReviewed))}
       className={`rounded-full px-3 py-1 text-[11px] font-bold ${
-        isReviewed ? "bg-forest text-white" : "bg-gold/20 text-forest"
+        isReviewed ? "bg-forest text-white" : "bg-info text-ink"
       } disabled:opacity-60`}
     >
       {isReviewed ? t("reviewed") : t("markReviewed")}

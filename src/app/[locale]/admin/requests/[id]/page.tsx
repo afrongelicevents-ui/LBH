@@ -97,7 +97,7 @@ export default async function AdminRequestDetailPage({
         </div>
         {req.type === "build" && (
           <p className="mt-2">
-            <Link href={`/admin/builds/${req.id}`} className="btn btn-gold min-h-9 px-4 text-xs">
+            <Link href={`/admin/builds/${req.id}`} className="btn btn-primary min-h-9 px-4 text-xs">
               {t("openBuildStages")}
             </Link>
           </p>

@@ -4,7 +4,7 @@ import PDFDocument from "pdfkit";
 export const COMPANY_LINE = "[LBH ZIMBABWE ENTITY NAME · REG NUMBER]";
 
 const FOREST = "#163A2B";
-const GOLD = "#C9A227";
+const ACCENT = "#0A0A0A";
 const INK = "#1B1F1C";
 const MUTED = "#5E6862";
 
@@ -29,13 +29,13 @@ export function pdfHeader(doc: Doc, subtitle: string) {
     .fontSize(22)
     .text("LBH — Let's Build Home", { continued: false });
   doc
-    .fillColor(GOLD)
+    .fillColor(ACCENT)
     .fontSize(10)
     .font("Helvetica-Oblique")
     .text("Build back home — without being there.");
   doc.moveDown(0.3);
   doc
-    .strokeColor(GOLD)
+    .strokeColor(ACCENT)
     .lineWidth(2)
     .moveTo(50, doc.y)
     .lineTo(545, doc.y)
@@ -49,7 +49,7 @@ export function pdfHeader(doc: Doc, subtitle: string) {
 export function pdfFooter(doc: Doc, extra?: string) {
   doc.moveDown(1.2);
   doc
-    .strokeColor("#E4E1D8")
+    .strokeColor("#CFCBC0")
     .lineWidth(1)
     .moveTo(50, doc.y)
     .lineTo(545, doc.y)

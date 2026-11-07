@@ -53,15 +53,15 @@ function HowContent() {
           ))}
         </ol>
 
-        <div className="mt-10 flex items-start gap-3 rounded-2xl border border-gold/50 bg-white p-5">
-          <ShieldCheckIcon width={26} height={26} className="mt-0.5 shrink-0 text-gold" />
+        <div className="mt-10 flex items-start gap-3 rounded-2xl bg-info p-5">
+          <ShieldCheckIcon width={26} height={26} className="mt-0.5 shrink-0 text-forest" />
           <p className="text-sm leading-relaxed text-ink md:text-base">
             {t("howPage.note")}
           </p>
         </div>
 
         <div className="mt-10 text-center">
-          <Link href="/book-a-call" className="btn btn-gold px-7">
+          <Link href="/book-a-call" className="btn btn-primary px-7">
             {t("common.bookFirstCall")}
             <ArrowRightIcon width={20} height={20} />
           </Link>

@@ -83,7 +83,7 @@ export default function LandRequestForm() {
         <textarea name="told_about" rows={4} maxLength={2000} className={inputCls} />
       </label>
 
-      <button type="submit" disabled={pending} className="btn btn-gold w-full disabled:opacity-60 sm:w-auto">
+      <button type="submit" disabled={pending} className="btn btn-primary w-full disabled:opacity-60 sm:w-auto">
         {t("submitLand")}
         <ArrowRightIcon width={18} height={18} />
       </button>

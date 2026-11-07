@@ -79,7 +79,7 @@ export function ApproveQuoteButton({ quoteId, supplier }: { quoteId: string; sup
   if (result?.ok) return <p className="text-xs font-bold text-forest">{t("saved")}</p>;
   if (!confirming) {
     return (
-      <button type="button" onClick={() => setConfirming(true)} className="btn btn-gold min-h-10 px-4 text-sm">
+      <button type="button" onClick={() => setConfirming(true)} className="btn btn-primary min-h-10 px-4 text-sm">
         {t("chooseSupplier")}
       </button>
     );
@@ -92,7 +92,7 @@ export function ApproveQuoteButton({ quoteId, supplier }: { quoteId: string; sup
           type="button"
           disabled={pending}
           onClick={() => run(() => approveStageQuoteAction(quoteId))}
-          className="btn btn-gold min-h-10 px-4 text-sm disabled:opacity-60"
+          className="btn btn-primary min-h-10 px-4 text-sm disabled:opacity-60"
         >
           {t("yesChoose")}
         </button>
@@ -112,7 +112,7 @@ export function ApproveStageButton({ stageId, stageName }: { stageId: string; st
   if (result?.ok) return <p className="text-sm font-bold text-forest">{t("stageApprovedMsg")}</p>;
   if (!confirming) {
     return (
-      <button type="button" onClick={() => setConfirming(true)} className="btn btn-gold min-h-11 w-full sm:w-auto">
+      <button type="button" onClick={() => setConfirming(true)} className="btn btn-primary min-h-11 w-full sm:w-auto">
         {t("approveStage")}
       </button>
     );
@@ -125,7 +125,7 @@ export function ApproveStageButton({ stageId, stageName }: { stageId: string; st
           type="button"
           disabled={pending}
           onClick={() => run(() => approveStageAction(stageId))}
-          className="btn btn-gold min-h-10 px-4 text-sm disabled:opacity-60"
+          className="btn btn-primary min-h-10 px-4 text-sm disabled:opacity-60"
         >
           {t("yesApprove")}
         </button>
@@ -186,7 +186,7 @@ export function PurchaseForm({ stageId }: { stageId: string }) {
         <input type="file" name="receipt" required accept="image/jpeg,image/png,image/webp" className={fileCls} />
       </label>
       <input name="note" maxLength={1000} placeholder={t("photoNote")} className={inputCls} />
-      <button type="submit" disabled={pending} className="btn btn-gold min-h-10 px-4 text-sm disabled:opacity-60">
+      <button type="submit" disabled={pending} className="btn btn-primary min-h-10 px-4 text-sm disabled:opacity-60">
         {pending && progress ? t("uploading", { done: progress.done, total: progress.total }) : t("recordPurchase")}
       </button>
       <Msg state={state} />
@@ -204,7 +204,7 @@ export function AdvanceButton({ stageId, to }: { stageId: string; to: "delivered
         type="button"
         disabled={pending}
         onClick={() => run(() => advanceStage(stageId, to))}
-        className="btn btn-gold min-h-10 px-4 text-sm disabled:opacity-60"
+        className="btn btn-primary min-h-10 px-4 text-sm disabled:opacity-60"
       >
         {t(`advance.${to}` as never)}
       </button>
@@ -233,7 +233,7 @@ export function InspectionForm({ stageId, defaultMaterials }: { stageId: string;
         <span className={labelCls}>{t("inspectionNotes")} *</span>
         <textarea name="notes" required rows={3} maxLength={4000} className={inputCls} />
       </label>
-      <button type="submit" disabled={pending} className="btn btn-gold min-h-10 px-4 text-sm disabled:opacity-60">
+      <button type="submit" disabled={pending} className="btn btn-primary min-h-10 px-4 text-sm disabled:opacity-60">
         {pending && progress ? t("uploading", { done: progress.done, total: progress.total }) : t("submitInspection")}
       </button>
       <Msg state={state} />
@@ -376,7 +376,7 @@ export function CreateBuildForm({
         </label>
       </div>
       <p className="text-[11px] text-muted">{t("newBuildHint")}</p>
-      <button type="submit" disabled={pending} className="btn btn-gold min-h-10 px-5 text-sm disabled:opacity-60">{t("createBuild")}</button>
+      <button type="submit" disabled={pending} className="btn btn-primary min-h-10 px-5 text-sm disabled:opacity-60">{t("createBuild")}</button>
       <Msg state={state} />
     </form>
   );

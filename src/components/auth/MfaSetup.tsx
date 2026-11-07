@@ -89,7 +89,7 @@ export default function MfaSetup() {
   return (
     <div className="card p-6 md:p-8">
       <div className="mb-5 flex items-center gap-3">
-        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-forest text-gold">
+        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-forest text-white">
           <ShieldCheckIcon width={22} height={22} />
         </span>
         <div>
@@ -137,7 +137,7 @@ export default function MfaSetup() {
             className={inputCls}
             aria-label={t("mfaEnterCode")}
           />
-          <button type="submit" disabled={busy || code.length < 6} className="btn btn-gold mt-4 w-full disabled:opacity-60">
+          <button type="submit" disabled={busy || code.length < 6} className="btn btn-primary mt-4 w-full disabled:opacity-60">
             {t("mfaVerify")}
           </button>
         </form>

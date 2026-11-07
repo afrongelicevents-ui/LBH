@@ -42,7 +42,7 @@ export default function PasswordForm() {
   return (
     <form onSubmit={submit} className="card p-6 md:p-8">
       <div className="mb-5 flex items-center gap-3">
-        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-forest text-gold">
+        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-forest text-white">
           <LockIcon width={22} height={22} />
         </span>
         <h1 className="text-xl font-bold text-forest">{t("setPasswordTitle")}</h1>
@@ -75,7 +75,7 @@ export default function PasswordForm() {
           className={inputCls}
         />
       </label>
-      <button type="submit" disabled={busy} className="btn btn-gold mt-6 w-full disabled:opacity-60">
+      <button type="submit" disabled={busy} className="btn btn-primary mt-6 w-full disabled:opacity-60">
         {t("savePassword")}
       </button>
     </form>

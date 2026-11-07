@@ -32,7 +32,7 @@ export default function MapPicker() {
         marker = L.circleMarker(e.latlng, {
           radius: 8,
           color: "#163A2B",
-          fillColor: "#C9A227",
+          fillColor: "#0A0A0A",
           fillOpacity: 0.9,
         }).addTo(map!);
       });

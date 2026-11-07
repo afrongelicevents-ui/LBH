@@ -9,7 +9,7 @@ export default function NotFound() {
       <Image src="/images/logo.jpg" alt="LBH" width={88} height={70} className="mb-6 h-14 w-auto" />
       <h1 className="headline text-4xl text-forest">{t("title")}</h1>
       <p className="mt-4 text-muted">{t("text")}</p>
-      <Link href="/" className="btn btn-gold mt-8">
+      <Link href="/" className="btn btn-primary mt-8">
         {t("home")}
       </Link>
     </main>

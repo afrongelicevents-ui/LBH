@@ -251,7 +251,7 @@ export default async function RequestDetailPage({
                       p.status === "confirmed"
                         ? "bg-forest text-white"
                         : p.status === "submitted"
-                          ? "bg-gold text-forest"
+                          ? "bg-accent text-white"
                           : p.status === "failed"
                             ? "bg-red-100 text-red-800"
                             : "bg-line text-muted"
@@ -297,7 +297,7 @@ export default async function RequestDetailPage({
               <li
                 key={a.id}
                 className={`rounded-xl border p-4 ${
-                  a.status === "pending" ? "border-gold bg-gold/5" : "border-line"
+                  a.status === "pending" ? "border-accent bg-info" : "border-line"
                 }`}
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
@@ -398,7 +398,7 @@ export default async function RequestDetailPage({
 
       {/* ---- report ---- */}
       {report && (
-        <section className="card border-2 border-gold p-5">
+        <section className="card border-2 border-forest p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h2 className="text-base font-bold text-forest">{t("reportReady")}</h2>
@@ -408,7 +408,7 @@ export default async function RequestDetailPage({
                   : ""}
               </p>
             </div>
-            <Link href={`/portal/requests/${req.id}/report`} className="btn btn-gold text-sm">
+            <Link href={`/portal/requests/${req.id}/report`} className="btn btn-primary text-sm">
               {t("readReport")}
             </Link>
           </div>

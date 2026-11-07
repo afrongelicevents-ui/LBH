@@ -25,7 +25,7 @@ export default function StatusTimeline({ status }: { status: RequestStatus }) {
                 done
                   ? "bg-forest text-white"
                   : active
-                    ? "bg-gold text-forest"
+                    ? "bg-accent text-white"
                     : "bg-line/60 text-muted"
               }`}
             >

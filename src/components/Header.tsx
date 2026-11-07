@@ -58,7 +58,7 @@ export default function Header() {
           <Link
             href="/book-a-call"
             onClick={() => setOpen(false)}
-            className="btn btn-gold min-h-10 px-4 py-1.5 text-sm"
+            className="btn btn-primary min-h-10 px-4 py-1.5 text-sm"
           >
             {t("common.bookCall")}
           </Link>
@@ -99,7 +99,7 @@ export default function Header() {
             priority
             className="h-12 w-auto"
           />
-          <span aria-hidden className="h-10 w-px bg-gold" />
+          <span aria-hidden className="h-10 w-px bg-line" />
           <span className="truncate text-base font-extrabold tracking-wide text-forest uppercase">
             {t("common.brandUpper")}
           </span>
@@ -122,7 +122,7 @@ export default function Header() {
           <Link href="/login" className="btn btn-outline-green px-5 text-sm">
             {t("common.login")}
           </Link>
-          <Link href="/book-a-call" className="btn btn-gold px-5 text-sm">
+          <Link href="/book-a-call" className="btn btn-primary px-5 text-sm">
             {t("common.bookCall")}
           </Link>
         </div>

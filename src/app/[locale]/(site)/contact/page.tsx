@@ -56,7 +56,7 @@ function ContactContent() {
             href={`mailto:${site.email}`}
             className="card flex items-center gap-4 p-6 transition-shadow hover:shadow-(--shadow-card-hover)"
           >
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-forest text-gold">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-forest text-white">
               <MailIcon width={24} height={24} />
             </span>
             <span className="min-w-0">
@@ -71,9 +71,9 @@ function ContactContent() {
         <ContactForm />
 
         <div className="card mt-8 flex flex-col items-center gap-4 p-7 text-center">
-          <CalendarIcon width={32} height={32} className="text-gold" />
+          <CalendarIcon width={32} height={32} className="text-forest" />
           <p className="max-w-md text-sm text-muted md:text-base">{t("orBook")}</p>
-          <Link href="/book-a-call" className="btn btn-gold px-7">
+          <Link href="/book-a-call" className="btn btn-primary px-7">
             {tc("bookFirstCall")}
             <ArrowRightIcon width={20} height={20} />
           </Link>

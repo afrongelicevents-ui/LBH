@@ -71,7 +71,7 @@ function ServicesContent() {
                         <CheckCircleIcon
                           width={18}
                           height={18}
-                          className="mt-0.5 shrink-0 text-gold"
+                          className="mt-0.5 shrink-0 text-accent"
                         />
                         <span className="text-sm text-ink md:text-base">{b}</span>
                       </li>
@@ -87,7 +87,7 @@ function ServicesContent() {
                   ) : (
                     <Link
                       href="/book-a-call"
-                      className="btn btn-gold mt-5 px-6 text-sm"
+                      className="btn btn-primary mt-5 px-6 text-sm"
                     >
                       {t("common.bookFirstCall")}
                       <ArrowRightIcon width={18} height={18} />

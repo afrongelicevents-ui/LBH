@@ -59,7 +59,7 @@ export default async function AdminPaymentsPage({
                       p.status === "confirmed"
                         ? "bg-forest text-white"
                         : p.status === "submitted"
-                          ? "bg-gold text-forest"
+                          ? "bg-accent text-white"
                           : "bg-line text-muted"
                     }`}
                   >

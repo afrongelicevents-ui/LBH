@@ -19,7 +19,7 @@ export default function Footer() {
             <MailIcon width={16} height={16} className="text-forest" />
             {site.email}
           </a>
-          <span aria-hidden className="h-5 w-px bg-gold" />
+          <span aria-hidden className="h-5 w-px bg-line" />
           <a
             href={waLink()}
             target="_blank"
@@ -30,7 +30,7 @@ export default function Footer() {
             WhatsApp
           </a>
         </div>
-        <p className="mt-3 text-center text-sm font-bold text-gold italic">
+        <p className="mt-3 text-center text-sm font-bold text-accent italic">
           {t("common.footerLine")}
         </p>
         <div className="mt-4 flex items-center justify-center gap-4 text-xs text-muted">
@@ -62,7 +62,7 @@ export default function Footer() {
             <div className="flex items-center gap-6 text-sm">
               <a
                 href={`mailto:${site.email}`}
-                className="flex items-center gap-2 hover:text-gold"
+                className="flex items-center gap-2 hover:underline"
               >
                 <MailIcon width={18} height={18} />
                 {site.email}
@@ -71,19 +71,19 @@ export default function Footer() {
                 href={waLink()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 hover:text-gold"
+                className="flex items-center gap-2 hover:underline"
               >
                 <WhatsAppIcon width={18} height={18} />
                 {t("common.whatsapp")}
               </a>
               <LocaleSwitcher light />
               <span className="flex items-center gap-2">
-                <MapPinIcon width={18} height={18} className="text-gold" />
+                <MapPinIcon width={18} height={18} className="text-white" />
                 {t("common.basedIn")}
               </span>
             </div>
 
-            <p className="text-sm font-semibold text-gold italic">
+            <p className="text-sm font-semibold text-white italic">
               {t("common.footerLine")}
             </p>
           </div>
@@ -91,10 +91,10 @@ export default function Footer() {
           <div className="mt-8 flex items-center justify-between gap-3 border-t border-white/15 pt-6 text-xs text-white/70">
             <p>© {year} {t("common.brand")}</p>
             <div className="flex gap-5">
-              <Link href="/terms" className="hover:text-gold">
+              <Link href="/terms" className="hover:underline">
                 {t("nav.terms")}
               </Link>
-              <Link href="/privacy" className="hover:text-gold">
+              <Link href="/privacy" className="hover:underline">
                 {t("nav.privacy")}
               </Link>
             </div>

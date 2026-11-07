@@ -48,11 +48,11 @@ export default function Hero() {
           <p className="mt-2.5 text-lg font-semibold md:mt-4 md:text-2xl">
             {t("subline")}
           </p>
-          <span aria-hidden className="mt-3 block h-1 w-14 rounded bg-gold md:mt-4 md:w-16" />
+          <span aria-hidden className="mt-3 block h-1 w-14 rounded bg-white md:mt-4 md:w-16" />
           <p className="mt-4 text-sm font-bold md:mt-6 md:text-lg">{t("trustLine")}</p>
           <Link
             href="/book-a-call"
-            className="btn btn-gold mt-5 min-h-10 px-5 text-sm md:mt-7 md:px-7 md:text-base"
+            className="btn btn-white mt-5 min-h-10 px-5 text-sm md:mt-7 md:px-7 md:text-base"
           >
             {t("cta")}
             <ArrowRightIcon width={18} height={18} />

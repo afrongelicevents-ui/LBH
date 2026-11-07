@@ -44,10 +44,10 @@ export default function LocaleSwitcher({ light = false }: { light?: boolean }) {
             aria-current={l === locale ? "true" : undefined}
             className={`min-h-11 cursor-pointer px-0.5 transition-colors ${
               l === locale
-                ? "text-gold"
+                ? `font-extrabold underline underline-offset-4 ${light ? "text-white" : "text-accent"}`
                 : light
-                  ? "hover:text-gold"
-                  : "hover:text-gold"
+                  ? "text-white/80 hover:text-white"
+                  : "text-muted hover:text-accent"
             }`}
           >
             {labels[l]}

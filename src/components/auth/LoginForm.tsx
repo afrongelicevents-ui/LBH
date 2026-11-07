@@ -52,7 +52,7 @@ export default function LoginForm() {
   return (
     <form onSubmit={signIn} className="card p-6 md:p-8">
       <div className="mb-5 flex items-center gap-3">
-        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-forest text-gold">
+        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-forest text-white">
           <LockIcon width={22} height={22} />
         </span>
         <div>
@@ -67,7 +67,7 @@ export default function LoginForm() {
         </p>
       )}
       {notice && (
-        <p className="mb-4 rounded-xl border border-gold/50 bg-offwhite px-4 py-3 text-sm font-semibold text-forest">
+        <p className="mb-4 rounded-xl bg-info px-4 py-3 text-sm font-semibold text-ink">
           {notice}
         </p>
       )}
@@ -95,7 +95,7 @@ export default function LoginForm() {
         />
       </label>
 
-      <button type="submit" disabled={busy} className="btn btn-gold mt-6 w-full disabled:opacity-60">
+      <button type="submit" disabled={busy} className="btn btn-primary mt-6 w-full disabled:opacity-60">
         {t("signIn")}
         <ArrowRightIcon width={18} height={18} />
       </button>

@@ -198,7 +198,7 @@ export function CloseIcon(props: IconProps) {
   );
 }
 
-export function GoldRoofIcon(props: IconProps) {
+export function RoofOutlineIcon(props: IconProps) {
   return (
     <svg
       width={120}

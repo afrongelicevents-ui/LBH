@@ -64,7 +64,7 @@ export async function GET(
       report.verdict === "clear"
         ? "#163A2B"
         : report.verdict === "concerns"
-          ? "#C9A227"
+          ? "#0A0A0A"
           : "#B91C1C";
     doc
       .font("Helvetica-Bold")

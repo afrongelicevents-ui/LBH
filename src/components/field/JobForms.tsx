@@ -172,7 +172,7 @@ export function MediaUploadForm({
             ? t("gpsDenied")
             : t("gpsHint")}
       </p>
-      <button type="submit" disabled={pending} className="btn btn-gold min-h-10 text-sm disabled:opacity-60">
+      <button type="submit" disabled={pending} className="btn btn-primary min-h-10 text-sm disabled:opacity-60">
         {pending ? t("uploading") : t(`upload.${kind}` as never)}
       </button>
       <Feedback state={state} />
@@ -251,7 +251,7 @@ export function ReportDraftForm({
   return (
     <form action={formAction} className="space-y-3">
       {report?.status === "changes_requested" && (
-        <p className="rounded-xl border border-gold bg-gold/10 px-3 py-2 text-xs font-bold text-forest">
+        <p className="rounded-xl bg-info px-3 py-2 text-xs font-bold text-ink">
           {t("changesRequested")}
         </p>
       )}
@@ -289,7 +289,7 @@ export function ReportDraftForm({
           name="submit"
           value="1"
           disabled={pending}
-          className="btn btn-gold min-h-10 text-sm disabled:opacity-60"
+          className="btn btn-primary min-h-10 text-sm disabled:opacity-60"
         >
           {t("submitToAdmin")}
         </button>

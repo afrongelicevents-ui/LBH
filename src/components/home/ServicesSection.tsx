@@ -54,7 +54,7 @@ export default function ServicesSection() {
                             <CheckCircleIcon
                               width={15}
                               height={15}
-                              className="mt-0.5 shrink-0 text-gold"
+                              className="mt-0.5 shrink-0 text-accent"
                             />
                             <span className="text-xs leading-snug text-muted md:text-sm">
                               {b}

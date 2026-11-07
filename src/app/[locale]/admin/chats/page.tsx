@@ -52,7 +52,7 @@ export default async function AdminChatsPage({
                 <p className="truncate text-xs text-muted">{th.last}</p>
               </div>
               <div className="flex shrink-0 items-center gap-2">
-                {th.unread && <span className="h-2.5 w-2.5 rounded-full bg-gold" />}
+                {th.unread && <span className="h-2.5 w-2.5 rounded-full bg-accent" />}
                 <span className="text-[10px] text-muted">
                   {new Date(th.at).toLocaleDateString()}
                 </span>

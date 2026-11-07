@@ -15,7 +15,7 @@ export default function SimulateButtons({ reference }: { reference: string }) {
         type="button"
         disabled={pending}
         onClick={() => start(() => simulatePaymentOutcome(reference, "paid", locale))}
-        className="btn btn-gold disabled:opacity-60"
+        className="btn btn-primary disabled:opacity-60"
       >
         {t("simulatePaid")}
       </button>

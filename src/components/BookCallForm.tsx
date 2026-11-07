@@ -23,7 +23,7 @@ export default function BookCallForm() {
   if (state?.status === "ok") {
     return (
       <div className="card flex flex-col items-center gap-4 p-8 text-center">
-        <CheckCircleIcon width={48} height={48} className="text-gold" />
+        <CheckCircleIcon width={48} height={48} className="text-forest" />
         <h2 className="text-xl font-bold text-forest">{t("successTitle")}</h2>
         <p className="text-sm text-muted md:text-base">{t("successText")}</p>
         <a
@@ -176,7 +176,7 @@ export default function BookCallForm() {
       <button
         type="submit"
         disabled={pending}
-        className="btn btn-gold mt-7 w-full px-7 disabled:opacity-60 sm:w-auto"
+        className="btn btn-primary mt-7 w-full px-7 disabled:opacity-60 sm:w-auto"
       >
         {t("submit")}
         <ArrowRightIcon width={20} height={20} />

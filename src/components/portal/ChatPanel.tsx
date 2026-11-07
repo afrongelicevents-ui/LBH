@@ -139,7 +139,7 @@ export default function ChatPanel({
           type="submit"
           disabled={busy || !body.trim()}
           aria-label={t("send")}
-          className="btn btn-gold min-h-11 px-4 disabled:opacity-60"
+          className="btn btn-primary min-h-11 px-4 disabled:opacity-60"
         >
           <ArrowRightIcon width={18} height={18} />
         </button>

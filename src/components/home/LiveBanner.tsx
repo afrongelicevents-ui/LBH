@@ -57,10 +57,10 @@ export default function LiveBanner() {
           <p className="mt-1 text-xs text-white/90 sm:text-sm md:mt-3 md:text-lg">
             {t("home.live.subtitle")}
           </p>
-          <span className="pill-soon mt-2 md:hidden">{t("common.comingSoon")}</span>
+          <span className="pill-soon pill-soon-light mt-2 md:hidden">{t("common.comingSoon")}</span>
         </div>
 
-        <span className="pill-soon hidden shrink-0 px-5 py-2.5 text-sm md:inline-flex">
+        <span className="pill-soon pill-soon-light hidden shrink-0 px-5 py-2.5 text-sm md:inline-flex">
           {t("common.comingSoon")}
         </span>
       </div>

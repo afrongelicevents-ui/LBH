@@ -53,7 +53,7 @@ export default function ContactForm() {
           />
         </label>
       </div>
-      <button type="submit" className="btn btn-gold mt-5 px-7">
+      <button type="submit" className="btn btn-primary mt-5 px-7">
         {t("send")}
         <ArrowRightIcon width={18} height={18} />
       </button>

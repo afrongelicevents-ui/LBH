@@ -28,7 +28,7 @@ function AboutContent() {
         <div className="mt-10 space-y-6">
           <section className="card p-6">
             <h2 className="flex items-center gap-2 text-xl font-bold text-forest">
-              <MapPinIcon width={22} height={22} className="text-gold" />
+              <MapPinIcon width={22} height={22} className="text-forest" />
               {t("aboutPage.whoTitle")}
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-muted md:text-base">
@@ -53,7 +53,7 @@ function AboutContent() {
                   <CheckCircleIcon
                     width={18}
                     height={18}
-                    className="mt-0.5 shrink-0 text-gold"
+                    className="mt-0.5 shrink-0 text-accent"
                   />
                   <span className="text-sm text-ink md:text-base">
                     {t(`aboutPage.${k}`)}

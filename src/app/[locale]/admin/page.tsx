@@ -139,7 +139,7 @@ export default async function AdminNeedsYouPage({
               <h2 className="text-sm font-bold text-forest">{t(`block.${b.key}` as never)}</h2>
               <span
                 className={`flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-xs font-extrabold ${
-                  b.count > 0 ? "bg-gold text-forest" : "bg-line text-muted"
+                  b.count > 0 ? "bg-accent text-white" : "bg-info text-muted"
                 }`}
               >
                 {b.count}

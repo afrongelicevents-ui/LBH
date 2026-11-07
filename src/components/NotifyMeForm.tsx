@@ -20,7 +20,7 @@ export default function NotifyMeForm({ service }: { service: "monitoring" | "cam
   if (state === "ok") {
     return (
       <p className="mt-4 flex items-center gap-2 text-sm font-semibold text-forest">
-        <CheckCircleIcon width={18} height={18} className="text-gold" />
+        <CheckCircleIcon width={18} height={18} className="text-forest" />
         {t("saved")}
       </p>
     );

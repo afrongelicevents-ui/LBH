@@ -59,7 +59,7 @@ export default function LocaleDropdown() {
                   router.replace(pathname, { locale: l });
                 }}
                 className={`block w-full px-4 py-2.5 text-left text-sm font-semibold ${
-                  l === locale ? "bg-offwhite text-gold" : "text-ink"
+                  l === locale ? "bg-info font-extrabold text-accent" : "text-ink"
                 }`}
               >
                 {labels[l]}

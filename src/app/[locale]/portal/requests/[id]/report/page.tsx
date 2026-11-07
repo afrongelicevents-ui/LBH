@@ -17,7 +17,7 @@ const SECTION_KEYS = [
 
 const VERDICT_STYLES: Record<string, string> = {
   clear: "bg-forest text-white",
-  concerns: "bg-gold text-forest",
+  concerns: "bg-info text-ink border-2 border-accent",
   red_flags: "bg-red-700 text-white",
 };
 

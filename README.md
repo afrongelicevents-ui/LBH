@@ -80,8 +80,10 @@ correct password.
 
 ## Project conventions
 
-- **Design tokens** in `src/app/globals.css`: forest green `#163A2B`, gold `#C9A227`,
-  off-white `#F8F6F1`. **No orange anywhere.**
+- **Design tokens** in `src/app/globals.css`: forest green `#163A2B`, accents black
+  `#0A0A0A` (white text, hover `#2A2A2A`) on light backgrounds and white on dark green,
+  off-white `#F8F6F1`, dividers `#CFCBC0`, info boxes `#EEEDE8`. No gold, orange or blue
+  accents; the logo keeps its own colours.
 - **No prices on public pages** — prices only appear inside a client's own quote.
   A test fails if a dollar amount appears in the public copy.
 - **All text in `messages/<locale>.json`** — never hard-coded. A test enforces that all

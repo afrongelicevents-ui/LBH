@@ -21,21 +21,21 @@ export function AcceptQuoteButton({ quoteId }: { quoteId: string }) {
 
   if (!confirming) {
     return (
-      <button type="button" onClick={() => setConfirming(true)} className="btn btn-gold">
+      <button type="button" onClick={() => setConfirming(true)} className="btn btn-primary">
         {t("acceptQuote")}
         <ArrowRightIcon width={18} height={18} />
       </button>
     );
   }
   return (
-    <div className="rounded-xl border border-gold bg-gold/10 p-4">
+    <div className="rounded-xl bg-info p-4 text-ink">
       <p className="text-sm font-semibold text-forest">{t("acceptConfirmText")}</p>
       <div className="mt-3 flex gap-3">
         <button
           type="button"
           disabled={pending}
           onClick={() => start(() => acceptQuoteAction(quoteId, locale))}
-          className="btn btn-gold min-h-10 text-sm disabled:opacity-60"
+          className="btn btn-primary min-h-10 text-sm disabled:opacity-60"
         >
           {t("acceptConfirmYes")}
         </button>
@@ -65,7 +65,7 @@ export function ApprovalButtons({ approvalId }: { approvalId: string }) {
         type="button"
         disabled={pending}
         onClick={() => start(async () => setResult(await decideApprovalAction(approvalId, true)))}
-        className="btn btn-gold min-h-10 text-sm disabled:opacity-60"
+        className="btn btn-primary min-h-10 text-sm disabled:opacity-60"
       >
         {t("approve")}
       </button>
@@ -94,7 +94,7 @@ export function SupplierQuoteApprove({ id }: { id: string }) {
       type="button"
       disabled={pending}
       onClick={() => start(async () => setResult(await approveSupplierQuoteAction(id)))}
-      className="btn btn-gold min-h-9 px-4 text-xs disabled:opacity-60"
+      className="btn btn-primary min-h-9 px-4 text-xs disabled:opacity-60"
     >
       {t("approveSupplier")}
     </button>
@@ -110,7 +110,7 @@ export function PayButton({ paymentId }: { paymentId: string }) {
       type="button"
       disabled={pending}
       onClick={() => start(() => startPayment(paymentId, locale))}
-      className="btn btn-gold min-h-10 text-sm disabled:opacity-60"
+      className="btn btn-primary min-h-10 text-sm disabled:opacity-60"
     >
       {t("payNow")}
       <ArrowRightIcon width={16} height={16} />
@@ -177,7 +177,7 @@ export function ManualProofForm({ paymentId }: { paymentId: string }) {
           className="block w-full text-xs text-muted file:mr-3 file:rounded-full file:border-0 file:bg-forest file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white"
         />
       </label>
-      <button type="submit" disabled={pending} className="btn btn-gold mt-3 min-h-9 px-4 text-xs disabled:opacity-60">
+      <button type="submit" disabled={pending} className="btn btn-primary mt-3 min-h-9 px-4 text-xs disabled:opacity-60">
         {t("submitProof")}
       </button>
     </form>

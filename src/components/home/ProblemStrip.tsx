@@ -7,8 +7,8 @@ import {
 
 /**
  * Problem strip. Mobile (per phone mockup): light off-white band, dark green
- * icons, one row of three divided by thin gold lines, ~90px tall.
- * Desktop: full-width dark green band with gold icons.
+ * icons, one row of three divided by thin #CFCBC0 lines, ~90px tall.
+ * Desktop: full-width dark green band with white icons.
  */
 export default function ProblemStrip() {
   const t = useTranslations("home.problems");
@@ -26,13 +26,13 @@ export default function ProblemStrip() {
           <div
             key={i}
             className={`flex flex-col items-center gap-1.5 px-1.5 text-center md:flex-row md:justify-center md:gap-3 md:px-6 ${
-              i > 0 ? "border-l border-gold/70 md:border-gold/60" : ""
+              i > 0 ? "border-l border-line md:border-white/40" : ""
             }`}
           >
             <item.icon
               width={26}
               height={26}
-              className="shrink-0 text-forest md:text-gold"
+              className="shrink-0 text-forest md:text-white"
             />
             <p className="text-xs leading-snug font-bold text-ink md:text-base md:text-white">
               {item.text}

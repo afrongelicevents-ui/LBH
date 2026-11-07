@@ -33,7 +33,7 @@ export default async function SimulatePayPage({
 
   return (
     <div className="mx-auto max-w-md space-y-4 py-8">
-      <div className="rounded-2xl border-2 border-dashed border-gold bg-gold/10 p-4 text-center">
+      <div className="rounded-2xl border-2 border-dashed border-accent bg-info p-4 text-center text-ink">
         <p className="text-sm font-extrabold tracking-wide text-forest uppercase">
           {t("testBanner")}
         </p>

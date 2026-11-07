@@ -73,7 +73,7 @@ export default async function PayReturnPage({
       <div className="card p-8 text-center">
         {confirmed ? (
           <>
-            <CheckCircleIcon width={56} height={56} className="mx-auto text-gold" />
+            <CheckCircleIcon width={56} height={56} className="mx-auto text-forest" />
             <h1 className="headline mt-3 text-2xl text-forest">{t("thanksTitle")}</h1>
             <p className="mt-2 text-sm text-muted">
               {t("thanksText", { amount: formatCents(payment.amount_cents) })}
@@ -92,7 +92,7 @@ export default async function PayReturnPage({
         )}
         <Link
           href={`/portal/requests/${payment.request_id}`}
-          className="btn btn-gold mt-6 w-full"
+          className="btn btn-primary mt-6 w-full"
         >
           {t("backToRequest")}
         </Link>
