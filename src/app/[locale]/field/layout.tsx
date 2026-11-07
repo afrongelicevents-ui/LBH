@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth/guard";
 import PortalShell from "@/components/portal/PortalShell";
+import OutboxProvider from "@/components/field/OutboxProvider";
 
 export default async function FieldLayout({
   children,
@@ -21,7 +22,7 @@ export default async function FieldLayout({
       areaKey="field"
       nav={[{ href: "/field", label: t("myJobs") }]}
     >
-      {children}
+      <OutboxProvider userId={profile.id}>{children}</OutboxProvider>
     </PortalShell>
   );
 }

@@ -12,6 +12,7 @@ and follow their build — without being there.**
 | Area | URL | Who |
 |---|---|---|
 | Public website (EN / Shona / Ndebele) | `/`, `/services`, `/how-it-works`, `/about`, `/contact`, `/book-a-call`, `/terms`, `/privacy` | Everyone |
+| Create account / log in | `/signup`, `/login` | Clients sign up themselves; staff are invite-only |
 | Client portal (incl. **My build**) | `/portal`, `/portal/build` | Clients |
 | Field team portal | `/field` | Lawyer, field agents (2FA required) |
 | Admin dashboard (incl. **Build stages**) | `/admin`, `/admin/builds` | LBH admin (2FA required) |
@@ -45,8 +46,8 @@ Password for every account: `Lbh-Sample-2026`
 |---|---|---|
 | `client@lbh.test` | Client | Accept quote #1001, pay the deposit, approve the extra trip, pick a supplier, chat |
 | `client2@lbh.test` | Client | Read a published land report with verdict + PDF |
-| `agent@lbh.test` | Field agent | Assigned jobs, checklist, photo/receipt capture, draft report |
-| `lawyer@lbh.test` | Field (lawyer) | Has no jobs — shows field staff only see their own |
+| `agent@lbh.test` | Field agent | Assigned jobs, checklist, in-app camera photos/video/receipts (works offline), draft report |
+| `lawyer@lbh.test` | Field (lawyer) | Title checks for Stand 412 (open) and Stand 88 (done): legal checklist — title deed, agreement of sale, council records, seller identity, findings, verdict |
 | `admin@lbh.test` | Admin | Needs-you queue, quote builder, publish reports, confirm payments |
 
 Staff accounts are asked to set up an authenticator app (Google Authenticator, Authy,
@@ -60,6 +61,39 @@ checkout** where you choose success or failure. No money moves. Without that fla
 (e.g. a production deploy that has no Paynow keys yet) online payment is simply
 hidden and clients use "I paid via Remitly / WorldRemit / bank" instead. Once real
 Paynow credentials are set (test keys first), the simulator is switched off for good.
+
+## Client sign-up
+
+"Create account" sits next to "Log in". Clients enter name, email, WhatsApp, country and
+a password, confirm their email from the link we send, and land in their portal where
+they can book a call or send a request. Sign-up can only ever create **client**
+accounts; staff and admins are invited from `/admin/settings`. If the email already has
+an account, a password-reset email is sent instead (no account discovery, and nobody can
+set a password on someone else's account).
+
+The confirmation email is sent by **Supabase Auth**. Its template
+(`supabase/templates/confirmation.html`) links to `/api/auth/confirm`, which works on any
+device. In production, set a custom SMTP server in Supabase (Authentication → Emails →
+SMTP, e.g. Resend's SMTP) — Supabase's built-in mailer only delivers to your own team's
+addresses and only a few emails per hour.
+
+## Field capture: camera only, works offline
+
+- **Camera only.** Field staff take photos and videos with the camera inside the app;
+  there is no file picker and no gallery. The phone's time and GPS (with accuracy) are
+  recorded at the moment of capture. The server refuses field media that didn't come from
+  the in-app camera and stores `capture_source = camera`. Admin keeps a normal file
+  upload.
+- **Offline.** Photos, videos, checklists, notes, legal checklists and reports are saved
+  on the phone first (IndexedDB) and uploaded automatically when the signal returns —
+  keeping the original capture time and GPS. A bar at the top shows
+  **"Waiting to upload (3)"** or **"All uploaded ✓"**; items the server rejects stay on
+  the phone with the reason and a *Try again* / *Remove* choice. Each capture has its own
+  id, so an upload replayed after a dropped connection is stored only once. Job pages
+  already opened stay available with no signal (service worker `public/field-sw.js`,
+  field pages only; cleared on sign-out).
+- Uploads resume while the app is open (or next time it is opened). Phones may clear
+  stored data if storage is nearly full, so the app asks the browser to keep it.
 
 ## Construction build stages
 
@@ -81,7 +115,7 @@ re-encodes images.
 ## Tests
 
 ```bash
-npm test            # unit tests + 67 database permission tests (needs `npx supabase start`)
+npm test            # unit tests + database permission tests (needs `npx supabase start`)
 npm run lint
 
 # full browser end-to-end run of every flow:

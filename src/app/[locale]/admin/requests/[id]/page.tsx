@@ -6,6 +6,7 @@ import { formatCents } from "@/lib/money";
 import { signedUrl } from "@/lib/uploads";
 import StatusTimeline from "@/components/portal/StatusTimeline";
 import type { RequestStatus } from "@/lib/status";
+import { LEGAL_ITEMS, readLegal } from "@/lib/legal";
 import {
   QuoteBuilder,
   SendDraftQuoteButton,
@@ -26,6 +27,8 @@ export default async function AdminRequestDetailPage({
   setRequestLocale(locale);
   const { supabase, user } = await requireRole(locale, ["admin"]);
   const t = await getTranslations("admin.request");
+  const tl = await getTranslations("field.legal");
+  const tf = await getTranslations("field");
 
   const { data: req } = await supabase
     .from("service_requests")
@@ -225,12 +228,39 @@ export default async function AdminRequestDetailPage({
       {/* assignment */}
       <section className="card p-5">
         <h2 className="text-base font-bold text-forest">{t("fieldTeam")}</h2>
-        {(jobs ?? []).map((j) => (
-          <p key={j.id} className="mt-2 text-sm text-ink">
-            {(j.profiles as unknown as { full_name: string })?.full_name} ·{" "}
-            <span className="text-muted">{j.status}</span>
-          </p>
-        ))}
+        {(jobs ?? []).map((j) => {
+          const legal = j.job_type === "title_check" ? readLegal(j.visit) : null;
+          return (
+            <div key={j.id} className="mt-2 text-sm text-ink">
+              <p>
+                {(j.profiles as unknown as { full_name: string })?.full_name} ·{" "}
+                <span className="text-muted">
+                  {t(`jobTypes.${j.job_type}` as never)} · {j.status}
+                </span>
+              </p>
+              {legal && (
+                <div className="mt-1 rounded-xl border border-line p-3 text-xs">
+                  <ul className="space-y-1">
+                    {LEGAL_ITEMS.map((item) => {
+                      const it = legal.items[item];
+                      return (
+                        <li key={item}>
+                          <span className="font-semibold">{tl(`items.${item}`)}:</span>{" "}
+                          <span className={it?.status === "problem" ? "font-bold text-red-700" : it?.status === "ok" ? "font-bold text-forest" : "text-muted"}>
+                            {tl(`status.${it?.status ?? "pending"}`)}
+                          </span>
+                          {it?.note ? <span className="text-muted"> — {it.note}</span> : null}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  {legal.findings && <p className="mt-2"><span className="font-semibold">{tl("findings")}:</span> {legal.findings}</p>}
+                  {legal.verdict && <p className="mt-1"><span className="font-semibold">{tl("verdict")}:</span> {tf(`verdicts.${legal.verdict}`)}</p>}
+                </div>
+              )}
+            </div>
+          );
+        })}
         <div className="mt-3">
           <AssignStaffForm requestId={req.id} staff={staff ?? []} />
         </div>

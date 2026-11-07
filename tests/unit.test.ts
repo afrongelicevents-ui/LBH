@@ -92,3 +92,73 @@ describe("upload type sniffing (magic bytes, not the browser's label)", async ()
     expect(sniffType(Buffer.from("<html><script>alert(1)</script></html>"))).toBeNull();
   });
 });
+
+// ---------- camera-only capture, offline provenance, sign-up redirect ----------
+import { captureProvenance, parseUploadRefs, MAX_OFFLINE_AGE_MS } from "@/lib/uploads";
+import { safeNextPath, signupSchema } from "@/lib/signup";
+
+describe("capture provenance", () => {
+  const noExif = { takenAt: null, gpsLat: null, gpsLng: null };
+  const now = Date.parse("2026-11-07T12:00:00Z");
+
+  it("field staff must use the in-app camera", () => {
+    const ref = { path: "x", name: "a.jpg", type: "image/jpeg", source: "upload" as const };
+    expect(() => captureProvenance(ref, noExif, { requireCamera: true, now })).toThrow("camera required");
+  });
+
+  it("keeps the ORIGINAL capture time + GPS of a photo saved offline", () => {
+    const capturedAt = "2026-11-05T08:30:00.000Z"; // two days offline
+    const p = captureProvenance(
+      { path: "x", name: "a.jpg", type: "image/jpeg", source: "camera", capturedAt, lat: -17.9, lng: 31.04, accuracy: 8 },
+      noExif,
+      { requireCamera: true, now }
+    );
+    expect(p).toEqual({ takenAt: capturedAt, gpsLat: -17.9, gpsLng: 31.04, accuracy: 8, source: "camera" });
+  });
+
+  it("refuses capture times in the future or too old", () => {
+    const mk = (t: number) => ({ path: "x", name: "a", type: "image/jpeg", source: "camera" as const, capturedAt: new Date(t).toISOString() });
+    expect(() => captureProvenance(mk(now + 60 * 60 * 1000), noExif, { requireCamera: true, now })).toThrow("capture time");
+    expect(() => captureProvenance(mk(now - MAX_OFFLINE_AGE_MS - 1000), noExif, { requireCamera: true, now })).toThrow("capture time");
+  });
+
+  it("admin file uploads still use EXIF", () => {
+    const takenAt = new Date("2026-11-01T10:00:00Z");
+    const p = captureProvenance({ path: "x", name: "a", type: "image/jpeg" }, { takenAt, gpsLat: 1, gpsLng: 2 }, { requireCamera: false, now });
+    expect(p.source).toBe("upload");
+    expect(p.takenAt).toBe(takenAt.toISOString());
+  });
+
+  it("upload references drop malformed GPS / ids", () => {
+    const [r] = parseUploadRefs(
+      JSON.stringify([{ path: "p", name: "n", type: "image/jpeg", source: "camera", lat: 200, lng: 31, clientRef: "nope", capturedAt: "bad" }])
+    );
+    expect(r).toMatchObject({ source: "camera", lat: null, lng: null, clientRef: null, capturedAt: null });
+  });
+});
+
+describe("sign-up", () => {
+  it("only same-site paths are accepted after confirmation", () => {
+    expect(safeNextPath("/sn/portal")).toBe("/sn/portal");
+    expect(safeNextPath("https://evil.example")).toBe("/portal");
+    expect(safeNextPath("//evil.example")).toBe("/portal");
+    expect(safeNextPath("/\\evil.example")).toBe("/portal");
+  });
+
+  it("requires matching passwords of 10+ characters and accepted terms", () => {
+    const base = {
+      full_name: "Tatenda Moyo",
+      email: "T@Example.com",
+      whatsapp: "+44 7700 900123",
+      country: "uk",
+      password: "long-enough-1",
+      confirm_password: "long-enough-1",
+      terms: "on",
+    };
+    const ok = signupSchema.safeParse(base);
+    expect(ok.success && ok.data.email).toBe("t@example.com");
+    expect(signupSchema.safeParse({ ...base, confirm_password: "different-1" }).success).toBe(false);
+    expect(signupSchema.safeParse({ ...base, password: "short", confirm_password: "short" }).success).toBe(false);
+    expect(signupSchema.safeParse({ ...base, terms: undefined }).success).toBe(false);
+  });
+});

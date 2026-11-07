@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { useTranslations } from "next-intl";
 import SectionTitle from "@/components/SectionTitle";
-import BookCallForm from "@/components/BookCallForm";
+import BookCallForm, { type BookingDefaults } from "@/components/BookCallForm";
+import { getUserProfile } from "@/lib/supabase/server";
 
 export async function generateMetadata({
   params,
@@ -14,7 +15,7 @@ export async function generateMetadata({
   return { title: t("metaTitle") };
 }
 
-function BookContent() {
+function BookContent({ defaults }: { defaults: BookingDefaults }) {
   const t = useTranslations("bookPage");
   return (
     <div className="bg-offwhite py-12 md:py-16">
@@ -24,7 +25,7 @@ function BookContent() {
           {t("intro")}
         </p>
         <div className="mt-10">
-          <BookCallForm />
+          <BookCallForm defaults={defaults} />
         </div>
       </div>
     </div>
@@ -38,5 +39,17 @@ export default async function BookACallPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <BookContent />;
+  // Signed-in clients: prefill their details (a booking is matched to the
+  // account by email).
+  const { profile } = await getUserProfile();
+  const defaults: BookingDefaults =
+    profile?.role === "client"
+      ? {
+          name: profile.full_name,
+          email: profile.email,
+          whatsapp: profile.whatsapp ?? "",
+          country: profile.country ?? "",
+        }
+      : {};
+  return <BookContent defaults={defaults} />;
 }

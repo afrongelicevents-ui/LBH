@@ -4,6 +4,10 @@ import { useState, useTransition, useActionState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { useDirectUpload } from "@/lib/useDirectUpload";
+import CameraCapture, { type Captured } from "@/components/field/CameraCapture";
+import { useOutbox } from "@/components/field/OutboxProvider";
+import { QueuedNote } from "@/components/field/JobForms";
+import type { OutboxAction, OutboxFile } from "@/lib/field/outbox";
 import {
   approveStageQuoteAction,
   approveStageAction,
@@ -140,17 +144,104 @@ export function ApproveStageButton({ stageId, stageName }: { stageId: string; st
 
 // ======================== staff ========================
 
+function toOutboxFile(c: Captured): OutboxFile {
+  return {
+    blob: c.blob,
+    name: c.name,
+    type: c.type,
+    capturedAt: c.capturedAt,
+    lat: c.lat,
+    lng: c.lng,
+    accuracy: c.accuracy,
+    clientRef: c.clientRef,
+  };
+}
+
+/**
+ * Field staff (inside the field area): photos come only from the in-app
+ * camera and every save goes to the phone first, so it works with no
+ * signal. Admin keeps a normal file picker and sends directly.
+ */
+function useFieldCapture(action: OutboxAction, stageId: string, label: string, extra?: string) {
+  const outbox = useOutbox();
+  const [files, setFiles] = useState<Captured[]>([]);
+  const [queued, setQueued] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  async function onSubmit(
+    e: React.FormEvent<HTMLFormElement>,
+    check?: (fd: FormData, files: Captured[]) => string | null
+  ) {
+    if (!outbox) return;
+    e.preventDefault();
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const problem = check?.(fd, files) ?? null;
+    if (problem) {
+      setErr(problem);
+      return;
+    }
+    const fields: Record<string, string> = {};
+    for (const [k, v] of fd.entries()) if (typeof v === "string") fields[k] = v;
+    setBusy(true);
+    setErr(null);
+    try {
+      await outbox.enqueue({ action, target: stageId, extra, label, fields, files: files.map(toOutboxFile) });
+      files.forEach((f) => URL.revokeObjectURL(f.previewUrl));
+      setFiles([]);
+      form.reset();
+      setQueued(true);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return {
+    field: Boolean(outbox),
+    files,
+    setFiles: (v: Captured[]) => {
+      setFiles(v);
+      setQueued(false);
+    },
+    queued,
+    busy,
+    err,
+    onSubmit,
+  };
+}
+
 export function StagePhotoForm({
   stageId,
+  stageName,
   kind,
 }: {
   stageId: string;
+  stageName: string;
   kind: "delivery" | "progress" | "inspection";
 }) {
   const t = useTranslations("build");
   const { state, formAction, pending, progress } = useUploadingAction((prev, fd) =>
     addStagePhotos(stageId, kind, prev, fd)
   );
+  const fc = useFieldCapture("stage-photos", stageId, `${t(`addPhotos.${kind}` as never)} — ${stageName}`, kind);
+  const needPhoto = t("error.needInspectionPhoto");
+
+  if (fc.field) {
+    return (
+      <form onSubmit={(e) => fc.onSubmit(e, (_fd, f) => (f.length === 0 ? needPhoto : null))} className="space-y-2">
+        <CameraCapture mode="photo" value={fc.files} onChange={fc.setFiles} />
+        <input name="note" maxLength={1000} placeholder={t("photoNote")} className={inputCls} />
+        <button type="submit" disabled={fc.busy || fc.files.length === 0} className="btn btn-outline-green min-h-10 px-4 text-sm disabled:opacity-60">
+          {t(`addPhotos.${kind}` as never)}
+          {fc.files.length > 1 ? ` (${fc.files.length})` : ""}
+        </button>
+        {fc.err && <p role="alert" className="text-xs font-bold text-red-700">{fc.err}</p>}
+        <QueuedNote show={fc.queued} />
+      </form>
+    );
+  }
+
   return (
     <form action={formAction} className="space-y-2">
       <input type="file" name="photos" multiple required accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime" className={fileCls} />
@@ -163,24 +254,49 @@ export function StagePhotoForm({
   );
 }
 
-export function PurchaseForm({ stageId }: { stageId: string }) {
+export function PurchaseForm({ stageId, stageName }: { stageId: string; stageName: string }) {
   const t = useTranslations("build");
   const { state, formAction, pending, progress } = useUploadingAction(
     (prev, fd) => recordPurchase(stageId, prev, fd),
     "receipt"
   );
+  const fc = useFieldCapture("stage-purchase", stageId, `${t("recordPurchase")} — ${stageName}`);
+  const needReceipt = t("error.needReceipt");
+
+  const fields = (
+    <div className="grid gap-2 sm:grid-cols-2">
+      <label>
+        <span className={labelCls}>{t("supplier")} *</span>
+        <input name="supplier_name" required maxLength={200} className={inputCls} />
+      </label>
+      <label>
+        <span className={labelCls}>{t("amountPaid")} *</span>
+        <input name="amount" required inputMode="decimal" placeholder="0.00" className={inputCls} />
+      </label>
+    </div>
+  );
+
+  if (fc.field) {
+    return (
+      <form onSubmit={(e) => fc.onSubmit(e, (_fd, f) => (f.length === 0 ? needReceipt : null))} className="space-y-2">
+        {fields}
+        <div>
+          <span className={labelCls}>{t("receiptPhoto")} *</span>
+          <CameraCapture mode="photo" multiple={false} value={fc.files} onChange={fc.setFiles} />
+        </div>
+        <input name="note" maxLength={1000} placeholder={t("photoNote")} className={inputCls} />
+        <button type="submit" disabled={fc.busy} className="btn btn-primary min-h-10 px-4 text-sm disabled:opacity-60">
+          {t("recordPurchase")}
+        </button>
+        {fc.err && <p role="alert" className="text-xs font-bold text-red-700">{fc.err}</p>}
+        <QueuedNote show={fc.queued} />
+      </form>
+    );
+  }
+
   return (
     <form action={formAction} className="space-y-2">
-      <div className="grid gap-2 sm:grid-cols-2">
-        <label>
-          <span className={labelCls}>{t("supplier")} *</span>
-          <input name="supplier_name" required maxLength={200} className={inputCls} />
-        </label>
-        <label>
-          <span className={labelCls}>{t("amountPaid")} *</span>
-          <input name="amount" required inputMode="decimal" placeholder="0.00" className={inputCls} />
-        </label>
-      </div>
+      {fields}
       <label className="block">
         <span className={labelCls}>{t("receiptPhoto")} *</span>
         <input type="file" name="receipt" required accept="image/jpeg,image/png,image/webp" className={fileCls} />
@@ -213,17 +329,24 @@ export function AdvanceButton({ stageId, to }: { stageId: string; to: "delivered
   );
 }
 
-export function InspectionForm({ stageId, defaultMaterials }: { stageId: string; defaultMaterials: string }) {
+export function InspectionForm({
+  stageId,
+  stageName,
+  defaultMaterials,
+}: {
+  stageId: string;
+  stageName: string;
+  defaultMaterials: string;
+}) {
   const t = useTranslations("build");
   const { state, formAction, pending, progress } = useUploadingAction((prev, fd) =>
     submitInspection(stageId, prev, fd)
   );
-  return (
-    <form action={formAction} className="space-y-2">
-      <label className="block">
-        <span className={labelCls}>{t("inspectionPhotos")} *</span>
-        <input type="file" name="photos" multiple required accept="image/jpeg,image/png,image/webp" className={fileCls} />
-      </label>
+  const fc = useFieldCapture("stage-inspection", stageId, `${t("submitInspection")} — ${stageName}`);
+  const needPhoto = t("error.needInspectionPhoto");
+
+  const textFields = (
+    <>
       <label className="block">
         <span className={labelCls}>{t("materialsUsed")} *</span>
         <textarea name="materials" required rows={4} defaultValue={defaultMaterials} className={inputCls} />
@@ -233,6 +356,33 @@ export function InspectionForm({ stageId, defaultMaterials }: { stageId: string;
         <span className={labelCls}>{t("inspectionNotes")} *</span>
         <textarea name="notes" required rows={3} maxLength={4000} className={inputCls} />
       </label>
+    </>
+  );
+
+  if (fc.field) {
+    return (
+      <form onSubmit={(e) => fc.onSubmit(e, (_fd, f) => (f.length === 0 ? needPhoto : null))} className="space-y-2">
+        <div>
+          <span className={labelCls}>{t("inspectionPhotos")} *</span>
+          <CameraCapture mode="photo" value={fc.files} onChange={fc.setFiles} />
+        </div>
+        {textFields}
+        <button type="submit" disabled={fc.busy} className="btn btn-primary min-h-10 px-4 text-sm disabled:opacity-60">
+          {t("submitInspection")}
+        </button>
+        {fc.err && <p role="alert" className="text-xs font-bold text-red-700">{fc.err}</p>}
+        <QueuedNote show={fc.queued} />
+      </form>
+    );
+  }
+
+  return (
+    <form action={formAction} className="space-y-2">
+      <label className="block">
+        <span className={labelCls}>{t("inspectionPhotos")} *</span>
+        <input type="file" name="photos" multiple required accept="image/jpeg,image/png,image/webp" className={fileCls} />
+      </label>
+      {textFields}
       <button type="submit" disabled={pending} className="btn btn-primary min-h-10 px-4 text-sm disabled:opacity-60">
         {pending && progress ? t("uploading", { done: progress.done, total: progress.total }) : t("submitInspection")}
       </button>

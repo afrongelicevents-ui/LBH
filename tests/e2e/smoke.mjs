@@ -25,11 +25,29 @@ const SERVICE_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU";
 const PASSWORD = "Lbh-Sample-2026";
 const SHOTS = process.env.E2E_SHOTS_DIR ?? null;
+const MAILPIT = process.env.MAILPIT_URL ?? "http://127.0.0.1:54324";
+
+/** Newest email to `to` in the local Supabase mail catcher (Mailpit). */
+async function latestEmailTo(to, timeout = 20000) {
+  const until = Date.now() + timeout;
+  while (Date.now() < until) {
+    const res = await fetch(`${MAILPIT}/api/v1/search?query=${encodeURIComponent(`to:"${to}"`)}`);
+    const list = res.ok ? await res.json() : { messages: [] };
+    if (list.messages?.length) {
+      const msg = await (await fetch(`${MAILPIT}/api/v1/message/${list.messages[0].ID}`)).json();
+      return msg;
+    }
+    await new Promise((r) => setTimeout(r, 500));
+  }
+  throw new Error(`no email to ${to}`);
+}
 
 const db = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } });
 const IDS = {
   admin: "00000000-0000-4000-a000-000000000001",
   agent: "00000000-0000-4000-a000-000000000003",
+  lawyer: "00000000-0000-4000-a000-000000000002",
+  jobLegal412: "30000000-0000-4000-a000-000000000003",
   reqLand: "10000000-0000-4000-a000-000000000001",
   reqMat: "10000000-0000-4000-a000-000000000002",
   reqDone: "10000000-0000-4000-a000-000000000003",
@@ -122,6 +140,41 @@ async function enrollMfa(page) {
   return secret;
 }
 
+/** In-app camera: open it inside `scope`, take `n` photos, close. */
+async function snapPhotos(page, scope, n = 1) {
+  await scope.locator('[data-testid="open-camera-photo"]').first().click();
+  const dialog = page.locator('[role="dialog"]');
+  await dialog.waitFor();
+  await page.waitForFunction(() => {
+    const v = document.querySelector('[role="dialog"] video');
+    return v && v.videoWidth > 0;
+  });
+  for (let i = 0; i < n; i++) {
+    await dialog.locator('[data-testid="shutter"]').click();
+    await page.waitForTimeout(300);
+  }
+  // single-photo forms close by themselves
+  if (await dialog.isVisible()) await dialog.locator("button", { hasText: /Done|Cancel/ }).click();
+  await scope.locator("li img").first().waitFor();
+}
+
+/** Retry a check (e.g. "the row is in the database") until it passes. */
+async function eventually(check, timeout = 30000) {
+  const until = Date.now() + timeout;
+  for (;;) {
+    try {
+      return await check();
+    } catch (e) {
+      if (Date.now() > until) throw e;
+      await new Promise((r) => setTimeout(r, 500));
+    }
+  }
+}
+
+async function waitAllUploaded(page, timeout = 30000) {
+  await page.getByTestId("outbox-status").getByText("All uploaded ✓").waitFor({ timeout });
+}
+
 async function clearFactors(userId) {
   const { data } = await db.auth.admin.mfa.listFactors({ userId });
   for (const f of data?.factors ?? []) {
@@ -155,8 +208,12 @@ writeFileSync(
 
 await clearFactors(IDS.admin);
 await clearFactors(IDS.agent);
+await clearFactors(IDS.lawyer);
 
-const browser = await chromium.launch();
+// Fake camera + microphone so the in-app camera can be driven in tests.
+const browser = await chromium.launch({
+  args: ["--use-fake-ui-for-media-stream", "--use-fake-device-for-media-stream"],
+});
 const newCtx = (opts = {}) =>
   browser.newContext({ viewport: { width: 1280, height: 900 }, ...opts });
 
@@ -211,6 +268,67 @@ console.log("\nPublic website");
     await page.getByText("Saved").first().waitFor({ timeout: 10000 });
     const { data } = await db.from("notify_interest").select("id").eq("email", email);
     assert(data?.length === 1, "interest not stored");
+  });
+
+  await step("finance tracker 'coming soon' card → Notify me saves interest", async () => {
+    await page.goto(`${BASE}/en`);
+    const card = page.locator("#finance");
+    await card.getByText("Build Finance Tracker").waitFor();
+    await card.getByText("track every dollar of your build, stage by stage", { exact: false }).waitFor();
+    const email = `finance-${Date.now()}@example.test`;
+    await card.locator('input[type="email"]').fill(email);
+    await card.locator('button[type="submit"]').click();
+    await card.getByText("Saved").waitFor({ timeout: 10000 });
+    const { data } = await db.from("notify_interest").select("service").eq("email", email).single();
+    assert(data?.service === "finance", "finance interest not stored");
+  });
+
+  await step("CREATE ACCOUNT next to Log in → verify email → lands in the portal", async () => {
+    await page.goto(`${BASE}/en`);
+    await page.locator('header a[href$="/signup"]:visible').first().click();
+    await page.waitForURL(/\/signup/);
+    const email = `signup-e2e-${Date.now()}@example.test`;
+    await page.fill('input[name="full_name"]', "E2E New Client");
+    await page.fill('input[name="email"]', email);
+    await page.fill('input[name="whatsapp"]', "+44 7700 900555");
+    await page.selectOption('select[name="country"]', "uk");
+    await page.fill('input[name="password"]', "E2E-Signup-2026");
+    await page.fill('input[name="confirm_password"]', "E2E-Signup-2026");
+    await page.check('input[name="terms"]');
+    await shot(page, "signup");
+    await page.click('button[type="submit"]');
+    await page.getByText("Check your email").waitFor({ timeout: 15000 });
+
+    // can't log in before confirming
+    await page.goto(`${BASE}/en/login`);
+    await page.fill('input[type="email"]', email);
+    await page.fill('input[type="password"]', "E2E-Signup-2026");
+    await page.click('button[type="submit"]');
+    await page.getByText("confirm your email first").waitFor({ timeout: 10000 });
+
+    const msg = await latestEmailTo(email);
+    const link = /href="([^"]+token_hash=[^"]+)"/.exec(msg.HTML)?.[1]?.replaceAll("&amp;", "&");
+    assert(link, "confirmation link missing from email");
+    await page.goto(link);
+    await page.waitForURL(/\/portal/, { timeout: 20000 });
+    await page.getByText("Your email is confirmed").waitFor();
+    await page.getByRole("link", { name: "Book a free call" }).first().waitFor();
+    await page.getByRole("link", { name: "Verify land" }).first().waitFor();
+    await shot(page, "signup-portal");
+    const { data: prof } = await db.from("profiles").select("role, full_name, whatsapp, country").eq("email", email).single();
+    assert(prof.role === "client" && prof.whatsapp === "+44 7700 900555" && prof.country === "uk", "profile wrong");
+
+    // book a call from the portal: details are prefilled
+    await page.getByRole("link", { name: "Book a free call" }).first().click();
+    await page.waitForURL(/book-a-call/);
+    assert((await page.inputValue('input[name="email"]')) === email, "booking not prefilled");
+    await page.goto(`${BASE}/en/portal/requests/new-land`);
+    await page.getByRole("button", { name: "Send request" }).waitFor();
+  });
+
+  await step("staff can't sign themselves up: sign-up only ever makes clients", async () => {
+    const { data } = await db.from("profiles").select("role").like("email", "signup-e2e-%");
+    assert(data.length >= 1 && data.every((p) => p.role === "client"), "non-client created");
   });
 
   await step("no CSP violations on public pages", async () => {
@@ -344,6 +462,7 @@ console.log("\nClient portal (client@lbh.test)");
 
 // ======================================================================
 console.log("\nField portal (agent@lbh.test) — 2FA required");
+let offlineShotAt = 0;
 {
   // Device GPS ~2 km from the stand pin → photo must be flagged
   const ctx = await newCtx({
@@ -374,34 +493,116 @@ console.log("\nField portal (agent@lbh.test) — 2FA required");
     await page.fill('input[name="width_m"]', "15");
     await page.fill('input[name="area_sqm"]', "300");
     await page.click('button:has-text("Save visit")');
-    await page.getByText("Saved.").first().waitFor({ timeout: 10000 });
-    const { data } = await db.from("jobs").select("visit, status").eq("id", IDS.jobLand).single();
-    assert(data.visit.measurements.area_sqm === 300 && data.status === "in_progress", "visit not saved");
+    await page.getByText("Saved on this phone").first().waitFor({ timeout: 10000 });
+    await eventually(async () => {
+      const { data } = await db.from("jobs").select("visit, status").eq("id", IDS.jobLand).single();
+      assert(data.visit?.measurements?.area_sqm === 300 && data.status === "in_progress", "visit not saved");
+    });
+    await waitAllUploaded(page);
   });
 
-  await step("upload a BIG phone photo (~8 MB): time + GPS read, flagged >300 m from pin", async () => {
-    const photoForm = page.locator("form", { has: page.locator('input[name="kind"][value="photo"]') });
-    await photoForm.locator('input[type="file"]').setInputFiles(photoPath);
-    await page.waitForTimeout(1500); // GPS capture
+  await step("camera only: no gallery/file picker for field photos, video or receipts", async () => {
+    const capture = page.locator("section", { hasText: "Photos, video & receipts" });
+    assert((await capture.locator('input[type="file"]').count()) === 0, "a file picker is offered to field staff");
+    assert((await page.locator('input[type="file"]').count()) === 0, "a file picker exists on the field job page");
+    await capture.locator('[data-testid="open-camera-photo"]').first().waitFor();
+    await capture.locator('[data-testid="open-camera-video"]').waitFor();
+  });
+
+  await step("take 2 photos in the app: time + GPS recorded, flagged >300 m from pin", async () => {
+    const photoForm = page.getByTestId("media-form-photo");
+    const before = Date.now();
+    await snapPhotos(page, photoForm, 2);
     await photoForm.locator('button[type="submit"]').click();
-    await photoForm.getByText("Saved.").waitFor({ timeout: 20000 });
-    const { data } = await db.from("media").select("*").eq("job_id", IDS.jobLand).eq("kind", "photo").single();
-    assert(data.gps_lat !== null && data.uploaded_at, "GPS/time not stored");
-    assert(data.taken_at && data.taken_at.startsWith("2026-11-05"), `EXIF capture time not read (${data.taken_at})`);
-    assert(Math.abs(data.gps_lat - -17.9) < 0.001, `EXIF GPS not read (${data.gps_lat})`);
-    assert(data.flagged_far === true, `not flagged (distance ${data.distance_from_pin_m})`);
+    await photoForm.getByText("Saved on this phone").waitFor({ timeout: 10000 });
+    const data = await eventually(async () => {
+      const { data } = await db.from("media").select("*").eq("job_id", IDS.jobLand).eq("kind", "photo");
+      assert(data.length === 2, `${data.length} photos stored`);
+      return data;
+    });
+    await waitAllUploaded(page);
+    for (const m of data) {
+      assert(m.capture_source === "camera", "not marked as in-app camera");
+      assert(Math.abs(Date.parse(m.taken_at) - before) < 60000, `capture time wrong (${m.taken_at})`);
+      assert(Math.abs(m.gps_lat - -17.9077) < 0.0001, `device GPS not stored (${m.gps_lat})`);
+      assert(m.flagged_far === true, `not flagged (distance ${m.distance_from_pin_m})`);
+    }
+    await page.getByText("in-app camera").first().waitFor();
   });
 
-  await step("upload a fuel receipt with amount", async () => {
-    const form = page.locator("form", { has: page.locator('input[name="kind"][value="receipt"]') });
-    await form.locator('input[type="file"]').setInputFiles(photoPath);
+  await step("record a short video in the app", async () => {
+    const form = page.getByTestId("media-form-video");
+    await form.locator('[data-testid="open-camera-video"]').click();
+    await page.waitForFunction(() => {
+      const v = document.querySelector('[role="dialog"] video');
+      return v && v.videoWidth > 0;
+    });
+    await page.getByTestId("start-recording").click();
+    await page.waitForTimeout(2500);
+    await page.getByTestId("stop-recording").click();
+    await form.locator("li video").waitFor({ timeout: 10000 });
+    await form.locator('button[type="submit"]').click();
+    const data = await eventually(async () => {
+      const { data } = await db.from("media").select("kind, capture_source, storage_path").eq("job_id", IDS.jobLand).eq("kind", "video");
+      assert(data.length === 1 && data[0].capture_source === "camera", "video not stored");
+      return data;
+    }, 60000);
+    assert(/\.(webm|mp4)$/.test(data[0].storage_path), `video type ${data[0].storage_path}`);
+    await waitAllUploaded(page);
+  });
+
+  await step("photograph a fuel receipt with amount", async () => {
+    const form = page.getByTestId("media-form-receipt");
+    await snapPhotos(page, form, 1);
     await form.locator('input[name="amount"]').fill("18.50");
     await form.locator('input[name="note"]').fill("Fuel — E2E");
     await form.locator('button[type="submit"]').click();
-    await form.getByText("Saved.").waitFor({ timeout: 20000 });
-    const { data } = await db.from("media").select("amount_cents, flagged_far").eq("job_id", IDS.jobLand).eq("kind", "receipt").single();
+    const data = await eventually(async () => {
+      const { data } = await db.from("media").select("amount_cents, flagged_far").eq("job_id", IDS.jobLand).eq("kind", "receipt").single();
+      assert(data, "receipt not stored");
+      return data;
+    });
+    await waitAllUploaded(page);
     assert(data.amount_cents === 1850, "receipt amount wrong");
     assert(data.flagged_far === false, "receipts must not get the distance flag");
+  });
+
+  await step("OFFLINE: photos + checklist + notes wait on the phone → 'Waiting to upload (2)'", async () => {
+    await ctx.setOffline(true);
+    const photoForm = page.getByTestId("media-form-photo");
+    await snapPhotos(page, photoForm, 1);
+    offlineShotAt = Date.now();
+    await photoForm.locator('input[name="note"]').fill("E2E offline photo");
+    await photoForm.locator('button[type="submit"]').click();
+    await page.fill('textarea[name="findings"]', "E2E — written with no signal.");
+    await page.click('button:has-text("Save visit")');
+    await page.getByTestId("outbox-status").getByText("Waiting to upload (2)").waitFor({ timeout: 10000 });
+    await page.getByText("no signal").first().waitFor();
+    await shot(page, "field-offline-waiting");
+    const { data } = await db.from("media").select("id").eq("job_id", IDS.jobLand).eq("note", "E2E offline photo");
+    assert((data ?? []).length === 0, "uploaded while offline?!");
+  });
+
+  await step("OFFLINE: the job page still opens with no signal (cached) and keeps the queue", async () => {
+    await page.reload();
+    await page.getByText("Stand / request details").waitFor({ timeout: 15000 });
+    await page.getByTestId("outbox-status").getByText("Waiting to upload (2)").waitFor({ timeout: 10000 });
+    const findings = await page.locator('textarea[name="findings"]').inputValue();
+    assert(findings === "E2E — written with no signal.", `unsent notes not shown after reload (${findings})`);
+  });
+
+  await step("signal returns → uploads automatically with the ORIGINAL time + GPS → 'All uploaded ✓'", async () => {
+    await page.waitForTimeout(3000); // time passes before the signal comes back
+    await ctx.setOffline(false);
+    await waitAllUploaded(page, 45000);
+    const { data: m } = await db.from("media").select("*").eq("job_id", IDS.jobLand).eq("note", "E2E offline photo").single();
+    assert(Math.abs(Date.parse(m.taken_at) - offlineShotAt) < 5000, `capture time not kept (${m.taken_at})`);
+    assert(Date.parse(m.uploaded_at) - Date.parse(m.taken_at) > 2500, "uploaded_at should be later than taken_at");
+    assert(Math.abs(m.gps_lat - -17.9077) < 0.0001, "GPS not kept");
+    const { data: j } = await db.from("jobs").select("visit").eq("id", IDS.jobLand).single();
+    assert(j.visit.findings === "E2E — written with no signal.", "offline checklist not saved");
+    assert(j.visit.measurements.area_sqm === 300, "offline save lost earlier measurements");
+    await shot(page, "field-all-uploaded");
   });
 
   await step("request an extra trip → goes to admin", async () => {
@@ -420,6 +621,57 @@ console.log("\nField portal (agent@lbh.test) — 2FA required");
     await page.getByText("Submitted — with admin for review").waitFor({ timeout: 15000 });
     const { data } = await db.from("reports").select("status").eq("job_id", IDS.jobLand).single();
     assert(data.status === "submitted", `report ${data.status}`);
+  });
+  await ctx.close();
+}
+
+// ======================================================================
+console.log("\nLawyer (lawyer@lbh.test) — title checks");
+{
+  const ctx = await newCtx({ viewport: { width: 390, height: 844 } });
+  const page = await ctx.newPage();
+  await step("lawyer sees their sample title-check jobs (Stand 412 + Stand 88)", async () => {
+    await loginStaff(page, "lawyer@lbh.test");
+    await page.waitForURL(/\/field/);
+    await page.getByText("SAMPLE — Stand 412").waitFor();
+    await page.getByText("SAMPLE — Stand 88").waitFor();
+    assert((await page.getByText("Title check (legal)").count()) === 2, "job type not shown");
+    await shot(page, "lawyer-jobs");
+  });
+
+  await step("legal checklist: title deed, agreement of sale, council records, seller identity, findings, verdict", async () => {
+    await page.goto(`${BASE}/en/field/jobs/${IDS.jobLegal412}`);
+    const form = page.getByTestId("legal-form");
+    for (const label of ["Title deed", "Agreement of sale", "Council records", "Seller identity"]) {
+      await form.getByText(label, { exact: true }).waitFor();
+    }
+    await form.locator('input[name="title_deed_status"][value="ok"]').check();
+    await form.locator('textarea[name="title_deed_note"]').fill("E2E — deed 1234/2019 matches seller.");
+    await form.locator('input[name="agreement_of_sale_status"][value="ok"]').check();
+    await form.locator('input[name="council_records_status"][value="problem"]').check();
+    await form.locator('textarea[name="council_records_note"]').fill("E2E — cession pending.");
+    await form.locator('input[name="seller_identity_status"][value="ok"]').check();
+    await form.locator('textarea[name="findings"]').fill("E2E — clean title, cession pending.");
+    await form.locator('select[name="verdict"]').selectOption("concerns");
+    await shot(page, "lawyer-checklist");
+    await form.locator('button[type="submit"]').click();
+    const data = await eventually(async () => {
+      const { data } = await db.from("jobs").select("visit, checklist, status").eq("id", IDS.jobLegal412).single();
+      assert(data.visit?.legal?.items?.council_records?.status === "problem", "status not saved");
+      return data;
+    });
+    await waitAllUploaded(page);
+    assert(data.visit.legal.verdict === "concerns" && data.visit.legal.findings.includes("cession"), "findings/verdict not saved");
+    assert(data.checklist.title_deed === "ok" && data.status === "in_progress", "checklist summary not saved");
+    const text = await page.locator("body").innerText();
+    assert(!text.includes("$"), "a price leaked to the lawyer");
+  });
+
+  await step("the completed Stand 88 title check shows the filled sample checklist", async () => {
+    await page.goto(`${BASE}/en/field/jobs/30000000-0000-4000-a000-000000000004`);
+    const form = page.getByTestId("legal-form");
+    assert(await form.locator('input[name="council_records_status"][value="problem"]').isChecked(), "sample status missing");
+    assert((await form.locator('textarea[name="findings"]').inputValue()).includes("cession"), "sample findings missing");
   });
   await ctx.close();
 }
@@ -549,16 +801,19 @@ console.log("\nBuild stages (Foundation → Finishes)");
     const card = slabCard(fpage);
     await card.locator('input[name="supplier_name"]').fill("SAMPLE Msasa Hardware");
     await card.locator('input[name="amount"]').fill("1365");
-    await card.locator('input[name="receipt"]').setInputFiles(photoPath);
+    assert((await card.locator('input[type="file"]').count()) === 0, "file picker offered to field staff");
+    await snapPhotos(fpage, card, 1);
     await card.locator('button:has-text("Record purchase")').click();
     await waitStatus(fpage, IDS.slab, "purchased");
+    const { data: rc } = await db.from("media").select("capture_source, taken_at").eq("stage_id", IDS.slab).eq("kind", "receipt").single();
+    assert(rc.capture_source === "camera" && rc.taken_at, "stage receipt not from the in-app camera");
   });
 
   await step("field agent: delivery photo → delivered → builders started → progress photo", async () => {
     await fpage.reload();
     const card = slabCard(fpage);
     const delivery = card.locator("form", { has: fpage.locator('button:has-text("Add delivery photo")') });
-    await delivery.locator('input[type="file"]').setInputFiles(photoPath);
+    await snapPhotos(fpage, delivery, 1);
     await delivery.locator('button[type="submit"]').click();
     await card.locator('button:has-text("Mark materials delivered")').waitFor({ timeout: 30000 });
     await card.locator('button:has-text("Mark materials delivered")').click();
@@ -568,9 +823,13 @@ console.log("\nBuild stages (Foundation → Finishes)");
     await waitStatus(fpage, IDS.slab, "building");
     await fpage.reload();
     const progress = slabCard(fpage).locator("form", { has: fpage.locator('button:has-text("Add progress photos")') });
-    await progress.locator('input[type="file"]').setInputFiles(photoPath);
+    await snapPhotos(fpage, progress, 1);
     await progress.locator('button[type="submit"]').click();
-    await progress.getByText("Saved.").waitFor({ timeout: 30000 });
+    await eventually(async () => {
+      const { data: pr } = await db.from("media").select("id").eq("stage_id", IDS.slab).eq("kind", "progress");
+      assert((pr ?? []).length >= 1, "progress photo not stored");
+    });
+    await waitAllUploaded(fpage);
   });
 
   await step("the agent who BOUGHT the materials cannot inspect", async () => {
@@ -651,7 +910,7 @@ console.log("\nClient reads the published report");
   });
 
   await step("photos shown to the client have EXIF stripped", async () => {
-    const { data: m } = await db.from("media").select("storage_path").eq("job_id", IDS.jobLand).eq("kind", "photo").single();
+    const { data: m } = await db.from("media").select("storage_path").eq("job_id", IDS.jobLand).eq("kind", "photo").limit(1).single();
     const { data: blob } = await db.storage.from("media").download(m.storage_path);
     const meta = await sharp(Buffer.from(await blob.arrayBuffer())).metadata();
     assert(!meta.exif, "EXIF still present");

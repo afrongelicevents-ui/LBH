@@ -9,10 +9,13 @@ export const metadata: Metadata = { title: "Log in" };
 
 export default async function LoginPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ confirm?: string }>;
 }) {
   const { locale } = await params;
+  const { confirm } = await searchParams;
   setRequestLocale(locale);
 
   const { profile } = await getUserProfile();
@@ -23,7 +26,7 @@ export default async function LoginPage({
   return (
     <div className="bg-offwhite px-4 py-10 md:py-16">
       <div className="mx-auto max-w-md">
-        <LoginForm />
+        <LoginForm confirmFailed={confirm === "failed"} />
       </div>
     </div>
   );

@@ -33,6 +33,8 @@ const IDS = {
   reqDone: "10000000-0000-4000-a000-000000000003",
   quote: "20000000-0000-4000-a000-000000000001",
   jobLand: "30000000-0000-4000-a000-000000000001",
+  jobLegal412: "30000000-0000-4000-a000-000000000003",
+  jobLegal88: "30000000-0000-4000-a000-000000000004",
 };
 
 async function stackUp(): Promise<boolean> {
@@ -183,8 +185,9 @@ d("RLS & business rules (local Supabase)", () => {
       const { data: agentJobs } = await agent.from("jobs").select("id, assigned_to");
       expect((agentJobs ?? []).length).toBeGreaterThanOrEqual(2);
       expect((agentJobs ?? []).every((j) => j.assigned_to === IDS.agent)).toBe(true);
-      const { data: lawyerJobs } = await lawyer.from("jobs").select("id");
-      expect(lawyerJobs).toEqual([]);
+      const { data: lawyerJobs } = await lawyer.from("jobs").select("id, assigned_to, job_type");
+      expect((lawyerJobs ?? []).map((j) => j.id).sort()).toEqual([IDS.jobLegal412, IDS.jobLegal88]);
+      expect((lawyerJobs ?? []).every((j) => j.assigned_to === IDS.lawyer && j.job_type === "title_check")).toBe(true);
     });
 
     it("can read assigned request details but not unassigned ones", async () => {
@@ -456,6 +459,103 @@ d("RLS & business rules (local Supabase)", () => {
         storage_path: "jobs/30000000-0000-4000-a000-000000000002/someone-else.jpg",
       });
       expect(error).not.toBeNull();
+    });
+  });
+
+  describe("lawyer title checks", () => {
+    it("lawyer saves the legal checklist on their own job", async () => {
+      const legal = {
+        legal: {
+          items: { title_deed: { status: "ok", note: "TEST" } },
+          findings: "TEST",
+          verdict: "clear",
+          saved_at: Date.now(),
+        },
+      };
+      const { data, error } = await lawyer
+        .from("jobs")
+        .update({ visit: legal })
+        .eq("id", IDS.jobLegal412)
+        .select("visit")
+        .single();
+      expect(error).toBeNull();
+      expect((data?.visit as typeof legal).legal.verdict).toBe("clear");
+    });
+
+    it("lawyer cannot touch the field agent's job", async () => {
+      const { data } = await lawyer.from("jobs").update({ visit: {} }).eq("id", IDS.jobLand).select("id");
+      expect(data ?? []).toEqual([]);
+    });
+
+    it("field staff cannot change a job's type (admin only)", async () => {
+      const { error } = await lawyer.from("jobs").update({ job_type: "site_visit" }).eq("id", IDS.jobLegal412);
+      expect(error?.message).toMatch(/only admin/);
+      const { error: aErr } = await admin.from("jobs").update({ job_type: "title_check" }).eq("id", IDS.jobLegal412);
+      expect(aErr).toBeNull();
+    });
+
+    it("lawyer sees no prices either", async () => {
+      for (const table of ["quotes", "payments", "invoices", "ledger_entries"]) {
+        const { data } = await lawyer.from(table).select("*");
+        expect(data ?? [], `lawyer read ${table}`).toEqual([]);
+      }
+    });
+  });
+
+  describe("offline uploads are stored once", () => {
+    it("the same capture (client_ref) can't be stored twice", async () => {
+      const ref = crypto.randomUUID();
+      const row = () => ({
+        job_id: IDS.jobLand,
+        request_id: IDS.reqLand,
+        uploader_id: IDS.agent,
+        kind: "photo",
+        storage_path: `jobs/${IDS.jobLand}/${crypto.randomUUID()}.jpg`,
+        capture_source: "camera",
+        client_ref: ref,
+      });
+      const { error: first } = await agent.from("media").insert(row());
+      expect(first).toBeNull();
+      const { error: second } = await agent.from("media").insert(row());
+      expect(second?.code).toBe("23505");
+    });
+
+    it("capture_source only accepts camera/upload", async () => {
+      const { error } = await agent.from("media").insert({
+        job_id: IDS.jobLand,
+        request_id: IDS.reqLand,
+        uploader_id: IDS.agent,
+        kind: "photo",
+        storage_path: `jobs/${IDS.jobLand}/${crypto.randomUUID()}.jpg`,
+        capture_source: "gallery",
+      });
+      expect(error).not.toBeNull();
+    });
+  });
+
+  describe("client self sign-up", () => {
+    const email = `signup-${Date.now()}@example.test`;
+
+    it("sign-up always creates a CLIENT, even when asking for admin", async () => {
+      const c = createClient(URL, ANON, { auth: { persistSession: false } });
+      const { data, error } = await c.auth.signUp({
+        email,
+        password: "Signup-Test-2026",
+        options: { data: { full_name: "TEST Signup", role: "admin", whatsapp: "+44 7700 900111", country: "uk" } },
+      });
+      expect(error).toBeNull();
+      const { data: profile } = await service
+        .from("profiles")
+        .select("role, full_name, whatsapp, country")
+        .eq("id", data.user!.id)
+        .single();
+      expect(profile).toEqual({ role: "client", full_name: "TEST Signup", whatsapp: "+44 7700 900111", country: "uk" });
+    });
+
+    it("cannot log in before the email is confirmed", async () => {
+      const c = createClient(URL, ANON, { auth: { persistSession: false } });
+      const { error } = await c.auth.signInWithPassword({ email, password: "Signup-Test-2026" });
+      expect(error?.code).toBe("email_not_confirmed");
     });
   });
 

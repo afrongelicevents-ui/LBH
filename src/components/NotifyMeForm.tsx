@@ -9,7 +9,7 @@ import {
 import { CheckCircleIcon } from "./icons";
 
 /** "Notify me" capture for coming-soon services (saves to admin interest list). */
-export default function NotifyMeForm({ service }: { service: "monitoring" | "camera" }) {
+export default function NotifyMeForm({ service }: { service: "monitoring" | "camera" | "finance" }) {
   const t = useTranslations("notify");
   const locale = useLocale();
   const [state, formAction, pending] = useActionState<NotifyResult | null, FormData>(

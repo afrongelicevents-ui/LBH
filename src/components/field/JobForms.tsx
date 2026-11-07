@@ -1,15 +1,12 @@
 "use client";
 
-import { useRef, useState, useActionState } from "react";
+import { useState, useActionState } from "react";
 import { useTranslations } from "next-intl";
-import {
-  saveVisit,
-  uploadMedia,
-  requestExtraCost,
-  saveReportDraft,
-  type ActionResult,
-} from "@/app/[locale]/field/actions";
-import { useDirectUpload } from "@/lib/useDirectUpload";
+import { requestExtraCost, type ActionResult } from "@/app/[locale]/field/actions";
+import { LEGAL_ITEMS, LEGAL_STATUSES, type LegalChecklist } from "@/lib/legal";
+import CameraCapture, { type Captured } from "./CameraCapture";
+import { useOutbox } from "./OutboxProvider";
+import { useOfflineForm } from "./useOfflineForm";
 
 const inputCls =
   "w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm text-ink focus:border-forest focus:outline-none";
@@ -27,19 +24,32 @@ function Feedback({ state }: { state: ActionResult | null }) {
   );
 }
 
+/** "Saved on this phone" — the outbox bar shows when it has uploaded. */
+export function QueuedNote({ show }: { show: boolean }) {
+  const t = useTranslations("field.outbox");
+  if (!show) return null;
+  return (
+    <p role="status" className="mt-2 text-xs font-bold text-forest">
+      {t("savedOnPhone")}
+    </p>
+  );
+}
+
 // ---------- visit checklist ----------
 export function VisitForm({
   jobId,
+  jobLabel,
   visit,
 }: {
   jobId: string;
+  jobLabel: string;
   visit: Record<string, unknown>;
 }) {
   const t = useTranslations("field");
-  const bound = saveVisit.bind(null, jobId);
-  const [state, formAction, pending] = useActionState<ActionResult | null, FormData>(
-    bound,
-    null
+  const { formRef, onSubmit, saved, busy } = useOfflineForm(
+    "job-visit",
+    jobId,
+    `${t("visitTitle")} — ${jobLabel}`
   );
   const m = (visit.measurements ?? {}) as Record<string, number | null>;
 
@@ -50,7 +60,7 @@ export function VisitForm({
   ] as const;
 
   return (
-    <form action={formAction} className="space-y-4">
+    <form ref={formRef} onSubmit={onSubmit} className="space-y-4">
       <div className="space-y-2">
         {checks.map(([name, checked]) => (
           <label key={name} className="flex min-h-10 items-center gap-2.5 text-sm text-ink">
@@ -97,85 +107,188 @@ export function VisitForm({
           className={inputCls}
         />
       </label>
-      <button type="submit" disabled={pending} className="btn btn-green min-h-10 text-sm disabled:opacity-60">
+      <button type="submit" disabled={busy} className="btn btn-green min-h-10 text-sm disabled:opacity-60">
         {t("saveVisit")}
       </button>
-      <Feedback state={state} />
+      <QueuedNote show={saved === "queued"} />
     </form>
   );
 }
 
-// ---------- media capture with device GPS ----------
+// ---------- lawyer: legal checklist (title check) ----------
+export function LegalChecklistForm({
+  jobId,
+  jobLabel,
+  legal,
+}: {
+  jobId: string;
+  jobLabel: string;
+  legal: LegalChecklist;
+}) {
+  const t = useTranslations("field.legal");
+  const tf = useTranslations("field");
+  const { formRef, onSubmit, saved, busy } = useOfflineForm(
+    "job-legal",
+    jobId,
+    `${t("title")} — ${jobLabel}`
+  );
+
+  return (
+    <form ref={formRef} onSubmit={onSubmit} className="space-y-4" data-testid="legal-form">
+      {LEGAL_ITEMS.map((item) => {
+        const current = legal.items[item];
+        return (
+          <fieldset key={item} className="rounded-xl border border-line p-3">
+            <legend className="px-1 text-sm font-bold text-forest">{t(`items.${item}`)}</legend>
+            <p className="text-[11px] text-muted">{t(`hints.${item}`)}</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {LEGAL_STATUSES.map((st) => (
+                <label
+                  key={st}
+                  className="flex min-h-10 cursor-pointer items-center gap-2 rounded-full border border-line px-3 text-xs font-semibold text-ink has-checked:border-forest has-checked:bg-offwhite"
+                >
+                  <input
+                    type="radio"
+                    name={`${item}_status`}
+                    value={st}
+                    defaultChecked={(current?.status ?? "pending") === st}
+                    className="h-4 w-4 accent-[#163a2b]"
+                  />
+                  {t(`status.${st}`)}
+                </label>
+              ))}
+            </div>
+            <textarea
+              name={`${item}_note`}
+              rows={2}
+              maxLength={4000}
+              placeholder={t("notePlaceholder")}
+              defaultValue={current?.note ?? ""}
+              className={`${inputCls} mt-2`}
+            />
+          </fieldset>
+        );
+      })}
+      <label className="block">
+        <span className={labelCls}>{t("findings")}</span>
+        <textarea name="findings" rows={4} maxLength={8000} defaultValue={legal.findings} className={inputCls} />
+      </label>
+      <label className="block">
+        <span className={labelCls}>{t("verdict")}</span>
+        <select name="verdict" defaultValue={legal.verdict ?? ""} className={inputCls}>
+          <option value="">—</option>
+          <option value="clear">{tf("verdicts.clear")}</option>
+          <option value="concerns">{tf("verdicts.concerns")}</option>
+          <option value="red_flags">{tf("verdicts.red_flags")}</option>
+        </select>
+      </label>
+      <button type="submit" disabled={busy} className="btn btn-green min-h-10 text-sm disabled:opacity-60">
+        {t("save")}
+      </button>
+      <QueuedNote show={saved === "queued"} />
+    </form>
+  );
+}
+
+// ---------- media: in-app camera only, saved on the phone first ----------
 export function MediaUploadForm({
   jobId,
+  jobLabel,
   kind,
 }: {
   jobId: string;
+  jobLabel: string;
   kind: "photo" | "video" | "receipt";
 }) {
   const t = useTranslations("field");
-  const { upload } = useDirectUpload();
-  const [state, formAction, pending] = useActionState<ActionResult | null, FormData>(
-    async (prev, fd) => {
-      // Phone photos/videos go straight to storage — no size limit from the web server.
-      const file = fd.get("file");
-      fd.delete("file");
-      const up = await upload("staff-media", file instanceof File ? [file] : []);
-      if (!up.ok) return { ok: false as const, error: up.error === "size" ? "toobig" : up.error === "type" ? "filetype" : "error" };
-      if (up.refs.length === 0) return { ok: false as const, error: "invalid" };
-      fd.set("uploads_json", JSON.stringify(up.refs));
-      return uploadMedia(jobId, prev, fd);
-    },
-    null
-  );
-  const [gps, setGps] = useState<{ lat: number; lng: number } | null>(null);
-  const [gpsState, setGpsState] = useState<"idle" | "ok" | "denied">("idle");
-  const formRef = useRef<HTMLFormElement>(null);
+  const outbox = useOutbox();
+  const [files, setFiles] = useState<Captured[]>([]);
+  const [saved, setSaved] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function captureGps() {
-    if (!navigator.geolocation) return setGpsState("denied");
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setGps({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-        setGpsState("ok");
-      },
-      () => setGpsState("denied"),
-      { enableHighAccuracy: true, timeout: 8000 }
-    );
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!outbox) return;
+    setError(null);
+    if (files.length === 0) {
+      setError(t("camera.needCapture"));
+      return;
+    }
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const note = String(fd.get("note") ?? "");
+    const amount = String(fd.get("amount") ?? "");
+    if (kind === "receipt" && !amount.trim()) {
+      setError(t("error.invalid"));
+      return;
+    }
+    setBusy(true);
+    try {
+      for (const f of files) {
+        await outbox.enqueue({
+          action: "job-media",
+          target: jobId,
+          label: `${t(`kindLabel.${kind}`)} — ${jobLabel}`,
+          fields: { kind, note, amount },
+          files: [
+            {
+              blob: f.blob,
+              name: f.name,
+              type: f.type,
+              capturedAt: f.capturedAt,
+              lat: f.lat,
+              lng: f.lng,
+              accuracy: f.accuracy,
+              clientRef: f.clientRef,
+            },
+          ],
+        });
+      }
+      files.forEach((f) => URL.revokeObjectURL(f.previewUrl));
+      setFiles([]);
+      form.reset();
+      setSaved(true);
+    } catch {
+      setError(t("error.storage"));
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
-    <form ref={formRef} action={formAction} className="space-y-3">
-      <input type="hidden" name="kind" value={kind} />
-      <input type="hidden" name="device_lat" value={gps?.lat ?? ""} />
-      <input type="hidden" name="device_lng" value={gps?.lng ?? ""} />
-      <input
-        type="file"
-        name="file"
-        required
-        accept={kind === "video" ? "video/mp4,video/quicktime,video/webm" : "image/jpeg,image/png,image/webp"}
-        capture={kind === "photo" ? "environment" : undefined}
-        onChange={captureGps}
-        className="block w-full text-xs text-muted file:mr-3 file:rounded-full file:border-0 file:bg-forest file:px-3 file:py-2 file:text-xs file:font-semibold file:text-white"
+    <form onSubmit={onSubmit} className="space-y-3" data-testid={`media-form-${kind}`}>
+      <CameraCapture
+        mode={kind === "video" ? "video" : "photo"}
+        multiple={kind === "photo"}
+        value={files}
+        onChange={(v) => {
+          setFiles(v);
+          setSaved(false);
+        }}
+        label={kind === "receipt" ? t("camera.photoReceipt") : undefined}
       />
       {kind === "receipt" && (
         <label className="block">
           <span className={labelCls}>{t("receiptAmount")} *</span>
-          <input name="amount" required placeholder="12.50" className={inputCls} />
+          <input name="amount" required inputMode="decimal" placeholder="12.50" className={inputCls} />
         </label>
       )}
       <input name="note" placeholder={t("mediaNote")} maxLength={500} className={inputCls} />
-      <p className="text-[11px] text-muted">
-        {gpsState === "ok" && gps
-          ? `GPS ✓ ${gps.lat.toFixed(5)}, ${gps.lng.toFixed(5)}`
-          : gpsState === "denied"
-            ? t("gpsDenied")
-            : t("gpsHint")}
-      </p>
-      <button type="submit" disabled={pending} className="btn btn-primary min-h-10 text-sm disabled:opacity-60">
-        {pending ? t("uploading") : t(`upload.${kind}` as never)}
+      <button
+        type="submit"
+        disabled={busy || files.length === 0}
+        className="btn btn-primary min-h-10 text-sm disabled:opacity-60"
+      >
+        {t(`upload.${kind}` as never)}
+        {files.length > 1 ? ` (${files.length})` : ""}
       </button>
-      <Feedback state={state} />
+      {error && (
+        <p role="alert" className="text-xs font-bold text-red-700">
+          {error}
+        </p>
+      )}
+      <QueuedNote show={saved} />
     </form>
   );
 }
@@ -226,17 +339,19 @@ const SECTION_FIELDS = [
 
 export function ReportDraftForm({
   jobId,
+  jobLabel,
   report,
 }: {
   jobId: string;
+  jobLabel: string;
   report: { verdict: string | null; sections: Record<string, string>; status: string } | null;
 }) {
   const t = useTranslations("field");
   const tr = useTranslations("portal.report.section");
-  const bound = saveReportDraft.bind(null, jobId);
-  const [state, formAction, pending] = useActionState<ActionResult | null, FormData>(
-    bound,
-    null
+  const { formRef, onSubmit, saved, busy: pending } = useOfflineForm(
+    "job-report",
+    jobId,
+    `${t("reportTitle")} — ${jobLabel}`
   );
   const locked = report ? !["draft", "changes_requested"].includes(report.status) : false;
 
@@ -249,7 +364,7 @@ export function ReportDraftForm({
   }
 
   return (
-    <form action={formAction} className="space-y-3">
+    <form ref={formRef} onSubmit={onSubmit} className="space-y-3">
       {report?.status === "changes_requested" && (
         <p className="rounded-xl bg-info px-3 py-2 text-xs font-bold text-ink">
           {t("changesRequested")}
@@ -295,7 +410,7 @@ export function ReportDraftForm({
         </button>
       </div>
       <p className="text-[11px] text-muted">{t("submitNote")}</p>
-      <Feedback state={state} />
+      <QueuedNote show={saved === "queued"} />
     </form>
   );
 }

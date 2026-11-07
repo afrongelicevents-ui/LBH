@@ -20,7 +20,8 @@
     "menu": "Vula imenyu",
     "closeMenu": "Vala imenyu",
     "language": "Ulimi",
-    "learnMore": "Funda okunengi"
+    "learnMore": "Funda okunengi",
+    "createAccount": "Vula i-akhawunti"
   },
   "nav": {
     "services": "Imisebenzi yethu",
@@ -256,7 +257,6 @@
     "errorInvalid": "I-email loba iphasiwedi engaqondanga.",
     "errorEnterEmail": "Qala ufake i-email yakho.",
     "errorGeneric": "Kukhona okungahambanga kuhle. Zama futhi.",
-    "noAccountHint": "Awula-akhawunti? Bhuka ucingo lwamahala — i-akhawunti yenziwa nge-email yakho.",
     "mfaTitle": "I-two-factor authentication",
     "mfaRequired": "Iyadingeka kubasebenzi beLBH.",
     "mfaScan": "Skena le-QR code nge-authenticator app (Google Authenticator, Authy…), ubusufaka ikhodi yezinombolo eziyi-6.",
@@ -269,7 +269,40 @@
     "confirmPassword": "Qinisekisa iphasiwedi",
     "savePassword": "Gcina iphasiwedi",
     "passwordTooShort": "Iphasiwedi kumele ibe lezinhlamvu ezili-10 okungenani.",
-    "passwordMismatch": "Amaphasiwedi kawafanani."
+    "passwordMismatch": "Amaphasiwedi kawafanani.",
+    "noAccount": "Umutsha ku-LBH?",
+    "createAccount": "Vula i-akhawunti yekhasimende",
+    "staffInviteOnly": "Ama-akhawunti abasebenzi be-LBH avulwa ngokumenywa kuphela.",
+    "errorUnconfirmed": "Qala uqinisekise i-email yakho — khangela ibhokisi lakho lemiyalezo ufune ilinki yethu.",
+    "resendConfirmation": "Thumela futhi i-email yokuqinisekisa",
+    "confirmResent": "Ithunyelwe — khangela ibhokisi lakho (lespam).",
+    "confirmFailed": "Ilinki le seyiphelelwe yisikhathi kumbe isisetshenzisiwe. Ngena, kumbe ucele ilinki entsha.",
+    "signup": {
+      "title": "Vula i-akhawunti yakho",
+      "subtitle": "Mahala. Landela izicelo, amanani lemibiko endaweni eyodwa.",
+      "name": "Ibizo eligcweleyo",
+      "email": "Ikheli le-email",
+      "whatsapp": "Inombolo ye-WhatsApp (lekhodi yelizwe)",
+      "country": "Ilizwe ohlala kulo",
+      "password": "Iphasiwedi (okungenani izinhlamvu ezilitshumi)",
+      "confirmPassword": "Qinisekisa iphasiwedi",
+      "terms": "Ngiyavuma <terms>Imigomo</terms> lo-<privacy>Mthetho Wobumfihlo</privacy>.",
+      "submit": "Vula i-akhawunti yami",
+      "verifyNote": "Sizakuthumelela ilinki nge-email ukuze uqinisekise ikheli lakho ungakangeni.",
+      "haveAccount": "Usulayo i-akhawunti?",
+      "logIn": "Ngena",
+      "checkEmailTitle": "Khangela i-email yakho",
+      "checkEmailText": "Sikuthumelele ilinki yokuqinisekisa ku-email yakho. Yicindezele ukuqedela ukuvula i-akhawunti — ivula i-portal yakho ye-LBH. Awuyiboni? Khangela kuspam.",
+      "backToLogin": "Buyela ekungeneni",
+      "errorEmail": "Faka ikheli le-email elifaneleyo.",
+      "errorWhatsapp": "Faka inombolo ye-WhatsApp efaneleyo lekhodi yelizwe.",
+      "errorPassword": "Iphasiwedi kumele ibe lezinhlamvu ezilitshumi okungenani.",
+      "errorMismatch": "Amaphasiwedi awafanani.",
+      "errorTerms": "Vuma Imigomo loMthetho Wobumfihlo.",
+      "errorRequired": "Gcwalisa konke okudingekayo.",
+      "errorRate": "Imizamo eminengi — zama futhi ngemva kwehora.",
+      "errorGeneric": "Kukhona okungahambanga kahle. Zama futhi, kumbe usithinte ku-WhatsApp."
+    }
   },
   "notify": {
     "saved": "Kugciniwe — sizakwazisa nxa sesisebenza.",
@@ -333,7 +366,11 @@
         "confirmed": "Kuqinisekisiwe",
         "completed": "Kuphelile",
         "cancelled": "Kukhanselisiwe"
-      }
+      },
+      "welcomeTitle": "Siyakwamukela ku-LBH, {name}! I-email yakho iqinisekisiwe.",
+      "welcomeText": "Qala ngokubhuka ucingo lwamahala, kumbe usithumelele isicelo sokuhlola umhlabathi kumbe izinto zokwakha.",
+      "nextStepTitle": "Ufuna ukwenzani?",
+      "bookCall": "Bhuka ucingo lwamahala"
     },
     "status": {
       "call_booked": "Ucingo lubhukiwe",
@@ -510,7 +547,13 @@
       "locked": "Umbiko uku-admin — kawusalungiseki.",
       "heic": "Izithombe ze-HEIC kazisekelwa — beka ikhamera ku-Most Compatible.",
       "filetype": "Lolu hlobo lwefayela kalwamukelwa.",
-      "upload": "Ukufaka kwehlulekile — khangela inethiwekhi uzame futhi."
+      "upload": "Ukufaka kwehlulekile — khangela inethiwekhi uzame futhi.",
+      "camera": "Sebenzisa ikhamera ye-app — izithombe azikhethwa egalari.",
+      "capturetime": "Usuku/isikhathi sefoni asilunganga — hlola iwashi lefoni uthathe futhi.",
+      "auth": "Ngena futhi ukuze uqedele ukulayisha.",
+      "notfound": "Lumsebenzi kawusenikwanga wena.",
+      "storage": "Akulondolozwanga efonini — khulula indawo uzame futhi.",
+      "rate": "Kuminengi ngesikhathi sinye — kuzazanywa futhi masinyane."
     },
     "standDetails": "Imininingwane yesitandi / yesicelo",
     "clientDocuments": "Amaphepha eklayenti",
@@ -527,7 +570,7 @@
     },
     "saveVisit": "Gcina ukuvakatsha",
     "captureTitle": "Izithombe, ividiyo lamarisidi",
-    "captureHint": "Thatha ku-app ukuze usuku le-GPS kubhalwe. Izithombe ezithethwe okudlula 300 m kusuka kuphini ziyafakwa isixwayiso.",
+    "captureHint": "Izithombe lamavidiyo zithathwa ngekhamera ye-app kuphela — usuku, isikhathi le-GPS kubhalwa ngesikhathi uthatha. Akula network? Konke kugcinwa efonini kulayishwe kamuva. Izithombe ezithathwe ngaphezu kuka-300 m ku-stand ziyaphawulwa.",
     "photos": "Izithombe",
     "videos": "Ividiyo",
     "receipts": "Amarisidi",
@@ -537,9 +580,9 @@
     "gpsDenied": "I-GPS kayikho — ulwazi lwesithombe luzasetshenziswa nxa lukhona.",
     "uploading": "Kuyafakwa…",
     "upload": {
-      "photo": "Faka isithombe",
-      "video": "Faka ividiyo",
-      "receipt": "Faka irisidi"
+      "photo": "Londoloza isithombe",
+      "video": "Londoloza ividiyo",
+      "receipt": "Londoloza irisidi"
     },
     "farFlag": "{m} m kusuka kuphini",
     "extraCostTitle": "Cela intengo yokwengeza / uhambo lokwengeza",
@@ -569,6 +612,77 @@
     "reportStatus": {
       "submitted": "Uthunyelwe — uku-admin ukuthi uhlolwe.",
       "published": "Ukhitshelwe iklayenti."
+    },
+    "jobType": {
+      "title_check": "Ukuhlola itayitili (ezomthetho)"
+    },
+    "capturedAt": "ithathwe {at}",
+    "inAppCamera": "ikhamera ye-app",
+    "uploadedLater": "ilayishwe {at} (igcinwe kungela-network)",
+    "kindLabel": {
+      "photo": "Isithombe",
+      "video": "Ividiyo",
+      "receipt": "Irisidi"
+    },
+    "camera": {
+      "takePhoto": "📷 Thatha isithombe",
+      "recordVideo": "🎥 Qopha ividiyo",
+      "photoReceipt": "📷 Thatha isithombe serisidi",
+      "noCamera": "Ifoni le kumbe i-browser kayilayo ikhamera. Vula i-LBH ku-Chrome kumbe ku-Safari efonini.",
+      "denied": "Ikhamera ivinjiwe — vumela ikhamera kuzilungiselelo ze-browser, uzame futhi.",
+      "noRecorder": "I-browser le ayikwazi ukuqopha ividiyo — buyekeza i-Chrome kumbe i-Safari.",
+      "noGps": "akula GPS",
+      "remove": "Susa",
+      "cameraTitle": "Ikhamera",
+      "findingGps": "Kudingwa i-GPS…",
+      "gpsOff": "I-GPS icinyiwe — vula i-location",
+      "taken": "{count, plural, one {# ithathiwe} other {# zithathiwe}}",
+      "done": "Kuphelile",
+      "cancel": "Khansela",
+      "shutter": "Thatha isithombe",
+      "stop": "Misa ukuqopha",
+      "record": "Qala ukuqopha",
+      "needCapture": "Qala uthathe isithombe kumbe ividiyo ngekhamera."
+    },
+    "outbox": {
+      "allUploaded": "Konke kulayishiwe ✓",
+      "offline": "Akula network",
+      "waiting": "Kulindele ukulayishwa ({count})",
+      "noSignal": "akula network — kugcinwe efonini, kuzalayishwa i-network ibuya",
+      "uploadingNow": "kuyalayishwa…",
+      "willRetry": "kuzazanywa futhi",
+      "retryNow": "Zama khathesi",
+      "needsYou": "{count, plural, one {# into idinga wena} other {# izinto zidinga wena}}",
+      "logInAgain": "ngena futhi ukuqedela",
+      "tryAgain": "Zama futhi",
+      "remove": "Susa",
+      "removeConfirm": "Susa efonini? AKUKALAYISHWA njalo kuzalahleka.",
+      "savedOnPhone": "Kugcinwe efonini ✓ — khangela ibha ephezulu."
+    },
+    "legal": {
+      "title": "Uhlu lwezomthetho",
+      "hint": "Phawula ngakunye, bhala amanothi, ulondoloze. Kuyasebenza kungela-network.",
+      "items": {
+        "title_deed": "Itayitili (title deed)",
+        "agreement_of_sale": "Isivumelwano sokuthengisa",
+        "council_records": "Amarekhodi ekhansili",
+        "seller_identity": "Ubunjalo bomthengisi"
+      },
+      "hints": {
+        "title_deed": "Kuhlolwe e-Deeds Office: inombolo, ibizo lomnikazi, ubukhulu, izikweletu.",
+        "agreement_of_sale": "Abantu, inombolo ye-stand, ubukhulu lentengo kuyafanana; kusayiniwe.",
+        "council_records": "Ikhansili iqinisekisa i-stand, amalungelo omthengisi lezintela.",
+        "seller_identity": "I-ID ibonwe ngokwakho futhi ifana lebizo elisetayitileni."
+      },
+      "status": {
+        "pending": "Akukahlolwa",
+        "ok": "Kulungile",
+        "problem": "Inkinga"
+      },
+      "notePlaceholder": "Amanothi (izinombolo, okubonileyo)",
+      "findings": "Okutholakeleyo",
+      "verdict": "Isinqumo",
+      "save": "Londoloza uhlu"
     }
   },
   "admin": {
@@ -687,7 +801,12 @@
       "markDone": "Beka kuphelile",
       "markCancelled": "Khansela isicelo",
       "media": "Okwasensimini",
-      "openBuildStages": "Vula izigaba zokwakha"
+      "openBuildStages": "Vula izigaba zokwakha",
+      "jobType": "Uhlobo lomsebenzi",
+      "jobTypes": {
+        "site_visit": "Ukuvakatshela i-stand",
+        "title_check": "Ukuhlola itayitili (ummeli)"
+      }
     },
     "payments": {
       "title": "Izimbadalo",
@@ -868,5 +987,10 @@
       "inspected": "Kulindele imvumo yakho",
       "approved": "Kuvunyiwe"
     }
+  },
+  "financeTracker": {
+    "title": "Build Finance Tracker",
+    "tagline": "Landela idola ngalinye lokwakha kwakho, isigaba ngesigaba.",
+    "comingSoon": "Kuyeza"
   }
 }

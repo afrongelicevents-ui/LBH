@@ -138,6 +138,15 @@ export interface UploadedRef {
   path: string;
   name: string;
   type: string;
+  /** "camera" = taken with the in-app camera; "upload" = picked from files */
+  source?: "camera" | "upload";
+  /** device time at the moment of capture (ISO) — kept even if uploaded later */
+  capturedAt?: string | null;
+  lat?: number | null;
+  lng?: number | null;
+  accuracy?: number | null;
+  /** id made on the phone at capture: a replayed upload is stored once */
+  clientRef?: string | null;
 }
 
 const UUID = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
@@ -239,19 +248,102 @@ export function parseUploadRefs(json: unknown): UploadedRef[] {
   try {
     const arr = JSON.parse(json);
     if (!Array.isArray(arr)) return [];
-    return arr.slice(0, 10).map((r) => ({
-      path: String(r?.path ?? ""),
-      name: String(r?.name ?? ""),
-      type: String(r?.type ?? ""),
-    }));
+    return arr.slice(0, 10).map((r) => {
+      const num = (v: unknown, min: number, max: number) =>
+        typeof v === "number" && Number.isFinite(v) && v >= min && v <= max ? v : null;
+      const lat = num(r?.lat, -90, 90);
+      const lng = num(r?.lng, -180, 180);
+      const capturedAt =
+        typeof r?.capturedAt === "string" && !Number.isNaN(Date.parse(r.capturedAt))
+          ? new Date(r.capturedAt).toISOString()
+          : null;
+      const clientRef =
+        typeof r?.clientRef === "string" && new RegExp(`^${UUID}$`).test(r.clientRef)
+          ? r.clientRef
+          : null;
+      return {
+        path: String(r?.path ?? ""),
+        name: String(r?.name ?? ""),
+        type: String(r?.type ?? ""),
+        source: r?.source === "camera" ? ("camera" as const) : ("upload" as const),
+        capturedAt,
+        lat: lat !== null && lng !== null ? lat : null,
+        lng: lat !== null && lng !== null ? lng : null,
+        accuracy: num(r?.accuracy, 0, 100000),
+        clientRef,
+      };
+    });
   } catch {
     return [];
   }
 }
 
+/** Longest a capture may wait on the phone (offline) before it is refused. */
+export const MAX_OFFLINE_AGE_MS = 30 * 24 * 3600 * 1000;
+
+export interface Provenance {
+  takenAt: string | null;
+  gpsLat: number | null;
+  gpsLng: number | null;
+  accuracy: number | null;
+  source: "camera" | "upload";
+}
+
+/**
+ * When and where a file was captured.
+ *  - In-app camera: the phone's capture time + GPS, recorded at the shutter
+ *    (and kept while the file waits offline).
+ *  - File upload (admin only): EXIF from the file itself.
+ * Field staff must use the in-app camera (no gallery uploads).
+ */
+export function captureProvenance(
+  ref: UploadedRef,
+  exif: ImageExif,
+  opts: { requireCamera: boolean; now?: number }
+): Provenance {
+  const now = opts.now ?? Date.now();
+  if (ref.source === "camera" && ref.capturedAt) {
+    const t = Date.parse(ref.capturedAt);
+    if (t > now + 10 * 60 * 1000 || t < now - MAX_OFFLINE_AGE_MS) {
+      throw new Error("capture time");
+    }
+    return {
+      takenAt: ref.capturedAt,
+      gpsLat: ref.lat ?? null,
+      gpsLng: ref.lng ?? null,
+      accuracy: ref.accuracy ?? null,
+      source: "camera",
+    };
+  }
+  if (opts.requireCamera) throw new Error("camera required");
+  return {
+    takenAt: exif.takenAt?.toISOString() ?? null,
+    gpsLat: exif.gpsLat,
+    gpsLng: exif.gpsLng,
+    accuracy: null,
+    source: "upload",
+  };
+}
+
+/** Delete browser uploads that turned out not to be needed (replays). */
+export async function discardIncoming(userId: string, refs: UploadedRef[]): Promise<void> {
+  const re = new RegExp(`^${userId}/${UUID}\\.(jpg|png|webp|pdf|mp4|mov|webm)$`);
+  const paths = refs.map((r) => r.path).filter((p) => re.test(p));
+  if (paths.length === 0) return;
+  try {
+    await createAdminClient().storage.from("incoming").remove(paths);
+  } catch {
+    // best effort
+  }
+}
+
 /** Map a takeIncoming() failure to a short error code for the UI. */
-export function uploadErrorCode(e: unknown): "heic" | "toobig" | "filetype" | "error" {
+export function uploadErrorCode(
+  e: unknown
+): "heic" | "toobig" | "filetype" | "camera" | "capturetime" | "error" {
   const m = e instanceof Error ? e.message : "";
+  if (m === "camera required") return "camera";
+  if (m === "capture time") return "capturetime";
   if (m === "heic") return "heic";
   if (m === "file too large") return "toobig";
   if (m === "invalid file type") return "filetype";

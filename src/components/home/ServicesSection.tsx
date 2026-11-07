@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import SectionTitle from "@/components/SectionTitle";
 import { CheckCircleIcon, ChevronRightIcon } from "@/components/icons";
 import { services } from "@/lib/services";
+import FinanceTrackerCard from "@/components/FinanceTrackerCard";
 
 /**
  * Our Services.
@@ -81,6 +82,8 @@ export default function ServicesSection() {
             );
           })}
         </div>
+
+        <FinanceTrackerCard className="mt-4 md:mt-6" />
       </div>
     </section>
   );

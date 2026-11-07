@@ -13,7 +13,14 @@ const inputCls =
   "w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink placeholder:text-muted/70 focus:border-forest focus:outline-none";
 const labelCls = "mb-1.5 block text-sm font-semibold text-ink";
 
-export default function BookCallForm() {
+export interface BookingDefaults {
+  name?: string;
+  email?: string;
+  whatsapp?: string;
+  country?: string;
+}
+
+export default function BookCallForm({ defaults = {} }: { defaults?: BookingDefaults }) {
   const t = useTranslations("bookPage");
   const [state, formAction, pending] = useActionState<BookingResult | null, FormData>(
     submitBooking,
@@ -61,7 +68,7 @@ export default function BookCallForm() {
       <div className="grid gap-5 sm:grid-cols-2">
         <label className="block sm:col-span-2">
           <span className={labelCls}>{t("name")} *</span>
-          <input name="name" required autoComplete="name" className={inputCls} />
+          <input name="name" required autoComplete="name" defaultValue={defaults.name ?? ""} className={inputCls} />
         </label>
 
         <label className="block">
@@ -71,6 +78,7 @@ export default function BookCallForm() {
             type="email"
             required
             autoComplete="email"
+            defaultValue={defaults.email ?? ""}
             className={inputCls}
           />
         </label>
@@ -83,13 +91,19 @@ export default function BookCallForm() {
             required
             placeholder={t("whatsappHint")}
             autoComplete="tel"
+            defaultValue={defaults.whatsapp ?? ""}
             className={inputCls}
           />
         </label>
 
         <label className="block">
           <span className={labelCls}>{t("country")} *</span>
-          <select name="country" required defaultValue="" className={inputCls}>
+          <select
+            name="country"
+            required
+            defaultValue={["uk", "usa", "sa", "other"].includes(defaults.country ?? "") ? defaults.country : ""}
+            className={inputCls}
+          >
             <option value="" disabled>
               {t("countryPlaceholder")}
             </option>

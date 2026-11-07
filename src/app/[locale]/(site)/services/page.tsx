@@ -7,6 +7,7 @@ import SectionTitle from "@/components/SectionTitle";
 import NotifyMeForm from "@/components/NotifyMeForm";
 import { CheckCircleIcon, ArrowRightIcon } from "@/components/icons";
 import { services } from "@/lib/services";
+import FinanceTrackerCard from "@/components/FinanceTrackerCard";
 
 export async function generateMetadata({
   params,
@@ -97,6 +98,7 @@ function ServicesContent() {
               </section>
             );
           })}
+          <FinanceTrackerCard />
         </div>
       </div>
     </div>

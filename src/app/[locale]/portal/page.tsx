@@ -4,15 +4,19 @@ import { requireRole } from "@/lib/auth/guard";
 import StatusTimeline from "@/components/portal/StatusTimeline";
 import { ChevronRightIcon } from "@/components/icons";
 import type { RequestStatus } from "@/lib/status";
+import FinanceTrackerCard from "@/components/FinanceTrackerCard";
 
 export default async function PortalDashboard({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ welcome?: string }>;
 }) {
   const { locale } = await params;
+  const { welcome } = await searchParams;
   setRequestLocale(locale);
-  const { supabase, user } = await requireRole(locale, ["client"]);
+  const { supabase, user, profile } = await requireRole(locale, ["client"]);
   const t = await getTranslations("portal.dashboard");
 
   const [{ data: requests }, { data: approvals }, { data: bookings }] =
@@ -36,6 +40,32 @@ export default async function PortalDashboard({
   return (
     <div className="space-y-6">
       <h1 className="headline text-2xl text-forest">{t("title")}</h1>
+
+      {welcome === "1" && (
+        <div role="status" className="rounded-2xl bg-info p-4 text-ink">
+          <p className="text-sm font-bold text-forest">
+            {t("welcomeTitle", { name: profile.full_name.split(" ")[0] || "" })}
+          </p>
+          <p className="mt-1 text-sm">{t("welcomeText")}</p>
+        </div>
+      )}
+
+      <section className="card p-4 sm:p-5" aria-labelledby="next-step">
+        <h2 id="next-step" className="text-base font-bold text-forest">
+          {t("nextStepTitle")}
+        </h2>
+        <div className="mt-3 grid gap-2 sm:grid-cols-3">
+          <Link href="/book-a-call" className="btn btn-primary text-sm">
+            {t("bookCall")}
+          </Link>
+          <Link href="/portal/requests/new-land" className="btn btn-outline-green text-sm">
+            {t("startLand")}
+          </Link>
+          <Link href="/portal/requests/new-materials" className="btn btn-outline-green text-sm">
+            {t("startMaterials")}
+          </Link>
+        </div>
+      </section>
 
       {approvals && approvals.length > 0 && (
         <div className="rounded-2xl bg-info p-4 text-ink">
@@ -62,17 +92,6 @@ export default async function PortalDashboard({
         {!requests?.length ? (
           <div className="card p-6 text-center">
             <p className="text-sm text-muted">{t("noRequests")}</p>
-            <div className="mt-4 flex flex-wrap justify-center gap-3">
-              <Link href="/portal/requests/new-land" className="btn btn-primary text-sm">
-                {t("startLand")}
-              </Link>
-              <Link
-                href="/portal/requests/new-materials"
-                className="btn btn-outline-green text-sm"
-              >
-                {t("startMaterials")}
-              </Link>
-            </div>
           </div>
         ) : (
           <ul className="space-y-3">
@@ -109,6 +128,8 @@ export default async function PortalDashboard({
           </ul>
         </section>
       )}
+
+      <FinanceTrackerCard />
     </div>
   );
 }

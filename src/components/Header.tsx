@@ -47,13 +47,20 @@ export default function Header() {
             </button>
           </div>
         </div>
-        <div className="mt-1 flex justify-end gap-2">
+        <div className="mt-1 flex flex-wrap justify-end gap-2">
           <Link
             href="/login"
             onClick={() => setOpen(false)}
             className="btn btn-outline-green min-h-10 px-4 py-1.5 text-sm"
           >
             {t("common.login")}
+          </Link>
+          <Link
+            href="/signup"
+            onClick={() => setOpen(false)}
+            className="btn btn-outline-green min-h-10 px-4 py-1.5 text-sm"
+          >
+            {t("common.createAccount")}
           </Link>
           <Link
             href="/book-a-call"
@@ -145,10 +152,13 @@ export default function Header() {
           )}
         </nav>
 
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-3 xl:gap-5">
           <LocaleSwitcher />
           <Link href="/login" className="btn btn-outline-green px-5 text-sm">
             {t("common.login")}
+          </Link>
+          <Link href="/signup" className="btn btn-outline-green px-5 text-sm">
+            {t("common.createAccount")}
           </Link>
           <Link href="/book-a-call" className="btn btn-primary px-5 text-sm">
             {t("common.bookCall")}

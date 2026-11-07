@@ -7,13 +7,24 @@ import { parseDollarsToCents } from "@/lib/money";
 import { sendEmail } from "@/lib/email";
 import { site } from "@/config/site";
 import { DEFAULT_STAGES } from "@/lib/stages";
+import { createAdminClient } from "@/lib/supabase/admin";
 import {
+  captureProvenance,
+  discardIncoming,
   parseUploadRefs,
   storePrivate,
   takeIncoming,
   uploadErrorCode,
   type UploadedRef,
 } from "@/lib/uploads";
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+
+/** Id made on the phone for one offline save (replays are stored once). */
+function clientRefFrom(formData: FormData): string | null {
+  const v = formData.get("client_ref");
+  return typeof v === "string" && UUID_RE.test(v) ? v : null;
+}
 
 /**
  * Construction build stages. The database enforces every rule (order of
@@ -32,6 +43,7 @@ function revalidateAll() {
 /** Map database rule violations to short codes the UI can translate. */
 function dbErrorCode(message: string | undefined): string {
   const m = message ?? "";
+  if (m === "not authorised") return "auth";
   if (/bought this stage/.test(m)) return "buyerCannotInspect";
   if (/currently quoting/.test(m)) return "stageLocked";
   if (/client has paid/.test(m)) return "notPaid";
@@ -107,9 +119,26 @@ async function attachStageMedia(
   extra: { note?: string; amountCents?: number | null } = {}
 ): Promise<string[]> {
   const ids: string[] = [];
+  // Field staff: in-app camera only (no gallery uploads).
+  const requireCamera = ctx.profile.role === "field";
   for (const ref of refs.slice(0, 10)) {
+    // Replayed after a dropped connection? Reuse the stored file.
+    if (ref.clientRef) {
+      const { data: dup } = await createAdminClient()
+        .from("media")
+        .select("id")
+        .eq("client_ref", ref.clientRef)
+        .eq("uploader_id", ctx.user.id)
+        .maybeSingle();
+      if (dup) {
+        await discardIncoming(ctx.user.id, [ref]);
+        ids.push(dup.id);
+        continue;
+      }
+    }
     const f = await takeIncoming(ctx.user.id, ref, "staff-media");
     if (!f.isImage && kind === "receipt") throw new Error("invalid file type");
+    const prov = captureProvenance(ref, f.exif, { requireCamera });
     const path = await storePrivate("media", `stages/${stageId}`, f.buffer, f.contentType, f.ext);
     const { data, error } = await ctx.supabase
       .from("media")
@@ -120,9 +149,12 @@ async function attachStageMedia(
         kind: f.isImage || kind === "receipt" ? kind : "progress",
         storage_path: path,
         original_name: f.originalName,
-        taken_at: f.exif.takenAt?.toISOString() ?? null,
-        gps_lat: f.exif.gpsLat,
-        gps_lng: f.exif.gpsLng,
+        taken_at: prov.takenAt,
+        gps_lat: prov.gpsLat,
+        gps_lng: prov.gpsLng,
+        gps_accuracy_m: prov.accuracy,
+        capture_source: prov.source,
+        client_ref: ref.clientRef ?? null,
         amount_cents: extra.amountCents ?? null,
         note: extra.note ?? "",
       })
@@ -178,6 +210,19 @@ export async function recordPurchase(
     const refs = parseUploadRefs(formData.get("uploads_json"));
     if (refs.length === 0) return { ok: false, error: "needReceipt" };
 
+    const clientRef = clientRefFrom(formData);
+    if (clientRef) {
+      const { data: dup } = await createAdminClient()
+        .from("stage_purchases")
+        .select("id")
+        .eq("client_ref", clientRef)
+        .maybeSingle();
+      if (dup) {
+        await discardIncoming(ctx.user.id, refs);
+        return { ok: true };
+      }
+    }
+
     // Check the stage is open for buying BEFORE storing the receipt.
     const { data: stage } = await ctx.supabase
       .from("build_stages")
@@ -200,8 +245,12 @@ export async function recordPurchase(
       amount_cents: cents,
       receipt_media_id: receiptId,
       note: parsed.data.note,
+      client_ref: clientRef,
     });
-    if (error) return { ok: false, error: dbErrorCode(error.message) };
+    if (error) {
+      if (error.code === "23505") return { ok: true };
+      return { ok: false, error: dbErrorCode(error.message) };
+    }
     revalidateAll();
     return { ok: true };
   } catch (e) {
@@ -257,6 +306,19 @@ export async function submitInspection(
     const materials = parseMaterials(parsed.data.materials);
     if (materials.length === 0) return { ok: false, error: "needMaterials" };
 
+    const clientRef = clientRefFrom(formData);
+    if (clientRef) {
+      const { data: dup } = await createAdminClient()
+        .from("stage_inspections")
+        .select("id")
+        .eq("client_ref", clientRef)
+        .maybeSingle();
+      if (dup) {
+        await discardIncoming(ctx.user.id, parseUploadRefs(formData.get("uploads_json")));
+        return { ok: true };
+      }
+    }
+
     // The buyer can never inspect — check before storing photos.
     const { data: bought } = await ctx.supabase
       .from("stage_purchases")
@@ -276,8 +338,12 @@ export async function submitInspection(
       inspector_id: ctx.user.id,
       notes: parsed.data.notes,
       materials_used: materials,
+      client_ref: clientRef,
     });
-    if (error) return { ok: false, error: dbErrorCode(error.message) };
+    if (error) {
+      if (error.code === "23505") return { ok: true };
+      return { ok: false, error: dbErrorCode(error.message) };
+    }
 
     // Tell the client their approval is needed
     const { data: st } = await ctx.supabase

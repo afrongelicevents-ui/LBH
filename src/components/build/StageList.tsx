@@ -170,11 +170,11 @@ async function StageBody({
               ))}
             </ul>
           )}
-          {staff && <PurchaseForm stageId={stage.id} />}
+          {staff && <PurchaseForm stageId={stage.id} stageName={stage.name} />}
           {staff && stage.status === "purchased" && (
             <div className="space-y-2 border-t border-line pt-3">
               <p className="text-xs font-bold text-forest">{t("deliveryStep")}</p>
-              <StagePhotoForm stageId={stage.id} kind="delivery" />
+              <StagePhotoForm stageId={stage.id} stageName={stage.name} kind="delivery" />
               {stage.media.some((m) => m.kind === "delivery") && <AdvanceButton stageId={stage.id} to="delivered" />}
             </div>
           )}
@@ -195,7 +195,7 @@ async function StageBody({
           <p className="text-sm text-ink">{t("buildersWorking")}</p>
           {staff && (
             <>
-              <StagePhotoForm stageId={stage.id} kind="progress" />
+              <StagePhotoForm stageId={stage.id} stageName={stage.name} kind="progress" />
               <div className="space-y-2 border-t border-line pt-3">
                 <p className="text-xs font-bold text-forest">{t("inspectionStep")}</p>
                 {iBought ? (
@@ -203,6 +203,7 @@ async function StageBody({
                 ) : (
                   <InspectionForm
                     stageId={stage.id}
+                    stageName={stage.name}
                     defaultMaterials={(approvedQuote?.items ?? "").trim()}
                   />
                 )}

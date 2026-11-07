@@ -13,7 +13,7 @@ const schema = z
       .regex(/^\+?[0-9\s\-()]{7,20}$/)
       .optional()
       .or(z.literal("")),
-    service: z.enum(["monitoring", "camera"]),
+    service: z.enum(["monitoring", "camera", "finance"]),
     locale: z.enum(["en", "sn", "nd"]).default("en"),
     website: z.string().max(0).optional(), // honeypot
   })

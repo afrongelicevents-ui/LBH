@@ -1,11 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "@/lib/supabase/client";
-import { requestUploadSlots } from "@/app/actions/uploads";
+import { directUpload, type UploadError } from "@/lib/directUpload";
 import type { UploadPurpose, UploadedRef } from "@/lib/uploads";
 
-export type UploadError = "auth" | "invalid" | "type" | "size" | "rate" | "error";
+export type { UploadError };
 
 /**
  * Upload files straight from the phone/browser to private Supabase Storage.
@@ -22,28 +21,14 @@ export function useDirectUpload() {
   ): Promise<{ ok: true; refs: UploadedRef[] } | { ok: false; error: UploadError }> {
     const list = files.filter((f) => f && f.size > 0).slice(0, 10);
     if (list.length === 0) return { ok: true, refs: [] };
-
     setUploading(true);
     setProgress({ done: 0, total: list.length });
     try {
-      const slots = await requestUploadSlots({
+      return await directUpload(
         purpose,
-        files: list.map((f) => ({ type: f.type, size: f.size })),
-      });
-      if (!slots.ok) return { ok: false, error: slots.error };
-
-      const supabase = createClient();
-      const refs: UploadedRef[] = [];
-      for (let i = 0; i < list.length; i++) {
-        const { path, token } = slots.slots[i];
-        const { error } = await supabase.storage
-          .from("incoming")
-          .uploadToSignedUrl(path, token, list[i], { contentType: list[i].type });
-        if (error) return { ok: false, error: "error" };
-        refs.push({ path, name: list[i].name, type: list[i].type });
-        setProgress({ done: i + 1, total: list.length });
-      }
-      return { ok: true, refs };
+        list.map((f) => ({ blob: f, name: f.name, type: f.type })),
+        (done, total) => setProgress({ done, total })
+      );
     } catch {
       return { ok: false, error: "error" };
     } finally {

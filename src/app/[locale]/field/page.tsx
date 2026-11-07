@@ -17,7 +17,7 @@ export default async function FieldJobsPage({
   const { data: jobs } = await supabase
     .from("jobs")
     .select(
-      "id, status, created_at, client_first_name, service_requests(id, type, title, details)"
+      "id, job_type, status, created_at, client_first_name, service_requests(id, type, title, details)"
     )
     .order("created_at", { ascending: false });
 
@@ -44,7 +44,9 @@ export default async function FieldJobsPage({
                   <div className="min-w-0">
                     <p className="truncate font-bold text-forest">{req?.title}</p>
                     <p className="text-xs text-muted">
-                      {t(`requestType.${req?.type}` as never)}
+                      {job.job_type === "title_check"
+                        ? t("jobType.title_check")
+                        : t(`requestType.${req?.type}` as never)}
                       {firstName && ` · ${t("client")}: ${firstName}`}
                     </p>
                   </div>

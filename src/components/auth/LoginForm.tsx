@@ -3,17 +3,19 @@
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
+import { Link } from "@/i18n/navigation";
 import { LockIcon, ArrowRightIcon } from "@/components/icons";
 
 const inputCls =
   "w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink focus:border-forest focus:outline-none";
 
-export default function LoginForm() {
+export default function LoginForm({ confirmFailed = false }: { confirmFailed?: boolean }) {
   const t = useTranslations("auth");
   const locale = useLocale();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(confirmFailed ? t("confirmFailed") : null);
+  const [unconfirmed, setUnconfirmed] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -21,16 +23,39 @@ export default function LoginForm() {
     e.preventDefault();
     setError(null);
     setNotice(null);
+    setUnconfirmed(false);
     setBusy(true);
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setBusy(false);
     if (error) {
-      setError(t("errorInvalid"));
+      if (error.code === "email_not_confirmed") {
+        setUnconfirmed(true);
+        setError(t("errorUnconfirmed"));
+      } else {
+        setError(t("errorInvalid"));
+      }
       return;
     }
     // Full reload so the server picks up the session, then routes by role.
     window.location.assign(`/${locale}/login`);
+  }
+
+  async function resendConfirmation() {
+    setError(null);
+    setBusy(true);
+    const supabase = createClient();
+    const { error } = await supabase.auth.resend({
+      type: "signup",
+      email,
+      options: {
+        emailRedirectTo: `${window.location.origin}/api/auth/confirm?next=${locale === "en" ? "" : `/${locale}`}/portal`,
+      },
+    });
+    setBusy(false);
+    setUnconfirmed(false);
+    if (error) setError(t("errorGeneric"));
+    else setNotice(t("confirmResent"));
   }
 
   async function resetPassword() {
@@ -64,6 +89,16 @@ export default function LoginForm() {
       {error && (
         <p role="alert" className="mb-4 rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm font-semibold text-red-800">
           {error}
+          {unconfirmed && (
+            <button
+              type="button"
+              onClick={resendConfirmation}
+              disabled={busy}
+              className="mt-2 block font-bold text-forest underline underline-offset-2"
+            >
+              {t("resendConfirmation")}
+            </button>
+          )}
         </p>
       )}
       {notice && (
@@ -107,9 +142,13 @@ export default function LoginForm() {
       >
         {t("forgot")}
       </button>
-      <p className="mt-5 border-t border-line pt-4 text-center text-xs text-muted">
-        {t("noAccountHint")}
-      </p>
+      <div className="mt-5 border-t border-line pt-4 text-center">
+        <p className="text-sm text-muted">{t("noAccount")}</p>
+        <Link href="/signup" className="btn btn-outline-green mt-3 w-full text-sm">
+          {t("createAccount")}
+        </Link>
+        <p className="mt-3 text-xs text-muted">{t("staffInviteOnly")}</p>
+      </div>
     </form>
   );
 }

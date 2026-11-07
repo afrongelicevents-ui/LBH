@@ -171,10 +171,12 @@ export async function sendDraftQuote(quoteId: string): Promise<ActionResult> {
 // ---------- assign field staff ----------
 export async function assignStaff(
   requestId: string,
-  staffId: string
+  staffId: string,
+  jobType: "site_visit" | "title_check" = "site_visit"
 ): Promise<ActionResult> {
   try {
     const { supabase, user } = await requireAdminAction();
+    if (!["site_visit", "title_check"].includes(jobType)) return { ok: false, error: "invalid" };
     const { data: staff } = await supabase
       .from("profiles")
       .select("id, role")
@@ -187,6 +189,7 @@ export async function assignStaff(
       .insert({
         request_id: requestId,
         assigned_to: staffId,
+        job_type: jobType,
         created_by: user.id,
       })
       .select("id")
@@ -203,7 +206,7 @@ export async function assignStaff(
       p_action: "job.assigned",
       p_entity: "job",
       p_entity_id: job.id,
-      p_data: { request_id: requestId, assigned_to: staffId },
+      p_data: { request_id: requestId, assigned_to: staffId, job_type: jobType },
     });
     revalidateAdmin();
     return { ok: true, id: job.id };

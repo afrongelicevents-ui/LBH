@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { signOut } from "@/lib/auth/actions";
 import PortalNav from "./PortalNav";
+import SignOutButton from "./SignOutButton";
 import type { Profile } from "@/lib/supabase/server";
 
 interface NavItem {
@@ -41,14 +42,7 @@ export default async function PortalShell({
             <span className="truncate text-xs font-semibold text-muted" title={profile.email}>
               {profile.full_name || profile.email}
             </span>
-            <form action={signOutWithLocale}>
-              <button
-                type="submit"
-                className="btn btn-outline-green min-h-10 px-3.5 py-1 text-xs"
-              >
-                {t("signOut")}
-              </button>
-            </form>
+            <SignOutButton action={signOutWithLocale} label={t("signOut")} />
           </div>
         </div>
         <PortalNav items={nav} label={t(`area.${areaKey}`)} />

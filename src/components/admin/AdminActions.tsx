@@ -260,6 +260,7 @@ export function AssignStaffForm({
 }) {
   const t = useTranslations("admin.request");
   const [staffId, setStaffId] = useState("");
+  const [jobType, setJobType] = useState<"site_visit" | "title_check">("site_visit");
   const { pending, result, run } = useAct();
   if (result?.ok) return <p className="text-xs font-bold text-forest">{t("assigned")}</p>;
   return (
@@ -272,10 +273,19 @@ export function AssignStaffForm({
           </option>
         ))}
       </select>
+      <select
+        value={jobType}
+        onChange={(e) => setJobType(e.target.value as "site_visit" | "title_check")}
+        aria-label={t("jobType")}
+        className={`${inputCls} w-48`}
+      >
+        <option value="site_visit">{t("jobTypes.site_visit")}</option>
+        <option value="title_check">{t("jobTypes.title_check")}</option>
+      </select>
       <button
         type="button"
         disabled={!staffId || pending}
-        onClick={() => run(() => assignStaff(requestId, staffId))}
+        onClick={() => run(() => assignStaff(requestId, staffId, jobType))}
         className="btn btn-primary min-h-10 px-4 text-xs disabled:opacity-60"
       >
         {t("assign")}

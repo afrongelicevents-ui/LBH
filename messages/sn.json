@@ -20,7 +20,8 @@
     "menu": "Vhura menyu",
     "closeMenu": "Vhara menyu",
     "language": "Mutauro",
-    "learnMore": "Dzidza zvakawanda"
+    "learnMore": "Dzidza zvakawanda",
+    "createAccount": "Vhura akaundi"
   },
   "nav": {
     "services": "Mabasa edu",
@@ -256,7 +257,6 @@
     "errorInvalid": "Email kana password isiriyo.",
     "errorEnterEmail": "Tanga waisa email yako.",
     "errorGeneric": "Pane chakanganisika. Edza zvakare.",
-    "noAccountHint": "Hauna account? Bhuka runhare rwemahara — account inogadzirwa kubva paemail yako.",
     "mfaTitle": "Two-factor authentication",
     "mfaRequired": "Inodiwa kuvashandi veLBH.",
     "mfaScan": "Skena QR code iyi neauthenticator app (Google Authenticator, Authy…), wobva waisa kodhi ye6 digits.",
@@ -269,7 +269,40 @@
     "confirmPassword": "Simbisa password",
     "savePassword": "Chengeta password",
     "passwordTooShort": "Password inofanira kuva nezvinyorwa 10 zvichikwira.",
-    "passwordMismatch": "MaPassword haana kufanana."
+    "passwordMismatch": "MaPassword haana kufanana.",
+    "noAccount": "Uri mutsva paLBH?",
+    "createAccount": "Vhura akaundi yemutengi",
+    "staffInviteOnly": "Maakaundi evashandi veLBH anovhurwa nekukokwa chete.",
+    "errorUnconfirmed": "Tanga wasimbisa email yako — tarisa inbox yako uone link yedu.",
+    "resendConfirmation": "Tumirazve email yekusimbisa",
+    "confirmResent": "Yatumirwa — tarisa inbox yako (uye spam).",
+    "confirmFailed": "Link iyi yapera kana kuti yakatoshandiswa. Pinda, kana kumbira link itsva.",
+    "signup": {
+      "title": "Vhura akaundi yako",
+      "subtitle": "Mahara. Tevera zvikumbiro, mitengo nemishumo pamwe chete.",
+      "name": "Zita rizere",
+      "email": "Kero ye email",
+      "whatsapp": "Nhamba yeWhatsApp (ine kodhi yenyika)",
+      "country": "Nyika yaunogara",
+      "password": "Pasiwedhi (mavara gumi zvishoma)",
+      "confirmPassword": "Simbisa pasiwedhi",
+      "terms": "Ndinobvumirana ne<terms>Mitemo</terms> uye <privacy>Mutemo Wekuchengetedza</privacy>.",
+      "submit": "Vhura akaundi yangu",
+      "verifyNote": "Tichakutumira link pa email kuti usimbise kero yako usati wapinda.",
+      "haveAccount": "Une akaundi kare?",
+      "logIn": "Pinda",
+      "checkEmailTitle": "Tarisa email yako",
+      "checkEmailText": "Takutumira link yekusimbisa pa email yako. Ibaya kuti upedze kuvhura akaundi — inovhura portal yako yeLBH. Hauioni? Tarisa spam.",
+      "backToLogin": "Dzokera kunopinda",
+      "errorEmail": "Isa kero ye email yakanaka.",
+      "errorWhatsapp": "Isa nhamba yeWhatsApp yakanaka ine kodhi yenyika.",
+      "errorPassword": "Pasiwedhi inofanira kuva nemavara gumi zvishoma.",
+      "errorMismatch": "Pasiwedhi hadzienderani.",
+      "errorTerms": "Bvuma Mitemo neMutemo Wekuchengetedza.",
+      "errorRequired": "Zadza zvese zvinodiwa.",
+      "errorRate": "Kuedza kwawanda — edza zvakare mushure meawa.",
+      "errorGeneric": "Pane chakanganisika. Edza zvakare, kana tibate paWhatsApp."
+    }
   },
   "notify": {
     "saved": "Zvachengetwa — tichakuzivisa richangotanga.",
@@ -333,7 +366,11 @@
         "confirmed": "Chasimbiswa",
         "completed": "Chapera",
         "cancelled": "Chakanzurwa"
-      }
+      },
+      "welcomeTitle": "Mauya kuLBH, {name}! Email yako yasimbiswa.",
+      "welcomeText": "Tanga nekuronga runhare rwemahara, kana titumire chikumbiro chekuongorora ivhu kana zvekuvaka.",
+      "nextStepTitle": "Unoda kuitei?",
+      "bookCall": "Ronga runhare rwemahara"
     },
     "status": {
       "call_booked": "Runhare rwabhukwa",
@@ -510,7 +547,13 @@
       "locked": "Gwaro riri kuadmin — harichagadziriswi.",
       "heic": "Mifananidzo yeHEIC haitsigirwi — isa kamera pa Most Compatible.",
       "filetype": "Rudzi rwefaira iri harugamuchirwi.",
-      "upload": "Kuisa kwakundikana — tarisa network woedza zvakare."
+      "upload": "Kuisa kwakundikana — tarisa network woedza zvakare.",
+      "camera": "Shandisa kamera yemuapp — mifananidzo haitorwe kubva mugallery.",
+      "capturetime": "Zuva/nguva yefoni haina kunaka — tarisa wachi yefoni wotora zvakare.",
+      "auth": "Pinda zvakare kuti upedze kuisa.",
+      "notfound": "Basa iri harisisiri rako.",
+      "storage": "Hazvina kukwanisa kuchengetwa pafoni — bvisa zvimwe uedze zvakare.",
+      "rate": "Zvakawanda panguva imwe — zvichaedzwa zvakare."
     },
     "standDetails": "Ruzivo rwestendi / chikumbiro",
     "clientDocuments": "Magwaro emutengi",
@@ -527,7 +570,7 @@
     },
     "saveVisit": "Chengeta kushanya",
     "captureTitle": "Mifananidzo, vhidhiyo nemarisiti",
-    "captureHint": "Tora muapp kuti zuva neGPS zvinyorwe. Mifananidzo yakatorwa kudarika 300 m kubva papini inoiswa yambiro.",
+    "captureHint": "Mifananidzo nevhidhiyo zvinotorwa nekamera yemuapp chete — zuva, nguva neGPS zvinonyorwa panguva yaunotora. Hapana network? Zvese zvinochengetwa pafoni zvozoiswa. Mifananidzo yakatorwa kupfuura 300 m kubva pastand inocherechedzwa.",
     "photos": "Mifananidzo",
     "videos": "Vhidhiyo",
     "receipts": "Marisiti",
@@ -537,9 +580,9 @@
     "gpsDenied": "GPS haipo — ruzivo rwemufananidzo rwunoshandiswa kana rwuripo.",
     "uploading": "Kuisa…",
     "upload": {
-      "photo": "Isa mufananidzo",
-      "video": "Isa vhidhiyo",
-      "receipt": "Isa risiti"
+      "photo": "Chengeta mufananidzo",
+      "video": "Chengeta vhidhiyo",
+      "receipt": "Chengeta risiti"
     },
     "farFlag": "{m} m kubva papini",
     "extraCostTitle": "Kumbira mutengo wekuwedzera / rwendo rwekuwedzera",
@@ -569,6 +612,77 @@
     "reportStatus": {
       "submitted": "Ratumirwa — riri kuadmin kuti riongororwe.",
       "published": "Raburitswa kumutengi."
+    },
+    "jobType": {
+      "title_check": "Kuongorora gwaro (zvemutemo)"
+    },
+    "capturedAt": "yakatorwa {at}",
+    "inAppCamera": "kamera yemuapp",
+    "uploadedLater": "yakaiswa {at} (yakachengetwa pasina network)",
+    "kindLabel": {
+      "photo": "Mufananidzo",
+      "video": "Vhidhiyo",
+      "receipt": "Risiti"
+    },
+    "camera": {
+      "takePhoto": "📷 Tora mufananidzo",
+      "recordVideo": "🎥 Tora vhidhiyo",
+      "photoReceipt": "📷 Tora mufananidzo werisiti",
+      "noCamera": "Foni iyi kana browser haina kamera. Vhura LBH muChrome kana Safari pafoni.",
+      "denied": "Kamera yavharwa — bvumira kamera munzvimbo dzebrowser, wozoedza zvakare.",
+      "noRecorder": "Browser iyi haigoni kutora vhidhiyo — vandudza Chrome kana Safari.",
+      "noGps": "hapana GPS",
+      "remove": "Bvisa",
+      "cameraTitle": "Kamera",
+      "findingGps": "Kutsvaga GPS…",
+      "gpsOff": "GPS yadzimwa — batidza location",
+      "taken": "{count, plural, one {# yatorwa} other {# dzatorwa}}",
+      "done": "Zvaita",
+      "cancel": "Kanzura",
+      "shutter": "Tora mufananidzo",
+      "stop": "Mira kutora",
+      "record": "Tanga kutora",
+      "needCapture": "Tanga watora mufananidzo kana vhidhiyo nekamera."
+    },
+    "outbox": {
+      "allUploaded": "Zvese zvaiswa ✓",
+      "offline": "Hapana network",
+      "waiting": "Zvakamirira kuiswa ({count})",
+      "noSignal": "hapana network — zvakachengetwa pafoni, zvichaiswa network yadzoka",
+      "uploadingNow": "kuisa…",
+      "willRetry": "zvichaedzwa zvakare",
+      "retryNow": "Edza izvozvi",
+      "needsYou": "{count, plural, one {# chinhu chinoda iwe} other {# zvinhu zvinoda iwe}}",
+      "logInAgain": "pinda zvakare kuti upedze",
+      "tryAgain": "Edza zvakare",
+      "remove": "Bvisa",
+      "removeConfirm": "Bvisa pafoni? HACHISATI chaiswa uye chicharasika.",
+      "savedOnPhone": "Zvachengetwa pafoni ✓ — tarisa bhara riri pamusoro."
+    },
+    "legal": {
+      "title": "Rondedzero yezvemutemo",
+      "hint": "Maka chimwe nechimwe, nyora zvinyorwa, wochengeta. Zvinoshanda pasina network.",
+      "items": {
+        "title_deed": "Gwaro remunda (title deed)",
+        "agreement_of_sale": "Chibvumirano chekutengesa",
+        "council_records": "Marekodhi ekanzuru",
+        "seller_identity": "Kuzivikanwa kwemutengesi"
+      },
+      "hints": {
+        "title_deed": "Yakaongororwa kuDeeds Office: nhamba, zita remuridzi, saizi, zvikwereti.",
+        "agreement_of_sale": "Vanhu, nhamba yestand, saizi nemutengo zvinoenderana; zvakasainwa.",
+        "council_records": "Kanzuru inosimbisa stand, kodzero dzemutengesi uye mari yekanzuru.",
+        "seller_identity": "ID yaonekwa pachayo uye inoenderana nezita riri pagwaro."
+      },
+      "status": {
+        "pending": "Hazvina kuongororwa",
+        "ok": "Zvakanaka",
+        "problem": "Dambudziko"
+      },
+      "notePlaceholder": "Zvinyorwa (nhamba, zvawaona)",
+      "findings": "Zvakawanikwa",
+      "verdict": "Mhedziso",
+      "save": "Chengeta rondedzero"
     }
   },
   "admin": {
@@ -687,7 +801,12 @@
       "markDone": "Isa zvapera",
       "markCancelled": "Kanzura chikumbiro",
       "media": "Zvemumunda",
-      "openBuildStages": "Vhura nhanho dzekuvaka"
+      "openBuildStages": "Vhura nhanho dzekuvaka",
+      "jobType": "Rudzi rwebasa",
+      "jobTypes": {
+        "site_visit": "Kushanyira stand",
+        "title_check": "Kuongorora gwaro (gweta)"
+      }
     },
     "payments": {
       "title": "Kubhadhara",
@@ -868,5 +987,10 @@
       "inspected": "Yakamirira mvumo yako",
       "approved": "Yabvumirwa"
     }
+  },
+  "financeTracker": {
+    "title": "Build Finance Tracker",
+    "tagline": "Tevera dhora rimwe nerimwe rekuvaka kwako, danho nedanho.",
+    "comingSoon": "Zvichauya"
   }
 }

@@ -43,9 +43,9 @@ const securityHeaders = [
   { key: "X-Frame-Options", value: "DENY" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   {
-    // Field staff capture photos with GPS from the browser (brief §6).
+    // Field staff take photos/videos (with sound) and GPS in the app (brief §6).
     key: "Permissions-Policy",
-    value: "camera=(self), geolocation=(self), microphone=(), payment=()",
+    value: "camera=(self), geolocation=(self), microphone=(self), payment=()",
   },
 ];
 

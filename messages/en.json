@@ -19,7 +19,8 @@
     "menu": "Open menu",
     "closeMenu": "Close menu",
     "language": "Language",
-    "learnMore": "Learn more"
+    "learnMore": "Learn more",
+    "createAccount": "Create account"
   },
   "nav": {
     "services": "Services",
@@ -255,7 +256,6 @@
     "errorInvalid": "Wrong email or password.",
     "errorEnterEmail": "Enter your email address first.",
     "errorGeneric": "Something went wrong. Please try again.",
-    "noAccountHint": "No account yet? Book a free first call — your account is created from your email.",
     "mfaTitle": "Two-factor authentication",
     "mfaRequired": "Required for LBH staff accounts.",
     "mfaScan": "Scan this QR code with an authenticator app (Google Authenticator, Authy, 1Password…), then enter the 6-digit code.",
@@ -268,7 +268,40 @@
     "confirmPassword": "Confirm password",
     "savePassword": "Save password",
     "passwordTooShort": "Password must be at least 10 characters.",
-    "passwordMismatch": "Passwords do not match."
+    "passwordMismatch": "Passwords do not match.",
+    "noAccount": "New to LBH?",
+    "createAccount": "Create a client account",
+    "staffInviteOnly": "LBH staff accounts are by invitation only.",
+    "errorUnconfirmed": "Please confirm your email first — check your inbox for our link.",
+    "resendConfirmation": "Send the confirmation email again",
+    "confirmResent": "Sent — check your inbox (and spam folder).",
+    "confirmFailed": "That confirmation link has expired or was already used. Log in, or ask for a new link.",
+    "signup": {
+      "title": "Create your account",
+      "subtitle": "Free. Track your requests, quotes and reports in one place.",
+      "name": "Full name",
+      "email": "Email address",
+      "whatsapp": "WhatsApp number (with country code)",
+      "country": "Country of residence",
+      "password": "Password (min 10 characters)",
+      "confirmPassword": "Confirm password",
+      "terms": "I agree to the <terms>Terms</terms> and <privacy>Privacy Policy</privacy>.",
+      "submit": "Create my account",
+      "verifyNote": "We will email you a link to confirm your address before you can log in.",
+      "haveAccount": "Already have an account?",
+      "logIn": "Log in",
+      "checkEmailTitle": "Check your email",
+      "checkEmailText": "We sent a confirmation link to your email address. Tap it to finish creating your account — it opens your LBH portal. Can't see it? Check your spam folder.",
+      "backToLogin": "Back to log in",
+      "errorEmail": "Please enter a valid email address.",
+      "errorWhatsapp": "Please enter a valid WhatsApp number with country code.",
+      "errorPassword": "Password must be at least 10 characters.",
+      "errorMismatch": "Passwords do not match.",
+      "errorTerms": "Please accept the Terms and Privacy Policy.",
+      "errorRequired": "Please fill in all required fields.",
+      "errorRate": "Too many attempts from your connection — please try again in an hour.",
+      "errorGeneric": "Something went wrong. Please try again, or reach us on WhatsApp."
+    }
   },
   "notify": {
     "saved": "Saved — we will let you know the moment it is live.",
@@ -332,7 +365,11 @@
         "confirmed": "Confirmed",
         "completed": "Done",
         "cancelled": "Cancelled"
-      }
+      },
+      "welcomeTitle": "Welcome to LBH, {name}! Your email is confirmed.",
+      "welcomeText": "Start by booking a free call, or send us a request for land verification or materials.",
+      "nextStepTitle": "What would you like to do?",
+      "bookCall": "Book a free call"
     },
     "status": {
       "call_booked": "Call booked",
@@ -509,7 +546,13 @@
       "locked": "This report is with admin and can no longer be edited.",
       "heic": "HEIC photos are not supported — set the camera to Most Compatible.",
       "filetype": "That file type is not accepted.",
-      "upload": "Upload failed — check your connection and try again."
+      "upload": "Upload failed — check your connection and try again.",
+      "camera": "Use the in-app camera — photos can't be picked from the gallery.",
+      "capturetime": "The phone's date/time looks wrong — check the phone clock and take it again.",
+      "auth": "Log in again to finish uploading.",
+      "notfound": "This job is no longer assigned to you.",
+      "storage": "Could not save on this phone — free up some space and try again.",
+      "rate": "Too many uploads at once — it will retry shortly."
     },
     "standDetails": "Stand / request details",
     "clientDocuments": "Client documents",
@@ -526,7 +569,7 @@
     },
     "saveVisit": "Save visit",
     "captureTitle": "Photos, video & receipts",
-    "captureHint": "Capture in the app so date and GPS are recorded. Photos taken more than 300 m from the stand pin are flagged.",
+    "captureHint": "Photos and video can only be taken with the in-app camera — the date, time and GPS are recorded at the moment you take them. No signal? Everything is saved on the phone and uploads automatically later. Photos taken more than 300 m from the stand pin are flagged.",
     "photos": "Photos",
     "videos": "Video",
     "receipts": "Receipts",
@@ -536,9 +579,9 @@
     "gpsDenied": "GPS not available — the photo's own data will be used if present.",
     "uploading": "Uploading…",
     "upload": {
-      "photo": "Upload photo",
-      "video": "Upload video",
-      "receipt": "Upload receipt"
+      "photo": "Save photo",
+      "video": "Save video",
+      "receipt": "Save receipt"
     },
     "farFlag": "{m} m from pin",
     "extraCostTitle": "Request extra cost / extra trip",
@@ -568,6 +611,77 @@
     "reportStatus": {
       "submitted": "Submitted — with admin for review.",
       "published": "Published to the client."
+    },
+    "jobType": {
+      "title_check": "Title check (legal)"
+    },
+    "capturedAt": "taken {at}",
+    "inAppCamera": "in-app camera",
+    "uploadedLater": "uploaded {at} (saved offline)",
+    "kindLabel": {
+      "photo": "Photo",
+      "video": "Video",
+      "receipt": "Receipt"
+    },
+    "camera": {
+      "takePhoto": "📷 Take photo",
+      "recordVideo": "🎥 Record video",
+      "photoReceipt": "📷 Photograph the receipt",
+      "noCamera": "This phone or browser has no camera access. Open LBH in Chrome or Safari on your phone.",
+      "denied": "Camera blocked — allow camera access for this site in your browser settings, then try again.",
+      "noRecorder": "This browser can't record video — update Chrome or Safari.",
+      "noGps": "no GPS",
+      "remove": "Remove",
+      "cameraTitle": "Camera",
+      "findingGps": "Finding GPS…",
+      "gpsOff": "GPS off — turn on location for date + place proof",
+      "taken": "{count, plural, one {# taken} other {# taken}}",
+      "done": "Done",
+      "cancel": "Cancel",
+      "shutter": "Take photo",
+      "stop": "Stop recording",
+      "record": "Start recording",
+      "needCapture": "Take a photo or video with the camera first."
+    },
+    "outbox": {
+      "allUploaded": "All uploaded ✓",
+      "offline": "Offline",
+      "waiting": "Waiting to upload ({count})",
+      "noSignal": "no signal — saved on this phone, uploads automatically when signal returns",
+      "uploadingNow": "uploading…",
+      "willRetry": "will retry automatically",
+      "retryNow": "Retry now",
+      "needsYou": "{count, plural, one {# item needs you} other {# items need you}}",
+      "logInAgain": "log in again to finish",
+      "tryAgain": "Try again",
+      "remove": "Remove",
+      "removeConfirm": "Remove this item from the phone? It has NOT been uploaded and will be lost.",
+      "savedOnPhone": "Saved on this phone ✓ — see the upload bar at the top."
+    },
+    "legal": {
+      "title": "Legal checklist",
+      "hint": "Mark each check, add notes, then save. Works with no signal — it uploads later.",
+      "items": {
+        "title_deed": "Title deed",
+        "agreement_of_sale": "Agreement of sale",
+        "council_records": "Council records",
+        "seller_identity": "Seller identity"
+      },
+      "hints": {
+        "title_deed": "Checked at the Deeds Office: number, owner name, size, any bonds or caveats.",
+        "agreement_of_sale": "Parties, stand number, size and price match the title; signed and witnessed.",
+        "council_records": "Council confirms the stand, the seller's rights (cession) and rates.",
+        "seller_identity": "ID seen in person and matches the name on the title deed."
+      },
+      "status": {
+        "pending": "Not checked",
+        "ok": "OK",
+        "problem": "Problem"
+      },
+      "notePlaceholder": "Notes (reference numbers, what you saw)",
+      "findings": "Findings",
+      "verdict": "Verdict",
+      "save": "Save legal checklist"
     }
   },
   "admin": {
@@ -686,7 +800,12 @@
       "markDone": "Mark done",
       "markCancelled": "Cancel request",
       "media": "Field media",
-      "openBuildStages": "Open build stages"
+      "openBuildStages": "Open build stages",
+      "jobType": "Job type",
+      "jobTypes": {
+        "site_visit": "Site visit",
+        "title_check": "Title check (lawyer)"
+      }
     },
     "payments": {
       "title": "Payments",
@@ -867,5 +986,10 @@
       "inspected": "Ready for your approval",
       "approved": "Approved"
     }
+  },
+  "financeTracker": {
+    "title": "Build Finance Tracker",
+    "tagline": "Track every dollar of your build, stage by stage.",
+    "comingSoon": "Coming soon"
   }
 }

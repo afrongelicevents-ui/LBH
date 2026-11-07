@@ -3,12 +3,16 @@
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { getUserProfile } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import {
+  captureProvenance,
+  discardIncoming,
   parseUploadRefs,
   storePrivate,
   takeIncoming,
   uploadErrorCode,
 } from "@/lib/uploads";
+import { LEGAL_ITEMS, LEGAL_STATUSES } from "@/lib/legal";
 import { distanceMeters, FAR_PHOTO_THRESHOLD_M } from "@/lib/geo";
 import { parseDollarsToCents } from "@/lib/money";
 
@@ -21,11 +25,28 @@ async function requireFieldJob(jobId: string) {
   }
   const { data: job } = await supabase
     .from("jobs")
-    .select("id, request_id, assigned_to, status, checklist, visit, service_requests(details)")
+    .select("id, request_id, assigned_to, job_type, status, checklist, visit, service_requests(details)")
     .eq("id", jobId)
     .maybeSingle();
   if (!job || job.assigned_to !== user.id) throw new Error("job not found");
   return { supabase, user, job };
+}
+
+/** Short error code for a thrown failure ("auth" = log in again). */
+function failCode(e: unknown): string {
+  const m = e instanceof Error ? e.message : "";
+  if (m === "not authorised") return "auth";
+  if (m === "job not found") return "notfound";
+  return "error";
+}
+
+/**
+ * Saves made offline arrive later, possibly after a newer save from the
+ * same phone. The phone's save time decides: older saves are ignored.
+ */
+function savedAtFrom(raw: FormDataEntryValue | null): number {
+  const n = Number(raw);
+  return Number.isFinite(n) && n > 0 && n < Date.now() + 10 * 60 * 1000 ? n : Date.now();
 }
 
 // ---------- visit checklist + measurements (brief §6) ----------
@@ -48,6 +69,11 @@ export async function saveVisit(
   try {
     const { supabase, job } = await requireFieldJob(jobId);
     const raw = Object.fromEntries(formData.entries());
+    const savedAt = savedAtFrom(formData.get("saved_at"));
+    const prevVisit = (job.visit ?? {}) as Record<string, unknown>;
+    if (typeof prevVisit.saved_at === "number" && prevVisit.saved_at > savedAt) {
+      return { ok: true }; // a newer save is already stored
+    }
     const parsed = visitSchema.safeParse({
       ...raw,
       arrived: raw.arrived === "on",
@@ -72,6 +98,8 @@ export async function saveVisit(
           },
           title_notes: d.title_notes,
           findings: d.findings,
+          saved_at: savedAt,
+          ...(prevVisit.legal ? { legal: prevVisit.legal } : {}),
         },
         checklist: {
           arrived: d.arrived,
@@ -86,7 +114,71 @@ export async function saveVisit(
     return { ok: true };
   } catch (e) {
     console.error(`[visit] ${e instanceof Error ? e.message : e}`);
-    return { ok: false, error: "error" };
+    return { ok: false, error: failCode(e) };
+  }
+}
+
+// ---------- lawyer title check: legal checklist ----------
+const legalSchema = z.object({
+  findings: z.string().trim().max(8000).default(""),
+  verdict: z.enum(["clear", "concerns", "red_flags"]).optional().or(z.literal("")),
+});
+
+export async function saveLegal(
+  jobId: string,
+  _prev: ActionResult | null,
+  formData: FormData
+): Promise<ActionResult> {
+  try {
+    const { supabase, job } = await requireFieldJob(jobId);
+    if (job.job_type !== "title_check") return { ok: false, error: "invalid" };
+    const savedAt = savedAtFrom(formData.get("saved_at"));
+    const prevVisit = (job.visit ?? {}) as Record<string, unknown>;
+    const prevLegal = (prevVisit.legal ?? {}) as Record<string, unknown>;
+    if (typeof prevLegal.saved_at === "number" && prevLegal.saved_at > savedAt) {
+      return { ok: true };
+    }
+    const parsed = legalSchema.safeParse({
+      findings: formData.get("findings") ?? "",
+      verdict: formData.get("verdict") ?? "",
+    });
+    if (!parsed.success) return { ok: false, error: "invalid" };
+
+    const items: Record<string, { status: string; note: string }> = {};
+    const checklist: Record<string, string> = {};
+    for (const key of LEGAL_ITEMS) {
+      const status = String(formData.get(`${key}_status`) ?? "pending");
+      if (!(LEGAL_STATUSES as readonly string[]).includes(status)) {
+        return { ok: false, error: "invalid" };
+      }
+      const note = String(formData.get(`${key}_note`) ?? "").trim();
+      if (note.length > 4000) return { ok: false, error: "invalid" };
+      items[key] = { status, note };
+      checklist[key] = status;
+    }
+
+    const { error } = await supabase
+      .from("jobs")
+      .update({
+        status: job.status === "assigned" ? "in_progress" : job.status,
+        visit: {
+          ...prevVisit,
+          legal: {
+            items,
+            findings: parsed.data.findings,
+            verdict: parsed.data.verdict || null,
+            saved_at: savedAt,
+          },
+        },
+        checklist,
+      })
+      .eq("id", jobId);
+    if (error) return { ok: false, error: "db" };
+    revalidatePath("/[locale]/field", "layout");
+    return { ok: true };
+  } catch (e) {
+    console.error(`[legal] ${e instanceof Error ? e.message : e}`);
+    return { ok: false, error: failCode(e) };
   }
 }
 
@@ -114,16 +206,33 @@ export async function uploadMedia(
     // claim it (owner, real type, size), reading EXIF before it's stripped.
     const [ref] = parseUploadRefs(formData.get("uploads_json"));
     if (!ref) return { ok: false, error: "invalid" };
+
+    // Replayed after a dropped connection? It is already stored.
+    if (ref.clientRef) {
+      const { data: dup } = await createAdminClient()
+        .from("media")
+        .select("id")
+        .eq("client_ref", ref.clientRef)
+        .eq("uploader_id", user.id)
+        .maybeSingle();
+      if (dup) {
+        await discardIncoming(user.id, [ref]);
+        return { ok: true };
+      }
+    }
+
     const f = await takeIncoming(user.id, ref, "staff-media");
     if (d.kind === "video" ? f.isImage : !f.isImage) {
       return { ok: false, error: "invalid" };
     }
+    // Field staff: in-app camera only; time + GPS come from the moment of capture.
+    const prov = captureProvenance(ref, f.exif, { requireCamera: true });
     const buffer = f.buffer;
     const contentType = f.contentType;
     const ext = f.ext;
-    const takenAt: Date | null = f.exif.takenAt;
-    let gpsLat: number | null = f.exif.gpsLat;
-    let gpsLng: number | null = f.exif.gpsLng;
+    const takenAt = prov.takenAt;
+    let gpsLat: number | null = prov.gpsLat;
+    let gpsLng: number | null = prov.gpsLat === null ? null : prov.gpsLng;
 
     // Device GPS captured by the browser at upload time as fallback
     if (gpsLat === null && d.device_lat !== "" && d.device_lat !== undefined) {
@@ -164,21 +273,28 @@ export async function uploadMedia(
       kind: d.kind,
       storage_path: path,
       original_name: f.originalName,
-      taken_at: takenAt?.toISOString() ?? null,
+      taken_at: takenAt,
       gps_lat: gpsLat,
       gps_lng: gpsLng,
+      gps_accuracy_m: prov.accuracy,
+      capture_source: prov.source,
+      client_ref: ref.clientRef ?? null,
       distance_from_pin_m: distance,
       flagged_far: flagged,
       amount_cents: amountCents,
       note: d.note,
     });
-    if (error) return { ok: false, error: "db" };
+    if (error) {
+      if (error.code === "23505") return { ok: true }; // same capture stored meanwhile
+      return { ok: false, error: "db" };
+    }
 
     revalidatePath("/[locale]/field", "layout");
     return { ok: true };
   } catch (e) {
     console.error(`[media] ${e instanceof Error ? e.message : e}`);
-    return { ok: false, error: uploadErrorCode(e) };
+    const code = uploadErrorCode(e);
+    return { ok: false, error: code === "error" ? failCode(e) : code };
   }
 }
 
@@ -212,8 +328,8 @@ export async function requestExtraCost(
     if (error) return { ok: false, error: "db" };
     revalidatePath("/[locale]/field", "layout");
     return { ok: true };
-  } catch {
-    return { ok: false, error: "error" };
+  } catch (e) {
+    return { ok: false, error: failCode(e) };
   }
 }
 
@@ -299,6 +415,6 @@ export async function saveReportDraft(
     return { ok: true };
   } catch (e) {
     console.error(`[report-draft] ${e instanceof Error ? e.message : e}`);
-    return { ok: false, error: "error" };
+    return { ok: false, error: failCode(e) };
   }
 }

@@ -8,10 +8,12 @@ import { loadBuild } from "@/lib/build";
 import StageList from "@/components/build/StageList";
 import {
   VisitForm,
+  LegalChecklistForm,
   MediaUploadForm,
   ExtraCostForm,
   ReportDraftForm,
 } from "@/components/field/JobForms";
+import { readLegal } from "@/lib/legal";
 
 /** Field job detail — stand details + documents, NO prices (brief §6). */
 export default async function FieldJobPage({
@@ -27,7 +29,7 @@ export default async function FieldJobPage({
   const { data: job } = await supabase
     .from("jobs")
     .select(
-      "id, status, checklist, visit, request_id, client_first_name, service_requests(id, type, title, details)"
+      "id, job_type, status, checklist, visit, request_id, client_first_name, service_requests(id, type, title, details)"
     )
     .eq("id", id)
     .maybeSingle();
@@ -91,6 +93,8 @@ export default async function FieldJobPage({
 
   const details = (req.details ?? {}) as Record<string, unknown>;
   const firstName = job.client_first_name;
+  const isTitleCheck = job.job_type === "title_check";
+  const jobLabel = req.title.replace(/^SAMPLE — /, "");
 
   return (
     <div className="mx-auto max-w-2xl space-y-5">
@@ -100,7 +104,7 @@ export default async function FieldJobPage({
         </Link>
         <h1 className="headline mt-1 text-2xl text-forest">{req.title}</h1>
         <p className="text-xs text-muted">
-          {t(`requestType.${req.type}` as never)}
+          {isTitleCheck ? t("jobType.title_check") : t(`requestType.${req.type}` as never)}
           {firstName && ` · ${t("client")}: ${firstName}`} ·{" "}
           {t(`jobStatus.${job.status}` as never)}
         </p>
@@ -141,12 +145,26 @@ export default async function FieldJobPage({
         )}
       </section>
 
-      <section className="card p-5">
-        <h2 className="text-base font-bold text-forest">{t("visitTitle")}</h2>
-        <div className="mt-3">
-          <VisitForm jobId={job.id} visit={(job.visit ?? {}) as Record<string, unknown>} />
-        </div>
-      </section>
+      {isTitleCheck ? (
+        <section className="card p-5">
+          <h2 className="text-base font-bold text-forest">{t("legal.title")}</h2>
+          <p className="mt-1 text-xs text-muted">{t("legal.hint")}</p>
+          <div className="mt-3">
+            <LegalChecklistForm jobId={job.id} jobLabel={jobLabel} legal={readLegal(job.visit)} />
+          </div>
+        </section>
+      ) : (
+        <section className="card p-5">
+          <h2 className="text-base font-bold text-forest">{t("visitTitle")}</h2>
+          <div className="mt-3">
+            <VisitForm
+              jobId={job.id}
+              jobLabel={jobLabel}
+              visit={(job.visit ?? {}) as Record<string, unknown>}
+            />
+          </div>
+        </section>
+      )}
 
       <section className="card p-5">
         <h2 className="text-base font-bold text-forest">{t("captureTitle")}</h2>
@@ -154,15 +172,15 @@ export default async function FieldJobPage({
         <div className="mt-3 grid gap-5 sm:grid-cols-3">
           <div>
             <h3 className="mb-2 text-xs font-bold text-muted uppercase">{t("photos")}</h3>
-            <MediaUploadForm jobId={job.id} kind="photo" />
+            <MediaUploadForm jobId={job.id} jobLabel={jobLabel} kind="photo" />
           </div>
           <div>
             <h3 className="mb-2 text-xs font-bold text-muted uppercase">{t("videos")}</h3>
-            <MediaUploadForm jobId={job.id} kind="video" />
+            <MediaUploadForm jobId={job.id} jobLabel={jobLabel} kind="video" />
           </div>
           <div>
             <h3 className="mb-2 text-xs font-bold text-muted uppercase">{t("receipts")}</h3>
-            <MediaUploadForm jobId={job.id} kind="receipt" />
+            <MediaUploadForm jobId={job.id} jobLabel={jobLabel} kind="receipt" />
           </div>
         </div>
 
@@ -172,7 +190,26 @@ export default async function FieldJobPage({
               <li key={m.id} className="flex flex-wrap items-center gap-2">
                 <span className="font-bold text-forest uppercase">{m.kind}</span>
                 <span>{m.original_name || m.note}</span>
-                {m.taken_at && <span>· {new Date(m.taken_at).toLocaleString()}</span>}
+                {m.taken_at && (
+                  <span>
+                    · {t("capturedAt", { at: new Date(m.taken_at).toLocaleString() })}
+                  </span>
+                )}
+                {m.capture_source === "camera" && <span>· {t("inAppCamera")}</span>}
+                {m.gps_lat !== null && m.gps_lng !== null ? (
+                  <span>
+                    · GPS {Number(m.gps_lat).toFixed(5)}, {Number(m.gps_lng).toFixed(5)}
+                    {m.gps_accuracy_m !== null && ` ±${Math.round(Number(m.gps_accuracy_m))} m`}
+                  </span>
+                ) : (
+                  <span>· {t("camera.noGps")}</span>
+                )}
+                {m.taken_at &&
+                  new Date(m.uploaded_at).getTime() - new Date(m.taken_at).getTime() > 10 * 60 * 1000 && (
+                    <span>
+                      · {t("uploadedLater", { at: new Date(m.uploaded_at).toLocaleString() })}
+                    </span>
+                  )}
                 {typeof m.amount_cents === "number" && (
                   <span>· {formatCents(m.amount_cents)}</span>
                 )}
@@ -215,6 +252,7 @@ export default async function FieldJobPage({
         <div className="mt-3">
           <ReportDraftForm
             jobId={job.id}
+            jobLabel={jobLabel}
             report={
               report
                 ? {
