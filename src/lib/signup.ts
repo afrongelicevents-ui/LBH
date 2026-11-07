@@ -35,7 +35,10 @@ export function safeNextPath(next: string | null | undefined, fallback = "/porta
     const base = "https://lbh.invalid";
     const u = new URL(next, base);
     if (u.origin !== base) return fallback;
-    return u.pathname + u.search + u.hash;
+    const out = u.pathname + u.search + u.hash;
+    // "/.//evil.com" normalises to "//evil.com" (another site): refuse
+    if (out.startsWith("//") || out.includes("\\")) return fallback;
+    return out;
   } catch {
     return fallback;
   }

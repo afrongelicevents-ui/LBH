@@ -31,7 +31,11 @@ export default function AuthCallback() {
       .auth.setSession({ access_token, refresh_token })
       .then(({ error }) => {
         if (error) setFailed(true);
-        else window.location.replace(`${next}${next.includes("?") ? "&" : "?"}welcome=1`);
+        else {
+          // only ever go to a page on this site
+          const target = new URL(`${next}${next.includes("?") ? "&" : "?"}welcome=1`, window.location.origin);
+          window.location.replace(target.origin === window.location.origin ? target.href : "/portal");
+        }
       })
       .catch(() => setFailed(true));
   }, []);

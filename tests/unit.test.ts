@@ -145,6 +145,9 @@ describe("sign-up", () => {
     expect(safeNextPath("/\\evil.example")).toBe("/portal");
     expect(safeNextPath("/\t/evil.example/x")).toBe("/portal");
     expect(safeNextPath("/\n/evil.example")).toBe("/portal");
+    expect(safeNextPath("/.//evil.example")).toBe("/portal");
+    expect(safeNextPath("/a/..//evil.example")).toBe("/portal");
+    expect(safeNextPath("/%2e//evil.example")).toBe("/portal");
     expect(safeNextPath("/sn/portal?welcome=1")).toBe("/sn/portal?welcome=1");
   });
 
