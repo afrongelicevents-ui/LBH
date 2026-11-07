@@ -1,4 +1,5 @@
 import { setRequestLocale } from "next-intl/server";
+import { getSitePhotos } from "@/lib/sitePhotos";
 import Hero from "@/components/home/Hero";
 import ProblemStrip from "@/components/home/ProblemStrip";
 import ServicesSection from "@/components/home/ServicesSection";
@@ -14,14 +15,15 @@ export default async function HomePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const photos = await getSitePhotos();
 
   return (
     <>
-      <Hero />
+      <Hero photo={photos.hero} />
       <ProblemStrip />
-      <ServicesSection />
+      <ServicesSection photos={photos} />
       <HowItWorks />
-      <LiveBanner />
+      <LiveBanner photo={photos.live_feed} logo={photos.logo} />
       <TrustStrip />
       <CtaBand />
     </>

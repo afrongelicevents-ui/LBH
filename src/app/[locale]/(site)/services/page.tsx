@@ -7,6 +7,7 @@ import SectionTitle from "@/components/SectionTitle";
 import NotifyMeForm from "@/components/NotifyMeForm";
 import { CheckCircleIcon, ArrowRightIcon } from "@/components/icons";
 import { services } from "@/lib/services";
+import { getSitePhotos } from "@/lib/sitePhotos";
 import FinanceTrackerCard from "@/components/FinanceTrackerCard";
 
 export async function generateMetadata({
@@ -19,7 +20,7 @@ export async function generateMetadata({
   return { title: t("metaTitle") };
 }
 
-function ServicesContent() {
+function ServicesContent({ photos }: { photos: Partial<Record<string, string>> }) {
   const t = useTranslations();
 
   return (
@@ -47,7 +48,7 @@ function ServicesContent() {
                   }`}
                 >
                   <Image
-                    src={svc.image}
+                    src={photos[svc.key] ?? svc.image}
                     alt=""
                     fill
                     sizes="(min-width: 768px) 40vw, 100vw"
@@ -112,5 +113,5 @@ export default async function ServicesPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <ServicesContent />;
+  return <ServicesContent photos={await getSitePhotos()} />;
 }

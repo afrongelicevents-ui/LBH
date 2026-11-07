@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getSitePhotos } from "@/lib/sitePhotos";
 import { Link } from "@/i18n/navigation";
 import { requireRole } from "@/lib/auth/guard";
 import StatusTimeline from "@/components/portal/StatusTimeline";
@@ -30,6 +31,7 @@ export default async function PortalDashboard({
   const { locale } = await params;
   const { welcome } = await searchParams;
   setRequestLocale(locale);
+  const photos = await getSitePhotos();
   const { supabase, user, profile } = await requireRole(locale, ["client"]);
   const t = await getTranslations("portal.dashboard");
   const ts = await getTranslations("portal.status");
@@ -60,7 +62,7 @@ export default async function PortalDashboard({
         greeting={th("greeting")}
         name={(profile.full_name || profile.email).replace(/^SAMPLE\s+/, "")}
         tagline={t("tagline")}
-        image="/images/monitoring.jpg"
+        image={photos.monitoring}
       />
       <StatTiles
         tiles={[

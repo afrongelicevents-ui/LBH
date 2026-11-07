@@ -29,6 +29,7 @@ const ADMIN: PortalNavDef[] = [
   { href: "/admin/payments", label: "admin.nav.payments", icon: "card" },
   { href: "/admin/interest", label: "admin.nav.interest", icon: "bell" },
   { href: "/admin/settings", label: "admin.nav.settings", icon: "cog" },
+  { href: "/admin/settings/photos", label: "admin.nav.photos", icon: "camera" },
   { href: "/admin/translations", label: "admin.nav.translations", icon: "globe" },
   { href: "/admin/audit", label: "admin.nav.audit", icon: "list" },
 ];

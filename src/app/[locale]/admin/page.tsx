@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getSitePhotos } from "@/lib/sitePhotos";
 import { Link } from "@/i18n/navigation";
 import { requireRole } from "@/lib/auth/guard";
 import { formatCents } from "@/lib/money";
@@ -32,6 +33,7 @@ export default async function AdminNeedsYouPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const photos = await getSitePhotos();
   const { supabase, profile } = await requireRole(locale, ["admin"]);
   const t = await getTranslations("admin.needsYou");
   const th = await getTranslations("field.home");
@@ -159,7 +161,7 @@ export default async function AdminNeedsYouPage({
         greeting={th("greeting")}
         name={(profile.full_name || profile.email).replace(/\s*\(.*\)$/, "")}
         tagline={t("tagline")}
-        image="/images/materials.jpg"
+        image={photos.materials}
       />
       <StatTiles
         tiles={[

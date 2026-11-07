@@ -749,7 +749,8 @@
       "settings": "Izilungiselelo",
       "translations": "Izihumutsho",
       "audit": "I-audit log",
-      "builds": "Izigaba zokwakha"
+      "builds": "Izigaba zokwakha",
+      "photos": "Izithombe zewebhusayithi"
     },
     "needsYou": {
       "title": "Kudinga wena",
@@ -924,7 +925,9 @@
       "invite": "Thumela isinxuso",
       "staffInvited": "Isinxuso sithunyelwe.",
       "mfaNote": "Abasebenzi kumele babeke iphasiwedi balungise i-2FA ekungeneni kwakuqala.",
-      "roleLawyer": "Ummeli (ukuhlola amatayitili)"
+      "roleLawyer": "Ummeli (ukuhlola amatayitili)",
+      "photosTitle": "Izithombe zewebhusayithi",
+      "photosHint": "Tshintsha izithombe zewebhusayithi — akudingeki ikhodi."
     },
     "audit": {
       "title": "I-audit log",
@@ -942,6 +945,72 @@
       "reviewed": "Kuhloliwe",
       "markReviewed": "Beka kuhloliwe",
       "fileNote": "Nxa yonke imitsho isihloliwe ngokhuluma ulimi, beka i-needs_review ibe yi-false efayeleni lolimi ubusudeploya futhi."
+    },
+    "photos": {
+      "title": "Izithombe zewebhusayithi",
+      "intro": "Tshintsha noma yisiphi isithombe sewebhusayithi. Izithombe ezinkulu zincitshiswa ngokwazo. Inguquko zibonakala masinyane.",
+      "backToSettings": "Izilungiselelo",
+      "custom": "Isithombe sakho",
+      "default": "Isithombe esizenzakalelayo",
+      "currentPhoto": "Isithombe esikhona",
+      "newPhoto": "Isithombe esitsha (singakalondolozwa)",
+      "livePreview": "Ukubona ukuthi kuzakhangeleka njani",
+      "tip": "Iseluleko",
+      "replace": "Tshintsha",
+      "save": "Londoloza — tshengisa kuwebhusayithi",
+      "saving": "Kuyalondolozwa…",
+      "cancel": "Khansela",
+      "reset": "Buyisela kokuzenzakalelayo",
+      "resetConfirm": "Buyela esithombeni esizenzakalelayo?",
+      "resetYes": "Yebo, buyisela",
+      "savedLive": "Kulondoloziwe — sekukhona kuwebhusayithi.",
+      "tooSmall": "incane kulo-{min} px — ingabonakala ifiphele",
+      "error": {
+        "auth": "Akuvunyelwa — ngena futhi nge-2FA.",
+        "toobig": "Ifayela likhulu kakhulu (30 MB).",
+        "filetype": "Sebenzisa isithombe se-JPG, PNG kumbe WebP.",
+        "heic": "I-HEIC ayamukelwa — ku-iPhone khetha i-Most Compatible.",
+        "upload": "Ukulayisha kwehlulekile — hlola i-network uzame futhi.",
+        "db": "Akulondolozwanga — zama futhi.",
+        "error": "Kukhona okungahambanga kahle — zama futhi."
+      },
+      "slot": {
+        "hero": {
+          "name": "I-Hero (phezulu ekhasini lokuqala)",
+          "where": "Isithombe esikhulu phezulu ekhasini lokuqala. Lebhana ye-Field Portal.",
+          "tip": "Isithombe esibanzi, okungenani {min} px. Indlu ibe ngakwesokudla — ngakwesokhohlo kulombhalo."
+        },
+        "land": {
+          "name": "Ukuhlola umhlabathi",
+          "where": "Ikhadi lomsebenzi ekhasini lokuqala lakuma-Services. Lebhana ye-Lawyer Portal.",
+          "tip": "Isithombe esibanzi (3:2), okungenani {min} px — isibonelo i-stand lezikhonkwane."
+        },
+        "materials": {
+          "name": "Izinto zokwakha",
+          "where": "Ikhadi lomsebenzi ekhasini lokuqala lakuma-Services. Lebhana ye-Admin Portal.",
+          "tip": "Isithombe esibanzi (3:2), okungenani {min} px — isibonelo usimende kumbe izitina."
+        },
+        "monitoring": {
+          "name": "Ukuqapha ukwakha",
+          "where": "Ikhadi lomsebenzi ekhasini lokuqala lakuma-Services. Lebhana ye-Client Portal.",
+          "tip": "Isithombe esibanzi (3:2), okungenani {min} px — indlu isakhiwa."
+        },
+        "camera": {
+          "name": "Ikhamera ebukhoma",
+          "where": "Ikhadi lomsebenzi ekhasini lokuqala lakuma-Services.",
+          "tip": "Isithombe esibanzi (3:2), okungenani {min} px — ikhamera yesayithi."
+        },
+        "live_feed": {
+          "name": "Ibhana yokubukela bukhoma",
+          "where": "Ibhendi ethi 'Watch your build live' ekhasini lokuqala.",
+          "tip": "Isithombe esibanzi, okungenani {min} px. Ngakwesokudla kulombhalo, ngakho indlu ibe ngakwesokhohlo."
+        },
+        "logo": {
+          "name": "Ilogo",
+          "where": "Phezulu laphansi kuwo wonke amakhasi, lakuma-portal.",
+          "tip": "Ilogo esizindeni esimhlophe, okungenani {min} px."
+        }
+      }
     }
   },
   "build": {

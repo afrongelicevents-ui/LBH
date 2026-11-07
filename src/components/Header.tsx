@@ -98,7 +98,7 @@ function SignedInMenu({ profile, onNavigate }: { profile: HeaderProfile; onNavig
   );
 }
 
-export default function Header() {
+export default function Header({ logo = "/images/logo.jpg" }: { logo?: string }) {
   const t = useTranslations();
   const auth = useAuthProfile();
   const pathname = usePathname();
@@ -138,7 +138,7 @@ export default function Header() {
       <div className="px-4 pt-2 pb-3 lg:hidden">
         <div className="flex items-center justify-between">
           <Link href="/" onClick={() => setOpen(false)} aria-label={t("common.brand")}>
-            <Image src="/images/logo.jpg" alt="" width={96} height={76} priority className="h-11 w-auto" />
+            <Image src={logo} alt="" width={96} height={76} priority className="h-11 w-auto" />
           </Link>
           <div className="flex items-center gap-1.5">
             <LocaleDropdown />
@@ -205,7 +205,7 @@ export default function Header() {
       {/* ---------- Desktop ---------- */}
       <div className="mx-auto hidden h-20 max-w-7xl items-center justify-between px-6 lg:flex lg:px-8">
         <Link href="/" className="flex min-w-0 items-center gap-3">
-          <Image src="/images/logo.jpg" alt="" width={96} height={76} priority className="h-12 w-auto" />
+          <Image src={logo} alt="" width={96} height={76} priority className="h-12 w-auto" />
           <span aria-hidden className="h-10 w-px bg-line" />
           <span className="truncate text-base font-extrabold tracking-wide text-forest uppercase">
             {t("common.brandUpper")}

@@ -132,7 +132,7 @@ export function extForType(type: string): string {
 // Direct uploads: browser → private "incoming" bucket → server finalises
 // ======================================================================
 
-export type UploadPurpose = "client-document" | "staff-media" | "quote-file";
+export type UploadPurpose = "client-document" | "staff-media" | "quote-file" | "site-photo";
 
 export interface UploadedRef {
   path: string;
@@ -152,6 +152,7 @@ export interface UploadedRef {
 const UUID = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
 
 export function allowedTypesFor(purpose: UploadPurpose): string[] {
+  if (purpose === "site-photo") return IMAGE_TYPES;
   return purpose === "staff-media" ? [...IMAGE_TYPES, ...VIDEO_TYPES] : DOC_TYPES;
 }
 

@@ -545,6 +545,40 @@ d("RLS & business rules (local Supabase)", () => {
     });
   });
 
+  describe("website photos (Admin → Settings → Website photos)", () => {
+    const path = () => `hero/${crypto.randomUUID()}.jpg`;
+
+    it("everyone (even logged out) can read which photos are set", async () => {
+      const { error } = await anon.from("site_photos").select("slot");
+      expect(error).toBeNull();
+    });
+
+    it("clients and field staff cannot change website photos", async () => {
+      for (const c of [client, agent, anon]) {
+        const { error } = await c.from("site_photos").insert({ slot: "hero", storage_path: path() });
+        expect(error).not.toBeNull();
+      }
+    });
+
+    it("admin with 2FA can; paths are pinned to their slot", async () => {
+      const bad = await admin.from("site_photos").upsert({ slot: "hero", storage_path: `land/${crypto.randomUUID()}.jpg` });
+      expect(bad.error).not.toBeNull();
+      const traversal = await admin.from("site_photos").upsert({ slot: "hero", storage_path: "hero/../x.jpg" });
+      expect(traversal.error).not.toBeNull();
+      const ok = await admin.from("site_photos").upsert({ slot: "hero", storage_path: path() });
+      expect(ok.error).toBeNull();
+      await admin.from("site_photos").delete().eq("slot", "hero");
+    });
+
+    it("nobody can upload into the public photo bucket directly (server only)", async () => {
+      const jpeg = new Blob([new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0, 0, 0, 0, 0, 0, 0, 0])], { type: "image/jpeg" });
+      for (const c of [client, admin]) {
+        const { error } = await c.storage.from("site-photos").upload(`hero/${crypto.randomUUID()}.jpg`, jpeg, { contentType: "image/jpeg" });
+        expect(error).not.toBeNull();
+      }
+    });
+  });
+
   describe("offline uploads are stored once", () => {
     it("the same capture (client_ref) can't be stored twice", async () => {
       const ref = crypto.randomUUID();

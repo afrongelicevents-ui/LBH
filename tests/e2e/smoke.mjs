@@ -784,6 +784,72 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
     await shot(page, "admin-needs-you");
   });
 
+  await step("Website photos: replace the hero with a big phone photo → resized, live on the homepage", async () => {
+    await page.goto(`${BASE}/en/admin/settings`);
+    await page.getByTestId("website-photos-link").click();
+    await page.waitForURL(/\/admin\/settings\/photos/);
+    for (const slot of ["hero", "land", "materials", "monitoring", "camera", "live_feed", "logo"]) {
+      await page.getByTestId(`photo-slot-${slot}`).waitFor();
+    }
+    const hero = page.getByTestId("photo-slot-hero");
+    await hero.getByTestId("photo-input").setInputFiles(photoPath); // ~8 MB, 3600×2800
+    await hero.getByText("3600 × 2800 px").waitFor();
+    assert((await hero.getByTestId("photo-preview").locator("img").first().getAttribute("src")).startsWith("blob:"), "live preview not showing the new photo");
+    await shot(page, "admin-website-photos-preview");
+    await hero.getByTestId("photo-save").click();
+    await hero.getByText("live on the website now").waitFor({ timeout: 60000 });
+    const { data: row } = await db.from("site_photos").select("storage_path, width, height").eq("slot", "hero").single();
+    assert(row.width === 2400 && row.height === 1867, `not resized: ${row.width}×${row.height}`);
+    const { data: blob } = await db.storage.from("site-photos").download(row.storage_path);
+    const bytes = (await blob.arrayBuffer()).byteLength;
+    assert(bytes < 3_000_000, `not compressed: ${bytes} bytes`);
+    // public URL works without logging in
+    const pub = await fetch(`${SUPABASE_URL}/storage/v1/object/public/site-photos/${row.storage_path}`);
+    assert(pub.ok, `public URL ${pub.status}`);
+    // logged-out visitor sees it on the homepage straight away
+    const visitor = await (await newCtx()).newPage();
+    await visitor.goto(`${BASE}/en`);
+    const src = decodeURIComponent((await visitor.locator("section img").first().getAttribute("src")) ?? "");
+    assert(src.includes(`site-photos/${row.storage_path}`), `homepage hero not updated (${src.slice(0, 120)})`);
+    await shot(visitor, "homepage-new-hero");
+    await visitor.context().close();
+  });
+
+  await step("Website photos: replace a service card photo → shown on the Services page", async () => {
+    const land = page.getByTestId("photo-slot-land");
+    await land.getByTestId("photo-input").setInputFiles(photoPath);
+    await land.getByTestId("photo-save").click();
+    await land.getByText("live on the website now").waitFor({ timeout: 60000 });
+    const { data: row } = await db.from("site_photos").select("storage_path, width").eq("slot", "land").single();
+    assert(row.width === 1600, `card photo width ${row.width}`);
+    const visitor = await (await newCtx()).newPage();
+    await visitor.goto(`${BASE}/en/services`);
+    const src = decodeURIComponent((await visitor.locator("#land img").first().getAttribute("src")) ?? "");
+    assert(src.includes(row.storage_path), "services page not updated");
+    await visitor.context().close();
+  });
+
+  await step("Website photos: Reset to default → built-in photo is back, file removed", async () => {
+    const hero = page.getByTestId("photo-slot-hero");
+    const { data: before } = await db.from("site_photos").select("storage_path").eq("slot", "hero").single();
+    await hero.getByTestId("photo-reset").click();
+    await hero.getByTestId("photo-reset-yes").click();
+    await hero.getByText("Default photo", { exact: true }).waitFor({ timeout: 20000 });
+    const { data: rows } = await db.from("site_photos").select("slot").eq("slot", "hero");
+    assert(rows.length === 0, "hero row still there");
+    const { data: gone } = await db.storage.from("site-photos").download(before.storage_path);
+    assert(!gone, "old file not removed");
+    const visitor = await (await newCtx()).newPage();
+    await visitor.goto(`${BASE}/en`);
+    const src = decodeURIComponent((await visitor.locator("section img").first().getAttribute("src")) ?? "");
+    assert(src.includes("/images/hero.jpg"), `default hero not back (${src.slice(0, 120)})`);
+    await visitor.context().close();
+    // tidy up the land photo too
+    await page.getByTestId("photo-slot-land").getByTestId("photo-reset").click();
+    await page.getByTestId("photo-slot-land").getByTestId("photo-reset-yes").click();
+    await page.getByTestId("photo-slot-land").getByText("Default photo", { exact: true }).waitFor({ timeout: 20000 });
+  });
+
   await step("assign a job with a DUE DATE → shown to the lawyer", async () => {
     await page.goto(`${BASE}/en/admin/requests/${IDS.reqMat}`);
     const section = page.locator("section", { hasText: "Field team" });

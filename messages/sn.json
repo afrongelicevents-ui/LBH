@@ -749,7 +749,8 @@
       "settings": "Masettings",
       "translations": "Shanduro",
       "audit": "Audit log",
-      "builds": "Nhanho dzekuvaka"
+      "builds": "Nhanho dzekuvaka",
+      "photos": "Mifananidzo yewebhusaiti"
     },
     "needsYou": {
       "title": "Zvinoda iwe",
@@ -924,7 +925,9 @@
       "invite": "Tumira kokero",
       "staffInvited": "Kokero yatumirwa.",
       "mfaNote": "Vashandi vanofanira kuisa password nekugadza 2FA pakupinda kwekutanga.",
-      "roleLawyer": "Gweta (kuongorora magwaro)"
+      "roleLawyer": "Gweta (kuongorora magwaro)",
+      "photosTitle": "Mifananidzo yewebhusaiti",
+      "photosHint": "Chinja mifananidzo yewebhusaiti — hapana kodhi inodiwa."
     },
     "audit": {
       "title": "Audit log",
@@ -942,6 +945,72 @@
       "reviewed": "Yaongororwa",
       "markReviewed": "Isa yaongororwa",
       "fileNote": "Kana mitsara yese yaongororwa nemutauri wechizvarwa, isa needs_review kuita false mufaira remutauro wodeploya zvakare."
+    },
+    "photos": {
+      "title": "Mifananidzo yewebhusaiti",
+      "intro": "Chinja mufananidzo upi zvawo wewebhusaiti. Mifananidzo mikuru inoderedzwa yega. Shanduko dzinoonekwa pakarepo.",
+      "backToSettings": "Zvirongwa",
+      "custom": "Mufananidzo wako",
+      "default": "Mufananidzo wekutanga",
+      "currentPhoto": "Mufananidzo uripo",
+      "newPhoto": "Mufananidzo mutsva (hausati wachengetwa)",
+      "livePreview": "Kuona kuti zvichaita sei",
+      "tip": "Zano",
+      "replace": "Chinja",
+      "save": "Chengeta — ratidza pawebhusaiti",
+      "saving": "Kuchengeta…",
+      "cancel": "Kanzura",
+      "reset": "Dzosera kune wekutanga",
+      "resetConfirm": "Dzokera kumufananidzo wekutanga?",
+      "resetYes": "Hongu, dzosera",
+      "savedLive": "Zvachengetwa — zvave pawebhusaiti.",
+      "tooSmall": "idiki pane {min} px — inogona kuita bvunde",
+      "error": {
+        "auth": "Hazvitenderwe — pinda zvakare ne2FA.",
+        "toobig": "Faira rakakura zvakanyanya (30 MB).",
+        "filetype": "Shandisa mufananidzo weJPG, PNG kana WebP.",
+        "heic": "HEIC haitenderwe — paiPhone sarudza Most Compatible.",
+        "upload": "Kuisa kwakundikana — tarisa network wedzazve.",
+        "db": "Hazvina kuchengetwa — edza zvakare.",
+        "error": "Pane chakanganisika — edza zvakare."
+      },
+      "slot": {
+        "hero": {
+          "name": "Hero (pamusoro pepeji rekutanga)",
+          "where": "Mufananidzo mukuru pamusoro pepeji rekutanga. Uye banner yeField Portal.",
+          "tip": "Mufananidzo wakafara, {min} px zvishoma. Imba ive kurudyi — kuruboshwe kune mavara."
+        },
+        "land": {
+          "name": "Kuongorora ivhu",
+          "where": "Kadhi rebasa papeji rekutanga nepeji reServices. Uye banner yeLawyer Portal.",
+          "tip": "Mufananidzo wakafara (3:2), {min} px zvishoma — semuenzaniso stand nemapegi."
+        },
+        "materials": {
+          "name": "Zvekuvaka",
+          "where": "Kadhi rebasa papeji rekutanga nepeji reServices. Uye banner yeAdmin Portal.",
+          "tip": "Mufananidzo wakafara (3:2), {min} px zvishoma — semuenzaniso samende kana zvidhinha."
+        },
+        "monitoring": {
+          "name": "Kutarisa kuvaka",
+          "where": "Kadhi rebasa papeji rekutanga nepeji reServices. Uye banner yeClient Portal.",
+          "tip": "Mufananidzo wakafara (3:2), {min} px zvishoma — imba ichivakwa."
+        },
+        "camera": {
+          "name": "Kamera yepanguva iyoyo",
+          "where": "Kadhi rebasa papeji rekutanga nepeji reServices.",
+          "tip": "Mufananidzo wakafara (3:2), {min} px zvishoma — kamera yepasaiti."
+        },
+        "live_feed": {
+          "name": "Banner yekutarisa uchiona",
+          "where": "Bhendi re'Watch your build live' papeji rekutanga.",
+          "tip": "Mufananidzo wakafara, {min} px zvishoma. Kurudyi kune mavara, saka imba ive kuruboshwe."
+        },
+        "logo": {
+          "name": "Logo",
+          "where": "Pamusoro nepasi pepeji rimwe nerimwe, nemaportal.",
+          "tip": "Logo pachena chena, {min} px zvishoma."
+        }
+      }
     }
   },
   "build": {

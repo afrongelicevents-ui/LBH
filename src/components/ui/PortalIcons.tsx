@@ -252,5 +252,6 @@ export const ICONS = {
   briefcase: BriefcaseIcon,
   pin: PinIcon,
   truck: TruckIcon,
+  camera: CameraIcon,
 } as const;
 export type IconName = keyof typeof ICONS;

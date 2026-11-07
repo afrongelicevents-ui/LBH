@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getSitePhotos } from "@/lib/sitePhotos";
 import { requireRole } from "@/lib/auth/guard";
 import { signedUrl } from "@/lib/uploads";
 import { toneFor } from "@/lib/tones";
@@ -34,6 +35,7 @@ export default async function FieldJobsPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const photos = await getSitePhotos();
   const { supabase, profile } = await requireRole(locale, ["field"]);
   const t = await getTranslations("field");
   const th = await getTranslations("field.home");
@@ -146,7 +148,7 @@ export default async function FieldJobsPage({
           greeting={th("greeting")}
           name={firstName(profile.full_name || profile.email)}
           tagline={th("taglineField")}
-          image="/images/hero.jpg"
+          image={photos.hero}
         />
         <StatTiles
           tiles={[
@@ -210,7 +212,7 @@ export default async function FieldJobsPage({
         greeting={th("greeting")}
         name={firstName(profile.full_name || profile.email)}
         tagline={th("taglineLawyer")}
-        image="/images/land.jpg"
+        image={photos.land}
       />
       <StatTiles
         tiles={[

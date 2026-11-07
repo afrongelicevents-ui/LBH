@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
  * to edge; a green mist gradient sits only behind the headline/text on the
  * right — the photo stays visible around the phone mockup on the left.
  */
-export default function LiveBanner() {
+export default function LiveBanner({ photo = "/images/live-feed.jpg", logo = "/images/logo.jpg" }: { photo?: string; logo?: string }) {
   const t = useTranslations();
 
   return (
@@ -14,7 +14,7 @@ export default function LiveBanner() {
       {/* Full-bleed site photo */}
       <div aria-hidden className="absolute inset-0">
         <Image
-          src="/images/live-feed.jpg"
+          src={photo}
           alt=""
           fill
           sizes="100vw"
@@ -36,7 +36,7 @@ export default function LiveBanner() {
           <div className="rounded-xl border-[3px] border-ink/80 bg-ink/80 shadow-xl md:rounded-[1.75rem] md:border-4">
             <div className="relative aspect-video overflow-hidden rounded-[0.65rem] md:rounded-[1.4rem]">
               <Image
-                src="/images/live-feed.jpg"
+                src={photo}
                 alt=""
                 fill
                 sizes="256px"

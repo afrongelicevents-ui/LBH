@@ -5,7 +5,7 @@ import { site, waLink } from "@/config/site";
 import LocaleSwitcher from "./LocaleSwitcher";
 import { MailIcon, MapPinIcon, WhatsAppIcon } from "./icons";
 
-export default function Footer() {
+export default function Footer({ logo = "/images/logo.jpg" }: { logo?: string }) {
   const t = useTranslations();
   const year = new Date().getFullYear();
 
@@ -47,7 +47,7 @@ export default function Footer() {
             <div className="flex items-center gap-3">
               <span className="flex h-11 w-12 items-center justify-center rounded-lg bg-white p-1">
                 <Image
-                  src="/images/logo.jpg"
+                  src={logo}
                   alt=""
                   width={44}
                   height={36}

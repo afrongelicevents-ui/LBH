@@ -51,6 +51,21 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  images: {
+    // Local development: Supabase runs on 127.0.0.1
+    dangerouslyAllowLocalIP: /^https?:\/\/(127\.0\.0\.1|localhost)(:|$)/.test(supabaseOrigin),
+    // Website photos chosen by the admin live in the public "site-photos" bucket
+    remotePatterns: supabaseOrigin
+      ? [
+          {
+            protocol: new URL(supabaseOrigin).protocol.replace(":", "") as "http" | "https",
+            hostname: new URL(supabaseOrigin).hostname,
+            port: new URL(supabaseOrigin).port,
+            pathname: "/storage/v1/object/public/site-photos/**",
+          },
+        ]
+      : [],
+  },
   serverExternalPackages: ["pdfkit", "sharp"],
   experimental: {
     serverActions: {

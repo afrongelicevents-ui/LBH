@@ -748,7 +748,8 @@
       "settings": "Settings",
       "translations": "Translations",
       "audit": "Audit log",
-      "builds": "Build stages"
+      "builds": "Build stages",
+      "photos": "Website photos"
     },
     "needsYou": {
       "title": "Needs you",
@@ -923,7 +924,9 @@
       "invite": "Send invite",
       "staffInvited": "Invite sent.",
       "mfaNote": "Staff must set a password and enrol two-factor authentication on first login.",
-      "roleLawyer": "Lawyer (title checks)"
+      "roleLawyer": "Lawyer (title checks)",
+      "photosTitle": "Website photos",
+      "photosHint": "Change the photos on the public website — no code needed."
     },
     "audit": {
       "title": "Audit log",
@@ -941,6 +944,72 @@
       "reviewed": "Reviewed",
       "markReviewed": "Mark reviewed",
       "fileNote": "When every string is reviewed by a native speaker, set needs_review to false in the language file and redeploy."
+    },
+    "photos": {
+      "title": "Website photos",
+      "intro": "Replace any photo on the public website. Big photos are resized and compressed automatically. Changes show on the live site straight away.",
+      "backToSettings": "Settings",
+      "custom": "Your photo",
+      "default": "Default photo",
+      "currentPhoto": "Current photo",
+      "newPhoto": "New photo (not saved yet)",
+      "livePreview": "Live preview — how it will look",
+      "tip": "Tip",
+      "replace": "Replace",
+      "save": "Save — show on the website",
+      "saving": "Saving…",
+      "cancel": "Cancel",
+      "reset": "Reset to default",
+      "resetConfirm": "Go back to the default photo?",
+      "resetYes": "Yes, reset",
+      "savedLive": "Saved — it's live on the website now.",
+      "tooSmall": "smaller than {min} px — may look blurry",
+      "error": {
+        "auth": "Not allowed — log in again with 2FA.",
+        "toobig": "That file is too big (max 30 MB).",
+        "filetype": "Use a JPG, PNG or WebP photo.",
+        "heic": "HEIC photos aren't supported — on iPhone set the camera to Most Compatible, or send it as JPG.",
+        "upload": "Upload failed — check your connection and try again.",
+        "db": "Could not save — try again.",
+        "error": "Something went wrong — try again."
+      },
+      "slot": {
+        "hero": {
+          "name": "Hero (homepage top)",
+          "where": "Big photo at the top of the homepage, behind the headline. Also the Field Portal banner.",
+          "tip": "Wide (landscape) photo, at least {min} px wide. Put the building on the RIGHT half — the left side is covered by the green fade and the headline."
+        },
+        "land": {
+          "name": "Land verification",
+          "where": "Service card on the homepage and the Services page. Also the Lawyer Portal banner.",
+          "tip": "Landscape photo (3:2), at least {min} px wide — e.g. a stand with its pegs. The middle of the photo is what shows on small cards."
+        },
+        "materials": {
+          "name": "Materials",
+          "where": "Service card on the homepage and the Services page. Also the Admin Portal banner.",
+          "tip": "Landscape photo (3:2), at least {min} px wide — e.g. cement bags or bricks on site. Keep the subject in the middle."
+        },
+        "monitoring": {
+          "name": "Site monitoring",
+          "where": "Service card on the homepage and the Services page. Also the Client Portal banner.",
+          "tip": "Landscape photo (3:2), at least {min} px wide — a house being built. Keep the building in the middle."
+        },
+        "camera": {
+          "name": "Live camera",
+          "where": "Service card on the homepage and the Services page.",
+          "tip": "Landscape photo (3:2), at least {min} px wide — e.g. a site camera on a pole. Keep the camera in the middle."
+        },
+        "live_feed": {
+          "name": "Watch-live banner",
+          "where": "The 'Watch your build live' band on the homepage (also inside the phone picture).",
+          "tip": "Wide photo, at least {min} px wide. The RIGHT side gets the green fade and text, so put the building on the left."
+        },
+        "logo": {
+          "name": "Logo",
+          "where": "Header and footer of every page, and the portals.",
+          "tip": "Logo on a white background, at least {min} px wide, with little empty space around it."
+        }
+      }
     }
   },
   "build": {

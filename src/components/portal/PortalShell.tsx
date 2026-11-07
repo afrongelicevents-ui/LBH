@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { signOut } from "@/lib/auth/actions";
 import PortalNav from "./PortalNav";
 import PortalMenu from "./PortalMenu";
+import { getSitePhotos } from "@/lib/sitePhotos";
 import type { Profile } from "@/lib/supabase/server";
 import type { IconName } from "@/components/ui/PortalIcons";
 
@@ -41,13 +42,14 @@ export default async function PortalShell({
   const signOutWithLocale = signOut.bind(null, locale);
   const portalName = t(`area.${areaKey}`);
   const display = profile.full_name || profile.email;
+  const photos = await getSitePhotos();
 
   return (
     <div className="flex min-h-screen flex-col bg-portal">
       <header className="sticky top-0 z-40 border-b border-[#e6e9e7] bg-white">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-3 sm:h-[72px] sm:px-6 lg:px-8">
           <Link href="/" className="flex min-w-0 items-center gap-2.5 sm:gap-3" aria-label={tc("brand")}>
-            <Image src="/images/logo.jpg" alt="" width={70} height={58} priority className="h-10 w-auto sm:h-12" />
+            <Image src={photos.logo} alt="" width={70} height={58} priority className="h-10 w-auto sm:h-12" />
             <span aria-hidden className="h-9 w-px bg-ink/70 sm:h-10" />
             <span className="min-w-0 leading-tight">
               <span className="block truncate text-[15px] font-extrabold text-ink sm:text-lg">{tc("brand")}</span>

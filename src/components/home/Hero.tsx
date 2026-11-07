@@ -8,13 +8,13 @@ import { ArrowRightIcon } from "@/components/icons";
  * (object-cover, no box or frame). A green "mist" gradient sits ONLY
  * where the text is — the right side of the photo stays clear.
  */
-export default function Hero() {
+export default function Hero({ photo = "/images/hero.jpg" }: { photo?: string }) {
   const t = useTranslations("home.hero");
 
   return (
     <section className="relative min-h-[360px] w-full md:min-h-[600px]">
       <Image
-        src="/images/hero.jpg"
+        src={photo}
         alt=""
         fill
         priority

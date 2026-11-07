@@ -12,7 +12,7 @@ import FinanceTrackerCard from "@/components/FinanceTrackerCard";
  * left (~35% width, full card height), title + small bullets right, chevron.
  * Desktop: 4 cards in a row (2×2 tablet), photo on top.
  */
-export default function ServicesSection() {
+export default function ServicesSection({ photos }: { photos?: Partial<Record<string, string>> }) {
   const t = useTranslations();
 
   return (
@@ -34,7 +34,7 @@ export default function ServicesSection() {
                 {/* Photo: rounded thumbnail left on mobile, full-width top from md */}
                 <div className="relative w-[33%] shrink-0 self-stretch overflow-hidden rounded-lg md:aspect-3/2 md:w-full md:self-auto md:rounded-none">
                   <Image
-                    src={svc.image}
+                    src={photos?.[svc.key] ?? svc.image}
                     alt=""
                     fill
                     sizes="(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 35vw"
