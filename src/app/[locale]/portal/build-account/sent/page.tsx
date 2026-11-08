@@ -35,8 +35,8 @@ export default async function MoneySentPage({
         ]}
       />
       <section className="card p-4" data-testid="ba-chart">
-        <h2 className="text-base font-extrabold text-ink">{t("perMonth")}</h2>
-        <div className="mt-4 flex h-44 items-end gap-2" role="img" aria-label={t("perMonth")}>
+        <h2 className="text-base font-extrabold text-ink">{t("chartTitle")}</h2>
+        <div className="mt-4 flex h-44 items-end gap-2" role="img" aria-label={t("chartTitle")}>
           {s.by_month.map((m) => (
             <div key={m.month} className="flex h-full flex-1 flex-col items-center justify-end gap-1">
               <span className={`text-[10px] font-semibold ${m.month === s.by_month[s.by_month.length - 1].month && m.cents ? "rounded-md bg-forest px-1.5 py-0.5 text-white" : "text-muted"}`}>{m.cents ? formatCents(m.cents).replace(".00", "") : ""}</span>
