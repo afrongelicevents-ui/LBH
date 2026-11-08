@@ -71,11 +71,21 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     // tesseract.js starts its worker from a path built at run time, which file
     // tracing can't follow: ship the worker and everything it loads explicitly.
-    "/[locale]/portal/build-account/**": [
+    // "[locale]" would be read as a glob character class: use a wildcard segment
+    "/*/portal/build-account/**": [
       "./node_modules/@tesseract.js-data/eng/4.0.0/**",
       "./node_modules/tesseract.js/**",
       "./node_modules/tesseract.js-core/**",
-      "./node_modules/{bmp-js,idb-keyval,is-url,node-fetch,regenerator-runtime,wasm-feature-detect,zlibjs,whatwg-url,tr46,webidl-conversions}/**",
+      "./node_modules/bmp-js/**",
+      "./node_modules/idb-keyval/**",
+      "./node_modules/is-url/**",
+      "./node_modules/node-fetch/**",
+      "./node_modules/regenerator-runtime/**",
+      "./node_modules/wasm-feature-detect/**",
+      "./node_modules/zlibjs/**",
+      "./node_modules/whatwg-url/**",
+      "./node_modules/tr46/**",
+      "./node_modules/webidl-conversions/**",
     ],
   },
   experimental: {
