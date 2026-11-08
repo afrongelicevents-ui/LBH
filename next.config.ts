@@ -69,7 +69,14 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["pdfkit", "sharp", "tesseract.js"],
   // Receipt reading: OCR language data is shipped with the server function
   outputFileTracingIncludes: {
-    "/[locale]/portal/build-account/**": ["./node_modules/@tesseract.js-data/eng/4.0.0/**", "./node_modules/tesseract.js-core/**"],
+    // tesseract.js starts its worker from a path built at run time, which file
+    // tracing can't follow: ship the worker and everything it loads explicitly.
+    "/[locale]/portal/build-account/**": [
+      "./node_modules/@tesseract.js-data/eng/4.0.0/**",
+      "./node_modules/tesseract.js/**",
+      "./node_modules/tesseract.js-core/**",
+      "./node_modules/{bmp-js,idb-keyval,is-url,node-fetch,regenerator-runtime,wasm-feature-detect,zlibjs,whatwg-url,tr46,webidl-conversions}/**",
+    ],
   },
   experimental: {
     serverActions: {

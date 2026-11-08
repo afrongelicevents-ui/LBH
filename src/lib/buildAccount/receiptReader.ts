@@ -13,6 +13,8 @@ export interface ReceiptReader {
   read(image: Buffer): Promise<{ text: string; parsed: ParsedReceipt }>;
 }
 
+const READ_TIMEOUT_MS = 35_000;
+
 const tesseractReader: ReceiptReader = {
   name: "tesseract",
   async read(image) {
@@ -22,10 +24,14 @@ const tesseractReader: ReceiptReader = {
     const langPath = path.join(process.cwd(), "node_modules", "@tesseract.js-data", "eng", "4.0.0");
     const worker = await createWorker("eng", 1, { langPath, cacheMethod: "none", gzip: true });
     try {
-      const { data } = await worker.recognize(image);
+      // Never keep the person waiting: if reading takes too long they type the details.
+      const { data } = await Promise.race([
+        worker.recognize(image),
+        new Promise<never>((_, reject) => setTimeout(() => reject(new Error("reading took too long")), READ_TIMEOUT_MS)),
+      ]);
       return { text: data.text, parsed: parseReceiptText(data.text) };
     } finally {
-      await worker.terminate();
+      await worker.terminate().catch(() => undefined);
     }
   },
 };

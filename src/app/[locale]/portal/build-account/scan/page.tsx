@@ -6,6 +6,9 @@ import BaShell from "@/components/buildAccount/BaShell";
 import * as M from "@/lib/buildAccount/math";
 import ScanReceipt from "@/components/buildAccount/ScanReceipt";
 
+/** Reading a receipt photo can take a while on a cold server. */
+export const maxDuration = 60;
+
 export default async function ScanPage({
   params,
   searchParams,

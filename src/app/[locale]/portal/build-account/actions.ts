@@ -65,7 +65,16 @@ export async function readReceipt(
     const reader = receiptReader();
     if (f.isImage) {
       try {
-        parsed = (await reader.read(f.buffer)).parsed;
+        // never keep the person waiting: if reading is slow they type the details themselves
+        let timer: ReturnType<typeof setTimeout> | undefined;
+        const tooSlow = new Promise<never>((_, reject) => {
+          timer = setTimeout(() => reject(new Error("reading took too long")), 40_000);
+        });
+        try {
+          parsed = (await Promise.race([reader.read(f.buffer), tooSlow])).parsed;
+        } finally {
+          clearTimeout(timer);
+        }
       } catch (e) {
         console.error(`[build-account] receipt reading failed: ${e instanceof Error ? e.message : e}`);
       }
