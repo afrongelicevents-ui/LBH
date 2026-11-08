@@ -10,6 +10,7 @@ import {
   failPaymentByReference,
 } from "@/lib/payments";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { confirmBaPaymentByReference, failBaPaymentByReference } from "@/lib/buildAccount/server";
 
 /**
  * Paynow result webhook (brief §10): hash-verified, then re-confirmed via
@@ -37,6 +38,25 @@ export async function POST(request: Request) {
 
   // Authoritative re-check against the poll URL we stored at initiation.
   const admin = createAdminClient();
+
+  // Build Account plan payments have their own table
+  if (reference.startsWith("LBH-BA-")) {
+    const { data: bp } = await admin
+      .from("ba_payments")
+      .select("id, paynow_poll_url")
+      .eq("merchant_reference", reference)
+      .maybeSingle();
+    if (!bp?.paynow_poll_url) return NextResponse.json({ error: "unknown reference" }, { status: 404 });
+    const polled = await pollPaynowStatus(bp.paynow_poll_url);
+    if (!polled.hashValid) return NextResponse.json({ error: "poll hash invalid" }, { status: 400 });
+    if (polled.status === "paid" || polled.status === "awaiting_delivery") {
+      await confirmBaPaymentByReference(reference, polled.paynowReference ?? null);
+    } else if (["cancelled", "failed", "disputed"].includes(polled.status)) {
+      await failBaPaymentByReference(reference);
+    }
+    return NextResponse.json({ ok: true });
+  }
+
   const { data: payment } = await admin
     .from("payments")
     .select("id, paynow_poll_url")

@@ -132,7 +132,7 @@ export function extForType(type: string): string {
 // Direct uploads: browser → private "incoming" bucket → server finalises
 // ======================================================================
 
-export type UploadPurpose = "client-document" | "staff-media" | "quote-file" | "site-photo";
+export type UploadPurpose = "client-document" | "staff-media" | "quote-file" | "site-photo" | "ba-receipt";
 
 export interface UploadedRef {
   path: string;

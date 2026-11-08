@@ -317,17 +317,25 @@ console.log("\nPublic website");
     assert(data?.length === 1, "interest not stored");
   });
 
-  await step("finance tracker 'coming soon' card → Notify me saves interest", async () => {
+  await step("LBH Build Account card is LIVE → opens the info page (plans, not a bank account)", async () => {
     await page.goto(`${BASE}/en`);
-    const card = page.locator("#finance");
-    await card.getByText("Build Finance Tracker").waitFor();
-    await card.getByText("track every dollar of your build, stage by stage", { exact: false }).waitFor();
-    const email = `finance-${Date.now()}@example.test`;
-    await card.locator('input[type="email"]').fill(email);
-    await card.locator('button[type="submit"]').click();
-    await card.getByText("Saved").waitFor({ timeout: 10000 });
-    const { data } = await db.from("notify_interest").select("service").eq("email", email).single();
-    assert(data?.service === "finance", "finance interest not stored");
+    const card = page.getByTestId("ba-card");
+    await card.getByText("LBH Build Account").waitFor();
+    await card.getByTestId("ba-card-open").click();
+    await page.waitForURL(/\/build-account$/);
+    await page.getByTestId("ba-info").waitFor();
+    await page.getByText("not a bank account", { exact: false }).first().waitFor();
+    await page.getByTestId("ba-info-plans").getByText("Free", { exact: true }).waitFor();
+    await page.getByTestId("ba-info-plans").getByText("$5.00 / month").waitFor();
+    await page.getByTestId("ba-info-login").waitFor();
+    await page.getByTestId("ba-info-signup").waitFor();
+  });
+
+  await step("Build Account is in the ☰ menu and a bad invite link is refused", async () => {
+    await page.goto(`${BASE}/en/services`);
+    assert((await page.locator('header a[href$="/build-account"]').count()) > 0, "no menu link");
+    await page.goto(`${BASE}/en/build-account/join?t=bad`);
+    await page.getByText("not valid", { exact: false }).waitFor();
   });
 
   await step("CREATE ACCOUNT next to Log in → verify email → lands in the portal", async () => {
@@ -939,8 +947,12 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
       await page.waitForTimeout(500);
     }
     assert(data.status === "published" && data.published_by === IDS.admin, "not published");
-    const { data: bal } = await db.from("payments").select("amount_cents").eq("request_id", IDS.reqLand).eq("kind", "balance").single();
-    assert(bal.amount_cents === 21000, "balance payment not created");
+    let bal = null; // created right after publishing
+    for (let i = 0; i < 30 && !bal; i++) {
+      ({ data: bal } = await db.from("payments").select("amount_cents").eq("request_id", IDS.reqLand).eq("kind", "balance").maybeSingle());
+      if (!bal) await page.waitForTimeout(300);
+    }
+    assert(bal?.amount_cents === 21000, "balance payment not created");
   });
 
   await step("payments CSV export", async () => {
@@ -1144,6 +1156,206 @@ console.log("\nClient reads the published report");
     assert(!meta.exif, "EXIF still present");
   });
   await ctx.close();
+}
+
+// ======================================================================
+console.log("\nLBH Build Account");
+{
+  const OWNER = "00000000-0000-4000-a000-000000000004";
+  const PENDING_FAM = "62000000-0000-4000-a000-000000000002";
+  const cents = (txt) => Math.round(Number(String(txt).replace(/[^0-9.-]/g, "")) * 100);
+  async function expectedBalance(owner) {
+    const { data } = await db.from("ba_entries").select("direction, status, amount_cents").eq("owner_id", owner);
+    return (data ?? []).reduce((s, e) => s + (e.direction === "out" ? -e.amount_cents : e.status === "confirmed" ? e.amount_cents : 0), 0);
+  }
+  const cctx = await newCtx({ viewport: { width: 390, height: 844 } });
+  const c = await cctx.newPage();
+  const fctx = await newCtx({ viewport: { width: 390, height: 844 } });
+  const f = await fctx.newPage();
+
+  await step("logged-in client: the card goes straight into the app; LBH payments appear automatically", async () => {
+    await login(c, "client@lbh.test");
+    await c.goto(`${BASE}/en/build-account`);
+    await c.waitForURL(/\/portal\/build-account/);
+    await c.getByTestId("ba-balance").waitFor();
+    const { data } = await db.from("ba_entries").select("source").eq("owner_id", OWNER).in("source", ["lbh_payment", "lbh_purchase"]);
+    assert((data ?? []).length > 0, "no automatic LBH entries");
+    await shot(c, "ba-home");
+  });
+
+  await step("balance = confirmed money in − money spent (pending not counted)", async () => {
+    await c.goto(`${BASE}/en/portal/build-account`);
+    const shown = cents(await c.getByTestId("ba-balance-amount").textContent());
+    const want = await expectedBalance(OWNER);
+    assert(shown === want, `shown ${shown} vs ${want}`);
+    await c.getByTestId("ba-pending").getByText("$300.00").waitFor();
+  });
+
+  await step("alerts: price above the price list + no receipt", async () => {
+    const al = c.getByTestId("ba-alerts");
+    await al.locator('[data-alert="price"]').first().waitFor();
+    await al.locator('[data-alert="no_receipt"]').first().waitFor();
+    await al.getByText("usual price in Harare is $11.50", { exact: false }).waitFor();
+  });
+
+  await step("scan a receipt → OCR reads the total → confirm and deduct → balance goes down", async () => {
+    const before = await expectedBalance(OWNER);
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="700"><rect width="100%" height="100%" fill="#fff"/>
+      <g font-family="DejaVu Sans Mono, monospace" font-size="38" fill="#000">
+      <text x="40" y="80">HARDWARE CITY</text><text x="40" y="150">Date 03/11/2026</text>
+      <text x="40" y="240">Cement 4 x 11.00 44.00</text><text x="40" y="310">Wire nails 6.50</text>
+      <text x="40" y="420">TOTAL 50.50</text></g></svg>`;
+    const dir = mkdtempSync(join(tmpdir(), "ba-"));
+    const img = join(dir, "receipt.png");
+    await sharp(Buffer.from(svg)).png().toFile(img);
+    await c.goto(`${BASE}/en/portal/build-account/scan`);
+    await c.getByTestId("ba-receipt-input").setInputFiles(img);
+    await c.getByTestId("ba-read-done").waitFor({ timeout: 120000 });
+    const total = await c.getByTestId("ba-total").inputValue();
+    assert(total === "50.50", `OCR total ${total}`);
+    await c.locator('select[name="stage_name"]').selectOption("Window level");
+    await c.getByTestId("ba-confirm-deduct").click();
+    await c.waitForURL(/\/statement/, { timeout: 30000 });
+    const { data } = await db.from("ba_entries").select("amount_cents, source, receipt_path, shop").eq("owner_id", OWNER).eq("source", "scan").order("created_at", { ascending: false }).limit(1).single();
+    assert(data.amount_cents === 5050 && /^ba\//.test(data.receipt_path ?? ""), JSON.stringify(data));
+    assert((await expectedBalance(OWNER)) === before - 5050, "balance not reduced");
+  });
+
+  await step("add money to the LBH account → 'On its way', not in the balance", async () => {
+    const before = await expectedBalance(OWNER);
+    await c.goto(`${BASE}/en/portal/build-account/add`);
+    const form = c.getByTestId("ba-add-form");
+    const lbh = await form.locator('select[name="account_id"] option', { hasText: "LBH" }).first().getAttribute("value");
+    await form.locator('select[name="account_id"]').selectOption(lbh);
+    await form.locator('select[name="service"]').selectOption("remitly");
+    await form.locator('input[name="amount"]').fill("77.00");
+    await form.locator('input[name="fee"]').fill("2.50");
+    await c.getByTestId("ba-add-submit").click();
+    await c.waitForURL(/added=1/, { timeout: 20000 });
+    await c.getByTestId("ba-pending").getByText("$77.00").waitFor();
+    await c.getByTestId("ba-pending").getByText("Waiting for LBH to confirm").first().waitFor();
+    assert((await expectedBalance(OWNER)) === before, "pending money counted");
+  });
+
+  await step("statement: filters (No receipt), running balance, monthly PDF", async () => {
+    await c.goto(`${BASE}/en/portal/build-account/statement?f=noreceipt`);
+    await c.getByTestId("ba-statement").waitFor();
+    const rows = c.getByTestId("ba-row");
+    assert((await rows.count()) >= 1, "no rows");
+    await c.getByText("Cement — no receipt yet", { exact: false }).first().waitFor();
+    assert((await c.getByTestId("ba-statement").getByText("HARDWARE CITY").count()) === 0, "scanned (receipted) line shown under No receipt");
+    await c.goto(`${BASE}/en/portal/build-account/statement`);
+    await c.getByTestId("ba-statement").getByText("HARDWARE CITY").first().waitFor();
+    await c.goto(`${BASE}/en/portal/build-account/statement?f=noreceipt`);
+    await c.getByTestId("ask-receipt").first().waitFor();
+    const href = await c.getByTestId("ba-pdf").getAttribute("href");
+    const res = await c.request.get(`${BASE}${href}`);
+    assert(res.status() === 200 && res.headers()["content-type"] === "application/pdf", `pdf ${res.status()}`);
+    await shot(c, "ba-statement");
+  });
+
+  await step("budget by stage shows 'Over budget'; money sent shows the chart", async () => {
+    await c.goto(`${BASE}/en/portal/build-account/budget`);
+    await c.getByTestId("ba-budgets").getByText("Over budget").first().waitFor();
+    await c.goto(`${BASE}/en/portal/build-account/sent`);
+    await c.getByTestId("ba-chart").waitFor();
+    await c.getByText("Mukuru").first().waitFor();
+  });
+
+  await step("family: invite by WhatsApp as 'View only' → link ready", async () => {
+    await c.goto(`${BASE}/en/portal/build-account/family`);
+    const form = c.getByTestId("ba-invite-form");
+    await form.locator('input[name="name"]').fill("E2E Auntie");
+    await form.locator('input[name="whatsapp"]').fill("+263 77 123 4567");
+    await form.locator('button[type="submit"]').click();
+    await c.getByTestId("ba-invite-done").waitFor({ timeout: 20000 });
+    const { data } = await db.from("ba_members").select("role, status, invite_token_hash").eq("name", "E2E Auntie").single();
+    assert(data.role === "view" && data.status === "invited" && /^[0-9a-f]{64}$/.test(data.invite_token_hash), JSON.stringify(data));
+  });
+
+  await step("family member confirms the money they received → it counts", async () => {
+    await login(f, "client2@lbh.test");
+    await f.goto(`${BASE}/en/portal/build-account?owner=${OWNER}`);
+    await f.getByTestId("ba-shared-note").waitFor();
+    const before = await expectedBalance(OWNER);
+    await f.getByTestId("ba-pending").getByTestId("confirm-arrived").first().click();
+    await f.waitForTimeout(1500);
+    const { data } = await db.from("ba_entries").select("status").eq("id", PENDING_FAM).single();
+    assert(data.status === "confirmed", data.status);
+    assert((await expectedBalance(OWNER)) === before + 30000, "not counted");
+  });
+
+  await step("a client can't open someone else's Build Account", async () => {
+    const res = await f.goto(`${BASE}/en/portal/build-account?owner=00000000-0000-4000-a000-000000000001`);
+    assert(res.status() === 404, `status ${res.status()}`);
+    const pdf = await f.request.get(`${BASE}/api/pdf/build-account?owner=00000000-0000-4000-a000-000000000001`);
+    assert(pdf.status() === 404, `pdf ${pdf.status()}`);
+  });
+
+  await step("no plan yet: start banner, no scanning; subscribe monthly (Paynow TEST) → paid", async () => {
+    await f.goto(`${BASE}/en/portal/build-account`);
+    await f.getByTestId("ba-start").waitFor();
+    assert((await f.getByTestId("ba-scan-btn").count()) === 0, "scan offered without a plan");
+    await f.goto(`${BASE}/en/portal/build-account/plans`);
+    await f.getByTestId("plan-paid").getByText("$5.00").first().waitFor();
+    await f.getByTestId("subscribe-monthly").click();
+    await f.waitForURL(/\/build-account\/pay\?ref=LBH-BA-/, { timeout: 30000 });
+    await f.getByRole("button", { name: /Simulate successful payment/ }).click();
+    await f.waitForURL(/\/plans\?ref=/, { timeout: 30000 });
+    await f.getByTestId("ba-pay-result").getByText("Payment received").waitFor();
+    const { data } = await db.rpc("ba_plan", { p_owner: "00000000-0000-4000-a000-000000000005" });
+    assert(data === "paid", `plan ${data}`);
+  });
+
+  await step("unpaid → read-only (nothing deleted)", async () => {
+    await db.from("ba_subscriptions").update({ paid_until: "2020-01-01T00:00:00Z" }).eq("owner_id", "00000000-0000-4000-a000-000000000005");
+    await f.goto(`${BASE}/en/portal/build-account`);
+    await f.getByTestId("ba-readonly").waitFor();
+    assert((await f.getByTestId("ba-add-btn").count()) === 0, "add offered while read-only");
+  });
+  await cctx.close();
+  await fctx.close();
+
+  const actx = await newCtx();
+  const a = await actx.newPage();
+  await step("admin: prices + subscribers + confirm money sent to LBH", async () => {
+    await loginStaff(a, "admin@lbh.test");
+    await a.goto(`${BASE}/en/admin/settings/build-account`);
+    await a.getByTestId("admin-ba-subscribers").getByText("Expired").first().waitFor();
+    await a.getByTestId("ba-monthly").fill("6.00");
+    await a.getByTestId("ba-settings-save").click();
+    await a.getByTestId("ba-settings-form").getByText("Saved.").waitFor();
+    const { data: s } = await db.from("settings").select("build_account_monthly_cents").eq("id", 1).single();
+    assert(s.build_account_monthly_cents === 600, "price not saved");
+    await a.getByTestId("admin-ba-transfers").getByText("$77.00").waitFor();
+    await a.getByTestId("admin-ba-transfers").locator("li", { hasText: "$77.00" }).getByTestId("lbh-received").click();
+    await a.waitForTimeout(1500);
+    const { data: e } = await db.from("ba_entries").select("status").eq("amount_cents", 7700).eq("owner_id", OWNER).single();
+    assert(e.status === "confirmed", e.status);
+    const ov = a.getByTestId("override-00000000-0000-4000-a000-000000000005");
+    await ov.locator("select").selectOption("free");
+    await ov.getByRole("button", { name: "Apply" }).click();
+    await ov.getByText("Saved.").waitFor();
+    const { data: p } = await db.rpc("ba_plan", { p_owner: "00000000-0000-4000-a000-000000000005" });
+    assert(p === "free", `plan ${p}`);
+    await db.from("settings").update({ build_account_monthly_cents: 500 }).eq("id", 1);
+  });
+
+  await step("admin: price list add → shows; delete", async () => {
+    await a.goto(`${BASE}/en/admin/settings/price-list`);
+    const form = a.getByTestId("price-add");
+    await form.locator('input[name="item"]').fill("E2E River sand");
+    await form.locator('input[name="unit"]').fill("load");
+    await form.locator('input[name="area"]').fill("Harare");
+    await form.locator('input[name="price"]').fill("80");
+    await form.locator('button[type="submit"]').click();
+    await a.getByTestId("price-row").filter({ hasText: "E2E River sand" }).waitFor();
+    a.once("dialog", (d) => d.accept());
+    await a.getByTestId("price-row").filter({ hasText: "E2E River sand" }).locator("summary").click();
+    await a.getByTestId("price-row").filter({ hasText: "E2E River sand" }).getByRole("button", { name: "Delete" }).click();
+    await a.getByTestId("price-row").filter({ hasText: "E2E River sand" }).waitFor({ state: "detached" });
+  });
+  await actx.close();
 }
 
 await browser.close();

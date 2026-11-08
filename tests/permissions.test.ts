@@ -886,4 +886,155 @@ d("RLS & business rules (local Supabase)", () => {
     }
     expect(results).toEqual([false, false, false, true]);
   });
+  // ---------- LBH Build Account ----------
+  describe("Build Account: own data only, family as invited, real balances", () => {
+    const BA = {
+      lbhAcct: "61000000-0000-4000-a000-000000000001",
+      famAcct: "61000000-0000-4000-a000-000000000002",
+      member: "60000000-0000-4000-a000-000000000001",
+      pendingFam: "62000000-0000-4000-a000-000000000002",
+    };
+    const tag = `TEST BA ${Date.now()}`;
+    const out = (extra: Record<string, unknown>) => ({
+      owner_id: IDS.client, account_id: BA.famAcct, direction: "out", amount_cents: 100,
+      occurred_on: "2026-11-01", description: tag, source: "manual", created_by: IDS.client, ...extra,
+    });
+
+    beforeAll(async () => {
+      await service.from("ba_entries").delete().like("description", "TEST BA%");
+      await service.from("ba_entries").update({ status: "pending", confirmed_by: null, confirmed_at: null }).eq("id", BA.pendingFam);
+      await service.from("ba_subscriptions").delete().in("owner_id", [IDS.client, IDS.client2]);
+      await service.from("ba_members").update({ role: "add", status: "active" }).eq("id", BA.member);
+      await service.from("ba_members").delete().eq("owner_id", IDS.client2);
+      await service.from("ba_accounts").upsert({ id: BA.lbhAcct, owner_id: IDS.client, name: "LBH", kind: "lbh" });
+    });
+
+    it("plans: client with a construction build is free; client2 has none; outsiders can't ask", async () => {
+      expect((await client.rpc("ba_plan", { p_owner: IDS.client })).data).toBe("free");
+      expect((await client2.rpc("ba_plan", { p_owner: IDS.client2 })).data).toBe("none");
+      expect((await agent.rpc("ba_plan", { p_owner: IDS.client })).data).toBeNull();
+      expect((await anon.rpc("ba_plan", { p_owner: IDS.client })).error).not.toBeNull();
+    });
+
+    it("anon and other people see nothing; owner and invited family see the entries", async () => {
+      expect((await anon.from("ba_entries").select("id")).data ?? []).toHaveLength(0);
+      expect((await agent.from("ba_entries").select("id").eq("owner_id", IDS.client)).data).toHaveLength(0);
+      expect((await lawyer.from("ba_accounts").select("id").eq("owner_id", IDS.client)).data).toHaveLength(0);
+      const own = (await client.from("ba_entries").select("id").eq("owner_id", IDS.client)).data ?? [];
+      const fam = (await client2.from("ba_entries").select("id").eq("owner_id", IDS.client)).data ?? [];
+      expect(own.length).toBeGreaterThanOrEqual(4);
+      expect(fam.length).toBe(own.length);
+      // a member never sees the owner's plan, payments or other members
+      expect((await client2.from("ba_subscriptions").select("owner_id").eq("owner_id", IDS.client)).data).toHaveLength(0);
+      expect((await client2.from("ba_members").select("id").eq("owner_id", IDS.client).neq("user_id", IDS.client2)).data).toHaveLength(0);
+    });
+
+    it("a removed family member loses access at once", async () => {
+      await service.from("ba_members").update({ status: "removed" }).eq("id", BA.member);
+      expect((await client2.from("ba_entries").select("id").eq("owner_id", IDS.client)).data).toHaveLength(0);
+      await service.from("ba_members").update({ status: "active" }).eq("id", BA.member);
+    });
+
+    it("clients cannot fake LBH payments/purchases; money in always starts 'on its way'", async () => {
+      const fake = await client.from("ba_entries").insert(out({ direction: "in", source: "lbh_payment", account_id: BA.lbhAcct }));
+      expect(fake.error).not.toBeNull();
+      const id = crypto.randomUUID();
+      const ins = await client.from("ba_entries").insert(out({ id, direction: "in", status: "confirmed", amount_cents: 5000 }));
+      expect(ins.error).toBeNull();
+      const { data } = await service.from("ba_entries").select("status, confirmed_by").eq("id", id).single();
+      expect(data).toEqual({ status: "pending", confirmed_by: null });
+    });
+
+    it("nobody marks money as arrived by editing the row directly", async () => {
+      const { error } = await client.from("ba_entries").update({ status: "confirmed" }).eq("id", BA.pendingFam);
+      const { data } = await service.from("ba_entries").select("status").eq("id", BA.pendingFam).single();
+      expect(error !== null || data?.status === "pending").toBe(true);
+      expect(data?.status).toBe("pending");
+    });
+
+    it("only the receiver confirms: the family member for their account, LBH for the LBH account", async () => {
+      expect((await client.rpc("ba_confirm_transfer", { p_entry: BA.pendingFam, p_approve: true })).error).not.toBeNull();
+      expect((await agent.rpc("ba_confirm_transfer", { p_entry: BA.pendingFam, p_approve: true })).error).not.toBeNull();
+      expect((await client2.rpc("ba_confirm_transfer", { p_entry: BA.pendingFam, p_approve: true })).error).toBeNull();
+      expect((await client2.rpc("ba_confirm_transfer", { p_entry: BA.pendingFam, p_approve: true })).error).not.toBeNull(); // once
+
+      const toLbh = crypto.randomUUID();
+      await client.from("ba_entries").insert(out({ id: toLbh, direction: "in", account_id: BA.lbhAcct, amount_cents: 2500 }));
+      expect((await client.rpc("ba_confirm_transfer", { p_entry: toLbh, p_approve: true })).error).not.toBeNull();
+      expect((await client2.rpc("ba_confirm_transfer", { p_entry: toLbh, p_approve: true })).error).not.toBeNull();
+      expect((await admin.rpc("ba_confirm_transfer", { p_entry: toLbh, p_approve: true })).error).toBeNull();
+      const { data } = await service.from("ba_entries").select("status").eq("id", toLbh).single();
+      expect(data?.status).toBe("confirmed");
+      await service.from("ba_entries").update({ status: "pending", confirmed_by: null, confirmed_at: null }).eq("id", BA.pendingFam);
+    });
+
+    it("family 'can add receipts' adds only on the account they hold; 'view only' adds nothing", async () => {
+      expect((await client2.from("ba_entries").insert(out({ created_by: IDS.client2 }))).error).toBeNull();
+      expect((await client2.from("ba_entries").insert(out({ account_id: BA.lbhAcct, created_by: IDS.client2 }))).error).not.toBeNull();
+      await service.from("ba_members").update({ role: "view" }).eq("id", BA.member);
+      expect((await client2.from("ba_entries").insert(out({ created_by: IDS.client2 }))).error).not.toBeNull();
+      await service.from("ba_members").update({ role: "add" }).eq("id", BA.member);
+      expect((await agent.from("ba_entries").insert(out({ created_by: IDS.agent }))).error).not.toBeNull();
+    });
+
+    it("receipts must live in the owner's own private folder", async () => {
+      const bad = await client.from("ba_entries").insert(out({ receipt_path: `ba/${IDS.client2}/${crypto.randomUUID()}.jpg` }));
+      expect(bad.error).not.toBeNull();
+      const good = await client.from("ba_entries").insert(out({ receipt_path: `ba/${IDS.client}/${crypto.randomUUID()}.jpg` }));
+      expect(good.error).toBeNull();
+    });
+
+    it("unpaid = read-only (nothing deleted); admin override 'free' makes it writable again", async () => {
+      const before = (await client.from("ba_entries").select("id").eq("owner_id", IDS.client)).data?.length ?? 0;
+      await admin.from("ba_subscriptions").upsert({ owner_id: IDS.client, override: "expired" });
+      expect((await client.rpc("ba_plan", { p_owner: IDS.client })).data).toBe("expired");
+      expect((await client.from("ba_entries").insert(out({}))).error).not.toBeNull();
+      expect((await client.from("ba_entries").select("id").eq("owner_id", IDS.client)).data?.length).toBe(before);
+      // a client cannot change their own plan
+      const self = await client.from("ba_subscriptions").upsert({ owner_id: IDS.client, override: "free" });
+      expect(self.error).not.toBeNull();
+      await admin.from("ba_subscriptions").upsert({ owner_id: IDS.client2, override: "free" });
+      expect((await client2.rpc("ba_plan", { p_owner: IDS.client2 })).data).toBe("free");
+      await service.from("ba_subscriptions").delete().in("owner_id", [IDS.client, IDS.client2]);
+      await service.from("ba_subscriptions").insert({ owner_id: IDS.client2, paid_until: "2020-01-01T00:00:00Z", plan: "monthly" });
+      expect((await client2.rpc("ba_plan", { p_owner: IDS.client2 })).data).toBe("expired");
+      await service.from("ba_subscriptions").update({ paid_until: new Date(Date.now() + 86400000).toISOString() }).eq("owner_id", IDS.client2);
+      expect((await client2.rpc("ba_plan", { p_owner: IDS.client2 })).data).toBe("paid");
+      await service.from("ba_subscriptions").delete().eq("owner_id", IDS.client2);
+    });
+
+    it("invites: hashed token, accepted once, never by the owner", async () => {
+      const token = `tok_${crypto.randomUUID().replace(/-/g, "")}`;
+      const hash = (await import("node:crypto")).createHash("sha256").update(token).digest("hex");
+      const { error } = await service.from("ba_members").insert({ owner_id: IDS.client2, name: "TEST invitee", role: "view", invite_token_hash: hash });
+      expect(error).toBeNull();
+      expect((await client2.rpc("ba_accept_invite", { p_token: token })).error?.message).toMatch(/own Build Account/);
+      expect((await client.rpc("ba_accept_invite", { p_token: "wrong" })).error).not.toBeNull();
+      const ok = await client.rpc("ba_accept_invite", { p_token: token });
+      expect(ok.data).toBe(IDS.client2);
+      expect((await agent.rpc("ba_accept_invite", { p_token: token })).error).not.toBeNull(); // used
+      // a member cannot promote themselves
+      await client.from("ba_members").update({ role: "add" }).eq("owner_id", IDS.client2);
+      const { data } = await service.from("ba_members").select("role").eq("owner_id", IDS.client2).single();
+      expect(data?.role).toBe("view");
+      await service.from("ba_members").delete().eq("owner_id", IDS.client2);
+    });
+
+    it("price list: everyone signed in reads, only admin writes; each LBH source appears once", async () => {
+      expect(((await client.from("price_list").select("id")).data ?? []).length).toBeGreaterThan(0);
+      expect((await client.from("price_list").insert({ item: "TEST", unit: "bag", price_cents: 1 })).error).not.toBeNull();
+      const add = await admin.from("price_list").insert({ item: "TEST BA item", unit: "bag", area: "Harare", price_cents: 100 }).select("id").single();
+      expect(add.error).toBeNull();
+      await admin.from("price_list").delete().eq("id", add.data!.id);
+      const ref = crypto.randomUUID();
+      const row = { owner_id: IDS.client, account_id: BA.lbhAcct, direction: "out", amount_cents: 1, occurred_on: "2026-11-01", description: tag, source: "lbh_purchase", source_ref: ref, receipt_source: "lbh" };
+      expect((await service.from("ba_entries").insert(row)).error).toBeNull();
+      expect((await service.from("ba_entries").insert(row)).error).not.toBeNull();
+    });
+
+    it("statements are private: the receipt bucket is not public", async () => {
+      const { data } = await service.storage.getBucket("documents");
+      expect(data?.public).toBe(false);
+    });
+  });
 });

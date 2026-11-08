@@ -181,7 +181,7 @@ export default async function PortalDashboard({
         </section>
       )}
 
-      <FinanceTrackerCard />
+      <FinanceTrackerCard portal />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth/guard";
 import { Link } from "@/i18n/navigation";
-import { CameraIcon, ChevronRightIcon } from "@/components/ui/PortalIcons";
+import { CameraIcon, CardIcon, ChevronRightIcon, ListIcon } from "@/components/ui/PortalIcons";
 import { SettingsForm, InviteStaffForm } from "@/components/admin/AdminActions";
 
 export default async function AdminSettingsPage({
@@ -26,6 +26,26 @@ export default async function AdminSettingsPage({
         <span className="min-w-0 flex-1">
           <span className="block font-extrabold text-ink">{t("photosTitle")}</span>
           <span className="block text-xs text-muted">{t("photosHint")}</span>
+        </span>
+        <ChevronRightIcon size={18} className="text-muted" />
+      </Link>
+      <Link href="/admin/settings/build-account" className="card flex items-center gap-3 p-4 hover:shadow-(--shadow-card-hover)" data-testid="ba-settings-link">
+        <span className="icon-round icon-forest h-11 w-11">
+          <CardIcon size={22} />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-extrabold text-ink">{t("baTitle")}</span>
+          <span className="block text-xs text-muted">{t("baHint")}</span>
+        </span>
+        <ChevronRightIcon size={18} className="text-muted" />
+      </Link>
+      <Link href="/admin/settings/price-list" className="card flex items-center gap-3 p-4 hover:shadow-(--shadow-card-hover)" data-testid="price-list-link">
+        <span className="icon-round icon-forest h-11 w-11">
+          <ListIcon size={22} />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-extrabold text-ink">{t("priceTitle")}</span>
+          <span className="block text-xs text-muted">{t("priceHint")}</span>
         </span>
         <ChevronRightIcon size={18} className="text-muted" />
       </Link>

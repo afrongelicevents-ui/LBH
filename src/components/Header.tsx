@@ -17,6 +17,7 @@ import { initialsOf, useAuthProfile, type HeaderProfile } from "./auth/useAuthPr
 const navItems = [
   { href: "/services", key: "services" },
   { href: "/how-it-works", key: "howItWorks" },
+  { href: "/build-account", key: "buildAccount" },
   { href: "/about", key: "about" },
   { href: "/contact", key: "contact" },
 ] as const;

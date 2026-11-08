@@ -66,7 +66,11 @@ const nextConfig: NextConfig = {
         ]
       : [],
   },
-  serverExternalPackages: ["pdfkit", "sharp"],
+  serverExternalPackages: ["pdfkit", "sharp", "tesseract.js"],
+  // Receipt reading: OCR language data is shipped with the server function
+  outputFileTracingIncludes: {
+    "/[locale]/portal/build-account/**": ["./node_modules/@tesseract.js-data/eng/4.0.0/**", "./node_modules/tesseract.js-core/**"],
+  },
   experimental: {
     serverActions: {
       // Files never pass through server actions: the browser uploads them

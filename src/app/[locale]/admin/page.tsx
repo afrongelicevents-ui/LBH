@@ -20,6 +20,7 @@ const BLOCK_ICON = {
   requests: { icon: DocIcon, tone: "ok" },
   reports: { icon: FileSearchIcon, tone: "done" },
   proofs: { icon: CardIcon, tone: "ok" },
+  baTransfers: { icon: CardIcon, tone: "prog" },
   extras: { icon: DollarIcon, tone: "prog" },
   stages: { icon: HammerIcon, tone: "forest" },
   chats: { icon: ChatIcon, tone: "prog" },
@@ -47,6 +48,7 @@ export default async function AdminNeedsYouPage({
     { data: pendingExtraCosts },
     { data: unreadChats },
     { data: stageWork },
+    { data: baTransfers },
   ] = await Promise.all([
     supabase
       .from("call_bookings")
@@ -79,6 +81,13 @@ export default async function AdminNeedsYouPage({
       .select("request_id, name, status, service_requests(title)")
       .in("status", ["quoting", "paid", "purchased", "delivered", "building"])
       .order("updated_at"),
+    // Build Account: money a client says they sent to the LBH account
+    supabase
+      .from("ba_entries")
+      .select("id, amount_cents, ba_accounts!inner(kind)")
+      .eq("direction", "in")
+      .eq("status", "pending")
+      .eq("ba_accounts.kind", "lbh"),
   ]);
 
   const chatClients = Array.from(
@@ -133,6 +142,14 @@ export default async function AdminNeedsYouPage({
       items: (pendingExtraCosts ?? []).map((e) => ({
         label: `${(e.service_requests as unknown as { title: string })?.title ?? ""} · ${e.title} · ${formatCents(e.amount_cents)}`,
         href: `/admin/requests/${e.request_id}#extras`,
+      })),
+    },
+    {
+      key: "baTransfers",
+      count: baTransfers?.length ?? 0,
+      items: (baTransfers ?? []).map((e) => ({
+        label: formatCents(e.amount_cents),
+        href: "/admin/settings/build-account",
       })),
     },
     {

@@ -12,6 +12,7 @@ export interface PortalNavDef {
 const CLIENT: PortalNavDef[] = [
   { href: "/portal", label: "portal.nav.dashboard", icon: "home" },
   { href: "/portal/build", label: "portal.nav.myBuild", icon: "hammer" },
+  { href: "/portal/build-account", label: "portal.nav.buildAccount", icon: "card" },
   { href: "/portal/requests/new-land", label: "portal.nav.newLand", icon: "pin" },
   { href: "/portal/requests/new-materials", label: "portal.nav.newMaterials", icon: "truck" },
   { href: "/portal/chat", label: "portal.nav.chat", icon: "chat" },
@@ -30,6 +31,8 @@ const ADMIN: PortalNavDef[] = [
   { href: "/admin/interest", label: "admin.nav.interest", icon: "bell" },
   { href: "/admin/settings", label: "admin.nav.settings", icon: "cog" },
   { href: "/admin/settings/photos", label: "admin.nav.photos", icon: "camera" },
+  { href: "/admin/settings/build-account", label: "admin.nav.buildAccount", icon: "card" },
+  { href: "/admin/settings/price-list", label: "admin.nav.priceList", icon: "list" },
   { href: "/admin/translations", label: "admin.nav.translations", icon: "globe" },
   { href: "/admin/audit", label: "admin.nav.audit", icon: "list" },
 ];
