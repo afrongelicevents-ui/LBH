@@ -7,7 +7,7 @@ import { accountName, currentMonth, receiverOf } from "@/lib/buildAccount/view";
 import BaShell from "@/components/buildAccount/BaShell";
 import { ConfirmTransferButtons } from "@/components/buildAccount/BaButtons";
 import { StatTiles, StatusBadge } from "@/components/ui/Portal";
-import { ArrowRightIcon, CameraIcon, PlusIcon, SendIcon, DollarIcon, CalendarIcon, BellIcon } from "@/components/ui/PortalIcons";
+import { ArrowRightIcon, CameraIcon, PlusIcon, SendIcon, DollarIcon, CalendarIcon, BellIcon, HomeIcon, UserIcon, UsersIcon, ChevronRightIcon, CheckIcon } from "@/components/ui/PortalIcons";
 
 /** Build Account — Home: balance, totals, actions, alerts. */
 export default async function BuildAccountHome({
@@ -29,6 +29,9 @@ export default async function BuildAccountHome({
   const month = currentMonth();
   const budgets = M.stageBudgets(data.entries, data.stages, data.budgets);
   const alerts = M.alerts(data.entries, data.accounts, data.priceList, budgets);
+  const noReceipt = alerts.filter((a): a is Extract<M.Alert, { kind: "no_receipt" }> => a.kind === "no_receipt");
+  const otherAlerts = alerts.filter((a) => a.kind !== "no_receipt");
+  const activeMembers = data.members.filter((m) => m.status === "active");
   const pending = data.entries.filter((e) => e.direction === "in" && e.status === "pending");
   const qs = (a: string) => {
     const p = new URLSearchParams();
@@ -53,6 +56,13 @@ export default async function BuildAccountHome({
         </section>
       )}
 
+      {ctx.isOwner && activeMembers.length > 0 && (
+        <p className="inline-flex flex-wrap items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-ink shadow-sm" data-testid="ba-shared-with">
+          <UsersIcon size={14} className="text-forest" />
+          {t("sharedWith", { names: activeMembers.map((m) => `${m.name.replace(/^SAMPLE\s+/, "")} – ${t(`role.${m.role}` as never)}`).join(", ") })}
+        </p>
+      )}
+
       {/* account switcher */}
       <nav aria-label={t("accounts")} className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {[{ id: "all", name: t("allAccounts") }, ...data.accounts.map((a) => ({ id: a.id, name: accountName(data, a.id) }))].map((a) => (
@@ -65,6 +75,9 @@ export default async function BuildAccountHome({
       {/* balance */}
       <section className="relative overflow-hidden rounded-[26px] bg-forest p-5 text-white shadow-(--shadow-card)" data-testid="ba-balance">
         <div aria-hidden className="absolute -top-16 -right-10 h-48 w-48 rounded-full bg-white/5" />
+        <Link href={`/portal/build-account/statement${qs(selected)}`} aria-label={t("seeStatement")} className="absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 hover:bg-white/20">
+          <ChevronRightIcon size={18} />
+        </Link>
         <p className="text-sm font-medium text-white/80">{t("available")}</p>
         <p className="mt-1 text-4xl font-extrabold tracking-tight" data-testid="ba-balance-amount">
           {formatCents(M.balance(view))}
@@ -96,6 +109,25 @@ export default async function BuildAccountHome({
           { label: t("sentThisMonth"), value: formatCents(M.sentInMonth(view, month)), icon: <CalendarIcon size={20} />, tone: "prog" },
         ]}
       />
+
+      {data.accounts.length > 1 && (
+        <section className="card divide-y divide-[#eef0ef] px-4" data-testid="ba-accounts">
+          {data.accounts.map((a) => {
+            const bal = M.balance(M.inAccount(data.entries, a.id));
+            const owes = alerts.some((x) => x.kind === "unbacked" && x.account_id === a.id);
+            return (
+              <Link key={a.id} href={`/portal/build-account${qs(a.id)}`} className="flex items-center gap-3 py-3">
+                <span className="icon-round icon-forest h-10 w-10 shrink-0">{a.kind === "lbh" ? <HomeIcon size={18} /> : <UserIcon size={18} />}</span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-sm font-bold text-ink">{accountName(data, a.id)}</span>
+                  <span className="block text-sm font-extrabold text-ink">{formatCents(bal)}</span>
+                </span>
+                {owes ? <ChevronRightIcon size={18} className="text-muted" /> : <span className="flex h-6 w-6 items-center justify-center rounded-full bg-ok text-white"><CheckIcon size={14} /></span>}
+              </Link>
+            );
+          })}
+        </section>
+      )}
 
       {pending.length > 0 && (
         <section className="card p-4" data-testid="ba-pending">
@@ -131,13 +163,23 @@ export default async function BuildAccountHome({
           <p className="mt-2 text-sm text-muted">{t("noAlerts")}</p>
         ) : (
           <ul className="mt-2 space-y-2 text-sm">
-            {alerts.slice(0, 8).map((a, i) => (
-              <li key={i} className="rounded-xl bg-offwhite p-2.5" data-alert={a.kind}>
-                {a.kind === "no_receipt" && t("alert.noReceipt", { what: a.description.replace(/^SAMPLE\s+/, ""), amount: formatCents(a.amount_cents) })}
+            {noReceipt.length > 0 && (
+              <li className="flex items-start gap-2 rounded-xl bg-offwhite p-2.5" data-alert="no_receipt">
+                <span aria-hidden className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-red-600" />
+                <Link href={`/portal/build-account/statement${qs(selected)}${qs(selected) ? "&" : "?"}f=noreceipt`} className="flex-1 hover:underline">
+                  {t("alert.noReceiptCount", { count: noReceipt.length, amount: formatCents(noReceipt.reduce((s, a) => s + a.amount_cents, 0)) })}
+                </Link>
+              </li>
+            )}
+            {otherAlerts.slice(0, 8).map((a, i) => (
+              <li key={i} className="flex items-start gap-2 rounded-xl bg-offwhite p-2.5" data-alert={a.kind}>
+                <span aria-hidden className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${a.kind === "price" ? "bg-amber-500" : a.kind === "over_budget" ? "bg-red-600" : "bg-blue-600"}`} />
+                <span className="flex-1">
                 {a.kind === "price" &&
                   t("alert.price", { item: a.item.replace(/^SAMPLE\s+/, ""), paid: formatCents(a.paid_cents), usual: formatCents(a.usual_cents), unit: a.unit, area: a.area })}
                 {a.kind === "over_budget" && t("alert.overBudget", { stage: a.stage, spent: formatCents(a.spent_cents), budget: formatCents(a.budget_cents) })}
                 {a.kind === "unbacked" && t("alert.unbacked", { name: a.name.replace(/^SAMPLE\s+/, ""), amount: formatCents(a.unbacked_cents) })}
+                </span>
               </li>
             ))}
           </ul>

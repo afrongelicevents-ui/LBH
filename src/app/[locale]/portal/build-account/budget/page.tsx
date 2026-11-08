@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { formatCents } from "@/lib/money";
 import { loadBaPage } from "@/lib/buildAccount/page";
 import * as M from "@/lib/buildAccount/math";
+import { CheckIcon } from "@/components/ui/PortalIcons";
 import BaShell from "@/components/buildAccount/BaShell";
 import BudgetInput from "@/components/buildAccount/BudgetInput";
 import { StatusBadge } from "@/components/ui/Portal";
@@ -43,9 +44,12 @@ export default async function BudgetPage({
                   {r.stage}
                 </p>
                 {r.over ? (
-                  <StatusBadge tone="grey" className="!bg-red-50 !text-red-800">{t("overBudget")}</StatusBadge>
+                  <span className="rounded-full border border-red-600 px-2.5 py-0.5 text-xs font-bold text-red-700">{t("overBudget")}</span>
                 ) : r.budget_cents !== null ? (
-                  <StatusBadge tone="ok">{t("withinBudget")}</StatusBadge>
+                  <span className="flex items-center gap-1.5 text-xs font-bold text-ok">
+                    {t("withinBudget")}
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-ok text-white"><CheckIcon size={14} /></span>
+                  </span>
                 ) : null}
               </div>
               <p className="mt-2 text-sm text-ink">

@@ -1373,7 +1373,8 @@
       "noReceipt": "Hapana risiti ye{what} ({amount}).",
       "price": "{item}: wabhadhara {paid} pa{unit}, mutengo wenguva dzose ku{area} ndi{usual}.",
       "overBudget": "{stage} yapfuura bhajeti: {spent} yashandiswa pa{budget}.",
-      "unbacked": "{name} akabata {amount} isati yava nemarisiti."
+      "unbacked": "{name} akabata {amount} isati yava nemarisiti.",
+      "noReceiptCount": "{count, plural, one {# mubhadharo usina risiti} other {# mibhadharo isina risiti}} ({amount})"
     },
     "recent": "Zvichangoitika",
     "seeStatement": "Ona chitatimendi",
@@ -1561,6 +1562,15 @@
       "capturetime": "Tora mufananidzo mutsva.",
       "network": "Hapana network — edza zvakare.",
       "error": "Pane chakanganisika — edza zvakare."
+    },
+    "sharedWith": "Yakagovaniswa na{names}",
+    "balanceAfter": "Mari inosara",
+    "bottom": {
+      "home": "Kumba",
+      "statement": "Statement",
+      "scan": "Scan",
+      "budget": "Bhajeti",
+      "more": "Zvimwe"
     }
   }
 }

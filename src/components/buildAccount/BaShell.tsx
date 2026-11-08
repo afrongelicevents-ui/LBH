@@ -1,9 +1,9 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { BaPage } from "@/lib/buildAccount/page";
-import { CardIcon } from "@/components/ui/PortalIcons";
+import { CardIcon, HomeIcon, ListIcon, CameraIcon, ChartIcon, MoreIcon } from "@/components/ui/PortalIcons";
 
-export type BaTab = "home" | "statement" | "sent" | "budget" | "family" | "plans";
+export type BaTab = "home" | "statement" | "sent" | "budget" | "family" | "plans" | "scan";
 
 /** Frame of every Build Account screen: title, whose account, tabs, plan banner. */
 export default async function BaShell({
@@ -29,6 +29,14 @@ export default async function BaShell({
         ] as const)
       : []),
   ];
+
+  const bottom: { key: "home" | "statement" | "scan" | "budget"; href: string; icon: React.ReactNode }[] = [
+    { key: "home", href: "/portal/build-account", icon: <HomeIcon size={20} /> },
+    { key: "statement", href: "/portal/build-account/statement", icon: <ListIcon size={20} /> },
+    { key: "scan", href: "/portal/build-account/scan", icon: <CameraIcon size={20} /> },
+    { key: "budget", href: "/portal/build-account/budget", icon: <ChartIcon size={20} /> },
+  ];
+  const more = tabs.filter((x) => !["home", "statement", "budget"].includes(x.key));
 
   return (
     <div className="mx-auto max-w-3xl space-y-4" data-testid="ba-shell">
@@ -72,7 +80,7 @@ export default async function BaShell({
         </p>
       )}
 
-      <nav aria-label={t("title")} className="-mx-1 flex gap-1 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <nav aria-label={t("title")} className="-mx-1 hidden gap-1 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex">
         {tabs.map((tab) => (
           <Link
             key={tab.key}
@@ -89,7 +97,40 @@ export default async function BaShell({
 
       {children}
 
-      <p className="pt-2 text-center text-[11px] text-muted">{t("notABank")}</p>
+      <p className="pt-2 pb-20 text-center text-[11px] text-muted sm:pb-0">{t("notABank")}</p>
+
+      {/* phone: bottom tab bar */}
+      <nav aria-label={t("title")} className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white pb-[env(safe-area-inset-bottom)] sm:hidden" data-testid="ba-bottom-nav">
+        <ul className="grid grid-cols-5">
+          {bottom.map((b) => (
+            <li key={b.key}>
+              <Link
+                href={`${b.href}${ownerQs}`}
+                aria-current={active === b.key ? "page" : undefined}
+                className={`flex flex-col items-center gap-0.5 py-2 text-[11px] font-semibold ${active === b.key ? "text-forest" : "text-muted"}`}
+              >
+                {b.icon}
+                {t(`bottom.${b.key}`)}
+              </Link>
+            </li>
+          ))}
+          <li>
+            <details className="group relative">
+              <summary className={`flex cursor-pointer list-none flex-col items-center gap-0.5 py-2 text-[11px] font-semibold ${more.some((m) => m.key === active) ? "text-forest" : "text-muted"}`}>
+                <MoreIcon size={20} />
+                {t("bottom.more")}
+              </summary>
+              <div className="absolute right-2 bottom-full mb-2 w-48 rounded-2xl bg-white p-2 shadow-(--shadow-card)">
+                {more.map((m) => (
+                  <Link key={m.key} href={`${m.href}${m.key === "family" || m.key === "plans" ? "" : ownerQs}`} className="block rounded-xl px-3 py-2 text-sm font-semibold text-ink hover:bg-offwhite">
+                    {t(`tab.${m.key}`)}
+                  </Link>
+                ))}
+              </div>
+            </details>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 }

@@ -237,6 +237,20 @@ export const LogOutIcon = (p: P) => (
   </Svg>
 );
 
+export const ChartIcon = (p: P) => (
+  <Svg {...p}>
+    <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />
+  </Svg>
+);
+
+export const MoreIcon = (p: P) => (
+  <Svg {...p}>
+    <circle cx="5" cy="12" r="1" />
+    <circle cx="12" cy="12" r="1" />
+    <circle cx="19" cy="12" r="1" />
+  </Svg>
+);
+
 export const ICONS = {
   home: HomeIcon,
   doc: DocIcon,

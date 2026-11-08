@@ -1372,7 +1372,8 @@
       "noReceipt": "No receipt for {what} ({amount}).",
       "price": "{item}: paid {paid} per {unit}, usual price in {area} is {usual}.",
       "overBudget": "{stage} is over budget: {spent} spent of {budget}.",
-      "unbacked": "{name} holds {amount} not yet backed by receipts."
+      "unbacked": "{name} holds {amount} not yet backed by receipts.",
+      "noReceiptCount": "{count, plural, one {# payment without a receipt} other {# payments without a receipt}} ({amount})"
     },
     "recent": "Recent",
     "seeStatement": "See statement",
@@ -1560,6 +1561,15 @@
       "capturetime": "Take a new photo.",
       "network": "No connection — try again.",
       "error": "Something went wrong — try again."
+    },
+    "sharedWith": "Shared with {names}",
+    "balanceAfter": "Balance after",
+    "bottom": {
+      "home": "Home",
+      "statement": "Statement",
+      "scan": "Scan",
+      "budget": "Budget",
+      "more": "More"
     }
   }
 }

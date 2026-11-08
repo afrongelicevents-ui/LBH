@@ -1373,7 +1373,8 @@
       "noReceipt": "Ayikho irisidi ka-{what} ({amount}).",
       "price": "{item}: kubhadalwe {paid} nge-{unit}, intengo ejwayelekileyo e-{area} ngu-{usual}.",
       "overBudget": "{stage} sedlule ibhajethi: kusetshenziswe {spent} ku-{budget}.",
-      "unbacked": "{name} uphethe {amount} engakabi lamarisidi."
+      "unbacked": "{name} uphethe {amount} engakabi lamarisidi.",
+      "noReceiptCount": "{count, plural, one {# inkokhelo engelaresiti} other {# izinkokhelo ezingelaresiti}} ({amount})"
     },
     "recent": "Okwakamuva",
     "seeStatement": "Bona isitatimende",
@@ -1561,6 +1562,15 @@
       "capturetime": "Thatha isithombe esitsha.",
       "network": "Akula network — zama futhi.",
       "error": "Kukhona okungahambanga kahle — zama futhi."
+    },
+    "sharedWith": "Kwabelwana lo {names}",
+    "balanceAfter": "Imali esalayo",
+    "bottom": {
+      "home": "Ekhaya",
+      "statement": "Statement",
+      "scan": "Scan",
+      "budget": "Ibhajethi",
+      "more": "Okunye"
     }
   }
 }

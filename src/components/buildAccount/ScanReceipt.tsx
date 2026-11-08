@@ -37,12 +37,13 @@ export default function ScanReceipt({
 }: {
   ownerId: string;
   ownerQs: string;
-  accounts: { id: string; name: string }[];
+  accounts: { id: string; name: string; balance_cents: number }[];
   stages: string[];
   today: string;
 }) {
   const t = useTranslations("ba");
   const router = useRouter();
+  const [acct, setAcct] = useState(accounts[0]?.id ?? "");
   const camRef = useRef<HTMLInputElement>(null);
   const { upload } = useDirectUpload();
   const [reading, startReading] = useTransition();
@@ -174,7 +175,7 @@ export default function ScanReceipt({
           </label>
           <label className="block">
             <span className={labelCls}>{t("fromAccount")} *</span>
-            <select name="account_id" required defaultValue={accounts[0]?.id} className={inputCls}>
+            <select name="account_id" required value={acct} onChange={(e) => setAcct(e.target.value)} className={inputCls}>
               {accounts.map((a) => (
                 <option key={a.id} value={a.id}>
                   {a.name}
@@ -194,6 +195,18 @@ export default function ScanReceipt({
             </select>
           </label>
         </div>
+        {(() => {
+          const bal = accounts.find((a) => a.id === acct)?.balance_cents ?? 0;
+          const after = bal - (toCents(total) ?? 0);
+          return (
+            <p className="flex items-center justify-between rounded-xl bg-ok-soft px-3 py-2.5 text-sm" data-testid="ba-balance-after">
+              <span className="font-semibold text-ink">{t("balanceAfter")}</span>
+              <strong className={`text-lg ${after < 0 ? "text-red-700" : "text-forest"}`}>
+                {after < 0 ? "−" : ""}${(Math.abs(after) / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </strong>
+            </p>
+          );
+        })()}
         <label className="block">
           <span className={labelCls}>{t("note")}</span>
           <input name="description" maxLength={300} className={inputCls} />

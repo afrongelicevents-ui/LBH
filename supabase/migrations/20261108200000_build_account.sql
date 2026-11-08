@@ -369,8 +369,10 @@ create policy ba_accounts_admin on public.ba_accounts for all to authenticated
 -- entries
 create policy ba_entries_read on public.ba_entries for select to authenticated
   using (public.ba_can_view(owner_id));
+-- family members only record money SPENT; money in is recorded by the owner
 create policy ba_entries_add on public.ba_entries for insert to authenticated
-  with check (public.ba_can_add(owner_id, account_id) and public.ba_writable(owner_id));
+  with check (public.ba_can_add(owner_id, account_id) and public.ba_writable(owner_id)
+              and (owner_id = auth.uid() or direction = 'out'));
 create policy ba_entries_owner_delete on public.ba_entries for delete to authenticated
   using (owner_id = auth.uid() and source in ('manual', 'scan') and public.ba_writable(owner_id));
 create policy ba_entries_admin on public.ba_entries for all to authenticated
@@ -391,3 +393,9 @@ create policy ba_payments_read on public.ba_payments for select to authenticated
   using (owner_id = auth.uid() or public.is_admin());
 create policy ba_payments_admin on public.ba_payments for all to authenticated
   using (public.is_admin()) with check (public.is_admin());
+
+-- A construction build makes the Build Account free, so only LBH (admin) may
+-- create build requests: clients create land checks and material orders only.
+drop policy if exists requests_client_insert on public.service_requests;
+create policy requests_client_insert on public.service_requests
+  for insert with check (client_id = auth.uid() and status = 'new' and type::text <> 'build');

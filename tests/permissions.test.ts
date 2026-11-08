@@ -975,6 +975,17 @@ d("RLS & business rules (local Supabase)", () => {
       expect((await client2.from("ba_entries").insert(out({ created_by: IDS.client2 }))).error).not.toBeNull();
       await service.from("ba_members").update({ role: "add" }).eq("id", BA.member);
       expect((await agent.from("ba_entries").insert(out({ created_by: IDS.agent }))).error).not.toBeNull();
+      // a family member can't record money IN (only the owner does)
+      expect((await client2.from("ba_entries").insert(out({ direction: "in", created_by: IDS.client2 }))).error).not.toBeNull();
+    });
+
+    it("a client can't make their Build Account free by creating a 'build' request themselves", async () => {
+      const { error } = await client2.from("service_requests").insert({ client_id: IDS.client2, type: "build", status: "new", title: "TEST fake build" });
+      expect(error).not.toBeNull();
+      expect((await client2.rpc("ba_plan", { p_owner: IDS.client2 })).data).toBe("none");
+      const ok = await client2.from("service_requests").insert({ client_id: IDS.client2, type: "materials", status: "new", title: "TEST BA materials" }).select("id").single();
+      expect(ok.error).toBeNull();
+      await service.from("service_requests").delete().eq("id", ok.data!.id);
     });
 
     it("receipts must live in the owner's own private folder", async () => {
