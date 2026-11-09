@@ -313,3 +313,58 @@ export async function sendRenewalReminders(ownerIds?: string[]): Promise<number>
   }
   return sent;
 }
+
+export const UNSAVED_RECEIPT_HOURS = 24;
+
+/** Pure: which stored receipt files are unsaved and older than the cut-off. */
+export function unsavedReceipts(
+  files: { path: string; created_at: string | null }[],
+  savedPaths: Set<string>,
+  now = Date.now(),
+  hours = UNSAVED_RECEIPT_HOURS
+): string[] {
+  const cutoff = now - hours * 3600_000;
+  return files
+    .filter((f) => !savedPaths.has(f.path))
+    .filter((f) => f.created_at !== null && new Date(f.created_at).getTime() < cutoff)
+    .map((f) => f.path);
+}
+
+/**
+ * Receipt photos are stored as soon as they are read (before "Confirm and
+ * deduct"). Delete the ones never saved on a Build Account line after 24 hours.
+ */
+export async function deleteUnsavedReceipts(): Promise<number> {
+  const admin = createAdminClient();
+  const bucket = admin.storage.from("documents");
+  const page = async (prefix: string) => {
+    const out: { name: string; id: string | null; created_at: string | null }[] = [];
+    for (let offset = 0; ; offset += 1000) {
+      const { data, error } = await bucket.list(prefix, { limit: 1000, offset });
+      if (error) throw new Error(`list ${prefix}: ${error.message}`);
+      out.push(...(data ?? []));
+      if (!data || data.length < 1000) return out;
+    }
+  };
+
+  let deleted = 0;
+  for (const owner of await page("ba")) {
+    if (owner.id !== null || !UUID.test(owner.name)) continue; // folders only
+    const files = (await page(`ba/${owner.name}`))
+      .filter((f) => f.id !== null)
+      .map((f) => ({ path: `ba/${owner.name}/${f.name}`, created_at: f.created_at }));
+    if (!files.length) continue;
+    const { data: saved, error } = await admin
+      .from("ba_entries")
+      .select("receipt_path")
+      .eq("owner_id", owner.name)
+      .not("receipt_path", "is", null);
+    if (error) continue; // never delete when we can't see what is saved
+    const gone = unsavedReceipts(files, new Set((saved ?? []).map((s) => s.receipt_path as string)));
+    for (let i = 0; i < gone.length; i += 100) {
+      const { error: rmErr } = await bucket.remove(gone.slice(i, i + 100));
+      if (!rmErr) deleted += Math.min(100, gone.length - i);
+    }
+  }
+  return deleted;
+}

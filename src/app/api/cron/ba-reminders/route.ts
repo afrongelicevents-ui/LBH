@@ -1,7 +1,7 @@
 import { timingSafeEqual } from "node:crypto";
-import { sendRenewalReminders } from "@/lib/buildAccount/server";
+import { deleteUnsavedReceipts, sendRenewalReminders } from "@/lib/buildAccount/server";
 
-/** Daily (Vercel Cron): email Build Account renewal reminders. Needs CRON_SECRET. */
+/** Daily (Vercel Cron): renewal reminders + delete receipt photos never saved (24 h). Needs CRON_SECRET. */
 export async function GET(req: Request) {
   const secret = process.env.CRON_SECRET;
   const got = req.headers.get("authorization") ?? "";
@@ -10,5 +10,9 @@ export async function GET(req: Request) {
     return new Response("not authorised", { status: 401 });
   }
   const sent = await sendRenewalReminders();
-  return Response.json({ sent });
+  const receiptsDeleted = await deleteUnsavedReceipts().catch((e) => {
+    console.error(`[build-account] receipt clean-up: ${e instanceof Error ? e.message : e}`);
+    return 0;
+  });
+  return Response.json({ sent, receiptsDeleted });
 }

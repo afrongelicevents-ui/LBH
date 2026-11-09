@@ -188,3 +188,18 @@ describe("Build Account plans (free / paid / expired)", () => {
     expect([isWritable("free"), isWritable("paid"), isWritable("expired"), isWritable("none")]).toEqual([true, true, false, false]);
   });
 });
+
+import { unsavedReceipts } from "../src/lib/buildAccount/server";
+
+describe("receipt photos never saved are removed after 24 hours", () => {
+  const now = Date.parse("2026-11-09T12:00:00Z");
+  const files = [
+    { path: "ba/o/old-unsaved.jpg", created_at: "2026-11-08T11:00:00Z" }, // 25 h
+    { path: "ba/o/old-saved.jpg", created_at: "2026-11-01T00:00:00Z" },
+    { path: "ba/o/new-unsaved.jpg", created_at: "2026-11-09T01:00:00Z" }, // 11 h
+    { path: "ba/o/unknown-age.jpg", created_at: null },
+  ];
+  it("deletes only old files that no Build Account line uses", () => {
+    expect(unsavedReceipts(files, new Set(["ba/o/old-saved.jpg"]), now)).toEqual(["ba/o/old-unsaved.jpg"]);
+  });
+});
