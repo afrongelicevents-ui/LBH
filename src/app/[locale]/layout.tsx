@@ -31,6 +31,16 @@ export async function generateMetadata({
       template: `%s · ${site.shortName}`,
     },
     description: t("tagline"),
+    // what WhatsApp, Facebook and others show when the site is shared
+    openGraph: {
+      type: "website",
+      siteName: site.name,
+      title: `${site.shortName} — ${t("brand")}`,
+      description: t("tagline"),
+      locale: locale === "en" ? "en_GB" : locale === "sn" ? "sn_ZW" : "nd_ZW",
+      images: [{ url: "/images/hero.jpg", alt: site.name }],
+    },
+    twitter: { card: "summary_large_image" },
     manifest: "/manifest.webmanifest",
     icons: {
       icon: [{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }],
