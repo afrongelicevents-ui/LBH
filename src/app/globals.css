@@ -352,3 +352,6 @@ body {
   .ds-tag-alert { background: #f6e6dc; color: #8a3b12; }
   .ds-credit { font-size: 0.68rem; color: var(--color-slate); }
 }
+
+/* the floating WhatsApp button steps aside while the site menu is open */
+html[data-menu="open"] .wa-float { display: none; }

@@ -7,7 +7,7 @@ import type { PhotoSource } from "@/components/site/Photo";
  * Photos are only resized (not otherwise altered).
  */
 const WC = "CC BY-SA 4.0, Wikimedia Commons";
-export const STOCK_PHOTOS: Record<"hero" | "land" | "materials" | "onsite" | "reporting", PhotoSource> = {
+const LICENSED_STOCK_PHOTOS: Record<"hero" | "land" | "materials" | "onsite" | "reporting", PhotoSource> = {
   hero: {
     src: "/images/stock/hero.jpg",
     kind: "stock",
@@ -48,3 +48,20 @@ export const PHOTO_CREDITS = [
   { title: "Building in progress", author: "Ttakhwiri", licence: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:Building_in_progress.jpg" },
   { title: "Two garage house", author: "Ttakhwiri", licence: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:Two_garage_house.jpg" },
 ];
+
+/**
+ * TEMPORARY (design preview only): the licensed files above could not be
+ * downloaded from this server yet (Wikimedia rate limit). Until they are
+ * added, the existing site images are shown and labelled as placeholders.
+ */
+const HAVE_LICENSED_FILES = false;
+const PLACEHOLDER = (src: string, alt: string): PhotoSource => ({ src, kind: "stock", credit: "Placeholder — to be replaced", alt });
+export const STOCK_PHOTOS = HAVE_LICENSED_FILES
+  ? LICENSED_STOCK_PHOTOS
+  : {
+      hero: PLACEHOLDER("/images/hero.jpg", LICENSED_STOCK_PHOTOS.hero.alt),
+      land: PLACEHOLDER("/images/land.jpg", LICENSED_STOCK_PHOTOS.land.alt),
+      materials: PLACEHOLDER("/images/materials.jpg", LICENSED_STOCK_PHOTOS.materials.alt),
+      onsite: PLACEHOLDER("/images/monitoring.jpg", LICENSED_STOCK_PHOTOS.onsite.alt),
+      reporting: PLACEHOLDER("/images/hero.jpg", LICENSED_STOCK_PHOTOS.reporting.alt),
+    };

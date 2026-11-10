@@ -60,6 +60,7 @@ export default function SiteHeader({
     if (!open) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    document.documentElement.dataset.menu = "open";
     closeRef.current?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
@@ -67,6 +68,7 @@ export default function SiteHeader({
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prev;
+      delete document.documentElement.dataset.menu;
       window.removeEventListener("keydown", onKey);
       menuBtnRef.current?.focus();
     };
