@@ -28,9 +28,9 @@ function Preview({ def, src }: { def: SitePhotoDef; src: string }) {
           }}
         />
         <div className="relative flex h-full max-w-[55%] flex-col justify-center p-4 text-white">
-          <p className="headline text-base sm:text-2xl">{t("home.hero.headline")}</p>
-          <p className="mt-1 text-[10px] text-white/85 sm:text-xs">{t("home.hero.subline")}</p>
-          <span className="mt-2 w-fit rounded-full bg-white px-3 py-1 text-[10px] font-bold text-ink">{t("common.bookFirstCall")}</span>
+          <p className="headline text-base sm:text-2xl">{t("site.home.hero.title")}</p>
+          <p className="mt-1 text-[10px] text-white/85 sm:text-xs">{t("site.home.hero.subtitle")}</p>
+          <span className="mt-2 w-fit rounded-[3px] bg-white px-3 py-1 text-[10px] font-bold text-ink">{t("site.home.hero.cta")}</span>
         </div>
       </div>
     );
