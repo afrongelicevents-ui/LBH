@@ -91,7 +91,7 @@ export default async function PayReturnPage({
           </>
         )}
         <Link
-          href={`/portal/requests/${payment.request_id}`}
+          href={`/account/projects/${payment.request_id}`}
           className="btn btn-primary mt-6 w-full"
         >
           {t("backToRequest")}

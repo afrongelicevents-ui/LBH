@@ -10,7 +10,7 @@ import { site } from "@/config/site";
 /** Where Supabase's confirmation link sends the browser after verifying. */
 function confirmRedirect(locale: string): string {
   const prefix = locale === "en" ? "" : `/${locale}`;
-  return `${site.url}${prefix}/auth/callback?next=${prefix}/portal`;
+  return `${site.url}${prefix}/auth/callback?next=${prefix}/account`;
 }
 
 export type SignupResult =

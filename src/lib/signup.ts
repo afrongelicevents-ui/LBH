@@ -26,7 +26,7 @@ export const signupSchema = z
 export type SignupInput = z.infer<typeof signupSchema>;
 
 /** Only same-site relative paths are allowed as a post-confirmation target. */
-export function safeNextPath(next: string | null | undefined, fallback = "/portal"): string {
+export function safeNextPath(next: string | null | undefined, fallback = "/account"): string {
   if (!next || !next.startsWith("/") || next.startsWith("//") || next.includes("\\")) {
     return fallback;
   }

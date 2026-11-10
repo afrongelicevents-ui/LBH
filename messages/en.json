@@ -353,7 +353,7 @@
       "website": "LBH website"
     },
     "nav": {
-      "dashboard": "My requests",
+      "dashboard": "My dashboard",
       "newLand": "Verify land",
       "newMaterials": "Order materials",
       "chat": "Chat with LBH",
@@ -362,9 +362,9 @@
       "buildAccount": "Build Account"
     },
     "dashboard": {
-      "title": "My requests",
+      "title": "My projects",
       "pendingApprovals": "{count, plural, one {# approval waiting for you — nothing proceeds until you decide} other {# approvals waiting for you — nothing proceeds until you decide}}",
-      "myRequests": "My requests",
+      "myRequests": "My projects",
       "noRequests": "You have no requests yet. Start one — it only takes a few minutes.",
       "startLand": "Verify land",
       "startMaterials": "Order materials",
@@ -387,7 +387,7 @@
       "nextStepTitle": "What would you like to do?",
       "bookCall": "Book a free call",
       "tagline": "Your land, materials and build — in one place.",
-      "tileRequests": "My requests",
+      "tileRequests": "My projects",
       "tileWaiting": "Waiting for you",
       "tileInProgress": "In progress",
       "tileDone": "Done"
@@ -446,7 +446,7 @@
       "uploadingFiles": "Uploading files… {done} of {total}"
     },
     "request": {
-      "back": "My requests",
+      "back": "My projects",
       "detailsTitle": "Request details",
       "town": "Town / area",
       "standNumber": "Stand number",
@@ -1670,7 +1670,7 @@
       "trust": {
         "label": "Why clients trust LBH",
         "verified": {
-          "title": "Verified land & suppliers",
+          "title": "Independent land checks",
           "text": "Stands and quotes checked before you pay."
         },
         "process": {

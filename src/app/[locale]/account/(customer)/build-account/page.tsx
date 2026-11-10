@@ -49,7 +49,7 @@ export default async function BuildAccountHome({
         <section className="rounded-[22px] bg-ok-soft p-4" data-testid="ba-start">
           <p className="text-base font-extrabold text-ink">{t("startTitle")}</p>
           <p className="mt-1 text-sm text-ink">{t("startText")}</p>
-          <Link href="/portal/build-account/plans" className="btn-details mt-3">
+          <Link href="/account/build-account/plans" className="btn-details mt-3">
             {t("seePlans")}
             <ArrowRightIcon size={16} />
           </Link>
@@ -66,7 +66,7 @@ export default async function BuildAccountHome({
       {/* account switcher */}
       <nav aria-label={t("accounts")} className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {[{ id: "all", name: t("allAccounts") }, ...data.accounts.map((a) => ({ id: a.id, name: accountName(data, a.id) }))].map((a) => (
-          <Link key={a.id} href={`/portal/build-account${qs(a.id)}`} className="chip" aria-pressed={selected === a.id}>
+          <Link key={a.id} href={`/account/build-account${qs(a.id)}`} className="chip" aria-pressed={selected === a.id}>
             {a.name}
           </Link>
         ))}
@@ -75,7 +75,7 @@ export default async function BuildAccountHome({
       {/* balance */}
       <section className="relative overflow-hidden rounded-[26px] bg-forest p-5 text-white shadow-(--shadow-card)" data-testid="ba-balance">
         <div aria-hidden className="absolute -top-16 -right-10 h-48 w-48 rounded-full bg-white/5" />
-        <Link href={`/portal/build-account/statement${qs(selected)}`} aria-label={t("seeStatement")} className="absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 hover:bg-white/20">
+        <Link href={`/account/build-account/statement${qs(selected)}`} aria-label={t("seeStatement")} className="absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 hover:bg-white/20">
           <ChevronRightIcon size={18} />
         </Link>
         <p className="text-sm font-medium text-white/80">{t("available")}</p>
@@ -88,13 +88,13 @@ export default async function BuildAccountHome({
         </p>
         <div className="mt-4 grid grid-cols-2 gap-2">
           {canScan && (
-            <Link href={`/portal/build-account/scan${ownerQs}`} className="btn btn-white min-h-11 text-sm" data-testid="ba-scan-btn">
+            <Link href={`/account/build-account/scan${ownerQs}`} className="btn btn-white min-h-11 text-sm" data-testid="ba-scan-btn">
               <CameraIcon size={18} />
               {t("scanReceipt")}
             </Link>
           )}
           {ctx.isOwner && page.writable && (
-            <Link href="/portal/build-account/add" className="btn btn-outline-white min-h-11 text-sm" data-testid="ba-add-btn">
+            <Link href="/account/build-account/add" className="btn btn-outline-white min-h-11 text-sm" data-testid="ba-add-btn">
               <PlusIcon size={18} />
               {t("addMoney")}
             </Link>
@@ -116,7 +116,7 @@ export default async function BuildAccountHome({
             const bal = M.balance(M.inAccount(data.entries, a.id));
             const owes = alerts.some((x) => x.kind === "unbacked" && x.account_id === a.id);
             return (
-              <Link key={a.id} href={`/portal/build-account${qs(a.id)}`} className="flex items-center gap-3 py-3">
+              <Link key={a.id} href={`/account/build-account${qs(a.id)}`} className="flex items-center gap-3 py-3">
                 <span className="icon-round icon-forest h-10 w-10 shrink-0">{a.kind === "lbh" ? <HomeIcon size={18} /> : <UserIcon size={18} />}</span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-sm font-bold text-ink">{accountName(data, a.id)}</span>
@@ -166,7 +166,7 @@ export default async function BuildAccountHome({
             {noReceipt.length > 0 && (
               <li className="flex items-start gap-2 rounded-xl bg-offwhite p-2.5" data-alert="no_receipt">
                 <span aria-hidden className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-red-600" />
-                <Link href={`/portal/build-account/statement${qs(selected)}${qs(selected) ? "&" : "?"}f=noreceipt`} className="flex-1 hover:underline">
+                <Link href={`/account/build-account/statement${qs(selected)}${qs(selected) ? "&" : "?"}f=noreceipt`} className="flex-1 hover:underline">
                   {t("alert.noReceiptCount", { count: noReceipt.length, amount: formatCents(noReceipt.reduce((s, a) => s + a.amount_cents, 0)) })}
                 </Link>
               </li>
@@ -189,7 +189,7 @@ export default async function BuildAccountHome({
       <section className="card p-4">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-extrabold text-ink">{t("recent")}</h2>
-          <Link href={`/portal/build-account/statement${qs(selected)}`} className="text-sm font-bold text-forest">
+          <Link href={`/account/build-account/statement${qs(selected)}`} className="text-sm font-bold text-forest">
             {t("seeStatement")} →
           </Link>
         </div>

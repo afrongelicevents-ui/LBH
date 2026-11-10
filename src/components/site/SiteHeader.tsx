@@ -195,9 +195,14 @@ export default function SiteHeader({
               )}
 
               {staffHome && (
-                <Link href={staffHome} className="ds-btn ds-btn-primary mb-8 w-full">
-                  {t("openStaffArea")}
-                </Link>
+                <div className="mb-8 flex flex-col gap-3">
+                  <Link href={staffHome} className="ds-btn ds-btn-primary w-full">
+                    {t("openStaffArea")}
+                  </Link>
+                  <Link href="/account/settings" className="ds-btn ds-btn-outline w-full">
+                    {t("account.settings")}
+                  </Link>
+                </div>
               )}
 
               <section aria-labelledby="menu-site">

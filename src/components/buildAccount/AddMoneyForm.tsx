@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
-import { addMoney, type BaResult } from "@/app/[locale]/portal/build-account/actions";
+import { addMoney, type BaResult } from "@/app/[locale]/account/(customer)/build-account/actions";
 import { useSubmitKeepingValues } from "@/lib/useSubmitKeepingValues";
 
 const inputCls = "w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm text-ink focus:border-forest focus:outline-none";
@@ -25,7 +25,7 @@ export default function AddMoneyForm({
   const [state, formAction, pending] = useActionState<BaResult | null, FormData>(async (prev, fd) => {
     try {
       const r = await addMoney(ownerId, prev, fd);
-      if (r.ok) router.push("/portal/build-account?added=1");
+      if (r.ok) router.push("/account/build-account?added=1");
       return r;
     } catch {
       return { ok: false, error: "network" };

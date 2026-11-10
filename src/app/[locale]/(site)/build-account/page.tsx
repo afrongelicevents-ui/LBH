@@ -18,7 +18,7 @@ export default async function BuildAccountInfo({ params }: { params: Promise<{ l
   const { locale } = await params;
   setRequestLocale(locale);
   const { profile } = await getUserProfile();
-  if (profile?.role === "client") redirect({ href: "/portal/build-account", locale });
+  if (profile?.role === "client") redirect({ href: "/account/build-account", locale });
 
   const t = await getTranslations("baPublic");
   const { data: s } = await createAdminClient()
@@ -96,7 +96,7 @@ export default async function BuildAccountInfo({ params }: { params: Promise<{ l
                 {t("createAccount")}
                 <ArrowRightIcon width={20} height={20} />
               </Link>
-              <Link href="/login?next=/portal/build-account" className="btn btn-outline-green px-7" data-testid="ba-info-login">
+              <Link href="/login?next=/account/build-account" className="btn btn-outline-green px-7" data-testid="ba-info-login">
                 {t("login")}
               </Link>
             </>

@@ -3,7 +3,7 @@
 import { useRef, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { useDirectUpload } from "@/lib/useDirectUpload";
-import { attachReceipt } from "@/app/[locale]/portal/build-account/actions";
+import { attachReceipt } from "@/app/[locale]/account/(customer)/build-account/actions";
 
 /** Add a receipt photo to money already spent. */
 export default function AttachReceipt({ ownerId, entryId }: { ownerId: string; entryId: string }) {

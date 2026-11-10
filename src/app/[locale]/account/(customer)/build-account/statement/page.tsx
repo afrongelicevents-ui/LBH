@@ -88,7 +88,7 @@ export default async function StatementPage({
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="-mx-1 flex gap-2 overflow-x-auto px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" role="group">
           {(["all", "in", "out", "noreceipt"] as const).map((f) => (
-            <Link key={f} href={`/portal/build-account/statement${qs({ f })}`} className="chip" aria-pressed={filter === f}>
+            <Link key={f} href={`/account/build-account/statement${qs({ f })}`} className="chip" aria-pressed={filter === f}>
               {t(`filter.${f}`)}
             </Link>
           ))}
@@ -100,7 +100,7 @@ export default async function StatementPage({
       </div>
       <div className="-mx-1 flex gap-2 overflow-x-auto px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {[{ id: "all", name: t("allAccounts") }, ...data.accounts.map((a) => ({ id: a.id, name: accountName(data, a.id) }))].map((a) => (
-          <Link key={a.id} href={`/portal/build-account/statement${qs({ acct: a.id })}`} className="chip" aria-pressed={selected === a.id}>
+          <Link key={a.id} href={`/account/build-account/statement${qs({ acct: a.id })}`} className="chip" aria-pressed={selected === a.id}>
             {a.name}
           </Link>
         ))}

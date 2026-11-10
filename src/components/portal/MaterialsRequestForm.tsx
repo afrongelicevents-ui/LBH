@@ -8,7 +8,7 @@ import { useRouter } from "@/i18n/navigation";
 import {
   createMaterialsRequest,
   type ActionResult,
-} from "@/app/[locale]/portal/actions";
+} from "@/app/[locale]/account/(customer)/actions";
 import { useDirectUpload } from "@/lib/useDirectUpload";
 import { ArrowRightIcon, CloseIcon } from "@/components/icons";
 
@@ -42,7 +42,7 @@ export default function MaterialsRequestForm() {
       fd.set("uploads_json", JSON.stringify(up.refs));
       const res = await createMaterialsRequest(prev, fd);
       if (res.ok && res.id) {
-        router.push(`/portal/requests/${res.id}${res.warning ? "?docs=failed" : ""}`, { locale });
+        router.push(`/account/projects/${res.id}${res.warning ? "?docs=failed" : ""}`, { locale });
       }
       return res;
     }, { ok: false, error: "network" }),

@@ -36,7 +36,7 @@ export default async function RequestDetailPage({
     .eq("id", id)
     .maybeSingle();
   if (!req) notFound();
-  if (req.type === "build") redirect({ href: `/portal/build/${id}`, locale });
+  if (req.type === "build") redirect({ href: `/account/progress/${id}`, locale });
 
   const [
     { data: documents },
@@ -108,7 +108,7 @@ export default async function RequestDetailPage({
         </p>
       )}
       <div>
-        <Link href="/portal" className="text-xs font-semibold text-muted hover:text-forest">
+        <Link href="/account" className="text-xs font-semibold text-muted hover:text-forest">
           ← {t("back")}
         </Link>
         <h1 className="section-title mt-1 text-2xl">{req.title}</h1>
@@ -423,7 +423,7 @@ export default async function RequestDetailPage({
                   : ""}
               </p>
             </div>
-            <Link href={`/portal/requests/${req.id}/report`} className="btn btn-primary text-sm">
+            <Link href={`/account/projects/${req.id}/report`} className="btn btn-primary text-sm">
               {t("readReport")}
             </Link>
           </div>

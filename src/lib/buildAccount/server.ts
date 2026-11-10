@@ -306,7 +306,7 @@ export async function sendRenewalReminders(ownerIds?: string[]): Promise<number>
     await sendEmail({
       to: p.email,
       subject: "LBH Build Account — your plan renews soon",
-      text: `Hi ${p.full_name ?? ""},\n\nYour LBH Build Account plan runs until ${end}. Renew in the app to keep adding receipts and money:\n${site.url}/portal/build-account/plans\n\nIf it isn't renewed your Build Account becomes read-only — nothing is ever deleted.\n\nLBH — Let's Build Home`,
+      text: `Hi ${p.full_name ?? ""},\n\nYour LBH Build Account plan runs until ${end}. Renew in the app to keep adding receipts and money:\n${site.url}/account/build-account/plans\n\nIf it isn't renewed your Build Account becomes read-only — nothing is ever deleted.\n\nLBH — Let's Build Home`,
     });
     await admin.from("ba_subscriptions").update({ reminded_until: s.paid_until }).eq("owner_id", s.owner_id);
     sent++;

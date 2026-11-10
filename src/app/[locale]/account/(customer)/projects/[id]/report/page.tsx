@@ -66,7 +66,7 @@ export default async function ReportPage({
     <div className="mx-auto max-w-3xl space-y-5">
       <div>
         <Link
-          href={`/portal/requests/${id}`}
+          href={`/account/projects/${id}`}
           className="text-xs font-semibold text-muted hover:text-forest"
         >
           ← {t("back")}

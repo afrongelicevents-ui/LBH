@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { confirmTransfer, deleteEntry } from "@/app/[locale]/portal/build-account/actions";
+import { confirmTransfer, deleteEntry } from "@/app/[locale]/account/(customer)/build-account/actions";
 
 /** "Money arrived" / "Not received" for the person who receives a transfer. */
 export function ConfirmTransferButtons({ ownerId, entryId }: { ownerId: string; entryId: string }) {

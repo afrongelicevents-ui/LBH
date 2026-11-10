@@ -355,3 +355,48 @@ body {
 
 /* the floating WhatsApp button steps aside while the site menu is open */
 html[data-menu="open"] .wa-float { display: none; }
+
+/* =====================================================================
+   Customer pages built before the redesign use these older classes.
+   Inside the website frame (.ds-page) they take the new look: flat paper
+   panels with hairlines, square-ish corners, serif headings, quiet tiles.
+   Unlayered on purpose so it wins over the older component styles.
+   ===================================================================== */
+.ds-page .card {
+  background: var(--color-paper);
+  border: 1px solid var(--color-rule);
+  border-radius: 6px;
+  box-shadow: none;
+}
+.ds-page .btn { border-radius: 4px; font-weight: 600; }
+.ds-page .btn-green, .ds-page .btn-primary { background: var(--color-forest); color: #fff; }
+.ds-page .btn-green:hover, .ds-page .btn-primary:hover { background: var(--color-forest-dark); }
+.ds-page .btn-outline-green { border: 1px solid var(--color-charcoal); color: var(--color-charcoal); background: transparent; }
+.ds-page .btn-outline-green:hover { background: var(--color-charcoal); color: #fff; }
+.ds-page .btn-details { border-radius: 4px; background: var(--color-forest); }
+.ds-page .btn-white, .ds-page .btn-outline-white { border-radius: 4px; }
+.ds-page .section-title {
+  font-family: var(--font-serif); font-weight: 500; font-size: 1.5rem; color: var(--color-charcoal);
+}
+.ds-page .section-title::before { display: none; }
+.ds-page .badge { border-radius: 3px; font-weight: 600; letter-spacing: 0.02em; }
+.ds-page .chip { border-radius: 4px; }
+.ds-page .chip[aria-pressed="true"] { background: var(--color-charcoal); color: #fff; border-color: var(--color-charcoal); }
+.ds-page .tile {
+  background: var(--color-paper); border: 1px solid var(--color-rule); border-radius: 6px; box-shadow: none;
+  align-items: flex-start; text-align: left; padding: 1rem;
+}
+.ds-page .tile .icon-round { display: none; }
+.ds-page .tile > span:nth-child(2) { font-family: var(--font-serif); font-weight: 500; }
+.ds-page .icon-round { border-radius: 4px; }
+.ds-page .headline { font-family: var(--font-serif); font-weight: 500; letter-spacing: -0.01em; }
+/* the older pages' rounded panels and pills */
+.ds-page main [class*="rounded-2xl"], .ds-page main [class*="rounded-3xl"],
+.ds-page main [class*="rounded-[2"], .ds-page main [class*="rounded-xl"] { border-radius: 6px; }
+.ds-page main [class*="shadow-(--shadow-card)"], .ds-page main [class*="shadow-sm"] { box-shadow: none; }
+.ds-page main .bg-offwhite { background: var(--color-ivory); }
+.ds-page main .text-ink { color: var(--color-charcoal); }
+.ds-page main .text-muted { color: var(--color-slate); }
+.ds-page main h1:not(.ds-display):not(.ds-h2), .ds-page main .card h2, .ds-page main .card h3 {
+  font-family: var(--font-serif); font-weight: 500; letter-spacing: -0.005em;
+}

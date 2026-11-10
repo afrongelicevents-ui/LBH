@@ -110,7 +110,7 @@ export async function createLandRequest(
       warning = "docs";
     }
 
-    revalidatePath("/[locale]/portal", "layout");
+    revalidatePath("/[locale]/account", "layout");
     return { ok: true, id: req.id, warning };
   } catch (e) {
     console.error(`[land-request] ${e instanceof Error ? e.message : e}`);
@@ -183,7 +183,7 @@ export async function createMaterialsRequest(
       warning = "docs";
     }
 
-    revalidatePath("/[locale]/portal", "layout");
+    revalidatePath("/[locale]/account", "layout");
     return { ok: true, id: req.id, warning };
   } catch (e) {
     console.error(`[materials-request] ${e instanceof Error ? e.message : e}`);
@@ -207,10 +207,10 @@ export async function acceptQuoteAction(quoteId: string, locale: string): Promis
   } catch {
     return { ok: false, error: "error" };
   }
-  revalidatePath("/[locale]/portal", "layout");
+  revalidatePath("/[locale]/account", "layout");
   // Straight to the request, where the deposit can now be paid.
   const prefix = locale === "en" ? "" : `/${locale}`;
-  redirect(`${prefix}/portal/requests/${requestId}?accepted=1#payments`);
+  redirect(`${prefix}/account/projects/${requestId}?accepted=1#payments`);
 }
 
 // ---------- extra-cost approval decision ----------
@@ -225,7 +225,7 @@ export async function decideApprovalAction(
       p_approve: approve,
     });
     if (error) return { ok: false, error: "db" };
-    revalidatePath("/[locale]/portal", "layout");
+    revalidatePath("/[locale]/account", "layout");
     return { ok: true };
   } catch {
     return { ok: false, error: "error" };
@@ -238,7 +238,7 @@ export async function approveSupplierQuoteAction(id: string): Promise<ActionResu
     const { supabase } = await requireClient();
     const { error } = await supabase.rpc("approve_supplier_quote", { p_id: id });
     if (error) return { ok: false, error: "db" };
-    revalidatePath("/[locale]/portal", "layout");
+    revalidatePath("/[locale]/account", "layout");
     return { ok: true };
   } catch {
     return { ok: false, error: "error" };
@@ -344,7 +344,7 @@ export async function submitManualProof(
       p_data: { by: user.id, reference: parsed.data.reference },
     });
 
-    revalidatePath("/[locale]/portal", "layout");
+    revalidatePath("/[locale]/account", "layout");
     return { ok: true };
   } catch (e) {
     console.error(`[manual-proof] ${e instanceof Error ? e.message : e}`);

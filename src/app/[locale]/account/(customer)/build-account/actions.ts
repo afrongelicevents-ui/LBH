@@ -38,7 +38,7 @@ function fail(e: unknown, fallback = "error"): { ok: false; error: string } {
 }
 
 function refresh() {
-  revalidatePath("/[locale]/portal/build-account", "layout");
+  revalidatePath("/[locale]/account/build-account", "layout");
 }
 
 async function writable(supabase: Awaited<ReturnType<typeof requireBa>>["supabase"], ctx: BaContext) {
@@ -353,7 +353,7 @@ export async function acceptInvite(token: string, locale: string): Promise<BaRes
   } catch {
     return { ok: false, error: "error" };
   }
-  redirect(`${locale === "en" ? "" : `/${locale}`}/portal/build-account?owner=${owner}`);
+  redirect(`${locale === "en" ? "" : `/${locale}`}/account/build-account?owner=${owner}`);
 }
 
 // ---------- plans ----------
@@ -381,13 +381,13 @@ export async function startSubscription(plan: "monthly" | "yearly", locale: stri
       merchantReference: ref,
       amountCents: price,
       email: profile.email,
-      returnUrl: `${site.url}${prefix}/portal/build-account/plans?ref=${ref}`,
+      returnUrl: `${site.url}${prefix}/account/build-account/plans?ref=${ref}`,
     });
     if (!result.simulated) {
       await admin.from("ba_payments").update({ paynow_poll_url: result.pollUrl }).eq("merchant_reference", ref);
       target = result.redirectUrl;
     } else {
-      target = `${prefix}/portal/build-account/pay?ref=${ref}`;
+      target = `${prefix}/account/build-account/pay?ref=${ref}`;
     }
   } catch (e) {
     console.error(`[build-account] subscribe: ${e instanceof Error ? e.message : e}`);
@@ -412,5 +412,5 @@ export async function simulateBaPayment(ref: string, outcome: "paid" | "failed",
     return fail(e);
   }
   refresh();
-  redirect(`${locale === "en" ? "" : `/${locale}`}/portal/build-account/plans?ref=${encodeURIComponent(ref)}`);
+  redirect(`${locale === "en" ? "" : `/${locale}`}/account/build-account/plans?ref=${encodeURIComponent(ref)}`);
 }

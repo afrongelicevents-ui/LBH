@@ -4,7 +4,7 @@ import { useActionState, useRef, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { useDirectUpload } from "@/lib/useDirectUpload";
-import { readReceipt, saveSpend, type BaResult } from "@/app/[locale]/portal/build-account/actions";
+import { readReceipt, saveSpend, type BaResult } from "@/app/[locale]/account/(customer)/build-account/actions";
 import { useSubmitKeepingValues } from "@/lib/useSubmitKeepingValues";
 import { CameraIcon } from "@/components/ui/PortalIcons";
 
@@ -92,7 +92,7 @@ export default function ScanReceipt({
         )
       );
       const r = await saveSpend(ownerId, prev, fd);
-      if (r.ok) router.push(`/portal/build-account/statement${ownerQs}`);
+      if (r.ok) router.push(`/account/build-account/statement${ownerQs}`);
       return r;
     } catch {
       return { ok: false, error: "network" };

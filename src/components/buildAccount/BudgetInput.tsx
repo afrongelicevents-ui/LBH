@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { setBudget } from "@/app/[locale]/portal/build-account/actions";
+import { setBudget } from "@/app/[locale]/account/(customer)/build-account/actions";
 
 export default function BudgetInput({ stage, cents }: { stage: string; cents: number | null }) {
   const t = useTranslations("ba");

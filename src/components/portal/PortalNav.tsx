@@ -13,7 +13,7 @@ export default function PortalNav({ items, label }: { items: NavItem[]; label: s
   const pathname = usePathname();
   const activeRef = useRef<HTMLAnchorElement>(null);
 
-  // Longest matching prefix wins ("/portal/build" over "/portal")
+  // Longest matching prefix wins ("/account/progress" over "/account")
   const active = items
     .filter((i) => pathname === i.href || pathname.startsWith(i.href + "/"))
     .sort((a, b) => b.href.length - a.href.length)[0]?.href;

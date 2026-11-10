@@ -36,7 +36,7 @@ function clientRefFrom(formData: FormData): string | null {
 export type StageResult = { ok: true; id?: string } | { ok: false; error: string };
 
 function revalidateAll() {
-  revalidatePath("/[locale]/portal", "layout");
+  revalidatePath("/[locale]/account", "layout");
   revalidatePath("/[locale]/admin", "layout");
   revalidatePath("/[locale]/field", "layout");
 }

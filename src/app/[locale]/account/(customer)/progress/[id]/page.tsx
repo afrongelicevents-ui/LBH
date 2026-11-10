@@ -25,7 +25,7 @@ export default async function ClientBuildPage({
   return (
     <div className="mx-auto max-w-2xl space-y-4">
       <div>
-        <Link href="/portal" className="text-xs font-semibold text-muted hover:text-forest">
+        <Link href="/account" className="text-xs font-semibold text-muted hover:text-forest">
           ← {tp("dashboard")}
         </Link>
         <h1 className="section-title mt-1 text-2xl">{build.title}</h1>

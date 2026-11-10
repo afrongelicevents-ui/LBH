@@ -5,7 +5,7 @@ import { useSubmitKeepingValues } from "@/lib/useSubmitKeepingValues";
 import { useActionState } from "react";
 import { useTranslations } from "next-intl";
 import CountryField from "@/components/CountryField";
-import { updateMyProfile, type ProfileResult } from "@/app/[locale]/(site)/account/actions";
+import { updateMyProfile, type ProfileResult } from "@/app/[locale]/account/(settings)/settings/actions";
 
 const inputCls =
   "w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink focus:border-forest focus:outline-none";

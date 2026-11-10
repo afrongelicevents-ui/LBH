@@ -20,7 +20,7 @@ export default async function MyBuildsPage({
     .eq("type", "build")
     .order("created_at", { ascending: false });
 
-  if (builds?.length === 1) redirect({ href: `/portal/build/${builds[0].id}`, locale });
+  if (builds?.length === 1) redirect({ href: `/account/progress/${builds[0].id}`, locale });
 
   return (
     <div className="mx-auto max-w-2xl space-y-4">
@@ -31,7 +31,7 @@ export default async function MyBuildsPage({
         <ul className="space-y-2">
           {builds.map((b) => (
             <li key={b.id}>
-              <Link href={`/portal/build/${b.id}`} className="card flex items-center justify-between p-4">
+              <Link href={`/account/progress/${b.id}`} className="card flex items-center justify-between p-4">
                 <span className="font-bold text-forest">{b.title}</span>
                 <ChevronRightIcon width={18} height={18} className="text-muted" />
               </Link>

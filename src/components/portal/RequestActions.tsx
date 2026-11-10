@@ -9,7 +9,7 @@ import {
   startPayment,
   submitManualProof,
   type ActionResult,
-} from "@/app/[locale]/portal/actions";
+} from "@/app/[locale]/account/(customer)/actions";
 import { useDirectUpload } from "@/lib/useDirectUpload";
 import { ArrowRightIcon } from "@/components/icons";
 

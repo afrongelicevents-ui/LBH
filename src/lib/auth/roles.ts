@@ -7,7 +7,7 @@ export function homeForRole(role: UserRole): string {
     case "field":
       return "/field";
     default:
-      return "/portal";
+      return "/account";
   }
 }
 

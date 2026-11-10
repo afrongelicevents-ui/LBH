@@ -9,7 +9,7 @@ import dynamic from "next/dynamic";
 import {
   createLandRequest,
   type ActionResult,
-} from "@/app/[locale]/portal/actions";
+} from "@/app/[locale]/account/(customer)/actions";
 import { useDirectUpload } from "@/lib/useDirectUpload";
 import { ArrowRightIcon } from "@/components/icons";
 
@@ -34,7 +34,7 @@ export default function LandRequestForm() {
       fd.set("uploads_json", JSON.stringify(up.refs));
       const res = await createLandRequest(prev, fd);
       if (res.ok && res.id) {
-        router.push(`/portal/requests/${res.id}${res.warning ? "?docs=failed" : ""}`, { locale });
+        router.push(`/account/projects/${res.id}${res.warning ? "?docs=failed" : ""}`, { locale });
       }
       return res;
     }, { ok: false, error: "network" }),

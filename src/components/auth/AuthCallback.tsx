@@ -34,7 +34,7 @@ export default function AuthCallback() {
         else {
           // only ever go to a page on this site
           const target = new URL(`${next}${next.includes("?") ? "&" : "?"}welcome=1`, window.location.origin);
-          window.location.replace(target.origin === window.location.origin ? target.href : "/portal");
+          window.location.replace(target.origin === window.location.origin ? target.href : "/account");
         }
       })
       .catch(() => setFailed(true));

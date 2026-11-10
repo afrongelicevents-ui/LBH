@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
 
   const prefix = locale === "en" ? "" : `/${locale}`;
   let target = new URL(ok ? next : `${prefix}/login?confirm=failed`, url.origin);
-  if (target.origin !== url.origin) target = new URL(`${prefix}/portal`, url.origin);
+  if (target.origin !== url.origin) target = new URL(`${prefix}/account`, url.origin);
   if (ok) target.searchParams.set("welcome", "1");
   return NextResponse.redirect(target);
 }

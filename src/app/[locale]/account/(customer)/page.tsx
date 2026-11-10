@@ -42,17 +42,17 @@ export default async function AccountDashboard({
   // Recent updates: genuine events only (payments confirmed, reports published, approvals requested)
   type Ev = { at: string; text: string; href: string; tone: "action" | "info" };
   const events: Ev[] = [
-    ...(approvals ?? []).map((a) => ({ at: a.created_at as string, text: t("ev.approval", { title: clean(a.title) }), href: `/portal/requests/${a.request_id}#approvals`, tone: "action" as const })),
+    ...(approvals ?? []).map((a) => ({ at: a.created_at as string, text: t("ev.approval", { title: clean(a.title) }), href: `/account/projects/${a.request_id}#approvals`, tone: "action" as const })),
     ...(reports ?? []).filter((r) => r.published_at).map((r) => ({
       at: r.published_at as string,
       text: t("ev.report", { title: clean((r.service_requests as unknown as { title: string } | null)?.title) }),
-      href: `/portal/requests/${r.request_id}/report`,
+      href: `/account/projects/${r.request_id}/report`,
       tone: "info" as const,
     })),
     ...(payments ?? []).filter((p) => p.confirmed_at).map((p) => ({
       at: p.confirmed_at as string,
       text: t("ev.payment", { amount: formatCents(p.amount_cents), title: clean((p.service_requests as unknown as { title: string } | null)?.title) }),
-      href: `/portal/requests/${p.request_id}#payments`,
+      href: `/account/projects/${p.request_id}#payments`,
       tone: "info" as const,
     })),
   ]
@@ -69,8 +69,8 @@ export default async function AccountDashboard({
           <p className="ds-body mt-2 max-w-xl">{t("intro")}</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Link href="/portal/requests/new-land" className="ds-btn ds-btn-primary min-h-11 px-4 text-sm">{t("newLand")}</Link>
-          <Link href="/portal/requests/new-materials" className="ds-btn ds-btn-outline min-h-11 px-4 text-sm">{t("newMaterials")}</Link>
+          <Link href="/account/projects/new-land" className="ds-btn ds-btn-primary min-h-11 px-4 text-sm">{t("newLand")}</Link>
+          <Link href="/account/projects/new-materials" className="ds-btn ds-btn-outline min-h-11 px-4 text-sm">{t("newMaterials")}</Link>
         </div>
       </header>
 
@@ -105,7 +105,7 @@ export default async function AccountDashboard({
               <ul className="mt-2 space-y-1.5">
                 {approvals!.map((a) => (
                   <li key={a.id} className="flex flex-wrap items-baseline justify-between gap-2 text-[15px]">
-                    <Link href={`/portal/requests/${a.request_id}#approvals`} className="ds-link">{clean(a.title)}</Link>
+                    <Link href={`/account/projects/${a.request_id}#approvals`} className="ds-link">{clean(a.title)}</Link>
                     {a.amount_cents ? <span className="text-sm text-slate">{formatCents(a.amount_cents)}</span> : null}
                   </li>
                 ))}
@@ -130,7 +130,7 @@ export default async function AccountDashboard({
                   const where = [d.stand_number && `Stand ${d.stand_number}`, d.town].filter(Boolean).join(", ");
                   return (
                     <li key={r.id} className="border-b border-rule">
-                      <Link href={r.type === "build" ? "/portal/build" : `/portal/requests/${r.id}`} className="group grid gap-3 py-5 md:grid-cols-12 md:items-center">
+                      <Link href={r.type === "build" ? "/account/progress" : `/account/projects/${r.id}`} className="group grid gap-3 py-5 md:grid-cols-12 md:items-center">
                         <div className="md:col-span-6">
                           <p className="text-xs font-semibold tracking-wider text-slate uppercase">{t(`type.${r.type}` as never)}</p>
                           <p className="mt-1 font-serif text-[1.15rem] text-charcoal group-hover:text-forest">{clean(r.title)}</p>
@@ -190,16 +190,16 @@ export default async function AccountDashboard({
               </div>
             </dl>
             {M.onItsWay(ba) > 0 && <p className="mt-3 text-xs text-[#c9c3b3]">{t("baOnWay", { amount: formatCents(M.onItsWay(ba)) })}</p>}
-            <Link href="/portal/build-account" className="ds-btn ds-btn-light mt-6 w-full text-sm">{t("baOpen")}</Link>
+            <Link href="/account/build-account" className="ds-btn ds-btn-light mt-6 w-full text-sm">{t("baOpen")}</Link>
           </section>
 
           <section aria-labelledby="shortcuts">
             <h2 id="shortcuts" className="ds-eyebrow">{t("shortcuts")}</h2>
             <ul className="mt-3 border-t border-rule text-[15px]">
               {[
-                ["/portal/build", tn("progress")],
-                ["/portal/build-account/statement", tn("finance")],
-                ["/portal/build-account/statement?f=noreceipt", tn("documents")],
+                ["/account/progress", tn("progress")],
+                ["/account/build-account/statement", tn("finance")],
+                ["/account/build-account/statement?f=noreceipt", tn("documents")],
                 ["/book-a-call", t("bookCall")],
               ].map(([href, label]) => (
                 <li key={href} className="border-b border-rule">
@@ -215,7 +215,7 @@ export default async function AccountDashboard({
           <section aria-labelledby="help" className="border border-rule bg-paper p-5">
             <h2 id="help" className="font-serif text-lg">{t("helpTitle")}</h2>
             <p className="ds-body mt-1 text-sm">{t("helpText")}</p>
-            <Link href="/portal/chat" className="ds-link mt-3 inline-block text-sm">{t("helpChat")}</Link>
+            <Link href="/account/support" className="ds-link mt-3 inline-block text-sm">{t("helpChat")}</Link>
           </section>
         </aside>
       </div>

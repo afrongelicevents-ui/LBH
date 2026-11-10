@@ -10,12 +10,12 @@ export interface PortalNavDef {
 }
 
 const CLIENT: PortalNavDef[] = [
-  { href: "/portal", label: "portal.nav.dashboard", icon: "home" },
-  { href: "/portal/build", label: "portal.nav.myBuild", icon: "hammer" },
-  { href: "/portal/build-account", label: "portal.nav.buildAccount", icon: "card" },
-  { href: "/portal/requests/new-land", label: "portal.nav.newLand", icon: "pin" },
-  { href: "/portal/requests/new-materials", label: "portal.nav.newMaterials", icon: "truck" },
-  { href: "/portal/chat", label: "portal.nav.chat", icon: "chat" },
+  { href: "/account", label: "portal.nav.dashboard", icon: "home" },
+  { href: "/account/progress", label: "portal.nav.myBuild", icon: "hammer" },
+  { href: "/account/build-account", label: "portal.nav.buildAccount", icon: "card" },
+  { href: "/account/projects/new-land", label: "portal.nav.newLand", icon: "pin" },
+  { href: "/account/projects/new-materials", label: "portal.nav.newMaterials", icon: "truck" },
+  { href: "/account/support", label: "portal.nav.chat", icon: "chat" },
 ];
 
 const FIELD: PortalNavDef[] = [{ href: "/field", label: "portal.nav.myJobs", icon: "briefcase" }];

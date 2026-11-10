@@ -19,7 +19,7 @@ export default function FinanceTrackerCard({ className = "", portal = false }: {
             <span className="badge badge-ok">{t("live")}</span>
           </div>
           <p className="mt-1 text-sm text-muted md:text-base">{t("tagline")}</p>
-          <Link href={portal ? "/portal/build-account" : "/build-account"} className="btn-details mt-3" data-testid="ba-card-open">
+          <Link href={portal ? "/account/build-account" : "/build-account"} className="btn-details mt-3" data-testid="ba-card-open">
             {t("open")}
             <ArrowRightIcon width={16} height={16} />
           </Link>

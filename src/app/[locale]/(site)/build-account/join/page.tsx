@@ -18,7 +18,7 @@ export default async function JoinInfo({
   const { t: raw } = await searchParams;
   setRequestLocale(locale);
   const token = typeof raw === "string" && /^[A-Za-z0-9_-]{20,100}$/.test(raw) ? raw : "";
-  const target = `/portal/build-account/join?t=${token}`;
+  const target = `/account/build-account/join?t=${token}`;
   const { profile } = await getUserProfile();
   if (profile?.role === "client" && token) redirect({ href: target, locale });
   const t = await getTranslations("baPublic");

@@ -2,7 +2,7 @@
 
 import { useActionState, useTransition, useState } from "react";
 import { useTranslations } from "next-intl";
-import { inviteMember, updateMember, addAccount, type BaResult } from "@/app/[locale]/portal/build-account/actions";
+import { inviteMember, updateMember, addAccount, type BaResult } from "@/app/[locale]/account/(customer)/build-account/actions";
 
 const inputCls = "w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm text-ink focus:border-forest focus:outline-none";
 const labelCls = "mb-1 block text-xs font-semibold text-ink";

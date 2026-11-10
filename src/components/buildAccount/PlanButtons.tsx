@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { startSubscription, simulateBaPayment, acceptInvite } from "@/app/[locale]/portal/build-account/actions";
+import { startSubscription, simulateBaPayment, acceptInvite } from "@/app/[locale]/account/(customer)/build-account/actions";
 
 const isNav = (e: unknown) => !!e && typeof e === "object" && "digest" in e && String((e as { digest: unknown }).digest).startsWith("NEXT_");
 

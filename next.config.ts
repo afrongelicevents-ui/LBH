@@ -105,6 +105,26 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  /**
+   * The customer area moved from /portal to /account (one LBH website).
+   * Old links — emails, Paynow returns, bookmarks — keep working, in every language.
+   */
+  async redirects() {
+    const map: [string, string][] = [
+      ["/portal/requests/:path*", "/account/projects/:path*"],
+      ["/portal/build-account/:path*", "/account/build-account/:path*"],
+      ["/portal/build-account", "/account/build-account"],
+      ["/portal/build/:path*", "/account/progress/:path*"],
+      ["/portal/build", "/account/progress"],
+      ["/portal/chat", "/account/support"],
+      ["/portal/:path*", "/account/:path*"],
+      ["/portal", "/account"],
+    ];
+    return map.flatMap(([from, to]) => [
+      { source: from, destination: to, permanent: true },
+      { source: `/:locale(en|sn|nd)${from}`, destination: `/:locale${to}`, permanent: true },
+    ]);
+  },
   async headers() {
     return [
       {
