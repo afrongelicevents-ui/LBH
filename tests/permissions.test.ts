@@ -1043,6 +1043,14 @@ d("RLS & business rules (local Supabase)", () => {
       expect((await service.from("ba_entries").insert(row)).error).not.toBeNull();
     });
 
+    it("a customer can only record documents stored in their own request's folder", async () => {
+      const bad = await client.from("documents").insert({ request_id: IDS.reqLand, uploader_id: IDS.client, file_name: "x.pdf", storage_path: `requests/${IDS.reqDone}/${crypto.randomUUID()}.pdf` });
+      expect(bad.error).not.toBeNull();
+      const ok = await client.from("documents").insert({ request_id: IDS.reqLand, uploader_id: IDS.client, file_name: "TEST doc.pdf", storage_path: `requests/${IDS.reqLand}/${crypto.randomUUID()}.pdf` }).select("id").single();
+      expect(ok.error).toBeNull();
+      await service.from("documents").delete().eq("id", ok.data!.id);
+    });
+
     it("statements are private: the receipt bucket is not public", async () => {
       const { data } = await service.storage.getBucket("documents");
       expect(data?.public).toBe(false);

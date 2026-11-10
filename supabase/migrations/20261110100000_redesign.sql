@@ -71,3 +71,15 @@ begin new.updated_at := now(); return new; end $$;
 drop trigger if exists projects_touch on public.projects;
 create trigger projects_touch before update on public.projects
   for each row execute function public.projects_touch();
+
+-- ---------- 3. hardening: a customer's document must be in that request's own folder ----------
+-- (private files are opened through signed links, so a row may only point at its own request's files)
+drop policy if exists documents_client_insert on public.documents;
+create policy documents_client_insert on public.documents
+  for insert with check (
+    uploader_id = auth.uid()
+    and starts_with(storage_path, 'requests/' || request_id::text || '/')
+    and storage_path !~ '\.\.'
+    and exists (
+      select 1 from public.service_requests r
+      where r.id = documents.request_id and r.client_id = auth.uid()));

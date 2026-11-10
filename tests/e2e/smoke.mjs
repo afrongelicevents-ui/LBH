@@ -374,7 +374,7 @@ console.log("\nPublic website");
     assert(prof.role === "client" && prof.whatsapp === "+44 7700 900555" && prof.country === "uk", "profile wrong");
 
     // book a call from the portal: details are prefilled
-    await page.getByRole("link", { name: "Book a free call" }).first().click();
+    await page.getByRole("link", { name: "Book a consultation" }).first().click();
     await page.waitForURL(/book-a-call/);
     assert((await page.inputValue('input[name="email"]')) === email, "booking not prefilled");
     await page.goto(`${BASE}/en/account/projects/new-land`);
@@ -562,10 +562,10 @@ console.log("\nClient portal (client@lbh.test)");
   await step("sign out from the public header → Log in is back at once", async () => {
     await page.goto(`${BASE}/en/services`);
     await page.locator('header[data-auth="in"]').waitFor({ timeout: 15000 });
-    await page.locator('header button[aria-expanded]:visible').last().click();
-    await page.getByTestId("account-menu").first().getByRole("button", { name: "Sign out" }).click();
+    await page.getByTestId("menu-button").click();
+    await page.getByTestId("site-menu").getByRole("button", { name: "Log out" }).click();
     await page.locator('header[data-auth="out"]').waitFor({ timeout: 15000 });
-    assert((await page.locator('header a[href$="/login"]:visible').count()) >= 1, "Log in not back");
+    assert((await page.getByTestId("header-login").count()) >= 1, "Log in not back");
     await page.goto(`${BASE}/en/account`);
     await page.waitForURL(/\/login/, { timeout: 15000 });
   });
