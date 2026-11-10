@@ -117,8 +117,8 @@ const nextConfig: NextConfig = {
       ["/portal/build/:path*", "/account/progress/:path*"],
       ["/portal/build", "/account/progress"],
       ["/portal/chat", "/account/support"],
-      ["/portal/:path*", "/account/:path*"],
       ["/portal", "/account"],
+      ["/portal/:path*", "/account/:path*"],
     ];
     return map.flatMap(([from, to]) => [
       { source: from, destination: to, permanent: true },
