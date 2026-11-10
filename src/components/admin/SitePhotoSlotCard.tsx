@@ -89,7 +89,7 @@ export default function SitePhotoSlotCard({
 }: {
   def: SitePhotoDef;
   currentUrl: string;
-  custom: { width: number | null; height: number | null; updatedAt: string } | null;
+  custom: { width: number | null; height: number | null; updatedAt: string; kind: "lbh" | "stock" | null; credit: string } | null;
 }) {
   const t = useTranslations("admin.photos");
   const router = useRouter();
@@ -101,6 +101,9 @@ export default function SitePhotoSlotCard({
   const [result, setResult] = useState<SitePhotoResult | null>(null);
   const [busy, startBusy] = useTransition();
   const [confirmReset, setConfirmReset] = useState(false);
+  const [kind, setKind] = useState<"" | "lbh" | "stock">("");
+  const [credit, setCredit] = useState("");
+  const needsKind = def.slot !== "logo";
 
   useEffect(() => () => {
     if (preview) URL.revokeObjectURL(preview);
@@ -130,6 +133,8 @@ export default function SitePhotoSlotCard({
 
   function save() {
     if (!file) return;
+    if (needsKind && !kind) return setResult({ ok: false, error: "kind" });
+    if (kind === "stock" && credit.trim().length < 3) return setResult({ ok: false, error: "credit" });
     startBusy(async () => {
       try {
         const up = await upload("site-photo", [file]);
@@ -139,6 +144,8 @@ export default function SitePhotoSlotCard({
         }
         const fd = new FormData();
         fd.set("uploads_json", JSON.stringify(up.refs));
+        fd.set("kind", kind);
+        fd.set("credit", credit);
         const res = await saveSitePhoto(def.slot, null, fd);
         setResult(res);
         if (res.ok) {
@@ -174,7 +181,9 @@ export default function SitePhotoSlotCard({
           <p className="text-xs text-muted">{t(`slot.${def.slot}.where`)}</p>
         </div>
         {custom ? (
-          <StatusBadge tone="ok">{t("custom")}</StatusBadge>
+          <StatusBadge tone={custom.kind ? "ok" : "grey"}>
+            {custom.kind === "lbh" ? t("kindLbh") : custom.kind === "stock" ? t("kindStock") : t("kindNone")}
+          </StatusBadge>
         ) : (
           <StatusBadge tone="grey">{t("default")}</StatusBadge>
         )}
@@ -209,6 +218,31 @@ export default function SitePhotoSlotCard({
           </p>
         </div>
       </div>
+
+      {file && needsKind && (
+        <fieldset className="mt-3 rounded-xl border border-line p-3" data-testid="photo-kind">
+          <legend className="px-1 text-xs font-bold text-ink">{t("kindQuestion")}</legend>
+          <label className="flex items-start gap-2 py-1 text-sm">
+            <input type="radio" name={`kind-${def.slot}`} value="lbh" checked={kind === "lbh"} onChange={() => setKind("lbh")} className="mt-1 accent-forest" />
+            <span><strong>{t("kindLbh")}</strong> — {t("kindLbhHint")}</span>
+          </label>
+          <label className="flex items-start gap-2 py-1 text-sm">
+            <input type="radio" name={`kind-${def.slot}`} value="stock" checked={kind === "stock"} onChange={() => setKind("stock")} className="mt-1 accent-forest" />
+            <span><strong>{t("kindStock")}</strong> — {t("kindStockHint")}</span>
+          </label>
+          {kind === "stock" && (
+            <input
+              value={credit}
+              onChange={(e) => setCredit(e.target.value)}
+              maxLength={200}
+              placeholder={t("creditPlaceholder")}
+              aria-label={t("creditLabel")}
+              className="mt-2 w-full rounded-lg border border-line bg-white px-3 py-2 text-sm"
+              data-testid="photo-credit"
+            />
+          )}
+        </fieldset>
+      )}
 
       <div className="mt-3 flex flex-wrap items-center gap-2">
         <input

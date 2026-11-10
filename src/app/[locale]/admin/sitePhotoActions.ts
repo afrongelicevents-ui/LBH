@@ -37,6 +37,11 @@ export async function saveSitePhoto(
     if (!def) return { ok: false, error: "invalid" };
     const [ref] = parseUploadRefs(formData.get("uploads_json"));
     if (!ref) return { ok: false, error: "invalid" };
+    // Honest labels: a real LBH photo, or a stock photo with its credit
+    const kind = slot === "logo" ? "lbh" : String(formData.get("kind") ?? "");
+    const credit = String(formData.get("credit") ?? "").trim().slice(0, 200);
+    if (kind !== "lbh" && kind !== "stock") return { ok: false, error: "kind" };
+    if (kind === "stock" && credit.length < 3) return { ok: false, error: "credit" };
 
     const f = await takeIncoming(user.id, ref, "site-photo");
     if (!f.isImage) return { ok: false, error: "filetype" };
@@ -63,6 +68,8 @@ export async function saveSitePhoto(
       storage_path: path,
       width: info.width,
       height: info.height,
+      kind,
+      credit: kind === "stock" ? credit : "",
       updated_by: user.id,
       updated_at: new Date().toISOString(),
     });

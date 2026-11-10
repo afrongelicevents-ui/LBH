@@ -54,7 +54,7 @@ export const PHOTO_CREDITS = [
  * downloaded from this server yet (Wikimedia rate limit). Until they are
  * added, the existing site images are shown and labelled as placeholders.
  */
-const HAVE_LICENSED_FILES = false;
+export const HAVE_LICENSED_FILES = false;
 const PLACEHOLDER = (src: string, alt: string): PhotoSource => ({ src, kind: "stock", credit: "Placeholder — to be replaced", alt });
 export const STOCK_PHOTOS = HAVE_LICENSED_FILES
   ? LICENSED_STOCK_PHOTOS

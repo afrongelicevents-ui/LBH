@@ -1,82 +1,51 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import SectionTitle from "@/components/SectionTitle";
-import { ArrowRightIcon, ShieldCheckIcon } from "@/components/icons";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "howPage" });
-  return { title: t("metaTitle") };
+  return { title: t("metaTitle"), description: t("intro") };
 }
 
-const stages = [1, 2, 3, 4, 5, 6, 7] as const;
+const STAGES = [1, 2, 3, 4, 5, 6, 7] as const;
 
-function HowContent() {
-  const t = useTranslations();
-
+/** How it works — the full journey, one numbered step per row. */
+export default async function HowItWorksPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("howPage");
+  const ts = await getTranslations("site");
   return (
-    <div className="bg-offwhite py-12 md:py-16">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-        <SectionTitle as="h1">{t("howPage.title")}</SectionTitle>
-        <p className="mt-6 text-center text-base text-muted md:text-lg">
-          {t("howPage.intro")}
-        </p>
-
-        <ol className="mt-10 space-y-0">
-          {stages.map((n, idx) => (
-            <li key={n} className="relative flex gap-5 pb-8 last:pb-0">
-              {/* connector line */}
-              {idx < stages.length - 1 && (
-                <span
-                  aria-hidden
-                  className="absolute top-12 left-6 h-[calc(100%-3rem)] w-px bg-line"
-                />
-              )}
-              <span className="z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-forest text-lg font-extrabold text-white">
-                {n}
-              </span>
-              <div className="card flex-1 p-5">
-                <h2 className="text-lg font-bold text-forest">
-                  {t(`howPage.stage${n}Title`)}
-                </h2>
-                <p className="mt-1.5 text-sm leading-relaxed text-muted md:text-base">
-                  {t(`howPage.stage${n}Text`)}
-                </p>
-              </div>
-            </li>
-          ))}
-        </ol>
-
-        <div className="mt-10 flex items-start gap-3 rounded-2xl bg-info p-5">
-          <ShieldCheckIcon width={26} height={26} className="mt-0.5 shrink-0 text-forest" />
-          <p className="text-sm leading-relaxed text-ink md:text-base">
-            {t("howPage.note")}
-          </p>
+    <div data-testid="how-page">
+      <header className="border-b border-rule">
+        <div className="ds-wrap py-14 md:py-20">
+          <p className="ds-eyebrow">{ts("nav.howItWorks")}</p>
+          <h1 className="ds-h2 mt-3 max-w-3xl md:text-[3.2rem]">{ts("howPage.title")}</h1>
+          <p className="ds-lead mt-5 max-w-2xl">{t("intro")}</p>
         </div>
-
-        <div className="mt-10 text-center">
-          <Link href="/book-a-call" className="btn btn-primary px-7">
-            {t("common.bookFirstCall")}
-            <ArrowRightIcon width={20} height={20} />
-          </Link>
+      </header>
+      <div className="ds-wrap py-12 md:py-16">
+        <ol className="md:grid md:grid-cols-12">
+          <div className="md:col-span-9 md:col-start-2">
+            {STAGES.map((n) => (
+              <li key={n} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-rule py-7 md:grid-cols-[6rem_1fr] md:py-9">
+                <span className="font-serif text-4xl leading-none text-stone md:text-5xl">{n}</span>
+                <div>
+                  <h2 className="font-serif text-[1.45rem] leading-snug text-charcoal">{t(`stage${n}Title`)}</h2>
+                  <p className="ds-body mt-2 max-w-2xl text-base">{t(`stage${n}Text`)}</p>
+                </div>
+              </li>
+            ))}
+          </div>
+        </ol>
+        <div className="mt-12 grid gap-8 md:grid-cols-12">
+          <p className="border-l-2 border-forest pl-5 text-[15px] leading-relaxed text-charcoal md:col-span-7 md:col-start-2">{t("note")}</p>
+          <div className="md:col-span-3 md:col-start-10">
+            <Link href="/book-a-call" className="ds-btn ds-btn-primary w-full">{ts("bookConsultation")}</Link>
+          </div>
         </div>
       </div>
     </div>
   );
-}
-
-export default async function HowItWorksPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
-  setRequestLocale(locale);
-  return <HowContent />;
 }

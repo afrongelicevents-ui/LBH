@@ -987,7 +987,9 @@
         "heic": "HEIC photos aren't supported — on iPhone set the camera to Most Compatible, or send it as JPG.",
         "upload": "Upload failed — check your connection and try again.",
         "db": "Could not save — try again.",
-        "error": "Something went wrong — try again."
+        "error": "Something went wrong — try again.",
+        "kind": "Choose whether this is a real LBH photo or a stock photo.",
+        "credit": "Add the photo credit (who took it and the licence)."
       },
       "slot": {
         "hero": {
@@ -1024,8 +1026,26 @@
           "name": "Logo",
           "where": "Header and footer of every page, and the portals.",
           "tip": "Logo on a white background, at least {min} px wide, with little empty space around it."
+        },
+        "onsite": {
+          "name": "On-site management",
+          "where": "Homepage and Services page — the on-site management section.",
+          "tip": "A builder or work in progress on a house wall. At least {min}px wide."
+        },
+        "reporting": {
+          "name": "Progress reporting",
+          "where": "Homepage and Services page — the progress reporting section.",
+          "tip": "A house partly built, or an inspection on site. At least {min}px wide."
         }
-      }
+      },
+      "kindQuestion": "What is this photo?",
+      "kindLbh": "Real LBH photo",
+      "kindLbhHint": "taken by LBH on a real project — shown without a stock label.",
+      "kindStock": "Stock photo",
+      "kindStockHint": "licensed from elsewhere — shown with \"Stock photo\" and its credit.",
+      "kindNone": "Uploaded before labels — not shown on the new pages",
+      "creditLabel": "Credit",
+      "creditPlaceholder": "e.g. Zambia · Thatlowdownwoman, CC BY-SA 4.0, Wikimedia Commons"
     },
     "ba": {
       "backToSettings": "Settings",
@@ -1816,6 +1836,110 @@
         "title": "Let's build your dream together.",
         "text": "Start your construction journey with a team on the ground in Zimbabwe.",
         "button": "Book your free consultation"
+      }
+    },
+    "servicesPage": {
+      "metaTitle": "Our services",
+      "metaDescription": "Land verification, materials procurement, on-site management and progress reporting for homes built in Zimbabwe from abroad.",
+      "title": "Four services, one team on the ground in Zimbabwe.",
+      "intro": "Every job starts with a free consultation and a written quote. Prices depend on your stand and your build, so they are never shown publicly — your quote is personal to you. Nothing is bought or started without your approval.",
+      "jump": "Services on this page",
+      "whatWeDo": "What we do",
+      "youReceive": "You receive:",
+      "land": {
+        "title": "Land verification",
+        "text": "Before you pay for a stand, we make sure it is real, properly pegged and legally clean. A qualified lawyer checks the title (included in the service), a council officer confirms the pegs on site, and our team measures the stand and records its GPS position with dated photos and video.",
+        "p1": "Title deed checked by a qualified lawyer",
+        "p2": "Pegs confirmed on site with the council",
+        "p3": "Measurements, GPS position, dated photos and video",
+        "p4": "Red flags explained in plain words",
+        "receive": "a written report in your account, with the evidence attached."
+      },
+      "materials": {
+        "title": "Materials procurement",
+        "text": "Tell us what your build needs and we collect quotes from several suppliers, side by side. Nothing is bought until you approve it. Every purchase is recorded with its receipt, and deliveries are photographed when they arrive on site.",
+        "p1": "Quotes compared from several suppliers",
+        "p2": "Nothing bought without your written approval",
+        "p3": "Every receipt photographed and kept",
+        "p4": "Deliveries checked and photographed on site",
+        "receive": "the quotes, your approval, receipts and delivery photos in your account."
+      },
+      "onsite": {
+        "title": "On-site management",
+        "text": "For a full build, our team manages the work stage by stage — foundation, slab, window level, wall plate, roof and finishes. Each stage is quoted, bought, built and inspected before the next one starts, and you approve every stage.",
+        "p1": "Stage-by-stage plan for your build",
+        "p2": "Builders and deliveries overseen on site",
+        "p3": "Each stage inspected before the next one starts",
+        "p4": "Your approval before every new stage",
+        "receive": "a clear view of each stage — what was done, what it cost, and what comes next."
+      },
+      "reporting": {
+        "title": "Progress reporting",
+        "text": "You see what is happening on your site, when it happened and what it cost. Photos are dated from our visits, inspection findings are written in plain words, and spending is recorded in your Build Account as it happens.",
+        "p1": "Dated photographs from every visit",
+        "p2": "Inspection findings in plain words",
+        "p3": "Spending and receipts in your Build Account",
+        "p4": "Updates in your account when something needs you",
+        "receive": "reports and updates in your LBH account — on your phone, wherever you are."
+      },
+      "camera": {
+        "title": "Live site camera",
+        "text": "A camera on your site, so you can look in on your build from anywhere. Leave your email and we will tell you when it is available."
+      }
+    },
+    "howPage": {
+      "title": "From first call to finished report — with you in control."
+    },
+    "about": {
+      "title": "A team on the ground for people building from abroad.",
+      "creditsTitle": "Photo credits",
+      "creditsText": "Where we have no LBH photo yet, we use licensed stock photographs, marked \"Stock photo\" with the country they were taken in. They are not LBH projects."
+    },
+    "faq": {
+      "metaTitle": "Frequently asked questions",
+      "title": "Questions people ask before building with LBH.",
+      "intro": "Short, honest answers. If your question isn't here, book a free consultation and ask us directly.",
+      "moreTitle": "Still have a question?",
+      "moreText": "Talk to us on a free call or on WhatsApp.",
+      "what": {
+        "q": "What does LBH do?",
+        "a": "We help people living abroad build in Zimbabwe. Our team checks land before you buy, collects and compares supplier quotes, buys only what you approve, manages builds stage by stage and reports back with dated photos, receipts and written reports."
+      },
+      "there": {
+        "q": "Do I need to be in Zimbabwe?",
+        "a": "No. Everything happens through your LBH account and WhatsApp — consultations by phone or video, quotes and approvals in your account, and photos and reports you can open on your phone wherever you live."
+      },
+      "cost": {
+        "q": "How much does it cost?",
+        "a": "The first consultation is free. After it you receive a written quote with the service fee and estimated travel. Prices depend on your stand and your build, so they are not published on the website."
+      },
+      "pay": {
+        "q": "How do I pay?",
+        "a": "You accept the quote in your account and pay a 50% deposit — online by card or mobile money, or by bank transfer or remittance, telling us the reference. The balance is due when your report is published."
+      },
+      "money": {
+        "q": "Does LBH hold my money?",
+        "a": "No. Your Build Account is a record of your build money — what you sent, what was spent and what is left — not a bank account. Nothing is bought without your approval."
+      },
+      "proof": {
+        "q": "How do I know the work was really done?",
+        "a": "Our team records dated photos and video on site, every purchase has a photographed receipt, and every field report is reviewed by LBH before it is published to you. Nobody signs off their own work."
+      },
+      "family": {
+        "q": "Can my family follow the build too?",
+        "a": "Yes, if you invite them. In your Build Account you can invite family to view only, or to add receipts for money they hold. They only see what you share."
+      },
+      "mistake": {
+        "q": "What if something goes wrong?",
+        "a": "If we make a mistake, we fix it at our own cost. Extra trips or extra costs never happen without your approval in your account."
+      },
+      "privacy": {
+        "q": "Who can see my information?",
+        "a": "Only you, the LBH staff working on your request, and family you invite. Documents and receipts are stored privately and opened with secure, short-lived links."
+      },
+      "languages": {
+        "q": "Which languages can I use?",
+        "a": "The website and your account are available in English, Shona and Ndebele."
       }
     }
   }

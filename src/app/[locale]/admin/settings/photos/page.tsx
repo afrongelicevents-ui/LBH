@@ -30,7 +30,7 @@ export default async function WebsitePhotosPage({ params }: { params: Promise<{ 
               key={def.slot}
               def={def}
               currentUrl={custom ? sitePhotoUrl(custom.storage_path) : def.defaultSrc}
-              custom={custom ? { width: custom.width, height: custom.height, updatedAt: custom.updated_at } : null}
+              custom={custom ? { width: custom.width, height: custom.height, updatedAt: custom.updated_at, kind: custom.kind, credit: custom.credit } : null}
             />
           );
         })}
