@@ -4,6 +4,7 @@ import { requireRole } from "@/lib/auth/guard";
 import { REQUEST_TIMELINE, timelineIndex, type RequestStatus } from "@/lib/status";
 import { formatCents } from "@/lib/money";
 import * as M from "@/lib/buildAccount/math";
+import { emptySections, loadAccount } from "@/lib/account/data";
 
 const DONE = ["report_ready", "balance_paid", "done"];
 const clean = (s: string | null | undefined) => (s ?? "").replace(/^SAMPLE\s*[—-]?\s*/, "");
@@ -33,6 +34,7 @@ export default async function AccountDashboard({
   ]);
 
   const all = requests ?? [];
+  const hidden = emptySections(await loadAccount(supabase));
   const active = all.filter((r) => !DONE.includes(r.status) && r.status !== "cancelled");
   const ba = (entries ?? []) as M.BaEntry[];
   const name = clean(profile.full_name || profile.email).split(" ")[0];
@@ -196,12 +198,16 @@ export default async function AccountDashboard({
           <section aria-labelledby="shortcuts">
             <h2 id="shortcuts" className="ds-eyebrow">{t("shortcuts")}</h2>
             <ul className="mt-3 border-t border-rule text-[15px]">
-              {[
-                ["/account/progress", tn("progress")],
-                ["/account/build-account/statement", tn("finance")],
-                ["/account/build-account/statement?f=noreceipt", tn("documents")],
-                ["/book-a-call", t("bookCall")],
-              ].map(([href, label]) => (
+              {([
+                ["progress", "/account/progress", tn("progress")],
+                ["approvals", "/account/approvals", tn("approvals")],
+                ["finance", "/account/finance", tn("finance")],
+                ["documents", "/account/documents", tn("documents")],
+                ["photos", "/account/photos", tn("photos")],
+                ["book", "/book-a-call", t("bookCall")],
+              ] as const)
+                .filter(([key]) => !hidden.includes(key))
+                .map(([, href, label]) => (
                 <li key={href} className="border-b border-rule">
                   <Link href={href} className="flex items-center justify-between py-3 text-charcoal hover:text-forest">
                     {label}

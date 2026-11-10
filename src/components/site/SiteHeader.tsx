@@ -35,10 +35,13 @@ function Initials({ profile }: { profile: HeaderProfile }) {
 export default function SiteHeader({
   logo = "/images/logo.jpg",
   initialProfile = null,
+  hiddenAccountKeys = null,
 }: {
   logo?: string;
   /** passed by signed-in pages so the header never flashes "Log in" */
   initialProfile?: HeaderProfile | null;
+  /** account sections with nothing real yet; null = ask the server when the menu is first opened */
+  hiddenAccountKeys?: string[] | null;
 }) {
   const t = useTranslations("site");
   const tc = useTranslations("common");
@@ -66,11 +69,12 @@ export default function SiteHeader({
       if (e.key === "Escape") setOpen(false);
     };
     window.addEventListener("keydown", onKey);
+    const opener = menuBtnRef.current;
     return () => {
       document.body.style.overflow = prev;
       delete document.documentElement.dataset.menu;
       window.removeEventListener("keydown", onKey);
-      menuBtnRef.current?.focus();
+      opener?.focus();
     };
   }, [open]);
 
@@ -84,6 +88,18 @@ export default function SiteHeader({
   const visitor = !profile && (auth.status === "out" || (auth.status === "loading" && !hasAuthCookie && !initialProfile));
   const customer = profile?.role === "client";
   const staffHome = profile && !customer ? homeForRole(profile.role) : null;
+  const [hidden, setHidden] = useState<string[] | null>(hiddenAccountKeys);
+  useEffect(() => {
+    if (!open || !customer || hidden !== null) return;
+    let gone = false;
+    fetch("/api/account/sections", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : { hidden: [] }))
+      .then((j: { hidden?: string[] }) => !gone && setHidden(j.hidden ?? []))
+      .catch(() => !gone && setHidden([]));
+    return () => {
+      gone = true;
+    };
+  }, [open, customer, hidden]);
   const firstName = profile ? (profile.full_name || profile.email).replace(/^SAMPLE\s+/i, "").split(" ")[0] : "";
 
   return (
@@ -175,8 +191,11 @@ export default function SiteHeader({
                 <section aria-labelledby="menu-account" className="mb-8">
                   <p className="mb-1 text-sm text-slate">{t("signedInAs", { name: firstName })}</p>
                   <h2 id="menu-account" className="ds-eyebrow mb-2">{t("yourAccount")}</h2>
-                  <ul>
-                    {ACCOUNT_NAV.map((l) => (
+                  {hidden === null ? (
+                    <p className="py-3 text-sm text-slate" aria-live="polite">{t("loading")}</p>
+                  ) : (
+                  <ul data-testid="account-menu">
+                    {ACCOUNT_NAV.filter((l) => !hidden.includes(l.key)).map((l) => (
                       <li key={l.key}>
                         <Link
                           href={l.href}
@@ -191,6 +210,7 @@ export default function SiteHeader({
                       </li>
                     ))}
                   </ul>
+                  )}
                 </section>
               )}
 

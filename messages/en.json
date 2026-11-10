@@ -1314,6 +1314,118 @@
       "helpTitle": "Need help?",
       "helpText": "Message the LBH team — we reply on WhatsApp and in your account.",
       "helpChat": "Chat with LBH"
+    },
+    "pages": {
+      "projectsTitle": "My projects",
+      "projectsIntro": "Every land check, materials order and build you have with LBH.",
+      "updatedOn": "Updated {date}"
+    },
+    "updates": {
+      "title": "Updates",
+      "intro": "What has happened on your projects, newest first. These are records from your projects — LBH does not send push notifications.",
+      "ev": {
+        "approval": {
+          "extra": "Approval needed: {title} · {project}",
+          "quote": "Quote {title} is waiting for you · {project}",
+          "supplier": "Choose a supplier: {title} · {project}",
+          "stage_choose": "Choose a supplier for {title} · {project}",
+          "stage_approve": "Approve the {title} stage · {project}"
+        },
+        "report": "Report ready · {project}",
+        "inspection": "Inspection recorded · {project}",
+        "payment": "Payment confirmed: {amount} · {project}",
+        "stage": {
+          "quoting": "{stage}: supplier quotes ready · {project}",
+          "quote_approved": "{stage}: supplier chosen · {project}",
+          "paid": "{stage}: payment confirmed · {project}",
+          "purchased": "{stage}: materials bought · {project}",
+          "delivered": "{stage}: materials delivered · {project}",
+          "building": "{stage}: building started · {project}",
+          "inspected": "{stage}: inspected · {project}",
+          "approved": "{stage}: approved · {project}"
+        },
+        "quote": "Quote #{number} sent · {project}",
+        "document": "New document: {name} · {project}"
+      }
+    },
+    "approvals": {
+      "title": "Approvals",
+      "intro": "Nothing moves forward until you decide. Open an item to see the details and approve or decline it.",
+      "waiting": "{count, plural, =0 {Nothing waiting} one {# waiting for you} other {# waiting for you}}",
+      "nothingWaiting": "Nothing needs your approval right now.",
+      "history": "Your decisions",
+      "open": "Review",
+      "kind": {
+        "extra": "Extra cost",
+        "quote": "Quote",
+        "supplier": "Supplier quote",
+        "stage_choose": "Build stage — choose supplier",
+        "stage_approve": "Build stage — approve"
+      },
+      "decided": {
+        "approved": "Approved",
+        "declined": "Declined",
+        "accepted": "Accepted"
+      }
+    },
+    "reports": {
+      "title": "Reports",
+      "intro": "Field reports reviewed by LBH, and inspections from your build stages.",
+      "open": "Open",
+      "kind": {
+        "report": "Field report",
+        "inspection": "Stage inspection"
+      },
+      "verdict": {
+        "clear": "Clear",
+        "concerns": "Concerns",
+        "red_flags": "Red flags"
+      }
+    },
+    "documents": {
+      "title": "Receipts & documents",
+      "intro": "Quotes, invoices, reports and receipts for your projects. Files open with a secure link that expires after a few minutes.",
+      "filter": "Show",
+      "all": "All",
+      "open": "Open",
+      "kind": {
+        "quote": "Quote",
+        "invoice": "Invoice",
+        "report": "Report",
+        "receipt": "Receipt",
+        "document": "Document"
+      },
+      "baNote": "Receipts you add to your Build Account are kept in its statement."
+    },
+    "photos": {
+      "title": "Project photographs",
+      "intro": "Dated photos from LBH site visits, purchases and inspections.",
+      "alt": "Site photo · {project} · {date}"
+    },
+    "finance": {
+      "title": "Financial overview",
+      "intro": "Payments to LBH for your projects, and your Build Account at a glance.",
+      "paidToLbh": "Paid to LBH",
+      "awaiting": "Awaiting payment",
+      "baBalance": "Build Account balance",
+      "baSpent": "Build Account spent",
+      "payments": "Payments",
+      "baText": "Your Build Account shows every dollar sent home, every receipt and what is left, stage by stage.",
+      "baOpen": "Open the statement",
+      "kind": {
+        "deposit": "Deposit",
+        "balance": "Balance",
+        "extra": "Extra cost",
+        "stage": "Build stage",
+        "materials": "Materials"
+      },
+      "status": {
+        "pending": "Awaiting payment",
+        "submitted": "Proof sent — checking",
+        "confirmed": "Confirmed",
+        "failed": "Failed",
+        "cancelled": "Cancelled"
+      }
     }
   },
   "labels": {
@@ -1941,6 +2053,7 @@
         "q": "Which languages can I use?",
         "a": "The website and your account are available in English, Shona and Ndebele."
       }
-    }
+    },
+    "loading": "Loading…"
   }
 }

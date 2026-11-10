@@ -4,6 +4,7 @@ import { getSitePhotos } from "@/lib/sitePhotos";
 import SiteHeader from "@/components/site/SiteHeader";
 import SiteFooter from "@/components/site/SiteFooter";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { emptySections, loadAccount } from "@/lib/account/data";
 
 /**
  * Customer account: the SAME header, ☰ menu and footer as the public website,
@@ -19,12 +20,14 @@ export default async function AccountLayout({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const { profile } = await requireRole(locale, ["client"]);
+  const { profile, supabase } = await requireRole(locale, ["client"]);
+  const hidden = emptySections(await loadAccount(supabase));
   const photos = await getSitePhotos();
   return (
     <div className="ds-page flex min-h-screen flex-1 flex-col">
       <SiteHeader
         logo={photos.logo}
+        hiddenAccountKeys={hidden}
         initialProfile={{ id: profile.id, role: profile.role, full_name: profile.full_name, email: profile.email, staff_kind: profile.staff_kind }}
       />
       <main className="flex-1 pb-16">
