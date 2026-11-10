@@ -294,7 +294,7 @@ export default function SitePhotoSlotCard({
       )}
       {result && !result.ok && (
         <p role="alert" className="mt-2 text-sm font-bold text-red-700">
-          {t(`error.${["auth", "toobig", "filetype", "heic", "upload", "db"].includes(result.error) ? result.error : "error"}` as never)}
+          {t(`error.${["auth", "toobig", "filetype", "heic", "upload", "db", "kind", "credit"].includes(result.error) ? result.error : "error"}` as never)}
         </p>
       )}
     </section>
