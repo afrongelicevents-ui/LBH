@@ -45,14 +45,14 @@ export default async function PortalShell({
   const photos = await getSitePhotos();
 
   return (
-    <div className="flex min-h-screen flex-col bg-portal">
-      <header className="sticky top-0 z-40 border-b border-[#e6e9e7] bg-white">
+    <div className="ds-page ds-staff flex min-h-screen flex-col">
+      <header className="sticky top-0 z-40 border-b border-rule bg-paper">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-3 sm:h-[72px] sm:px-6 lg:px-8">
           <Link href="/" className="flex min-w-0 items-center gap-2.5 sm:gap-3" aria-label={tc("brand")}>
             <Image src={photos.logo} alt="" width={70} height={58} priority className="h-10 w-auto sm:h-12" />
             <span aria-hidden className="h-9 w-px bg-ink/70 sm:h-10" />
             <span className="min-w-0 leading-tight">
-              <span className="block truncate text-[15px] font-extrabold text-ink sm:text-lg">{tc("brand")}</span>
+              <span className="block truncate font-serif text-[16px] text-forest sm:text-[1.2rem]">{tc("brand")}</span>
               <span className="block truncate text-[13px] font-medium text-muted sm:text-sm" data-testid="portal-name">
                 {portalName}
               </span>

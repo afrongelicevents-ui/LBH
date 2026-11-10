@@ -758,7 +758,8 @@
       "builds": "Nhanho dzekuvaka",
       "photos": "Mifananidzo yewebhusaiti",
       "buildAccount": "Build Account",
-      "priceList": "Mitengo"
+      "priceList": "Mitengo",
+      "projects": "Mapurojekiti"
     },
     "needsYou": {
       "title": "Zvinoda iwe",
@@ -943,7 +944,9 @@
       "baTitle": "Build Account",
       "baHint": "Mitengo, kuvhura/kuvhara purani, vanyoreri nemari yakatumirwa kuLBH",
       "priceTitle": "Mitengo",
-      "priceHint": "Mitengo inowanzoshandiswa kuongorora marisiti eBuild Account"
+      "priceHint": "Mitengo inowanzoshandiswa kuongorora marisiti eBuild Account",
+      "projectsTitle": "Mapurojekiti",
+      "projectsHint": "Mifananidzo chaiyo yemapurojekiti eLBH yepeji yeveruzhinji yeMapurojekiti"
     },
     "audit": {
       "title": "Audit log",
@@ -988,7 +991,9 @@
         "heic": "HEIC haitenderwe — paiPhone sarudza Most Compatible.",
         "upload": "Kuisa kwakundikana — tarisa network wedzazve.",
         "db": "Hazvina kuchengetwa — edza zvakare.",
-        "error": "Pane chakanganisika — edza zvakare."
+        "error": "Pane chakanganisika — edza zvakare.",
+        "kind": "Sarudza kana uyu uri mufananidzo chaiwo weLBH kana kuti stock photo.",
+        "credit": "Isa credit yemufananidzo (akautora nerezinesi)."
       },
       "slot": {
         "hero": {
@@ -1025,8 +1030,26 @@
           "name": "Logo",
           "where": "Pamusoro nepasi pepeji rimwe nerimwe, nemaportal.",
           "tip": "Logo pachena chena, {min} px zvishoma."
+        },
+        "onsite": {
+          "name": "Kutarisira basa pasaiti",
+          "where": "Peji rekutanga nepeji reMabasa — chikamu chekutarisira basa pasaiti.",
+          "tip": "Muvaki kana basa richiitwa pamadziro emba. Upamhi hunosvika {min}px zvishoma."
+        },
+        "reporting": {
+          "name": "Kuzivisa kufambira mberi",
+          "where": "Peji rekutanga nepeji reMabasa — chikamu chekuzivisa kufambira mberi.",
+          "tip": "Imba yakavakwa hafu, kana kuongorora kuri kuitwa pasaiti. Upamhi hunosvika {min}px zvishoma."
         }
-      }
+      },
+      "kindQuestion": "Mufananidzo uyu chii?",
+      "kindLbh": "Mufananidzo chaiwo weLBH",
+      "kindLbhHint": "wakatorwa neLBH papurojekiti chaiyo — unoratidzwa usina chinyorwa che stock.",
+      "kindStock": "Stock photo",
+      "kindStockHint": "une rezinesi kubva kumwe — unoratidzwa ne\"Stock photo\" necredit yawo.",
+      "kindNone": "Wakaiswa zvinyorwa zvisati zvavapo — hauratidzwi pamapeji matsva",
+      "creditLabel": "Credit",
+      "creditPlaceholder": "semuenzaniso Zambia · Thatlowdownwoman, CC BY-SA 4.0, Wikimedia Commons"
     },
     "ba": {
       "backToSettings": "Zvirongwa",
@@ -1091,6 +1114,56 @@
         "db": "Hazvina kuchengetwa — edza zvakare.",
         "auth": "Hazvitenderwe (2FA yakagadzirirwa here?).",
         "error": "Pane chakanganisika — edza zvakare."
+      }
+    },
+    "projects": {
+      "back": "Masettings",
+      "title": "Mapurojekiti",
+      "intro": "Mifananidzo chaiyo yemapurojekiti eLBH chete. Purojekiti inoonekwa papeji yeveruzhinji yeMapurojekiti kana yaburitswa, uye peji rinoiswa mumenyu chete kana warivhura.",
+      "menuTitle": "Peji reMapurojekiti mumenyu yewebhusaiti",
+      "menuOn": "Riri mumenyu.",
+      "menuOff": "Rakavanzwa mumenyu (peji harisi reveruzhinji).",
+      "menuShow": "Ratidza mumenyu",
+      "menuHide": "Vanza mumenyu",
+      "menuNeedsProject": "Tanga waburitsa purojekiti imwe chete zvishoma ine mifananidzo.",
+      "viewPage": "Ona peji reMapurojekiti",
+      "newTitle": "Wedzera purojekiti",
+      "fTitle": "Zita repurojekiti",
+      "fLocation": "Nzvimbo",
+      "fLocationHint": "semuenzaniso Ruwa, Harare",
+      "fStage": "Nhanho yazvino",
+      "fStageHint": "semuenzaniso Denga",
+      "fSummary": "Tsananguro pfupi",
+      "fCaption": "Chinyorwa chemufananidzo (hazvimanikidzwi)",
+      "fTaken": "Zuva rawakatorwa",
+      "create": "Gadzira purojekiti",
+      "save": "Chengetedza",
+      "saved": "Zvachengetedzwa.",
+      "edit": "Gadzirisa ruzivo",
+      "addPhoto": "Wedzera mufananidzo",
+      "uploading": "Kuisa…",
+      "photoAdded": "Mufananidzo waiswa.",
+      "noPhotos": "Hapana mifananidzo parizvino — isa mifananidzo chaiyo yeLBH usati waburitsa.",
+      "publish": "Buritsa",
+      "unpublish": "Dzosa",
+      "isPublished": "Yaburitswa",
+      "isDraft": "Haina kuburitswa",
+      "delete": "Dzima purojekiti",
+      "deleteConfirm": "Dzima purojekiti iyi nemifananidzo yayo?",
+      "deletePhoto": "Bvisa",
+      "deletePhotoConfirm": "Bvisa mufananidzo uyu?",
+      "error": {
+        "invalid": "Ndapota tarisa ruzivo.",
+        "db": "Hazvina kuchengetedzwa — edza zvakare.",
+        "auth": "Hautenderwi — pinda zvakare ne2FA.",
+        "upload": "Kuisa kwakundikana — edza zvakare.",
+        "filetype": "Shandisa mufananidzo weJPG, PNG kana WebP.",
+        "toobig": "Faira iri rakakura zvakanyanya.",
+        "heic": "Mifananidzo yeHEIC haitenderwi — shandisa JPG.",
+        "noPhotos": "Isa mufananidzo mumwe chete zvishoma usati waburitsa.",
+        "error": "Pane chakanganisika — edza zvakare.",
+        "camera": "Pane chakanganisika — edza zvakare.",
+        "capturetime": "Pane chakanganisika — edza zvakare."
       }
     }
   },
@@ -1262,39 +1335,151 @@
       "country": "Nyora nyika yaunogara."
     },
     "dashboard": {
-      "hello": "Welcome back, {name}",
-      "intro": "Your projects, approvals and Build Account in one place.",
-      "newLand": "Verify land",
-      "newMaterials": "Order materials",
-      "welcomeTitle": "Welcome to LBH, {name}.",
-      "welcomeText": "Book a free consultation or start a request below.",
-      "active": "Active projects",
-      "waiting": "Awaiting your approval",
+      "hello": "Mauya zvakare, {name}",
+      "intro": "Mapurojekiti ako, mvumo neBuild Account panzvimbo imwe.",
+      "newLand": "Ongorora stendi",
+      "newMaterials": "Odha zvivakwa",
+      "welcomeTitle": "Mauya kuLBH, {name}.",
+      "welcomeText": "Bhuka runhare rwemahara kana tanga chikumbiro pazasi.",
+      "active": "Mapurojekiti ari kuitwa",
+      "waiting": "Zvakamirira mvumo yako",
       "balance": "Build Account",
-      "attention": "{count, plural, one {# item needs your approval} other {# items need your approval}} — nothing proceeds until you decide.",
-      "count": "{count, plural, one {# project} other {# projects}}",
-      "noProjects": "No projects yet. Book a free consultation or start a request.",
+      "attention": "{count, plural, one {# chinhu chinoda mvumo yako} other {# zvinhu zvinoda mvumo yako}} — hapana chinofamba kusvika wasarudza.",
+      "count": "{count, plural, one {# purojekiti} other {# mapurojekiti}}",
+      "noProjects": "Hapana mapurojekiti parizvino. Bhuka runhare rwemahara kana tanga chikumbiro.",
       "type": {
-        "land_verification": "Land verification",
-        "materials": "Materials",
-        "build": "Construction"
+        "land_verification": "Kuongorora stendi",
+        "materials": "Zvivakwa",
+        "build": "Kuvaka"
       },
-      "noUpdates": "No updates yet.",
+      "noUpdates": "Hapana nyaya itsva parizvino.",
       "ev": {
-        "approval": "Approval needed: {title}",
-        "report": "Report ready: {title}",
-        "payment": "Payment confirmed: {amount} · {title}"
+        "approval": "Mvumo inodiwa: {title}",
+        "report": "Gwaro ragadzirira: {title}",
+        "payment": "Mubhadharo wasimbiswa: {amount} · {title}"
       },
-      "baBalance": "Balance",
-      "baIn": "Money sent in",
-      "baSpent": "Spent",
-      "baOnWay": "{amount} on its way",
-      "baOpen": "Open Build Account",
-      "shortcuts": "Shortcuts",
-      "bookCall": "Book a consultation",
-      "helpTitle": "Need help?",
-      "helpText": "Message the LBH team — we reply on WhatsApp and in your account.",
-      "helpChat": "Chat with LBH"
+      "baBalance": "Yasara",
+      "baIn": "Mari yakatumirwa",
+      "baSpent": "Yashandiswa",
+      "baOnWay": "{amount} iri munzira",
+      "baOpen": "Vhura Build Account",
+      "shortcuts": "Nzira pfupi",
+      "bookCall": "Bhuka runhare",
+      "helpTitle": "Unoda rubatsiro here?",
+      "helpText": "Tumira meseji kutimu yeLBH — tinopindura paWhatsApp nemuaccount yako.",
+      "helpChat": "Taura neLBH"
+    },
+    "pages": {
+      "projectsTitle": "Mapurojekiti angu",
+      "projectsIntro": "Kuongororwa kwestendi kwese, odha yezvivakwa nekuvaka kwese kwaunako neLBH.",
+      "updatedOn": "Zvakagadziridzwa {date}"
+    },
+    "updates": {
+      "title": "Nyaya itsva",
+      "intro": "Zvaitika pamapurojekiti ako, zvichangoitika ndizvo zvekutanga. Izvi zvinyorwa zvemapurojekiti ako — LBH haitumire push notifications.",
+      "ev": {
+        "approval": {
+          "extra": "Mvumo inodiwa: {title} · {project}",
+          "quote": "Kotesheni {title} yakakumirira · {project}",
+          "supplier": "Sarudza mutengesi: {title} · {project}",
+          "stage_choose": "Sarudza mutengesi we{title} · {project}",
+          "stage_approve": "Bvumira nhanho ye{title} · {project}"
+        },
+        "report": "Gwaro ragadzirira · {project}",
+        "inspection": "Kuongorora kwanyorwa · {project}",
+        "payment": "Mubhadharo wasimbiswa: {amount} · {project}",
+        "stage": {
+          "quoting": "{stage}: makotesheni evatengesi agadzirira · {project}",
+          "quote_approved": "{stage}: mutengesi asarudzwa · {project}",
+          "paid": "{stage}: mubhadharo wasimbiswa · {project}",
+          "purchased": "{stage}: zvivakwa zvatengwa · {project}",
+          "delivered": "{stage}: zvivakwa zvasvitswa · {project}",
+          "building": "{stage}: kuvaka kwatanga · {project}",
+          "inspected": "{stage}: zvaongororwa · {project}",
+          "approved": "{stage}: zvabvumirwa · {project}"
+        },
+        "quote": "Kotesheni #{number} yatumirwa · {project}",
+        "document": "Gwaro idzva: {name} · {project}"
+      }
+    },
+    "approvals": {
+      "title": "Mvumo",
+      "intro": "Hapana chinofamba kusvika wasarudza. Vhura chinhu kuti uone ruzivo rwacho wobvumira kana kuramba.",
+      "waiting": "{count, plural, =0 {Hapana chakamirira} one {# chakakumirira} other {# zvakakumirira}}",
+      "nothingWaiting": "Hapana chinoda mvumo yako parizvino.",
+      "history": "Zvawakasarudza",
+      "open": "Ongorora",
+      "kind": {
+        "extra": "Mutengo wekuwedzera",
+        "quote": "Kotesheni",
+        "supplier": "Kotesheni yemutengesi",
+        "stage_choose": "Nhanho yekuvaka — sarudza mutengesi",
+        "stage_approve": "Nhanho yekuvaka — bvumira"
+      },
+      "decided": {
+        "approved": "Zvabvumirwa",
+        "declined": "Zvarambwa",
+        "accepted": "Zvagamuchirwa"
+      }
+    },
+    "reports": {
+      "title": "Magwaro",
+      "intro": "Magwaro emumunda akaongororwa neLBH, nekuongororwa kwenhanho dzekuvaka kwako.",
+      "open": "Vhura",
+      "kind": {
+        "report": "Gwaro remumunda",
+        "inspection": "Kuongororwa kwenhanho"
+      },
+      "verdict": {
+        "clear": "Zvakanaka",
+        "concerns": "Pane zvinonetsa",
+        "red_flags": "Yambiro huru"
+      }
+    },
+    "documents": {
+      "title": "Marisiti & magwaro",
+      "intro": "Makotesheni, mainvoice, magwaro nemarisiti emapurojekiti ako. Mafaira anovhurwa nelink yakachengeteka inopera mushure memaminitsi mashoma.",
+      "filter": "Ratidza",
+      "all": "Zvese",
+      "open": "Vhura",
+      "kind": {
+        "quote": "Kotesheni",
+        "invoice": "Invoice",
+        "report": "Gwaro",
+        "receipt": "Risiti",
+        "document": "Gwaro"
+      },
+      "baNote": "Marisiti aunoisa muBuild Account yako anochengetwa muchitatimendi chayo."
+    },
+    "photos": {
+      "title": "Mifananidzo yepurojekiti",
+      "intro": "Mifananidzo ine zuva kubva pakushanya kweLBH pasaiti, pakutenga nepakuongorora.",
+      "alt": "Mufananidzo wesaiti · {project} · {date}"
+    },
+    "finance": {
+      "title": "Mari muchidimbu",
+      "intro": "Mibhadharo kuLBH yemapurojekiti ako, neBuild Account yako muchidimbu.",
+      "paidToLbh": "Yabhadharwa kuLBH",
+      "awaiting": "Yakamirira kubhadharwa",
+      "baBalance": "Mari yasara muBuild Account",
+      "baSpent": "Yashandiswa muBuild Account",
+      "payments": "Mibhadharo",
+      "baText": "Build Account yako inoratidza dhora rega rega rakatumirwa kumusha, risiti yega yega nezvasara, nhanho nenhanho.",
+      "baOpen": "Vhura chitatimendi",
+      "kind": {
+        "deposit": "Dhipoziti",
+        "balance": "Yasara",
+        "extra": "Mutengo wekuwedzera",
+        "stage": "Nhanho yekuvaka",
+        "materials": "Zvivakwa"
+      },
+      "status": {
+        "pending": "Yakamirira kubhadharwa",
+        "submitted": "Umbowo hwatumirwa — tiri kutarisa",
+        "confirmed": "Yasimbiswa",
+        "failed": "Yakundikana",
+        "cancelled": "Yakanzurwa"
+      }
     }
   },
   "labels": {
@@ -1610,214 +1795,324 @@
     "chartTitle": "Mari yatumirwa pamwedzi"
   },
   "site": {
-    "mainNav": "Main",
-    "menu": "Menu",
-    "close": "Close",
-    "closeMenu": "Close menu",
-    "myAccount": "My account",
-    "staffArea": "Staff area",
-    "openStaffArea": "Open my staff area",
-    "signedInAs": "Signed in as {name}",
-    "yourAccount": "Your account",
-    "website": "LBH website",
-    "explore": "Explore LBH",
-    "logOut": "Log out",
-    "bookConsultation": "Book a free consultation",
+    "mainNav": "Menyu huru",
+    "menu": "Menyu",
+    "close": "Vhara",
+    "closeMenu": "Vhara menyu",
+    "myAccount": "Account yangu",
+    "staffArea": "Nzvimbo yevashandi",
+    "openStaffArea": "Vhura nzvimbo yangu yevashandi",
+    "signedInAs": "Wapinda se{name}",
+    "yourAccount": "Account yako",
+    "website": "Webhusaiti yeLBH",
+    "explore": "Ziva LBH",
+    "logOut": "Buda",
+    "bookConsultation": "Bhuka runhare rwemahara",
     "stockPhoto": "Stock photo",
     "nav": {
-      "home": "Home",
-      "services": "Our services",
-      "howItWorks": "How it works",
+      "home": "Kumba",
+      "services": "Mabasa edu",
+      "howItWorks": "Zvinofamba sei",
       "buildAccount": "Build Account",
-      "projects": "Projects",
-      "about": "About LBH",
-      "faq": "FAQ",
-      "contact": "Contact"
+      "projects": "Mapurojekiti",
+      "about": "Nezve LBH",
+      "faq": "Mibvunzo",
+      "contact": "Taura nesu"
     },
     "account": {
-      "dashboard": "My dashboard",
-      "projects": "My projects",
-      "buildAccount": "My Build Account",
-      "progress": "Project progress",
-      "finance": "Financial overview",
-      "documents": "Receipts & documents",
-      "photos": "Project photographs",
-      "reports": "Reports",
-      "updates": "Updates",
-      "approvals": "Approvals",
-      "support": "Support",
-      "settings": "Account settings"
+      "dashboard": "Dashboard yangu",
+      "projects": "Mapurojekiti angu",
+      "buildAccount": "Build Account yangu",
+      "progress": "Kufambira mberi kwepurojekiti",
+      "finance": "Mari muchidimbu",
+      "documents": "Marisiti & magwaro",
+      "photos": "Mifananidzo yepurojekiti",
+      "reports": "Magwaro",
+      "updates": "Nyaya itsva",
+      "approvals": "Mvumo",
+      "support": "Rubatsiro",
+      "settings": "Masettings eaccount"
     },
     "footer": {
-      "about": "Let's Build Home helps people living abroad build in Zimbabwe — with a local team that checks the land, buys and records materials, oversees the work and reports back with dated photos.",
-      "servicesTitle": "Services",
+      "about": "Let's Build Home inobatsira vanhu vanogara kunze kwenyika kuvaka muZimbabwe — netimu iri pano inoongorora stendi, inotenga nekunyora zvivakwa, inotarisira basa uye inokuzivisa nemifananidzo ine zuva.",
+      "servicesTitle": "Mabasa",
       "companyTitle": "LBH",
-      "contactTitle": "Contact",
-      "whatsapp": "WhatsApp us",
-      "based": "Based in Zimbabwe",
-      "terms": "Terms",
-      "privacy": "Privacy policy",
-      "notABank": "The Build Account is a record of your build money, not a bank account."
+      "contactTitle": "Taura nesu",
+      "whatsapp": "Titumire paWhatsApp",
+      "based": "Tiri muZimbabwe",
+      "terms": "Mitemo",
+      "privacy": "Mutemo wekuvanzika",
+      "notABank": "Build Account chinyorwa chemari yako yekuvaka, kwete account yebhangi."
     },
     "home": {
       "hero": {
-        "eyebrow": "Construction oversight in Zimbabwe",
-        "title": "Build your home back home.",
-        "subtitle": "We'll be your eyes on the ground.",
-        "text": "Build with confidence, wherever in the world you are.",
-        "cta": "Book a free consultation",
-        "secondary": "How it works"
+        "eyebrow": "Kutarisira kuvaka muZimbabwe",
+        "title": "Vaka imba yako kumusha.",
+        "subtitle": "Tichava meso ako ikoko.",
+        "text": "Vaka wakavimba, chero kwaunogara pasi rose.",
+        "cta": "Bhuka runhare rwemahara",
+        "secondary": "Zvinofamba sei"
       },
       "trust": {
-        "label": "Why clients trust LBH",
+        "label": "Sei vatengi vachivimba neLBH",
         "verified": {
           "title": "Verified land & suppliers",
-          "text": "Stands and quotes checked before you pay."
+          "text": "Stendi nemakotesheni zvinoongororwa usati wabhadhara."
         },
         "process": {
-          "title": "Transparent process",
-          "text": "Written quotes. Nothing bought without your approval."
+          "title": "Nzira iri pachena",
+          "text": "Makotesheni akanyorwa. Hapana chinotengwa usina kubvumira."
         },
         "photos": {
-          "title": "Dated photo updates",
-          "text": "Every visit and purchase recorded with photos."
+          "title": "Mifananidzo ine zuva",
+          "text": "Kushanya kwese nekutenga kwese kunonyorwa nemifananidzo."
         },
         "support": {
-          "title": "Dedicated support",
-          "text": "One team to talk to, by WhatsApp or chat."
+          "title": "Rubatsiro rwakazvipira",
+          "text": "Timu imwe yekutaura nayo, paWhatsApp kana muchat."
         }
       },
       "services": {
-        "eyebrow": "Our services",
-        "title": "Everything a build needs, handled on the ground.",
-        "intro": "Each job starts with a free consultation and a written quote. You decide what happens next — LBH does the work locally and shows you the evidence.",
-        "more": "Learn more",
-        "soonTag": "Coming soon",
-        "camera": "A live site camera, so you can look in on your build from anywhere.",
+        "eyebrow": "Mabasa edu",
+        "title": "Zvese zvinodiwa pakuvaka, zvinoitwa ikoko.",
+        "intro": "Basa rega rega rinotanga nerunhare rwemahara nekotesheni yakanyorwa. Ndiwe unosarudza zvinotevera — LBH inoita basa ikoko yokuratidza umbowo.",
+        "more": "Dzidza zvakawanda",
+        "soonTag": "Chiri kuuya",
+        "camera": "Kamera live pasaiti, kuti uone kuvaka kwako uri chero kupi.",
         "land": {
-          "title": "Land verification",
-          "text": "Before you pay for a stand, we check it is real, properly pegged and legally clean.",
-          "p1": "Title checked by a qualified lawyer",
-          "p2": "Pegs confirmed with the council",
-          "p3": "Written report with photos and GPS"
+          "title": "Kuongorora stendi",
+          "text": "Usati wabhadhara stendi, tinoongorora kuti ndeyechokwadi, yakaiswa zvipandi zvakanaka uye yakachena pamutemo.",
+          "p1": "Title inoongororwa negweta rine ruzivo",
+          "p2": "Zvipandi zvinosimbiswa nekanzuru",
+          "p3": "Gwaro rakanyorwa rine mifananidzo neGPS"
         },
         "materials": {
-          "title": "Materials procurement",
-          "text": "We collect supplier quotes side by side and buy only what you approve.",
-          "p1": "Quotes compared from several suppliers",
-          "p2": "Nothing bought without your approval",
-          "p3": "Every receipt photographed and kept"
+          "title": "Kutenga zvivakwa",
+          "text": "Tinounganidza makotesheni evatengesi tozvienzanisa, totenga chete zvawabvumira.",
+          "p1": "Makotesheni anoenzaniswa kubva kuvatengesi vakawanda",
+          "p2": "Hapana chinotengwa usina kubvumira",
+          "p3": "Risiti yega yega inotorwa mufananidzo yochengetwa"
         },
         "onsite": {
-          "title": "On-site management",
-          "text": "Our team manages your build stage by stage, from foundation to roof.",
-          "p1": "Builders and deliveries overseen on site",
-          "p2": "Each stage inspected before the next",
-          "p3": "You approve every stage"
+          "title": "Kutarisira basa pasaiti",
+          "text": "Timu yedu inotarisira kuvaka kwako nhanho nenhanho, kubva pafaundesheni kusvika padenga.",
+          "p1": "Vavaki nezvinosvitswa zvinotariswa pasaiti",
+          "p2": "Nhanho yega yega inoongororwa isati yatevera imwe",
+          "p3": "Unobvumira nhanho yega yega"
         },
         "reporting": {
-          "title": "Progress reporting",
-          "text": "You see what is happening on site, when it happened, and what it cost.",
-          "p1": "Dated photographs from every visit",
-          "p2": "Inspection findings in plain words",
-          "p3": "Spending recorded in your Build Account"
+          "title": "Kuzivisa kufambira mberi",
+          "text": "Unoona zviri kuitika pasaiti, kuti zvakaitika riini, uye kuti zvakadhura zvakadii.",
+          "p1": "Mifananidzo ine zuva pakushanya kwese",
+          "p2": "Zvakawanikwa pakuongorora nemashoko ari nyore",
+          "p3": "Mari yashandiswa inonyorwa muBuild Account yako"
         }
       },
       "ba": {
         "eyebrow": "LBH Build Account",
-        "title": "Your build, in one place — from anywhere.",
-        "text": "The Build Account shows every dollar sent home, every receipt, and what is left, stage by stage. It is part of your LBH account — no separate app.",
-        "f1": "Balance, money sent and spending by stage",
-        "f2": "Receipts scanned and kept with each purchase",
-        "f3": "Budget per stage with a warning when it runs over",
-        "f4": "Approvals, reports and updates for your project",
-        "f5": "Family can view or add receipts — only if you invite them",
-        "cta": "About the Build Account",
-        "cta2": "Create an account",
+        "title": "Kuvaka kwako, panzvimbo imwe — uri chero kupi.",
+        "text": "Build Account inoratidza dhora rega rega rakatumirwa kumusha, risiti yega yega nezvasara, nhanho nenhanho. Iri chikamu cheaccount yako yeLBH — hapana imwe app.",
+        "f1": "Mari yasara, mari yakatumirwa nezvashandiswa panhanho yega yega",
+        "f2": "Marisiti anotorwa mufananidzo ochengetwa nechinhu chimwe nechimwe chakatengwa",
+        "f3": "Bhajeti panhanho yega yega neyambiro kana yapfuurwa",
+        "f4": "Mvumo, magwaro nenyaya itsva dzepurojekiti yako",
+        "f5": "Mhuri inogona kuona kana kuisa marisiti — kana chete wavakoka",
+        "cta": "Nezve Build Account",
+        "cta2": "Vhura account",
         "demo": {
-          "label": "Build Account preview with sample information",
-          "title": "Family home · Harare",
-          "sample": "Sample data",
-          "budget": "Budget",
-          "spent": "Spent",
-          "left": "Remaining",
-          "progress": "Construction progress",
-          "progressValue": "Stage 3 of 5",
-          "s1": "Foundation",
+          "label": "Muenzaniso weBuild Account une ruzivo rwekuedzesera",
+          "title": "Imba yemhuri · Harare",
+          "sample": "Muenzaniso",
+          "budget": "Bhajeti",
+          "spent": "Yashandiswa",
+          "left": "Yasara",
+          "progress": "Kufambira mberi kwekuvaka",
+          "progressValue": "Nhanho 3 pa5",
+          "s1": "Faundesheni",
           "s2": "Slab",
           "s3": "Window level",
           "s4": "Wall plate",
-          "s5": "Roof",
-          "receipts": "Recent receipts",
-          "r1": "Cement 42.5N · 40 bags",
-          "r2": "Common bricks · 6,000",
-          "r3": "River sand · 2 loads",
-          "updates": "Updates",
-          "u1": "Approval needed: window-level supplier",
-          "u1When": "Today",
-          "u2": "Inspection report ready: slab",
-          "u2When": "3 days ago",
-          "u3": "Payment confirmed for the slab stage",
-          "u3When": "Last week",
-          "note": "Illustration with sample figures — not a real client.",
-          "receiptOk": "Receipt"
+          "s5": "Denga",
+          "receipts": "Marisiti achangopfuura",
+          "r1": "Cement 42.5N · masaga 40",
+          "r2": "Zvidhinha · 6,000",
+          "r3": "Jecha rerwizi · mitoro 2",
+          "updates": "Nyaya itsva",
+          "u1": "Mvumo inodiwa: mutengesi we window level",
+          "u1When": "Nhasi",
+          "u2": "Gwaro rekuongorora ragadzirira: slab",
+          "u2When": "Mazuva 3 apfuura",
+          "u3": "Mubhadharo wenhanho yeslab wasimbiswa",
+          "u3When": "Svondo rapfuura",
+          "note": "Muenzaniso une nhamba dzekuedzesera — haasi mutengi chaiye.",
+          "receiptOk": "Risiti"
         }
       },
       "process": {
-        "eyebrow": "How it works",
-        "title": "Four steps, with you in control at every one.",
-        "more": "See the full process",
+        "eyebrow": "Zvinofamba sei",
+        "title": "Nhanho ina, uchitonga pane imwe neimwe.",
+        "more": "Ona nzira yese",
         "s1": {
-          "title": "Request a service",
-          "text": "Book a free consultation and tell us about your land or build."
+          "title": "Kumbira basa",
+          "text": "Bhuka runhare rwemahara utiudze nezvestendi yako kana kuvaka kwako."
         },
         "s2": {
-          "title": "LBH verifies and manages",
-          "text": "Our team checks, quotes, buys and oversees the work in Zimbabwe."
+          "title": "LBH inoongorora yotarisira",
+          "text": "Timu yedu inoongorora, inopa kotesheni, inotenga uye inotarisira basa muZimbabwe."
         },
         "s3": {
-          "title": "Receive evidence and reports",
-          "text": "Dated photos, receipts and inspection reports in your account."
+          "title": "Gamuchira umbowo nemagwaro",
+          "text": "Mifananidzo ine zuva, marisiti nemagwaro ekuongorora muaccount yako."
         },
         "s4": {
-          "title": "Review and approve next steps",
-          "text": "Nothing moves forward until you approve it."
+          "title": "Ongorora ubvumire zvinotevera",
+          "text": "Hapana chinofamba kusvika wabvumira."
         }
       },
       "why": {
-        "eyebrow": "Why LBH",
-        "title": "Someone you can trust, on the ground.",
-        "text": "Building from abroad is a big commitment. We make sure you can see what your money is doing.",
+        "eyebrow": "Sei LBH",
+        "title": "Munhu waunogona kuvimba naye, ikoko.",
+        "text": "Kuvaka uri kunze kwenyika chinhu chikuru. Tinoita shuwa kuti unoona zviri kuitwa nemari yako.",
         "local": {
-          "title": "Local presence",
-          "text": "A team based in Zimbabwe that visits your stand and site."
+          "title": "Tiri pano",
+          "text": "Timu iri muZimbabwe inoshanyira stendi yako nesaiti."
         },
         "oversight": {
-          "title": "Construction oversight",
-          "text": "Each stage is inspected before the next one starts."
+          "title": "Kutarisira kuvaka",
+          "text": "Nhanho yega yega inoongororwa isati yatanga inotevera."
         },
         "money": {
-          "title": "Visible spending",
-          "text": "Quotes, receipts and balances you can check at any time."
+          "title": "Mari inooneka",
+          "text": "Makotesheni, marisiti nemari yasara zvaunogona kutarisa chero nguva."
         },
         "photos": {
-          "title": "Photographic evidence",
-          "text": "Dated photos from every visit, purchase and delivery."
+          "title": "Umbowo hwemifananidzo",
+          "text": "Mifananidzo ine zuva pakushanya kwese, pakutenga nepakusvitswa."
         },
         "contact": {
-          "title": "Regular communication",
-          "text": "Updates in your account, and a team you can message."
+          "title": "Kutaurirana nguva dzose",
+          "text": "Nyaya itsva muaccount yako, netimu yaunogona kutumira meseji."
         },
         "account": {
-          "title": "Accountability",
-          "text": "Written quotes and your approval before money is spent."
+          "title": "Kuzvidavirira",
+          "text": "Makotesheni akanyorwa nemvumo yako mari isati yashandiswa."
         }
       },
       "cta": {
-        "title": "Let's build your dream together.",
-        "text": "Start your construction journey with a team on the ground in Zimbabwe.",
-        "button": "Book your free consultation"
+        "title": "Ngatitangei kuvaka imba yamunorota pamwe chete.",
+        "text": "Tanga rwendo rwako rwekuvaka netimu iri ikoko muZimbabwe.",
+        "button": "Bhuka runhare rwako rwemahara"
       }
+    },
+    "servicesPage": {
+      "metaTitle": "Mabasa edu",
+      "metaDescription": "Kuongorora stendi, kutenga zvivakwa, kutarisira basa pasaiti nekuzivisa kufambira mberi kwedzimba dzinovakwa muZimbabwe kubva kunze kwenyika.",
+      "title": "Mabasa mana, timu imwe iri ikoko muZimbabwe.",
+      "intro": "Basa rega rega rinotanga nerunhare rwemahara nekotesheni yakanyorwa. Mitengo inoenderana nestendi yako nekuvaka kwako, saka haimboratidzwi pachena — kotesheni yako ndeyako chete. Hapana chinotengwa kana kutangwa usina kubvumira.",
+      "jump": "Mabasa ari papeji rino",
+      "whatWeDo": "Zvatinoita",
+      "youReceive": "Unogamuchira:",
+      "land": {
+        "title": "Kuongorora stendi",
+        "text": "Usati wabhadhara stendi, tinoita shuwa kuti ndeyechokwadi, yakaiswa zvipandi zvakanaka uye yakachena pamutemo. Gweta rine ruzivo rinoongorora title (zviri mubasa redu), mukuru wekanzuru anosimbisa zvipandi panzvimbo, uye timu yedu inoyera stendi yonyora GPS yayo nemifananidzo nevhidhiyo zvine zuva.",
+        "p1": "Title deed inoongororwa negweta rine ruzivo",
+        "p2": "Zvipandi zvinosimbiswa panzvimbo nekanzuru",
+        "p3": "Zviyero, GPS, mifananidzo nevhidhiyo zvine zuva",
+        "p4": "Yambiro dzinotsanangurwa nemashoko ari nyore",
+        "receive": "gwaro rakanyorwa muaccount yako, rine umbowo hwakabatanidzwa."
+      },
+      "materials": {
+        "title": "Kutenga zvivakwa",
+        "text": "Tiudze zvinodiwa pakuvaka kwako tounganidza makotesheni kubva kuvatengesi vakawanda, akaenzaniswa. Hapana chinotengwa kusvika wabvumira. Kutenga kwese kunonyorwa nerisiti yako, uye zvinosvitswa zvinotorwa mifananidzo kana zvasvika pasaiti.",
+        "p1": "Makotesheni anoenzaniswa kubva kuvatengesi vakawanda",
+        "p2": "Hapana chinotengwa usina kubvumira nechinyorwa",
+        "p3": "Risiti yega yega inotorwa mufananidzo yochengetwa",
+        "p4": "Zvinosvitswa zvinoongororwa nekutorwa mifananidzo pasaiti",
+        "receive": "makotesheni, mvumo yako, marisiti nemifananidzo yezvasvitswa muaccount yako."
+      },
+      "onsite": {
+        "title": "Kutarisira basa pasaiti",
+        "text": "Pakuvaka kwese, timu yedu inotarisira basa nhanho nenhanho — faundesheni, slab, window level, wall plate, denga nekupedzisa. Nhanho yega yega inopiwa kotesheni, inotengerwa, inovakwa uye inoongororwa isati yatanga inotevera, uye iwe unobvumira nhanho yega yega.",
+        "p1": "Purani yekuvaka kwako nhanho nenhanho",
+        "p2": "Vavaki nezvinosvitswa zvinotariswa pasaiti",
+        "p3": "Nhanho yega yega inoongororwa isati yatanga inotevera",
+        "p4": "Mvumo yako nhanho itsva yega yega isati yatanga",
+        "receive": "kuona zvakajeka nhanho yega yega — zvakaitwa, zvakadhura, nezvinotevera."
+      },
+      "reporting": {
+        "title": "Kuzivisa kufambira mberi",
+        "text": "Unoona zviri kuitika pasaiti yako, kuti zvakaitika riini uye kuti zvakadhura zvakadii. Mifananidzo ine zuva rekushanya kwedu, zvakawanikwa pakuongorora zvinonyorwa nemashoko ari nyore, uye mari inoshandiswa inonyorwa muBuild Account yako pakarepo.",
+        "p1": "Mifananidzo ine zuva pakushanya kwese",
+        "p2": "Zvakawanikwa pakuongorora nemashoko ari nyore",
+        "p3": "Mari yashandiswa nemarisiti muBuild Account yako",
+        "p4": "Nyaya itsva muaccount yako kana pane chinoda iwe",
+        "receive": "magwaro nenyaya itsva muaccount yako yeLBH — parunhare rwako, chero kwauri."
+      },
+      "camera": {
+        "title": "Kamera live pasaiti",
+        "text": "Kamera pasaiti yako, kuti uone kuvaka kwako uri chero kupi. Siya email yako tichakuzivisa kana yave kuwanikwa."
+      }
+    },
+    "howPage": {
+      "title": "Kubva parunhare rwekutanga kusvika pagwaro rakapera — iwe uchitonga."
+    },
+    "about": {
+      "title": "Timu iri ikoko yevanhu vanovaka vari kunze kwenyika.",
+      "creditsTitle": "Macredit emifananidzo",
+      "creditsText": "Patisati tava nemufananidzo weLBH, tinoshandisa stock photos dzine rezinesi, dzakanyorwa \"Stock photo\" nenyika yadzakatorerwa. Haasi mapurojekiti eLBH."
+    },
+    "faq": {
+      "metaTitle": "Mibvunzo inowanzobvunzwa",
+      "title": "Mibvunzo inobvunzwa nevanhu vasati vavaka neLBH.",
+      "intro": "Mhinduro pfupi dzechokwadi. Kana mubvunzo wako usipo, bhuka runhare rwemahara utibvunze pachedu.",
+      "moreTitle": "Uchine mubvunzo here?",
+      "moreText": "Taura nesu parunhare rwemahara kana paWhatsApp.",
+      "what": {
+        "q": "LBH inoitei?",
+        "a": "Tinobatsira vanhu vanogara kunze kwenyika kuvaka muZimbabwe. Timu yedu inoongorora stendi usati watenga, inounganidza nekuenzanisa makotesheni evatengesi, inotenga chete zvawabvumira, inotarisira kuvaka nhanho nenhanho uye inokuzivisa nemifananidzo ine zuva, marisiti nemagwaro akanyorwa."
+      },
+      "there": {
+        "q": "Ndinofanira kunge ndiri muZimbabwe here?",
+        "a": "Kwete. Zvese zvinoitika kuburikidza neaccount yako yeLBH neWhatsApp — kutaurirana parunhare kana pavhidhiyo, makotesheni nemvumo muaccount yako, nemifananidzo nemagwaro aunogona kuvhura parunhare rwako chero kwaunogara."
+      },
+      "cost": {
+        "q": "Zvinodhura zvakadii?",
+        "a": "Runhare rwekutanga ndorwemahara. Mushure maro unogamuchira kotesheni yakanyorwa ine muripo webasa nemari yerwendo inofungidzirwa. Mitengo inoenderana nestendi yako nekuvaka kwako, saka haiiswi pawebhusaiti."
+      },
+      "pay": {
+        "q": "Ndinobhadhara sei?",
+        "a": "Unobvuma kotesheni muaccount yako wobhadhara dhipoziti ye50% — online nekadhi kana mobile money, kana nebhanga kana remittance, wotiudza reference. Yasara inobhadharwa kana gwaro rako raburitswa."
+      },
+      "money": {
+        "q": "LBH inobata mari yangu here?",
+        "a": "Kwete. Build Account yako chinyorwa chemari yako yekuvaka — yawakatumira, yakashandiswa neyasara — kwete account yebhangi. Hapana chinotengwa usina kubvumira."
+      },
+      "proof": {
+        "q": "Ndingaziva sei kuti basa rakaitwa chaizvo?",
+        "a": "Timu yedu inotora mifananidzo nevhidhiyo zvine zuva pasaiti, kutenga kwese kune risiti yakatorwa mufananidzo, uye gwaro rega rega remumunda rinoongororwa neLBH risati raburitswa kwauri. Hapana anosaina basa rake pachake."
+      },
+      "family": {
+        "q": "Mhuri yangu ingateverawo kuvaka here?",
+        "a": "Hongu, kana ukavakoka. MuBuild Account yako unogona kukoka mhuri kuti ingoona chete, kana kuti iise marisiti emari yavakabata. Vanoona chete zvaunogovana navo."
+      },
+      "mistake": {
+        "q": "Ko kana chimwe chikakanganisika?",
+        "a": "Kana tikakanganisa, tinogadzirisa nemari yedu. Nzendo dzekuwedzera kana mitengo yekuwedzera hazviitiki usina kubvumira muaccount yako."
+      },
+      "privacy": {
+        "q": "Ndiani anogona kuona ruzivo rwangu?",
+        "a": "Iwe chete, vashandi veLBH vari kushanda pachikumbiro chako, nemhuri yaunokoka. Magwaro nemarisiti zvinochengetwa zvakavanzika uye zvinovhurwa nemalink akachengeteka anopera nekukurumidza."
+      },
+      "languages": {
+        "q": "Ndingashandisa mitauro ipi?",
+        "a": "Webhusaiti neaccount yako zvinowanikwa muChirungu, chiShona nesiNdebele."
+      }
+    },
+    "loading": "Kurodha…",
+    "projectsPage": {
+      "metaTitle": "Mapurojekiti",
+      "title": "Mapurojekiti eLBH, akatorwa mifananidzo pasaiti.",
+      "intro": "Mapurojekiti chaiwo eLBH nemifananidzo yakatorwa netimu yedu. Ruzivo rwevatengi runochengetwa rwakavanzika."
     }
   }
 }

@@ -68,7 +68,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         </section>
       ))}
 
-      <section aria-labelledby="soon" className="py-12 md:py-14">
+      <section id="camera" aria-labelledby="soon" className="scroll-mt-24 py-12 md:py-14">
         <div className="ds-wrap grid gap-6 md:grid-cols-12 md:items-end">
           <div className="md:col-span-7">
             <span className="ds-tag">{ts("home.services.soonTag")}</span>

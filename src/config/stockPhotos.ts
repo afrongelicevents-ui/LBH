@@ -13,6 +13,7 @@ const LICENSED_STOCK_PHOTOS: Record<"hero" | "land" | "materials" | "onsite" | "
     kind: "stock",
     credit: `Zambia · Thatlowdownwoman, ${WC}`,
     alt: "Brick walls of a house going up, with a timber scaffold",
+    position: "50% 12%",
   },
   land: {
     src: "/images/stock/land.jpg",
@@ -50,18 +51,21 @@ export const PHOTO_CREDITS = [
 ];
 
 /**
- * TEMPORARY (design preview only): the licensed files above could not be
- * downloaded from this server yet (Wikimedia rate limit). Until they are
- * added, the existing site images are shown and labelled as placeholders.
+ * Any licensed file the build could not download is replaced by the existing
+ * site image, labelled as a placeholder.
  */
-export const HAVE_LICENSED_FILES = false;
+import generated from "./stockPhotos.generated.json";
+/** Which licensed files the build managed to download (see scripts/fetch-stock-photos.mjs). */
+const AVAILABLE = new Set<string>(generated.available);
+export const HAVE_LICENSED_FILES = AVAILABLE.size > 0;
 const PLACEHOLDER = (src: string, alt: string): PhotoSource => ({ src, kind: "stock", credit: "Placeholder — to be replaced", alt });
-export const STOCK_PHOTOS = HAVE_LICENSED_FILES
-  ? LICENSED_STOCK_PHOTOS
-  : {
-      hero: PLACEHOLDER("/images/hero.jpg", LICENSED_STOCK_PHOTOS.hero.alt),
-      land: PLACEHOLDER("/images/land.jpg", LICENSED_STOCK_PHOTOS.land.alt),
-      materials: PLACEHOLDER("/images/materials.jpg", LICENSED_STOCK_PHOTOS.materials.alt),
-      onsite: PLACEHOLDER("/images/monitoring.jpg", LICENSED_STOCK_PHOTOS.onsite.alt),
-      reporting: PLACEHOLDER("/images/hero.jpg", LICENSED_STOCK_PHOTOS.reporting.alt),
-    };
+const PLACEHOLDERS = {
+  hero: PLACEHOLDER("/images/hero.jpg", LICENSED_STOCK_PHOTOS.hero.alt),
+  land: PLACEHOLDER("/images/land.jpg", LICENSED_STOCK_PHOTOS.land.alt),
+  materials: PLACEHOLDER("/images/materials.jpg", LICENSED_STOCK_PHOTOS.materials.alt),
+  onsite: PLACEHOLDER("/images/monitoring.jpg", LICENSED_STOCK_PHOTOS.onsite.alt),
+  reporting: PLACEHOLDER("/images/hero.jpg", LICENSED_STOCK_PHOTOS.reporting.alt),
+};
+export const STOCK_PHOTOS = Object.fromEntries(
+  (Object.keys(PLACEHOLDERS) as (keyof typeof PLACEHOLDERS)[]).map((k) => [k, AVAILABLE.has(k) ? LICENSED_STOCK_PHOTOS[k] : PLACEHOLDERS[k]])
+) as typeof PLACEHOLDERS;

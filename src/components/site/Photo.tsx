@@ -6,6 +6,8 @@ export interface PhotoSource {
   kind: "stock" | "lbh";
   credit?: string;
   alt: string;
+  /** CSS object-position for the crop, e.g. "50% 20%" */
+  position?: string;
 }
 
 /**
@@ -29,7 +31,7 @@ export default function Photo({
 }) {
   return (
     <figure className={`relative overflow-hidden ${className}`}>
-      <Image src={photo.src} alt={photo.alt} fill sizes={sizes} priority={priority} className="object-cover" />
+      <Image src={photo.src} alt={photo.alt} fill sizes={sizes} priority={priority} className="object-cover" style={photo.position ? { objectPosition: photo.position } : undefined} />
       {photo.kind === "stock" && (
         <figcaption
           className={`absolute right-0 bottom-0 max-w-[85%] truncate bg-charcoal/55 px-2 py-0.5 text-[10px] leading-4 text-white/90 ${creditClassName}`}

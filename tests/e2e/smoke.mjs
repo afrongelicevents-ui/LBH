@@ -175,24 +175,24 @@ async function waitAllUploaded(page, timeout = 30000) {
   await page.getByTestId("outbox-status").getByText("All uploaded ✓").waitFor({ timeout });
 }
 
-/** Public pages while signed in: no "Log in"/"Create account", avatar → own portal. */
+/** Public pages while signed in: no "Log in"/"Create account"; initials → own area; one ☰ menu. */
 async function assertPublicHeaderSignedIn(page, portalPath) {
+  const me = '[data-testid="header-account"]:visible, [data-testid="header-staff"]:visible';
   for (const path of ["/en", "/en/services", "/en/how-it-works"]) {
     await page.goto(`${BASE}${path}`);
     await page.locator('header[data-auth="in"]').waitFor({ timeout: 15000 });
     const visibleLogin = await page.locator('header a[href$="/login"]:visible, header a[href$="/signup"]:visible').count();
     assert(visibleLogin === 0, `"Log in"/"Create account" still visible on ${path}`);
-    assert((await page.locator('[data-testid="header-avatar"]:visible').count()) === 1, `no avatar on ${path}`);
+    assert((await page.locator(me).count()) === 1, `no initials on ${path}`);
   }
-  // menu: profile card, portal pages, website, sign out
-  await page.locator('header button[aria-expanded]:visible').last().click();
-  const menu = page.getByTestId("account-menu").first();
-  await menu.getByText("My profile").waitFor();
-  await menu.getByText("Sign out").waitFor();
+  // the ☰ menu: website pages + log out (customers also see their account sections)
+  await page.getByTestId("menu-button").click();
+  const menu = page.getByTestId("site-menu");
   await menu.getByText("How it works").waitFor();
-  // close the menu again, then tap the avatar in the header bar
-  await page.locator('header button[aria-expanded="true"]:visible').last().click();
-  await page.locator('[data-testid="header-avatar"]:visible').first().click();
+  await menu.getByText("Log out").waitFor();
+  if (portalPath === "/account") await menu.getByTestId("account-menu").getByText("My Build Account").waitFor();
+  await page.keyboard.press("Escape");
+  await page.locator(me).first().click();
   await page.waitForURL((u) => u.pathname.startsWith(portalPath), { timeout: 15000 });
 }
 
@@ -251,40 +251,41 @@ console.log("\nPublic website");
   await step("logged out: header shows Log in + Create account", async () => {
     await page.goto(`${BASE}/en`);
     await page.locator('header[data-auth="out"]').waitFor({ timeout: 15000 });
-    assert((await page.locator('header a[href$="/login"]:visible').count()) >= 1, "no Log in");
-    assert((await page.locator('header a[href$="/signup"]:visible').count()) >= 1, "no Create account");
-    assert((await page.locator('[data-testid="header-avatar"]').count()) === 0, "avatar while logged out");
+    assert((await page.getByTestId("header-login").count()) === 1, "no Log in");
+    assert((await page.getByTestId("header-signup").count()) === 1, "no Create account");
+    assert((await page.locator('[data-testid="header-account"]').count()) === 0, "account link while logged out");
   });
 
-  await step("header: no black 'Book a free call' button; booking reachable from the menu", async () => {
-    await page.goto(`${BASE}/en/services`);
-    await page.locator('header[data-auth="out"]').waitFor({ timeout: 15000 });
-    assert((await page.locator('header a.btn-primary[href$="/book-a-call"]').count()) === 0, "black header button still there");
-    await page.getByTestId("nav-book-call").waitFor(); // desktop menu link
+  await step("one ☰ menu on every page; booking reachable from it (phone)", async () => {
     const m = await (await newCtx({ viewport: { width: 390, height: 844 } })).newPage();
     await m.goto(`${BASE}/en/services`);
     await m.locator('header[data-auth="out"]').waitFor({ timeout: 15000 });
-    assert((await m.locator('header a.btn-primary[href$="/book-a-call"]').count()) === 0, "black button on phone");
-    await m.locator('header button[aria-expanded]:visible').last().click();
-    await m.getByTestId("menu-book-call").click();
+    await m.getByTestId("menu-button").click();
+    const menu = m.getByTestId("site-menu");
+    for (const label of ["Our services", "How it works", "Build Account", "About LBH", "FAQ", "Contact"]) await menu.getByText(label, { exact: true }).waitFor();
+    assert((await menu.getByText("Projects", { exact: true }).count()) === 0, "Projects listed before real content exists");
+    await menu.getByTestId("menu-book-call").click();
     await m.waitForURL(/book-a-call/);
     await m.context().close();
   });
 
-  await step("homepage renders with no prices", async () => {
+  await step("homepage: new headline, trust row, sample data labelled, no prices in the copy", async () => {
     await page.goto(`${BASE}/en`);
-    const text = await page.locator("body").innerText();
-    assert(text.includes("Build safely"), "hero headline missing");
-    assert(!/\$\s?\d/.test(text), "a price appears on the homepage");
+    await page.getByRole("heading", { level: 1, name: "Build your home back home." }).waitFor();
+    await page.getByText("Independent land checks").waitFor();
+    await page.getByTestId("sample-tag").waitFor();
+    await page.getByText("Stock photo", { exact: false }).first().waitFor();
+    const hero = await page.getByTestId("home-hero").innerText();
+    assert(!/\$\s?\d/.test(hero), "a price appears in the hero");
   });
 
   await step("language switcher → Shona → Ndebele", async () => {
     await page.click('button:has-text("Shona")');
     await page.waitForURL(/\/sn/);
-    assert((await page.locator("h1").innerText()).includes("Vaka"), "Shona headline missing");
+    assert(!(await page.locator("h1").first().innerText()).includes("Build your home"), "Shona headline missing");
     await page.click('button:has-text("Ndebele")');
     await page.waitForURL(/\/nd/);
-    assert((await page.locator("h1").innerText()).includes("Yakha"), "Ndebele headline missing");
+    assert(!(await page.locator("h1").first().innerText()).includes("Build your home"), "Ndebele headline missing");
   });
 
   await step("book a free call → stored for admin", async () => {
@@ -317,11 +318,9 @@ console.log("\nPublic website");
     assert(data?.length === 1, "interest not stored");
   });
 
-  await step("LBH Build Account card is LIVE → opens the info page (plans, not a bank account)", async () => {
+  await step("Build Account section on the homepage → info page (plans, not a bank account)", async () => {
     await page.goto(`${BASE}/en`);
-    const card = page.getByTestId("ba-card");
-    await card.getByText("LBH Build Account").waitFor();
-    await card.getByTestId("ba-card-open").click();
+    await page.getByTestId("home-ba").getByRole("link", { name: "About the Build Account" }).click();
     await page.waitForURL(/\/build-account$/);
     await page.getByTestId("ba-info").waitFor();
     await page.getByText("not a bank account", { exact: false }).first().waitFor();
@@ -340,7 +339,7 @@ console.log("\nPublic website");
 
   await step("CREATE ACCOUNT next to Log in → verify email → lands in the portal", async () => {
     await page.goto(`${BASE}/en`);
-    await page.locator('header a[href$="/signup"]:visible').first().click();
+    await page.getByTestId("header-signup").click();
     await page.waitForURL(/\/signup/);
     const email = `signup-e2e-${Date.now()}@example.test`;
     await page.fill('input[name="full_name"]', "E2E New Client");
@@ -366,7 +365,7 @@ console.log("\nPublic website");
     const link = /href="([^"]+\/auth\/v1\/verify[^"]+)"/.exec(msg.HTML)?.[1]?.replaceAll("&amp;", "&");
     assert(link, "confirmation link missing from email");
     await page.goto(link);
-    await page.waitForURL(/\/portal/, { timeout: 20000 });
+    await page.waitForURL(/\/account/, { timeout: 20000 });
     await page.getByText("Your email is confirmed").waitFor();
     await page.getByRole("link", { name: "Book a free call" }).first().waitFor();
     await page.getByRole("link", { name: "Verify land" }).first().waitFor();
@@ -378,7 +377,7 @@ console.log("\nPublic website");
     await page.getByRole("link", { name: "Book a free call" }).first().click();
     await page.waitForURL(/book-a-call/);
     assert((await page.inputValue('input[name="email"]')) === email, "booking not prefilled");
-    await page.goto(`${BASE}/en/portal/requests/new-land`);
+    await page.goto(`${BASE}/en/account/projects/new-land`);
     await page.getByRole("button", { name: "Send request" }).waitFor();
   });
 
@@ -405,19 +404,19 @@ console.log("\nClient portal (client@lbh.test)");
 
   await step("log in → portal dashboard with timeline", async () => {
     await login(page, "client@lbh.test");
-    await page.waitForURL(/\/portal/);
+    await page.waitForURL(/\/account/);
     await page.getByText("SAMPLE — Stand 412").waitFor();
     await page.getByText("Quote sent").first().waitFor();
     await shot(page, "client-dashboard");
   });
 
   await step("signed in: public pages show the avatar, not Log in (home, services, how it works)", async () => {
-    await assertPublicHeaderSignedIn(page, "/portal");
+    await assertPublicHeaderSignedIn(page, "/account");
     await shot(page, "client-back-in-portal");
   });
 
   await step("My profile: client edits name/WhatsApp", async () => {
-    await page.goto(`${BASE}/en/account`);
+    await page.goto(`${BASE}/en/account/settings`);
     await page.fill('input[name="whatsapp"]', "+44 7700 900124");
     await page.click('button:has-text("Save")');
     await page.getByText("Saved.").waitFor({ timeout: 10000 });
@@ -427,17 +426,17 @@ console.log("\nClient portal (client@lbh.test)");
 
   await step("cannot open the admin or field area", async () => {
     await page.goto(`${BASE}/en/admin`);
-    await page.waitForURL(/\/portal/);
+    await page.waitForURL(/\/account/);
     await page.goto(`${BASE}/en/field`);
-    await page.waitForURL(/\/portal/);
+    await page.waitForURL(/\/account/);
   });
 
   await step("view quote and ACCEPT it (written acceptance)", async () => {
-    await page.goto(`${BASE}/en/portal/requests/${IDS.reqLand}`);
+    await page.goto(`${BASE}/en/account/projects/${IDS.reqLand}`);
     await page.getByText("$420.00").first().waitFor();
     await page.click('button:has-text("Accept this quote")');
     await Promise.all([
-      page.waitForURL(/\/portal\/requests\/10000000-0000-4000-a000-000000000001/, { timeout: 20000 }),
+      page.waitForURL(/\/account\/projects\/10000000-0000-4000-a000-000000000001/, { timeout: 20000 }),
       page.click('button:has-text("Yes, I accept")'),
     ]);
     await page.locator('button:has-text("Pay online")').first().waitFor({ timeout: 15000 });
@@ -454,7 +453,7 @@ console.log("\nClient portal (client@lbh.test)");
   });
 
   await step("pay the 50% deposit (Paynow TEST mode) → confirmed server-side", async () => {
-    await page.goto(`${BASE}/en/portal/requests/${IDS.reqLand}`);
+    await page.goto(`${BASE}/en/account/projects/${IDS.reqLand}`);
     await Promise.all([
       page.waitForURL(/\/pay\/simulate/, { timeout: 20000 }),
       page.click('button:has-text("Pay online")'),
@@ -476,7 +475,7 @@ console.log("\nClient portal (client@lbh.test)");
   });
 
   await step("APPROVE an extra cost → creates a payable extra", async () => {
-    await page.goto(`${BASE}/en/portal/requests/${IDS.reqMat}`);
+    await page.goto(`${BASE}/en/account/projects/${IDS.reqMat}`);
     await page.getByText("SAMPLE Extra trip").waitFor();
     await page.locator('#approvals button:has-text("Approve")').click();
     await page.locator("#approvals").getByText("Approved", { exact: true }).waitFor({ timeout: 10000 });
@@ -505,24 +504,55 @@ console.log("\nClient portal (client@lbh.test)");
   });
 
   await step("new land verification request with document upload + map", async () => {
-    await page.goto(`${BASE}/en/portal/requests/new-land`);
+    await page.goto(`${BASE}/en/account/projects/new-land`);
     await page.fill('input[name="town"]', "E2E Ruwa");
     await page.fill('input[name="stand_number"]', "E2E-77");
     await page.locator(".leaflet-container").click({ position: { x: 150, y: 100 } });
     await page.setInputFiles('input[name="documents"]', pdfPath);
     await page.fill('input[name="introduced_by"]', "E2E agent");
     await page.click('button:has-text("Send request")');
-    await page.waitForURL(/\/portal\/requests\/[0-9a-f-]{36}$/, { timeout: 20000 });
+    await page.waitForURL(/\/account\/projects\/[0-9a-f-]{36}$/, { timeout: 20000 });
     await page.getByText("title-deed.pdf").waitFor();
     const { data } = await db.from("service_requests").select("details").eq("title", "E2E-77, E2E Ruwa").single();
     assert(typeof data.details.pin_lat === "number", "map pin not stored");
   });
 
   await step("chat with LBH", async () => {
-    await page.goto(`${BASE}/en/portal/chat`);
+    await page.goto(`${BASE}/en/account/support`);
     await page.fill('input[placeholder="Type a message…"]', "E2E hello from the client");
     await page.click('button[aria-label="Send"]');
     await page.getByText("E2E hello from the client").waitFor({ timeout: 10000 });
+  });
+
+  await step("old /portal links redirect to /account (emails, bookmarks, every language)", async () => {
+    await page.goto(`${BASE}/en/portal`);
+    await page.waitForURL(/\/account$/);
+    await page.goto(`${BASE}/sn/portal/requests/${IDS.reqLand}`);
+    await page.waitForURL(/\/sn\/account\/projects\//);
+    await page.goto(`${BASE}/en/portal/chat`);
+    await page.waitForURL(/\/account\/support/);
+  });
+
+  await step("account sections from real records: updates, approvals, documents, reports, finance", async () => {
+    for (const [path, id] of [["updates", "updates-page"], ["approvals", "approvals-page"], ["documents", "documents-page"], ["reports", "reports-page"], ["finance", "finance-page"], ["projects", "projects-page"]]) {
+      await page.goto(`${BASE}/en/account/${path}`);
+      await page.getByTestId(id).waitFor({ timeout: 20000 });
+    }
+    await page.getByTestId("project-list").locator("li").first().waitFor();
+    await page.goto(`${BASE}/en/account`);
+    await page.getByTestId("menu-button").click();
+    const menu = page.getByTestId("account-menu");
+    for (const label of ["My dashboard", "My projects", "My Build Account", "Updates", "Approvals", "Support", "Account settings"]) await menu.getByText(label, { exact: true }).waitFor();
+    await page.keyboard.press("Escape");
+  });
+
+  await step("a customer cannot open admin or field pages, nor another customer's project", async () => {
+    for (const path of ["/en/admin", "/en/admin/settings/projects", "/en/field"]) {
+      await page.goto(`${BASE}${path}`);
+      assert(!/\/(admin|field)/.test(new URL(page.url()).pathname), `customer reached ${path}`);
+    }
+    const res = await page.goto(`${BASE}/en/account/projects/${IDS.reqDone}`);
+    assert(res.status() === 404 || !(await page.content()).includes("Stand 88"), "another customer's project visible");
   });
 
   await step("no CSP violations in the portal", async () => {
@@ -535,7 +565,7 @@ console.log("\nClient portal (client@lbh.test)");
     await page.getByTestId("account-menu").first().getByRole("button", { name: "Sign out" }).click();
     await page.locator('header[data-auth="out"]').waitFor({ timeout: 15000 });
     assert((await page.locator('header a[href$="/login"]:visible').count()) >= 1, "Log in not back");
-    await page.goto(`${BASE}/en/portal`);
+    await page.goto(`${BASE}/en/account`);
     await page.waitForURL(/\/login/, { timeout: 15000 });
   });
   await ctx.close();
@@ -814,7 +844,7 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
     await page.goto(`${BASE}/en/admin/settings`);
     await page.getByTestId("website-photos-link").click();
     await page.waitForURL(/\/admin\/settings\/photos/);
-    for (const slot of ["hero", "land", "materials", "monitoring", "camera", "live_feed", "logo"]) {
+    for (const slot of ["hero", "land", "materials", "onsite", "reporting", "logo"]) {
       await page.getByTestId(`photo-slot-${slot}`).waitFor();
     }
     const hero = page.getByTestId("photo-slot-hero");
@@ -823,8 +853,12 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
     assert((await hero.getByTestId("photo-preview").locator("img").first().getAttribute("src")).startsWith("blob:"), "live preview not showing the new photo");
     await shot(page, "admin-website-photos-preview");
     await hero.getByTestId("photo-save").click();
+    await hero.getByText("real LBH photo or a stock photo", { exact: false }).waitFor(); // a label is required
+    await hero.getByTestId("photo-kind").getByLabel("Real LBH photo", { exact: false }).check();
+    await hero.getByTestId("photo-save").click();
     await hero.getByText("live on the website now").waitFor({ timeout: 60000 });
-    const { data: row } = await db.from("site_photos").select("storage_path, width, height").eq("slot", "hero").single();
+    const { data: row } = await db.from("site_photos").select("storage_path, width, height, kind").eq("slot", "hero").single();
+    assert(row.kind === "lbh", `label not stored (${row.kind})`);
     assert(row.width === 2400 && row.height === 1867, `not resized: ${row.width}×${row.height}`);
     const { data: blob } = await db.storage.from("site-photos").download(row.storage_path);
     const bytes = (await blob.arrayBuffer()).byteLength;
@@ -835,8 +869,10 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
     // logged-out visitor sees it on the homepage straight away
     const visitor = await (await newCtx()).newPage();
     await visitor.goto(`${BASE}/en`);
-    const src = decodeURIComponent((await visitor.locator("section img").first().getAttribute("src")) ?? "");
+    const src = decodeURIComponent((await visitor.getByTestId("home-hero").locator("img").first().getAttribute("src")) ?? "");
     assert(src.includes(`site-photos/${row.storage_path}`), `homepage hero not updated (${src.slice(0, 120)})`);
+    // a real LBH photo carries no "Stock photo" label
+    assert((await visitor.getByTestId("home-hero").getByText("Stock photo").count()) === 0, "LBH photo labelled as stock");
     await shot(visitor, "homepage-new-hero");
     await visitor.context().close();
   });
@@ -844,6 +880,8 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
   await step("Website photos: replace a service card photo → shown on the Services page", async () => {
     const land = page.getByTestId("photo-slot-land");
     await land.getByTestId("photo-input").setInputFiles(photoPath);
+    await land.getByTestId("photo-kind").getByLabel("Stock photo", { exact: false }).check();
+    await land.getByTestId("photo-credit").fill("Test credit, CC BY 4.0");
     await land.getByTestId("photo-save").click();
     await land.getByText("live on the website now").waitFor({ timeout: 60000 });
     const { data: row } = await db.from("site_photos").select("storage_path, width").eq("slot", "land").single();
@@ -852,6 +890,7 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
     await visitor.goto(`${BASE}/en/services`);
     const src = decodeURIComponent((await visitor.locator("#land img").first().getAttribute("src")) ?? "");
     assert(src.includes(row.storage_path), "services page not updated");
+    await visitor.locator("#land").getByText("Stock photo · Test credit, CC BY 4.0").waitFor(); // honest credit shown
     await visitor.context().close();
   });
 
@@ -867,13 +906,51 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
     assert(!gone, "old file not removed");
     const visitor = await (await newCtx()).newPage();
     await visitor.goto(`${BASE}/en`);
-    const src = decodeURIComponent((await visitor.locator("section img").first().getAttribute("src")) ?? "");
-    assert(src.includes("/images/hero.jpg"), `default hero not back (${src.slice(0, 120)})`);
+    const src = decodeURIComponent((await visitor.getByTestId("home-hero").locator("img").first().getAttribute("src")) ?? "");
+    assert(!src.includes("site-photos/"), `uploaded hero still shown (${src.slice(0, 120)})`);
     await visitor.context().close();
     // tidy up the land photo too
     await page.getByTestId("photo-slot-land").getByTestId("photo-reset").click();
     await page.getByTestId("photo-slot-land").getByTestId("photo-reset-yes").click();
     await page.getByTestId("photo-slot-land").getByText("Default photo", { exact: true }).waitFor({ timeout: 20000 });
+  });
+
+  await step("Projects: hidden until real content; admin adds a project + photo, publishes, shows it in the menu", async () => {
+    const visitor = await (await newCtx()).newPage();
+    const r0 = await visitor.goto(`${BASE}/en/projects`);
+    assert(r0.status() === 404, `Projects page public too early (${r0.status()})`);
+    await page.goto(`${BASE}/en/admin/settings/projects`);
+    const form = page.getByTestId("project-new");
+    await form.locator('input[name="title"]').fill("E2E Family home, Ruwa");
+    await form.locator('input[name="location"]').fill("Ruwa, Harare");
+    await form.locator('input[name="stage"]').fill("Roof");
+    await form.locator('button[type="submit"]').click();
+    const card = page.getByTestId("admin-project").filter({ hasText: "E2E Family home, Ruwa" });
+    await card.waitFor({ timeout: 20000 });
+    // cannot publish without photos
+    const { data: proj } = await db.from("projects").select("id").eq("title", "E2E Family home, Ruwa").single();
+    assert(await card.getByTestId(`publish-${proj.id}`).isDisabled(), "publish allowed without photos");
+    await card.getByTestId("project-photo-input").setInputFiles(photoPath);
+    await card.getByText("Photo added.").waitFor({ timeout: 60000 });
+    await card.getByTestId(`publish-${proj.id}`).click();
+    await card.getByText("Published", { exact: true }).waitFor({ timeout: 20000 });
+    // still hidden until the admin switches the menu on
+    assert((await visitor.goto(`${BASE}/en/projects`)).status() === 404, "visible before switched on");
+    await page.getByTestId("projects-menu-toggle").getByRole("button", { name: "Show in menu" }).click();
+    await page.getByTestId("projects-menu-toggle").getByText("Shown in the menu.").waitFor({ timeout: 20000 });
+    const r1 = await visitor.goto(`${BASE}/en/projects`);
+    assert(r1.status() === 200, `projects page ${r1.status()}`);
+    await visitor.getByText("E2E Family home, Ruwa").waitFor();
+    await visitor.getByTestId("menu-button").click();
+    await visitor.getByTestId("site-menu").getByText("Projects", { exact: true }).waitFor();
+    await shot(visitor, "public-projects");
+    await visitor.context().close();
+    // tidy up: hide again and delete
+    await page.getByTestId("projects-menu-toggle").getByRole("button", { name: "Hide from menu" }).click();
+    await page.getByTestId("projects-menu-toggle").getByText("Hidden from the menu", { exact: false }).waitFor({ timeout: 20000 });
+    page.once("dialog", (d) => d.accept());
+    await card.getByRole("button", { name: "Delete project" }).click();
+    await card.waitFor({ state: "detached", timeout: 20000 });
   });
 
   await step("People: 'Where our clients are from' counts the typed countries", async () => {
@@ -985,8 +1062,8 @@ console.log("\nBuild stages (Foundation → Finishes)");
   const cpage = await cctx.newPage();
   await step("client: My build shows Foundation approved, Slab quotes, later stages locked", async () => {
     await login(cpage, "client@lbh.test");
-    await cpage.goto(`${BASE}/en/portal/build`);
-    await cpage.waitForURL(/\/portal\/build\/50000000/);
+    await cpage.goto(`${BASE}/en/account/progress`);
+    await cpage.waitForURL(/\/account\/progress\/50000000/);
     await cpage.getByText("1 of 6 stages done").waitFor();
     await cpage.locator("#stage-1").getByText("Approved by SAMPLE Tatenda Moyo").waitFor();
     await slabCard(cpage).getByText("SAMPLE Msasa Hardware").waitFor();
@@ -1092,7 +1169,7 @@ console.log("\nBuild stages (Foundation → Finishes)");
   });
 
   await step("client sees inspection + materials, taps Approve stage → Window level unlocks", async () => {
-    await cpage.goto(`${BASE}/en/portal/build/${IDS.build}`);
+    await cpage.goto(`${BASE}/en/account/progress/${IDS.build}`);
     const card = slabCard(cpage);
     await card.getByText("slab level and thickness checked").waitFor();
     await card.getByText("All materials used on this stage").first().waitFor();
@@ -1127,7 +1204,7 @@ console.log("\nClient reads the published report");
   const page = await ctx.newPage();
   await step("verdict at the top + dated photo gallery + disclaimer", async () => {
     await login(page, "client@lbh.test");
-    await page.goto(`${BASE}/en/portal/requests/${IDS.reqLand}/report`);
+    await page.goto(`${BASE}/en/account/projects/${IDS.reqLand}/report`);
     await page.getByText("⚠️ Concerns").waitFor();
     await page.getByText("boundary peg on the east side").waitFor();
     await page.getByText("Dated photos & video").waitFor();
@@ -1176,7 +1253,7 @@ console.log("\nLBH Build Account");
   await step("logged-in client: the card goes straight into the app; LBH payments appear automatically", async () => {
     await login(c, "client@lbh.test");
     await c.goto(`${BASE}/en/build-account`);
-    await c.waitForURL(/\/portal\/build-account/);
+    await c.waitForURL(/\/account\/build-account/);
     await c.getByTestId("ba-balance").waitFor();
     const { data } = await db.from("ba_entries").select("source").eq("owner_id", OWNER).in("source", ["lbh_payment", "lbh_purchase"]);
     assert((data ?? []).length > 0, "no automatic LBH entries");
@@ -1184,7 +1261,7 @@ console.log("\nLBH Build Account");
   });
 
   await step("balance = confirmed money in − money spent (pending not counted)", async () => {
-    await c.goto(`${BASE}/en/portal/build-account`);
+    await c.goto(`${BASE}/en/account/build-account`);
     const shown = cents(await c.getByTestId("ba-balance-amount").textContent());
     const want = await expectedBalance(OWNER);
     assert(shown === want, `shown ${shown} vs ${want}`);
@@ -1208,7 +1285,7 @@ console.log("\nLBH Build Account");
     const dir = mkdtempSync(join(tmpdir(), "ba-"));
     const img = join(dir, "receipt.png");
     await sharp(Buffer.from(svg)).png().toFile(img);
-    await c.goto(`${BASE}/en/portal/build-account/scan`);
+    await c.goto(`${BASE}/en/account/build-account/scan`);
     await c.getByTestId("ba-receipt-input").setInputFiles(img);
     await c.getByTestId("ba-read-done").waitFor({ timeout: 120000 });
     const total = await c.getByTestId("ba-total").inputValue();
@@ -1223,7 +1300,7 @@ console.log("\nLBH Build Account");
 
   await step("add money to the LBH account → 'On its way', not in the balance", async () => {
     const before = await expectedBalance(OWNER);
-    await c.goto(`${BASE}/en/portal/build-account/add`);
+    await c.goto(`${BASE}/en/account/build-account/add`);
     const form = c.getByTestId("ba-add-form");
     const lbh = await form.locator('select[name="account_id"] option', { hasText: "LBH" }).first().getAttribute("value");
     await form.locator('select[name="account_id"]').selectOption(lbh);
@@ -1238,15 +1315,15 @@ console.log("\nLBH Build Account");
   });
 
   await step("statement: filters (No receipt), running balance, monthly PDF", async () => {
-    await c.goto(`${BASE}/en/portal/build-account/statement?f=noreceipt`);
+    await c.goto(`${BASE}/en/account/build-account/statement?f=noreceipt`);
     await c.getByTestId("ba-statement").waitFor();
     const rows = c.getByTestId("ba-row");
     assert((await rows.count()) >= 1, "no rows");
     await c.getByText("Cement — no receipt yet", { exact: false }).first().waitFor();
     assert((await c.getByTestId("ba-statement").getByText("HARDWARE CITY").count()) === 0, "scanned (receipted) line shown under No receipt");
-    await c.goto(`${BASE}/en/portal/build-account/statement`);
+    await c.goto(`${BASE}/en/account/build-account/statement`);
     await c.getByTestId("ba-statement").getByText("HARDWARE CITY").first().waitFor();
-    await c.goto(`${BASE}/en/portal/build-account/statement?f=noreceipt`);
+    await c.goto(`${BASE}/en/account/build-account/statement?f=noreceipt`);
     await c.getByTestId("ask-receipt").first().waitFor();
     const href = await c.getByTestId("ba-pdf").getAttribute("href");
     const res = await c.request.get(`${BASE}${href}`);
@@ -1255,15 +1332,15 @@ console.log("\nLBH Build Account");
   });
 
   await step("budget by stage shows 'Over budget'; money sent shows the chart", async () => {
-    await c.goto(`${BASE}/en/portal/build-account/budget`);
+    await c.goto(`${BASE}/en/account/build-account/budget`);
     await c.getByTestId("ba-budgets").getByText("Over budget").first().waitFor();
-    await c.goto(`${BASE}/en/portal/build-account/sent`);
+    await c.goto(`${BASE}/en/account/build-account/sent`);
     await c.getByTestId("ba-chart").waitFor();
     await c.getByText("Mukuru").first().waitFor();
   });
 
   await step("family: invite by WhatsApp as 'View only' → link ready", async () => {
-    await c.goto(`${BASE}/en/portal/build-account/family`);
+    await c.goto(`${BASE}/en/account/build-account/family`);
     const form = c.getByTestId("ba-invite-form");
     await form.locator('input[name="name"]').fill("E2E Auntie");
     await form.locator('input[name="whatsapp"]').fill("+263 77 123 4567");
@@ -1275,7 +1352,7 @@ console.log("\nLBH Build Account");
 
   await step("family member confirms the money they received → it counts", async () => {
     await login(f, "client2@lbh.test");
-    await f.goto(`${BASE}/en/portal/build-account?owner=${OWNER}`);
+    await f.goto(`${BASE}/en/account/build-account?owner=${OWNER}`);
     await f.getByTestId("ba-shared-note").waitFor();
     const before = await expectedBalance(OWNER);
     await f.getByTestId("ba-pending").getByTestId("confirm-arrived").first().click();
@@ -1286,17 +1363,17 @@ console.log("\nLBH Build Account");
   });
 
   await step("a client can't open someone else's Build Account", async () => {
-    const res = await f.goto(`${BASE}/en/portal/build-account?owner=00000000-0000-4000-a000-000000000001`);
+    const res = await f.goto(`${BASE}/en/account/build-account?owner=00000000-0000-4000-a000-000000000001`);
     assert(res.status() === 404, `status ${res.status()}`);
     const pdf = await f.request.get(`${BASE}/api/pdf/build-account?owner=00000000-0000-4000-a000-000000000001`);
     assert(pdf.status() === 404, `pdf ${pdf.status()}`);
   });
 
   await step("no plan yet: start banner, no scanning; subscribe monthly (Paynow TEST) → paid", async () => {
-    await f.goto(`${BASE}/en/portal/build-account`);
+    await f.goto(`${BASE}/en/account/build-account`);
     await f.getByTestId("ba-start").waitFor();
     assert((await f.getByTestId("ba-scan-btn").count()) === 0, "scan offered without a plan");
-    await f.goto(`${BASE}/en/portal/build-account/plans`);
+    await f.goto(`${BASE}/en/account/build-account/plans`);
     await f.getByTestId("plan-paid").getByText("$5.00").first().waitFor();
     await f.getByTestId("subscribe-monthly").click();
     await f.waitForURL(/\/build-account\/pay\?ref=LBH-BA-/, { timeout: 30000 });
@@ -1309,7 +1386,7 @@ console.log("\nLBH Build Account");
 
   await step("unpaid → read-only (nothing deleted)", async () => {
     await db.from("ba_subscriptions").update({ paid_until: "2020-01-01T00:00:00Z" }).eq("owner_id", "00000000-0000-4000-a000-000000000005");
-    await f.goto(`${BASE}/en/portal/build-account`);
+    await f.goto(`${BASE}/en/account/build-account`);
     await f.getByTestId("ba-readonly").waitFor();
     assert((await f.getByTestId("ba-add-btn").count()) === 0, "add offered while read-only");
   });

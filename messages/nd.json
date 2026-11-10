@@ -758,7 +758,8 @@
       "builds": "Izigaba zokwakha",
       "photos": "Izithombe zewebhusayithi",
       "buildAccount": "Build Account",
-      "priceList": "Uhlu lwamanani"
+      "priceList": "Uhlu lwamanani",
+      "projects": "Amaphrojekthi"
     },
     "needsYou": {
       "title": "Kudinga wena",
@@ -943,7 +944,9 @@
       "baTitle": "Build Account",
       "baHint": "Amanani, ukuvula/ukuvala uhlelo, ababhalisileyo lemali ethunyelwe kuLBH",
       "priceTitle": "Uhlu lwamanani",
-      "priceHint": "Amanani ajwayelekileyo okuhlola amarisidi e-Build Account"
+      "priceHint": "Amanani ajwayelekileyo okuhlola amarisidi e-Build Account",
+      "projectsTitle": "Amaphrojekthi",
+      "projectsHint": "Izithombe eziqotho zamaphrojekthi e-LBH zekhasi lomphakathi lamaPhrojekthi"
     },
     "audit": {
       "title": "I-audit log",
@@ -988,7 +991,9 @@
         "heic": "I-HEIC ayamukelwa — ku-iPhone khetha i-Most Compatible.",
         "upload": "Ukulayisha kwehlulekile — hlola i-network uzame futhi.",
         "db": "Akulondolozwanga — zama futhi.",
-        "error": "Kukhona okungahambanga kahle — zama futhi."
+        "error": "Kukhona okungahambanga kahle — zama futhi.",
+        "kind": "Khetha ukuthi lesi yisithombe se-LBH esiqotho kumbe yisithombe se-stock.",
+        "credit": "Faka okuhambelana lesithombe (ngubani osithathileyo lelayisensi)."
       },
       "slot": {
         "hero": {
@@ -1025,8 +1030,26 @@
           "name": "Ilogo",
           "where": "Phezulu laphansi kuwo wonke amakhasi, lakuma-portal.",
           "tip": "Ilogo esizindeni esimhlophe, okungenani {min} px."
+        },
+        "onsite": {
+          "name": "Ukuphatha emsebenzini",
+          "where": "Ikhasi lokuqala lekhasi leMisebenzi — isigaba sokuphatha emsebenzini.",
+          "tip": "Umakhi kumbe umsebenzi oqhubekayo emdulini wendlu. Okungenani ububanzi obungu-{min}px."
+        },
+        "reporting": {
+          "name": "Imibiko yenqubekelaphambili",
+          "where": "Ikhasi lokuqala lekhasi leMisebenzi — isigaba semibiko yenqubekelaphambili.",
+          "tip": "Indlu esakhiwe ingxenye, kumbe ukuhlola esayithini. Okungenani ububanzi obungu-{min}px."
         }
-      }
+      },
+      "kindQuestion": "Lesi yisithombe sani?",
+      "kindLbh": "Isithombe se-LBH esiqotho",
+      "kindLbhHint": "sithathwe yi-LBH ephrojekthini eqotho — siboniswa singela uphawu lwe-stock.",
+      "kindStock": "Isithombe se-stock",
+      "kindStockHint": "silayisensi esivela kwenye indawo — siboniswa lo-\"Isithombe se-stock\" lokuhambelana laso.",
+      "kindNone": "Silayishwe izimpawu zingakabi khona — kasiboniswa emakhasini amatsha",
+      "creditLabel": "Okuhambelana lesithombe",
+      "creditPlaceholder": "isib. Zambia · Thatlowdownwoman, CC BY-SA 4.0, Wikimedia Commons"
     },
     "ba": {
       "backToSettings": "Izilungiselelo",
@@ -1091,6 +1114,56 @@
         "db": "Akulondolozwanga — zama futhi.",
         "auth": "Akuvunyelwa (i-2FA isilungisiwe?).",
         "error": "Kukhona okungahambanga kahle — zama futhi."
+      }
+    },
+    "projects": {
+      "back": "Izilungiselelo",
+      "title": "Amaphrojekthi",
+      "intro": "Izithombe eziqotho zamaphrojekthi e-LBH kuphela. Iphrojekthi iyabonakala ekhasini lomphakathi lamaPhrojekthi nxa isikhitshiwe, njalo ikhasi lifakwa kumenyu kuphela nxa ulivulile.",
+      "menuTitle": "Ikhasi lamaPhrojekthi kumenyu yewebhusayithi",
+      "menuOn": "Liyabonakala kumenyu.",
+      "menuOff": "Lifihliwe kumenyu (ikhasi kalisilo lomphakathi).",
+      "menuShow": "Tshengisa kumenyu",
+      "menuHide": "Fihla kumenyu",
+      "menuNeedsProject": "Qala ukhuphe okungenani iphrojekthi eyodwa elezithombe.",
+      "viewPage": "Bona ikhasi lamaPhrojekthi",
+      "newTitle": "Faka iphrojekthi",
+      "fTitle": "Ibizo lephrojekthi",
+      "fLocation": "Indawo",
+      "fLocationHint": "isib. Ruwa, Harare",
+      "fStage": "Isigaba samanje",
+      "fStageHint": "isib. Uphahla",
+      "fSummary": "Incazelo emfitshane",
+      "fCaption": "Amazwi angaphansi kwesithombe (akubanjwa ngamandla)",
+      "fTaken": "Usuku esathathwa ngalo",
+      "create": "Dala iphrojekthi",
+      "save": "Londoloza",
+      "saved": "Kulondoloziwe.",
+      "edit": "Lungisa imininingwane",
+      "addPhoto": "Faka isithombe",
+      "uploading": "Kuyalayishwa…",
+      "photoAdded": "Isithombe sifakiwe.",
+      "noPhotos": "Azikabi khona izithombe — faka izithombe eziqotho ze-LBH ungakakhuphi.",
+      "publish": "Khupha",
+      "unpublish": "Susa ekukhutshweni",
+      "isPublished": "Ikhitshiwe",
+      "isDraft": "Ayikakhitshwa",
+      "delete": "Cisha iphrojekthi",
+      "deleteConfirm": "Cisha le phrojekthi lezithombe zayo?",
+      "deletePhoto": "Susa",
+      "deletePhotoConfirm": "Susa lesi sithombe?",
+      "error": {
+        "invalid": "Ngicela uhlole imininingwane.",
+        "db": "Akulondolozwanga — zama futhi.",
+        "auth": "Akuvunyelwanga — ngena futhi nge-2FA.",
+        "upload": "Ukulayisha kwehlulekile — zama futhi.",
+        "filetype": "Sebenzisa isithombe se-JPG, PNG kumbe WebP.",
+        "toobig": "Ifayela leli likhulu kakhulu.",
+        "heic": "Izithombe ze-HEIC kazisekelwa — sebenzisa i-JPG.",
+        "noPhotos": "Faka okungenani isithombe esisodwa ungakakhuphi.",
+        "error": "Kukhona okungahambanga kuhle — zama futhi.",
+        "camera": "Kukhona okungahambanga kuhle — zama futhi.",
+        "capturetime": "Kukhona okungahambanga kuhle — zama futhi."
       }
     }
   },
@@ -1262,39 +1335,151 @@
       "country": "Bhala ilizwe ohlala kulo."
     },
     "dashboard": {
-      "hello": "Welcome back, {name}",
-      "intro": "Your projects, approvals and Build Account in one place.",
-      "newLand": "Verify land",
-      "newMaterials": "Order materials",
-      "welcomeTitle": "Welcome to LBH, {name}.",
-      "welcomeText": "Book a free consultation or start a request below.",
-      "active": "Active projects",
-      "waiting": "Awaiting your approval",
+      "hello": "Siyakwamukela futhi, {name}",
+      "intro": "Amaphrojekthi akho, izimvumo le-Build Account endaweni eyodwa.",
+      "newLand": "Hlola isitandi",
+      "newMaterials": "Odola impahla",
+      "welcomeTitle": "Siyakwamukela ku-LBH, {name}.",
+      "welcomeText": "Bhuka ukubonisana kwamahala kumbe uqale isicelo ngezansi.",
+      "active": "Amaphrojekthi aqhubekayo",
+      "waiting": "Kulindele imvumo yakho",
       "balance": "Build Account",
-      "attention": "{count, plural, one {# item needs your approval} other {# items need your approval}} — nothing proceeds until you decide.",
-      "count": "{count, plural, one {# project} other {# projects}}",
-      "noProjects": "No projects yet. Book a free consultation or start a request.",
+      "attention": "{count, plural, one {into engu-# idinga imvumo yakho} other {izinto ezingu-# zidinga imvumo yakho}} — akulalutho oluqhubekayo uze unqume.",
+      "count": "{count, plural, one {iphrojekthi engu-#} other {amaphrojekthi angu-#}}",
+      "noProjects": "Awukabi lamaphrojekthi. Bhuka ukubonisana kwamahala kumbe uqale isicelo.",
       "type": {
-        "land_verification": "Land verification",
-        "materials": "Materials",
-        "build": "Construction"
+        "land_verification": "Ukuhlola isitandi",
+        "materials": "Impahla",
+        "build": "Ukwakha"
       },
-      "noUpdates": "No updates yet.",
+      "noUpdates": "Akukabi lalutho olutsha.",
       "ev": {
-        "approval": "Approval needed: {title}",
-        "report": "Report ready: {title}",
-        "payment": "Payment confirmed: {amount} · {title}"
+        "approval": "Kudingeka imvumo: {title}",
+        "report": "Umbiko usulungile: {title}",
+        "payment": "Inkokhelo iqinisekisiwe: {amount} · {title}"
       },
-      "baBalance": "Balance",
-      "baIn": "Money sent in",
-      "baSpent": "Spent",
-      "baOnWay": "{amount} on its way",
-      "baOpen": "Open Build Account",
-      "shortcuts": "Shortcuts",
-      "bookCall": "Book a consultation",
-      "helpTitle": "Need help?",
-      "helpText": "Message the LBH team — we reply on WhatsApp and in your account.",
-      "helpChat": "Chat with LBH"
+      "baBalance": "Eseleyo",
+      "baIn": "Imali ethunyelweyo",
+      "baSpent": "Esetshenzisiweyo",
+      "baOnWay": "{amount} isendleleni",
+      "baOpen": "Vula i-Build Account",
+      "shortcuts": "Izindlela ezimfitshane",
+      "bookCall": "Bhuka ukubonisana",
+      "helpTitle": "Udinga uncedo?",
+      "helpText": "Thumela umlayezo eqenjini le-LBH — siphendula ku-WhatsApp lase-akhawuntini yakho.",
+      "helpChat": "Khuluma le-LBH"
+    },
+    "pages": {
+      "projectsTitle": "Amaphrojekthi ami",
+      "projectsIntro": "Konke ukuhlolwa kwesitandi, ama-oda empahla lokwakha olakho le-LBH.",
+      "updatedOn": "Kuvuselelwe {date}"
+    },
+    "updates": {
+      "title": "Okutsha",
+      "intro": "Okwenzakeleyo kumaphrojekthi akho, okwakamuva kuqala. Lokhu ngamarekhodi avela kumaphrojekthi akho — i-LBH kayithumeli izaziso ze-push.",
+      "ev": {
+        "approval": {
+          "extra": "Kudingeka imvumo: {title} · {project}",
+          "quote": "Ikhotheshini {title} ikulindele · {project}",
+          "supplier": "Khetha umthengisi: {title} · {project}",
+          "stage_choose": "Khetha umthengisi we-{title} · {project}",
+          "stage_approve": "Vuma isigaba se-{title} · {project}"
+        },
+        "report": "Umbiko usulungile · {project}",
+        "inspection": "Ukuhlola kubhaliwe · {project}",
+        "payment": "Inkokhelo iqinisekisiwe: {amount} · {project}",
+        "stage": {
+          "quoting": "{stage}: amakhotheshini abathengisi asalungile · {project}",
+          "quote_approved": "{stage}: umthengisi ukhethiwe · {project}",
+          "paid": "{stage}: inkokhelo iqinisekisiwe · {project}",
+          "purchased": "{stage}: impahla ithengiwe · {project}",
+          "delivered": "{stage}: impahla ilethiwe · {project}",
+          "building": "{stage}: ukwakha kuqalile · {project}",
+          "inspected": "{stage}: kuhloliwe · {project}",
+          "approved": "{stage}: kuvunyiwe · {project}"
+        },
+        "quote": "Ikhotheshini #{number} ithunyelwe · {project}",
+        "document": "Iphepha elitsha: {name} · {project}"
+      }
+    },
+    "approvals": {
+      "title": "Izimvumo",
+      "intro": "Akulalutho oluqhubekayo uze unqume. Vula into ubone imininingwane, uvume kumbe wale.",
+      "waiting": "{count, plural, =0 {Akulalutho olulindileyo} one {engu-# ikulindele} other {ezingu-# zikulindele}}",
+      "nothingWaiting": "Akulalutho oludinga imvumo yakho khathesi.",
+      "history": "Izinqumo zakho",
+      "open": "Hlola",
+      "kind": {
+        "extra": "Intengo yokwengeza",
+        "quote": "Ikhotheshini",
+        "supplier": "Ikhotheshini yomthengisi",
+        "stage_choose": "Isigaba sokwakha — khetha umthengisi",
+        "stage_approve": "Isigaba sokwakha — vuma"
+      },
+      "decided": {
+        "approved": "Kuvunyiwe",
+        "declined": "Kwaliwe",
+        "accepted": "Kwamukelwe"
+      }
+    },
+    "reports": {
+      "title": "Imibiko",
+      "intro": "Imibiko yasensimini ehlolwe yi-LBH, lokuhlola okuvela ezigabeni zokwakha kwakho.",
+      "open": "Vula",
+      "kind": {
+        "report": "Umbiko wasensimini",
+        "inspection": "Ukuhlolwa kwesigaba"
+      },
+      "verdict": {
+        "clear": "Kuhle",
+        "concerns": "Okukhathazayo",
+        "red_flags": "Izixwayiso ezinkulu"
+      }
+    },
+    "documents": {
+      "title": "Amarisidi lamaphepha",
+      "intro": "Amakhotheshini, ama-invoyisi, imibiko lamarisidi amaphrojekthi akho. Amafayela avulwa ngelinki evikelekileyo ephelelwa yisikhathi ngemva kwemizuzu embalwa.",
+      "filter": "Tshengisa",
+      "all": "Konke",
+      "open": "Vula",
+      "kind": {
+        "quote": "Ikhotheshini",
+        "invoice": "I-invoyisi",
+        "report": "Umbiko",
+        "receipt": "Irisidi",
+        "document": "Iphepha"
+      },
+      "baNote": "Amarisidi owafaka ku-Build Account yakho agcinwa esitatimendeni sayo."
+    },
+    "photos": {
+      "title": "Izithombe zephrojekthi",
+      "intro": "Izithombe ezilosuku ezivela ekuvakashelweni kwesayithi yi-LBH, ekuthengeni lekuhloleni.",
+      "alt": "Isithombe sesayithi · {project} · {date}"
+    },
+    "finance": {
+      "title": "Ukubuka imali",
+      "intro": "Izinkokhelo eziya ku-LBH zamaphrojekthi akho, le-Build Account yakho ngamafuphi.",
+      "paidToLbh": "Kubhadalwe ku-LBH",
+      "awaiting": "Kulindele inkokhelo",
+      "baBalance": "Eseleyo ku-Build Account",
+      "baSpent": "Esetshenzisiweyo ku-Build Account",
+      "payments": "Izinkokhelo",
+      "baText": "I-Build Account yakho itshengisa idola linye ngalinye elithunyelwe ekhaya, irisidi yinye ngayinye lalokho okuseleyo, isigaba ngesigaba.",
+      "baOpen": "Vula isitatimende",
+      "kind": {
+        "deposit": "Idiphozithi",
+        "balance": "Eseleyo",
+        "extra": "Intengo yokwengeza",
+        "stage": "Isigaba sokwakha",
+        "materials": "Impahla"
+      },
+      "status": {
+        "pending": "Kulindele inkokhelo",
+        "submitted": "Ubufakazi buthunyelwe — kuyahlolwa",
+        "confirmed": "Kuqinisekisiwe",
+        "failed": "Kwehlulekile",
+        "cancelled": "Kukhanselisiwe"
+      }
     }
   },
   "labels": {
@@ -1610,214 +1795,324 @@
     "chartTitle": "Imali ethunyelwe ngenyanga"
   },
   "site": {
-    "mainNav": "Main",
-    "menu": "Menu",
-    "close": "Close",
-    "closeMenu": "Close menu",
-    "myAccount": "My account",
-    "staffArea": "Staff area",
-    "openStaffArea": "Open my staff area",
-    "signedInAs": "Signed in as {name}",
-    "yourAccount": "Your account",
-    "website": "LBH website",
-    "explore": "Explore LBH",
-    "logOut": "Log out",
-    "bookConsultation": "Book a free consultation",
-    "stockPhoto": "Stock photo",
+    "mainNav": "Okukhulu",
+    "menu": "Imenyu",
+    "close": "Vala",
+    "closeMenu": "Vala imenyu",
+    "myAccount": "I-akhawunti yami",
+    "staffArea": "Indawo yabasebenzi",
+    "openStaffArea": "Vula indawo yami yabasebenzi",
+    "signedInAs": "Ungene njengo-{name}",
+    "yourAccount": "I-akhawunti yakho",
+    "website": "Iwebhusayithi ye-LBH",
+    "explore": "Hlola i-LBH",
+    "logOut": "Phuma",
+    "bookConsultation": "Bhuka ukubonisana kwamahala",
+    "stockPhoto": "Isithombe se-stock",
     "nav": {
-      "home": "Home",
-      "services": "Our services",
-      "howItWorks": "How it works",
+      "home": "Ekhaya",
+      "services": "Imisebenzi yethu",
+      "howItWorks": "Kusebenza njani",
       "buildAccount": "Build Account",
-      "projects": "Projects",
-      "about": "About LBH",
-      "faq": "FAQ",
-      "contact": "Contact"
+      "projects": "Amaphrojekthi",
+      "about": "Nge-LBH",
+      "faq": "Imibuzo evamileyo",
+      "contact": "Sithinte"
     },
     "account": {
-      "dashboard": "My dashboard",
-      "projects": "My projects",
-      "buildAccount": "My Build Account",
-      "progress": "Project progress",
-      "finance": "Financial overview",
-      "documents": "Receipts & documents",
-      "photos": "Project photographs",
-      "reports": "Reports",
-      "updates": "Updates",
-      "approvals": "Approvals",
-      "support": "Support",
-      "settings": "Account settings"
+      "dashboard": "Ideshibhodi yami",
+      "projects": "Amaphrojekthi ami",
+      "buildAccount": "I-Build Account yami",
+      "progress": "Inqubekelaphambili yephrojekthi",
+      "finance": "Ukubuka imali",
+      "documents": "Amarisidi lamaphepha",
+      "photos": "Izithombe zephrojekthi",
+      "reports": "Imibiko",
+      "updates": "Okutsha",
+      "approvals": "Izimvumo",
+      "support": "Uncedo",
+      "settings": "Izilungiselelo ze-akhawunti"
     },
     "footer": {
-      "about": "Let's Build Home helps people living abroad build in Zimbabwe — with a local team that checks the land, buys and records materials, oversees the work and reports back with dated photos.",
-      "servicesTitle": "Services",
+      "about": "I-Let's Build Home isiza abantu abahlala emzini ukwakha eZimbabwe — ngeqembu lalapha ekhaya elihlola isitandi, elithenga libhale impahla, eliqondisa umsebenzi njalo libike ngezithombe ezilosuku.",
+      "servicesTitle": "Imisebenzi",
       "companyTitle": "LBH",
-      "contactTitle": "Contact",
-      "whatsapp": "WhatsApp us",
-      "based": "Based in Zimbabwe",
-      "terms": "Terms",
-      "privacy": "Privacy policy",
-      "notABank": "The Build Account is a record of your build money, not a bank account."
+      "contactTitle": "Sithinte",
+      "whatsapp": "Sithinte ku-WhatsApp",
+      "based": "SiseZimbabwe",
+      "terms": "Imithetho",
+      "privacy": "Inqubomgomo yobumfihlo",
+      "notABank": "I-Build Account yirekhodi yemali yokwakha kwakho, akusiyo i-akhawunti yebhange."
     },
     "home": {
       "hero": {
-        "eyebrow": "Construction oversight in Zimbabwe",
-        "title": "Build your home back home.",
-        "subtitle": "We'll be your eyes on the ground.",
-        "text": "Build with confidence, wherever in the world you are.",
-        "cta": "Book a free consultation",
-        "secondary": "How it works"
+        "eyebrow": "Ukuqondisa ukwakha eZimbabwe",
+        "title": "Yakha umuzi wakho ekhaya.",
+        "subtitle": "Sizakuba ngamehlo akho lapha ekhaya.",
+        "text": "Yakha uzethemba, loba ukuphi emhlabeni.",
+        "cta": "Bhuka ukubonisana kwamahala",
+        "secondary": "Kusebenza njani"
       },
       "trust": {
-        "label": "Why clients trust LBH",
+        "label": "Kungani amakhasimende ethemba i-LBH",
         "verified": {
           "title": "Verified land & suppliers",
-          "text": "Stands and quotes checked before you pay."
+          "text": "Izitandi lamakhotheshini kuyahlolwa ungakabhadali."
         },
         "process": {
-          "title": "Transparent process",
-          "text": "Written quotes. Nothing bought without your approval."
+          "title": "Inqubo ecacileyo",
+          "text": "Amakhotheshini abhaliweyo. Akulalutho oluthengwayo ungavumanga."
         },
         "photos": {
-          "title": "Dated photo updates",
-          "text": "Every visit and purchase recorded with photos."
+          "title": "Izithombe ezilosuku",
+          "text": "Ukuvakasha lokuthenga konke kubhalwa ngezithombe."
         },
         "support": {
-          "title": "Dedicated support",
-          "text": "One team to talk to, by WhatsApp or chat."
+          "title": "Uncedo olukunakileyo",
+          "text": "Iqembu linye okhuluma lalo, ku-WhatsApp kumbe ngengxoxo."
         }
       },
       "services": {
-        "eyebrow": "Our services",
-        "title": "Everything a build needs, handled on the ground.",
-        "intro": "Each job starts with a free consultation and a written quote. You decide what happens next — LBH does the work locally and shows you the evidence.",
-        "more": "Learn more",
-        "soonTag": "Coming soon",
-        "camera": "A live site camera, so you can look in on your build from anywhere.",
+        "eyebrow": "Imisebenzi yethu",
+        "title": "Konke okudingwa yikwakha, kwenziwa lapha ekhaya.",
+        "intro": "Umsebenzi ngamunye uqala ngokubonisana kwamahala lekhotheshini ebhaliweyo. Nguwe onquma okulandelayo — i-LBH yenza umsebenzi lapha ekhaya ikutshengise ubufakazi.",
+        "more": "Funda okunengi",
+        "soonTag": "Kuyeza",
+        "camera": "Ikhamera yesayithi ye-live, ukuze ubone ukwakha kwakho ulapho okhona.",
         "land": {
-          "title": "Land verification",
-          "text": "Before you pay for a stand, we check it is real, properly pegged and legally clean.",
-          "p1": "Title checked by a qualified lawyer",
-          "p2": "Pegs confirmed with the council",
-          "p3": "Written report with photos and GPS"
+          "title": "Ukuhlola isitandi",
+          "text": "Ungakabhadali isitandi, siyahlola ukuthi ngesiqotho, sibekwe izikhonkwane kuhle njalo simsulwa ngokomthetho.",
+          "p1": "I-title ihlolwa ngummeli oleziqu",
+          "p2": "Izikhonkwane ziqinisekiswa lekhansili",
+          "p3": "Umbiko obhaliweyo olezithombe le-GPS"
         },
         "materials": {
-          "title": "Materials procurement",
-          "text": "We collect supplier quotes side by side and buy only what you approve.",
-          "p1": "Quotes compared from several suppliers",
-          "p2": "Nothing bought without your approval",
-          "p3": "Every receipt photographed and kept"
+          "title": "Ukuthenga impahla",
+          "text": "Siqoqa amakhotheshini abathengisi siwaqathanise, sithenge kuphela lokho okuvumayo.",
+          "p1": "Amakhotheshini aqathaniswa kubathengisi abanengi",
+          "p2": "Akulalutho oluthengwayo ungavumanga",
+          "p3": "Irisidi yinye ngayinye ithathwa isithombe igcinwe"
         },
         "onsite": {
-          "title": "On-site management",
-          "text": "Our team manages your build stage by stage, from foundation to roof.",
-          "p1": "Builders and deliveries overseen on site",
-          "p2": "Each stage inspected before the next",
-          "p3": "You approve every stage"
+          "title": "Ukuphatha emsebenzini",
+          "text": "Iqembu lethu liphatha ukwakha kwakho isigaba ngesigaba, kusukela esisekelweni kusiya ophahleni.",
+          "p1": "Abakhi lokuletha kuqondiswa esayithini",
+          "p2": "Isigaba ngasinye siyahlolwa kungakaqalwa esilandelayo",
+          "p3": "Uvuma isigaba sinye ngasinye"
         },
         "reporting": {
-          "title": "Progress reporting",
-          "text": "You see what is happening on site, when it happened, and what it cost.",
-          "p1": "Dated photographs from every visit",
-          "p2": "Inspection findings in plain words",
-          "p3": "Spending recorded in your Build Account"
+          "title": "Imibiko yenqubekelaphambili",
+          "text": "Ubona okwenzakalayo esayithini, ukuthi kwenzakale nini, lokuthi kubize malini.",
+          "p1": "Izithombe ezilosuku zakho konke ukuvakasha",
+          "p2": "Okutholakele ekuhloleni ngamazwi alula",
+          "p3": "Ukusetshenziswa kwemali kubhalwa ku-Build Account yakho"
         }
       },
       "ba": {
         "eyebrow": "LBH Build Account",
-        "title": "Your build, in one place — from anywhere.",
-        "text": "The Build Account shows every dollar sent home, every receipt, and what is left, stage by stage. It is part of your LBH account — no separate app.",
-        "f1": "Balance, money sent and spending by stage",
-        "f2": "Receipts scanned and kept with each purchase",
-        "f3": "Budget per stage with a warning when it runs over",
-        "f4": "Approvals, reports and updates for your project",
-        "f5": "Family can view or add receipts — only if you invite them",
-        "cta": "About the Build Account",
-        "cta2": "Create an account",
+        "title": "Ukwakha kwakho, endaweni eyodwa — loba ukuphi.",
+        "text": "I-Build Account itshengisa idola linye ngalinye elithunyelwe ekhaya, irisidi yinye ngayinye, lalokho okuseleyo, isigaba ngesigaba. Iyingxenye ye-akhawunti yakho ye-LBH — akula-app eyehlukileyo.",
+        "f1": "Eseleyo, imali ethunyelweyo lokusetshenziswa ngesigaba",
+        "f2": "Amarisidi askenwa agcinwe lokuthengwa ngakunye",
+        "f3": "Ibhajethi yesigaba lesixwayiso nxa yedlulwa",
+        "f4": "Izimvumo, imibiko lokutsha kwephrojekthi yakho",
+        "f5": "Imuli ingabona kumbe ifake amarisidi — kuphela nxa uyimemile",
+        "cta": "Nge-Build Account",
+        "cta2": "Vula i-akhawunti",
         "demo": {
-          "label": "Build Account preview with sample information",
-          "title": "Family home · Harare",
-          "sample": "Sample data",
-          "budget": "Budget",
-          "spent": "Spent",
-          "left": "Remaining",
-          "progress": "Construction progress",
-          "progressValue": "Stage 3 of 5",
-          "s1": "Foundation",
-          "s2": "Slab",
-          "s3": "Window level",
-          "s4": "Wall plate",
-          "s5": "Roof",
-          "receipts": "Recent receipts",
-          "r1": "Cement 42.5N · 40 bags",
-          "r2": "Common bricks · 6,000",
-          "r3": "River sand · 2 loads",
-          "updates": "Updates",
-          "u1": "Approval needed: window-level supplier",
-          "u1When": "Today",
-          "u2": "Inspection report ready: slab",
-          "u2When": "3 days ago",
-          "u3": "Payment confirmed for the slab stage",
-          "u3When": "Last week",
-          "note": "Illustration with sample figures — not a real client.",
-          "receiptOk": "Receipt"
+          "label": "Ukubona i-Build Account ngolwazi lwesibonelo",
+          "title": "Umuzi wemuli · Harare",
+          "sample": "Ulwazi lwesibonelo",
+          "budget": "Ibhajethi",
+          "spent": "Esetshenzisiweyo",
+          "left": "Eseleyo",
+          "progress": "Inqubekelaphambili yokwakha",
+          "progressValue": "Isigaba 3 ku-5",
+          "s1": "Isisekelo",
+          "s2": "I-slab",
+          "s3": "Izinga lamawindi",
+          "s4": "I-wall plate",
+          "s5": "Uphahla",
+          "receipts": "Amarisidi akamuva",
+          "r1": "Usimende 42.5N · amasaka angu-40",
+          "r2": "Izitina ezijwayelekileyo · 6,000",
+          "r3": "Isihlabathi somfula · imithwalo emi-2",
+          "updates": "Okutsha",
+          "u1": "Kudingeka imvumo: umthengisi wezinga lamawindi",
+          "u1When": "Lamuhla",
+          "u2": "Umbiko wokuhlola usulungile: i-slab",
+          "u2When": "Izinsuku ezi-3 ezedlulileyo",
+          "u3": "Inkokhelo iqinisekisiwe yesigaba se-slab",
+          "u3When": "Iviki eledlulayo",
+          "note": "Umfanekiso onezibalo zesibonelo — akusilo khasimende eliqotho.",
+          "receiptOk": "Irisidi"
         }
       },
       "process": {
-        "eyebrow": "How it works",
-        "title": "Four steps, with you in control at every one.",
-        "more": "See the full process",
+        "eyebrow": "Kusebenza njani",
+        "title": "Izinyathelo ezine, wena uphethe kuzo zonke.",
+        "more": "Bona inqubo yonke",
         "s1": {
-          "title": "Request a service",
-          "text": "Book a free consultation and tell us about your land or build."
+          "title": "Cela umsebenzi",
+          "text": "Bhuka ukubonisana kwamahala usitshele ngesitandi sakho kumbe ukwakha kwakho."
         },
         "s2": {
-          "title": "LBH verifies and manages",
-          "text": "Our team checks, quotes, buys and oversees the work in Zimbabwe."
+          "title": "I-LBH iyahlola njalo iphathe",
+          "text": "Iqembu lethu liyahlola, linike amakhotheshini, lithenge njalo liqondise umsebenzi eZimbabwe."
         },
         "s3": {
-          "title": "Receive evidence and reports",
-          "text": "Dated photos, receipts and inspection reports in your account."
+          "title": "Thola ubufakazi lemibiko",
+          "text": "Izithombe ezilosuku, amarisidi lemibiko yokuhlola ku-akhawunti yakho."
         },
         "s4": {
-          "title": "Review and approve next steps",
-          "text": "Nothing moves forward until you approve it."
+          "title": "Hlola uvume izinyathelo ezilandelayo",
+          "text": "Akulalutho oluqhubekayo uze ukuvume."
         }
       },
       "why": {
-        "eyebrow": "Why LBH",
-        "title": "Someone you can trust, on the ground.",
-        "text": "Building from abroad is a big commitment. We make sure you can see what your money is doing.",
+        "eyebrow": "Kungani i-LBH",
+        "title": "Umuntu ongamethemba, lapha ekhaya.",
+        "text": "Ukwakha usemzini kuyisinqumo esikhulu. Siqinisekisa ukuthi uyabona ukuthi imali yakho yenzani.",
         "local": {
-          "title": "Local presence",
-          "text": "A team based in Zimbabwe that visits your stand and site."
+          "title": "Sikhona lapha ekhaya",
+          "text": "Iqembu eliseZimbabwe elivakatshela isitandi lesayithi yakho."
         },
         "oversight": {
-          "title": "Construction oversight",
-          "text": "Each stage is inspected before the next one starts."
+          "title": "Ukuqondisa ukwakha",
+          "text": "Isigaba ngasinye siyahlolwa kungakaqalwa esilandelayo."
         },
         "money": {
-          "title": "Visible spending",
-          "text": "Quotes, receipts and balances you can check at any time."
+          "title": "Ukusetshenziswa kwemali okubonakalayo",
+          "text": "Amakhotheshini, amarisidi lemali eseleyo ongakuhlola loba nini."
         },
         "photos": {
-          "title": "Photographic evidence",
-          "text": "Dated photos from every visit, purchase and delivery."
+          "title": "Ubufakazi bezithombe",
+          "text": "Izithombe ezilosuku zakho konke ukuvakasha, ukuthenga lokuletha."
         },
         "contact": {
-          "title": "Regular communication",
-          "text": "Updates in your account, and a team you can message."
+          "title": "Ukuxhumana njalonjalo",
+          "text": "Okutsha ku-akhawunti yakho, leqembu ongalithumela umlayezo."
         },
         "account": {
-          "title": "Accountability",
-          "text": "Written quotes and your approval before money is spent."
+          "title": "Ukuziphendulela",
+          "text": "Amakhotheshini abhaliweyo lemvumo yakho imali ingakasetshenziswa."
         }
       },
       "cta": {
-        "title": "Let's build your dream together.",
-        "text": "Start your construction journey with a team on the ground in Zimbabwe.",
-        "button": "Book your free consultation"
+        "title": "Asakhe ndawonye umuzi owuphuphayo.",
+        "text": "Qala uhambo lwakho lokwakha leqembu elilapha eZimbabwe.",
+        "button": "Bhuka ukubonisana kwakho kwamahala"
       }
+    },
+    "servicesPage": {
+      "metaTitle": "Imisebenzi yethu",
+      "metaDescription": "Ukuhlola isitandi, ukuthenga impahla, ukuphatha emsebenzini lemibiko yenqubekelaphambili yezindlu ezakhiwa eZimbabwe usemzini.",
+      "title": "Imisebenzi emine, iqembu linye lapha eZimbabwe.",
+      "intro": "Umsebenzi ngamunye uqala ngokubonisana kwamahala lekhotheshini ebhaliweyo. Intengo incike esitandini sakho lekwakheni kwakho, ngakho kayiboniswa emphakathini — ikhotheshini yakho ngeyakho wedwa. Akulalutho oluthengwayo kumbe oluqalwayo ungavumanga.",
+      "jump": "Imisebenzi ekhasini leli",
+      "whatWeDo": "Esikwenzayo",
+      "youReceive": "Uthola:",
+      "land": {
+        "title": "Ukuhlola isitandi",
+        "text": "Ungakabhadali isitandi, siqinisekisa ukuthi ngesiqotho, sibekwe izikhonkwane kuhle njalo simsulwa ngokomthetho. Ummeli oleziqu uhlola i-title (kuphakathi komsebenzi), isisebenzi sekhansili siqinisekisa izikhonkwane esayithini, njalo iqembu lethu lilinganisa isitandi libhale indawo yaso ye-GPS ngezithombe lamavidiyo alosuku.",
+        "p1": "I-title deed ihlolwa ngummeli oleziqu",
+        "p2": "Izikhonkwane ziqinisekiswa esayithini lekhansili",
+        "p3": "Izilinganiso, indawo ye-GPS, izithombe lamavidiyo alosuku",
+        "p4": "Izixwayiso ezinkulu zichazwa ngamazwi alula",
+        "receive": "umbiko obhaliweyo ku-akhawunti yakho, lobufakazi bufakiwe."
+      },
+      "materials": {
+        "title": "Ukuthenga impahla",
+        "text": "Sitshele okudingwa yikwakha kwakho, siqoqe amakhotheshini kubathengisi abanengi siwaqathanise. Akulalutho oluthengwayo ungakavumi. Konke okuthengwayo kubhalwa lerisidi yakho, njalo impahla elethwayo ithathwa izithombe nxa ifika esayithini.",
+        "p1": "Amakhotheshini aqathaniswa kubathengisi abanengi",
+        "p2": "Akulalutho oluthengwayo ungavumanga ngombhalo",
+        "p3": "Irisidi yinye ngayinye ithathwa isithombe igcinwe",
+        "p4": "Impahla elethwayo iyahlolwa ithathwe izithombe esayithini",
+        "receive": "amakhotheshini, imvumo yakho, amarisidi lezithombe zokuletha ku-akhawunti yakho."
+      },
+      "onsite": {
+        "title": "Ukuphatha emsebenzini",
+        "text": "Ekwakheni okugcweleyo, iqembu lethu liphatha umsebenzi isigaba ngesigaba — isisekelo, i-slab, izinga lamawindi, i-wall plate, uphahla lokuqedisa. Isigaba ngasinye sinikwa ikhotheshini, siyathengelwa, siyakhiwa njalo siyahlolwa kungakaqalwa esilandelayo, njalo uvuma isigaba sinye ngasinye.",
+        "p1": "Uhlelo lokwakha kwakho isigaba ngesigaba",
+        "p2": "Abakhi lokuletha kuqondiswa esayithini",
+        "p3": "Isigaba ngasinye siyahlolwa kungakaqalwa esilandelayo",
+        "p4": "Imvumo yakho ngaphambi kwesigaba ngasinye esitsha",
+        "receive": "ukubona okucacileyo kwesigaba ngasinye — okwenziweyo, okubizileyo, lokulandelayo."
+      },
+      "reporting": {
+        "title": "Imibiko yenqubekelaphambili",
+        "text": "Ubona okwenzakalayo esayithini yakho, ukuthi kwenzakale nini lokuthi kubize malini. Izithombe zilosuku lokuvakasha kwethu, okutholakele ekuhloleni kubhalwa ngamazwi alula, njalo ukusetshenziswa kwemali kubhalwa ku-Build Account yakho khonokho.",
+        "p1": "Izithombe ezilosuku zakho konke ukuvakasha",
+        "p2": "Okutholakele ekuhloleni ngamazwi alula",
+        "p3": "Ukusetshenziswa kwemali lamarisidi ku-Build Account yakho",
+        "p4": "Okutsha ku-akhawunti yakho nxa kukhona okudinga wena",
+        "receive": "imibiko lokutsha ku-akhawunti yakho ye-LBH — efonini yakho, loba ukuphi."
+      },
+      "camera": {
+        "title": "Ikhamera yesayithi ye-live",
+        "text": "Ikhamera esayithini yakho, ukuze ubone ukwakha kwakho ulapho okhona. Tshiya i-email yakho, sizakwazisa nxa isitholakala."
+      }
+    },
+    "howPage": {
+      "title": "Kusukela ocingweni lwakuqala kusiya embikweni ophelileyo — wena uphethe."
+    },
+    "about": {
+      "title": "Iqembu lapha ekhaya labantu abakhayo besemzini.",
+      "creditsTitle": "Okuhambelana lezithombe",
+      "creditsText": "Lapho singakabi lesithombe se-LBH, sisebenzisa izithombe ze-stock ezilelayisensi, ezibhalwe ukuthi \"Isithombe se-stock\" lelizwe ezathathelwa kulo. Akusiwo amaphrojekthi e-LBH."
+    },
+    "faq": {
+      "metaTitle": "Imibuzo evamileyo",
+      "title": "Imibuzo ababuzwa ngabantu bengakakhi le-LBH.",
+      "intro": "Izimpendulo ezimfitshane eziqotho. Nxa umbuzo wakho ungekho lapha, bhuka ukubonisana kwamahala usibuze ngqo.",
+      "moreTitle": "Usalombuzo?",
+      "moreText": "Khuluma lathi ocingweni lwamahala kumbe ku-WhatsApp.",
+      "what": {
+        "q": "I-LBH yenzani?",
+        "a": "Sisiza abantu abahlala emzini ukwakha eZimbabwe. Iqembu lethu lihlola isitandi ungakasithengi, liqoqe liqathanise amakhotheshini abathengisi, lithenge kuphela lokho okuvumayo, liphathe ukwakha isigaba ngesigaba njalo libike ngezithombe ezilosuku, amarisidi lemibiko ebhaliweyo."
+      },
+      "there": {
+        "q": "Kumele ngibe seZimbabwe yini?",
+        "a": "Hatshi. Konke kwenzakala nge-akhawunti yakho ye-LBH le-WhatsApp — ukubonisana ngocingo kumbe ngevidiyo, amakhotheshini lezimvumo ku-akhawunti yakho, lezithombe lemibiko ongakuvula efonini yakho loba uhlala ngaphi."
+      },
+      "cost": {
+        "q": "Kubiza malini?",
+        "a": "Ukubonisana kwakuqala kungamahala. Ngemva kwalokho uthola ikhotheshini ebhaliweyo elembadalo yomsebenzi lemali yohambo elinganisiweyo. Intengo incike esitandini sakho lekwakheni kwakho, ngakho kayibhalwa kuwebhusayithi."
+      },
+      "pay": {
+        "q": "Ngibhadala njani?",
+        "a": "Wamukela ikhotheshini ku-akhawunti yakho ubhadale idiphozithi engu-50% — ku-inthanethi ngekhadi kumbe nge-mobile money, kumbe ngokudlulisa emalini yebhange kumbe nge-remittance, usitshele inombolo yereferensi. Eseleyo ibhadalwa nxa umbiko wakho usukhitshiwe."
+      },
+      "money": {
+        "q": "I-LBH iyayigcina yini imali yami?",
+        "a": "Hatshi. I-Build Account yakho yirekhodi yemali yokwakha kwakho — oyithumeleyo, esetshenzisiweyo leseleyo — akusiyo i-akhawunti yebhange. Akulalutho oluthengwayo ungavumanga."
+      },
+      "proof": {
+        "q": "Ngazi njani ukuthi umsebenzi wenziwe sibili?",
+        "a": "Iqembu lethu libhala izithombe lamavidiyo alosuku esayithini, konke okuthengwayo kulerisidi ethathwe isithombe, njalo umbiko ngamunye wasensimini uhlolwa yi-LBH ungakakhitshelwa wena. Kakho osayina umsebenzi wakhe ngokwakhe."
+      },
+      "family": {
+        "q": "Imuli yami ingakulandela yini ukwakha?",
+        "a": "Yebo, nxa uyimema. Ku-Build Account yakho ungamema imuli ukuthi ibone kuphela, kumbe ifake amarisidi emali eyiphetheyo. Ibona kuphela lokho okwabelana layo."
+      },
+      "mistake": {
+        "q": "Kuthiwani nxa kukhona okungahambi kuhle?",
+        "a": "Nxa siphambanisa, silungisa ngemali yethu. Uhambo lokwengeza kumbe intengo yokwengeza akwenzakali ungavumanga ku-akhawunti yakho."
+      },
+      "privacy": {
+        "q": "Ngubani ongabona ulwazi lwami?",
+        "a": "Nguwe kuphela, abasebenzi be-LBH abasebenza esicelweni sakho, lemuli oyimemileyo. Amaphepha lamarisidi agcinwa emfihlweni njalo avulwa ngamalinki avikelekileyo aphila okwesikhatshana."
+      },
+      "languages": {
+        "q": "Ngingasebenzisa ziphi izilimi?",
+        "a": "Iwebhusayithi le-akhawunti yakho kuyatholakala ngesiNgisi, ngesiShona langesiNdebele."
+      }
+    },
+    "loading": "Kuyalayisha…",
+    "projectsPage": {
+      "metaTitle": "Amaphrojekthi",
+      "title": "Amaphrojekthi e-LBH, athathwe izithombe esayithini.",
+      "intro": "Amaphrojekthi e-LBH aqotho alezithombe ezithathwe liqembu lethu. Imininingwane yamakhasimende igcinwa iyimfihlo."
     }
   }
 }

@@ -400,3 +400,5 @@ html[data-menu="open"] .wa-float { display: none; }
 .ds-page main h1:not(.ds-display):not(.ds-h2), .ds-page main .card h2, .ds-page main .card h3 {
   font-family: var(--font-serif); font-weight: 500; letter-spacing: -0.005em;
 }
+/* staff areas (admin, field): same palette and type, their own separate frame */
+.ds-staff { background: var(--color-ivory); }

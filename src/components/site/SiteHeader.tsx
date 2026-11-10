@@ -147,7 +147,7 @@ export default function SiteHeader({
             </Link>
           )}
           {staffHome && profile && (
-            <Link href={staffHome} className="flex items-center gap-2" aria-label={t("staffArea")}>
+            <Link href={staffHome} className="flex items-center gap-2" aria-label={t("staffArea")} data-testid="header-staff">
               <span className="hidden text-sm font-medium text-charcoal md:inline">{t("staffArea")}</span>
               <Initials profile={profile} />
             </Link>
@@ -248,6 +248,7 @@ export default function SiteHeader({
               </section>
 
               <div className="mt-8 flex flex-col gap-3">
+                <Link href="/book-a-call" className="ds-btn ds-btn-outline w-full" data-testid="menu-book-call">{t("bookConsultation")}</Link>
                 {visitor && (
                   <>
                     <Link href="/signup" className="ds-btn ds-btn-primary w-full">{tc("createAccount")}</Link>
