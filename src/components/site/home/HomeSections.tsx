@@ -16,15 +16,11 @@ export function HomeHero({ photo }: { photo: PhotoSource }) {
   const ts = useTranslations("site");
   return (
     <section className="relative isolate" aria-labelledby="hero-title" data-testid="home-hero">
-      {/* phone: photo on top, text below — the picture stays visible */}
-      <div className="md:hidden">
-        <Photo photo={photo} sizes="100vw" priority className="h-[46vh] min-h-[280px] w-full" stockLabel={ts("stockPhoto")} />
-      </div>
       <div className="relative md:min-h-[620px] lg:min-h-[680px]">
-        <div className="absolute inset-0 hidden md:block">
+        {/* one photo for every screen: on top on phones, behind the text on larger screens */}
+        <div className="relative h-[46vh] min-h-[280px] md:absolute md:inset-0 md:h-auto md:min-h-0">
           <Photo photo={photo} sizes="100vw" priority className="h-full w-full" stockLabel={ts("stockPhoto")} />
-          {/* a soft shade only behind the text column */}
-          <div aria-hidden className="absolute inset-y-0 left-0 w-[62%] bg-gradient-to-r from-charcoal/70 via-charcoal/40 to-transparent" />
+          <div aria-hidden className="absolute inset-y-0 left-0 hidden w-[62%] bg-gradient-to-r from-charcoal/70 via-charcoal/40 to-transparent md:block" />
         </div>
         <div className="ds-wrap relative py-10 md:flex md:min-h-[620px] md:items-end md:py-20 lg:min-h-[680px]">
           <div className="max-w-xl md:text-white">
@@ -113,7 +109,7 @@ export function ServicesEditorial({ photos }: { photos: HomePhotos }) {
                 stockLabel={ts("stockPhoto")}
               />
               <div className={`md:col-span-5 ${i % 2 ? "md:order-1" : ""}`}>
-                <p className="font-serif text-lg text-stone">{String(i + 1).padStart(2, "0")}</p>
+                <p className="font-serif text-lg text-stone-ink">{String(i + 1).padStart(2, "0")}</p>
                 <h3 className="ds-h3 mt-1 text-[1.6rem]">{t(`${r.key}.title`)}</h3>
                 <p className="ds-body mt-3">{t(`${r.key}.text`)}</p>
                 <ul className="mt-4 space-y-1.5 text-[15px] text-charcoal">
@@ -126,6 +122,7 @@ export function ServicesEditorial({ photos }: { photos: HomePhotos }) {
                 </ul>
                 <Link href={`/services#${r.key}`} className="ds-link mt-5 inline-block text-[15px]">
                   {t("more")}
+                  <span className="sr-only"> — {t(`${r.key}.title`)}</span>
                 </Link>
               </div>
             </article>
@@ -254,7 +251,7 @@ export function Process() {
         <ol className="mt-12 grid gap-10 md:grid-cols-4 md:gap-8">
           {[1, 2, 3, 4].map((n) => (
             <li key={n} className="border-t border-charcoal pt-5">
-              <span className="font-serif text-4xl text-stone">{n}</span>
+              <span className="font-serif text-4xl text-stone-ink">{n}</span>
               <h3 className="mt-3 text-lg font-semibold text-charcoal">{t(`s${n}.title`)}</h3>
               <p className="ds-body mt-2">{t(`s${n}.text`)}</p>
             </li>

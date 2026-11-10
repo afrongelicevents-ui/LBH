@@ -42,7 +42,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           <ol className="md:col-span-7 md:col-start-6">
             {(["value1", "value2", "value3", "value4"] as const).map((k, i) => (
               <li key={k} className="flex gap-5 border-b border-rule py-5 first:border-t">
-                <span className="font-serif text-2xl text-stone">{i + 1}</span>
+                <span className="font-serif text-2xl text-stone-ink">{i + 1}</span>
                 <span className="font-serif text-[1.25rem] leading-snug text-charcoal">{t(k)}</span>
               </li>
             ))}

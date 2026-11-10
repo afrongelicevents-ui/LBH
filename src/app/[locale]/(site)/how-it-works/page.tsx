@@ -30,7 +30,7 @@ export default async function HowItWorksPage({ params }: { params: Promise<{ loc
           <div className="md:col-span-9 md:col-start-2">
             {STAGES.map((n) => (
               <li key={n} className="grid grid-cols-[3.5rem_1fr] gap-4 border-b border-rule py-7 md:grid-cols-[6rem_1fr] md:py-9">
-                <span className="font-serif text-4xl leading-none text-stone md:text-5xl">{n}</span>
+                <span className="font-serif text-4xl leading-none text-stone-ink md:text-5xl">{n}</span>
                 <div>
                   <h2 className="font-serif text-[1.45rem] leading-snug text-charcoal">{t(`stage${n}Title`)}</h2>
                   <p className="ds-body mt-2 max-w-2xl text-base">{t(`stage${n}Text`)}</p>

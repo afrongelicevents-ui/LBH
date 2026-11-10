@@ -45,7 +45,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
               <Photo photo={photos[k]} sizes="(min-width: 768px) 50vw, 100vw" className="aspect-[4/3] w-full rounded-[3px]" stockLabel={ts("stockPhoto")} />
             </div>
             <div className="md:col-span-6">
-              <p className="font-serif text-lg text-stone">{String(i + 1).padStart(2, "0")}</p>
+              <p className="font-serif text-lg text-stone-ink">{String(i + 1).padStart(2, "0")}</p>
               <h2 id={`${k}-title`} className="ds-h2 mt-1 text-[2rem]">{t(`${k}.title`)}</h2>
               <p className="ds-body mt-4 text-base">{t(`${k}.text`)}</p>
               <h3 className="mt-7 text-sm font-semibold tracking-wider text-charcoal uppercase">{t("whatWeDo")}</h3>

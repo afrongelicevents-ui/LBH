@@ -43,6 +43,7 @@
   --color-charcoal: #23261f;
   --color-slate: #565b52;
   --color-stone: #a8977a;
+  --color-stone-ink: #776647; /* stone for text: 4.9:1 on ivory */
   --font-serif: var(--font-source-serif), Georgia, "Times New Roman", serif;
 
   --shadow-card: 0 2px 12px rgba(22, 58, 43, 0.08), 0 1px 3px rgba(22, 58, 43, 0.06);
