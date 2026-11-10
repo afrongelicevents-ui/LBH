@@ -8,19 +8,22 @@ export interface SiteNavItem {
   key: string;
 }
 
-/** The public Projects page stays out of the menu until there is enough real LBH project content. */
-export const SHOW_PROJECTS_IN_NAV = false;
-
-export const PUBLIC_NAV: SiteNavItem[] = [
-  { href: "/", key: "home" },
-  { href: "/services", key: "services" },
-  { href: "/how-it-works", key: "howItWorks" },
-  { href: "/build-account", key: "buildAccount" },
-  ...(SHOW_PROJECTS_IN_NAV ? [{ href: "/projects", key: "projects" }] : []),
-  { href: "/about", key: "about" },
-  { href: "/faq", key: "faq" },
-  { href: "/contact", key: "contact" },
-];
+/**
+ * Public pages. "Projects" is only listed once the admin has published real
+ * LBH project photos and switched it on (Admin → Settings → Projects).
+ */
+export function publicNav(showProjects: boolean): SiteNavItem[] {
+  return [
+    { href: "/", key: "home" },
+    { href: "/services", key: "services" },
+    { href: "/how-it-works", key: "howItWorks" },
+    { href: "/build-account", key: "buildAccount" },
+    ...(showProjects ? [{ href: "/projects", key: "projects" }] : []),
+    { href: "/about", key: "about" },
+    { href: "/faq", key: "faq" },
+    { href: "/contact", key: "contact" },
+  ];
+}
 
 /** Shown in the desktop header bar (the ☰ menu has everything). */
 export const HEADER_LINKS: SiteNavItem[] = [

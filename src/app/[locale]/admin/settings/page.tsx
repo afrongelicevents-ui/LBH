@@ -29,6 +29,16 @@ export default async function AdminSettingsPage({
         </span>
         <ChevronRightIcon size={18} className="text-muted" />
       </Link>
+      <Link href="/admin/settings/projects" className="card flex items-center gap-3 p-4 hover:shadow-(--shadow-card-hover)" data-testid="projects-link">
+        <span className="icon-round icon-forest h-11 w-11">
+          <CameraIcon size={22} />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-extrabold text-ink">{t("projectsTitle")}</span>
+          <span className="block text-xs text-muted">{t("projectsHint")}</span>
+        </span>
+        <ChevronRightIcon size={18} className="text-muted" />
+      </Link>
       <Link href="/admin/settings/build-account" className="card flex items-center gap-3 p-4 hover:shadow-(--shadow-card-hover)" data-testid="ba-settings-link">
         <span className="icon-round icon-forest h-11 w-11">
           <CardIcon size={22} />

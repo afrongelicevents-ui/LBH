@@ -8,7 +8,7 @@ import LocaleDropdown from "@/components/LocaleDropdown";
 import SignOutButton from "@/components/portal/SignOutButton";
 import { signOut } from "@/lib/auth/actions";
 import { homeForRole } from "@/lib/auth/roles";
-import { ACCOUNT_NAV, HEADER_LINKS, PUBLIC_NAV } from "@/config/siteNav";
+import { ACCOUNT_NAV, HEADER_LINKS, publicNav } from "@/config/siteNav";
 import { initialsOf, useAuthProfile, type HeaderProfile } from "@/components/auth/useAuthProfile";
 
 function isActive(pathname: string, href: string) {
@@ -36,12 +36,15 @@ export default function SiteHeader({
   logo = "/images/logo.jpg",
   initialProfile = null,
   hiddenAccountKeys = null,
+  showProjects = false,
 }: {
   logo?: string;
   /** passed by signed-in pages so the header never flashes "Log in" */
   initialProfile?: HeaderProfile | null;
   /** account sections with nothing real yet; null = ask the server when the menu is first opened */
   hiddenAccountKeys?: string[] | null;
+  /** list "Projects" (only when real LBH project content is published) */
+  showProjects?: boolean;
 }) {
   const t = useTranslations("site");
   const tc = useTranslations("common");
@@ -228,7 +231,7 @@ export default function SiteHeader({
               <section aria-labelledby="menu-site">
                 <h2 id="menu-site" className="ds-eyebrow mb-2">{customer ? t("website") : t("explore")}</h2>
                 <ul>
-                  {PUBLIC_NAV.map((l) => (
+                  {publicNav(showProjects).map((l) => (
                     <li key={l.key}>
                       <Link
                         href={l.href}

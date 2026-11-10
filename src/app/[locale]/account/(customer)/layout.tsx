@@ -4,6 +4,7 @@ import { getSitePhotos } from "@/lib/sitePhotos";
 import SiteHeader from "@/components/site/SiteHeader";
 import SiteFooter from "@/components/site/SiteFooter";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { showProjectsInNav } from "@/lib/projects";
 import { emptySections, loadAccount } from "@/lib/account/data";
 
 /**
@@ -22,11 +23,12 @@ export default async function AccountLayout({
   setRequestLocale(locale);
   const { profile, supabase } = await requireRole(locale, ["client"]);
   const hidden = emptySections(await loadAccount(supabase));
-  const photos = await getSitePhotos();
+  const [photos, showProjects] = await Promise.all([getSitePhotos(), showProjectsInNav()]);
   return (
     <div className="ds-page flex min-h-screen flex-1 flex-col">
       <SiteHeader
         logo={photos.logo}
+        showProjects={showProjects}
         hiddenAccountKeys={hidden}
         initialProfile={{ id: profile.id, role: profile.role, full_name: profile.full_name, email: profile.email, staff_kind: profile.staff_kind }}
       />

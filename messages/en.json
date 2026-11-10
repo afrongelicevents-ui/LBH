@@ -757,7 +757,8 @@
       "builds": "Build stages",
       "photos": "Website photos",
       "buildAccount": "Build Account",
-      "priceList": "Price list"
+      "priceList": "Price list",
+      "projects": "Projects"
     },
     "needsYou": {
       "title": "Needs you",
@@ -942,7 +943,9 @@
       "baTitle": "Build Account",
       "baHint": "Prices, plan on/off, subscribers and money sent to LBH",
       "priceTitle": "Price list",
-      "priceHint": "Usual prices used to check Build Account receipts"
+      "priceHint": "Usual prices used to check Build Account receipts",
+      "projectsTitle": "Projects",
+      "projectsHint": "Genuine LBH project photos for the public Projects page"
     },
     "audit": {
       "title": "Audit log",
@@ -1110,6 +1113,56 @@
         "db": "Could not save — try again.",
         "auth": "Not authorised (is 2FA set up?).",
         "error": "Something went wrong — try again."
+      }
+    },
+    "projects": {
+      "back": "Settings",
+      "title": "Projects",
+      "intro": "Only genuine LBH project photos. A project appears on the public Projects page once it is published, and the page is listed in the menu only when you switch it on.",
+      "menuTitle": "Projects page in the website menu",
+      "menuOn": "Shown in the menu.",
+      "menuOff": "Hidden from the menu (the page is not public).",
+      "menuShow": "Show in menu",
+      "menuHide": "Hide from menu",
+      "menuNeedsProject": "Publish at least one project with photos first.",
+      "viewPage": "View the Projects page",
+      "newTitle": "Add a project",
+      "fTitle": "Project name",
+      "fLocation": "Location",
+      "fLocationHint": "e.g. Ruwa, Harare",
+      "fStage": "Current stage",
+      "fStageHint": "e.g. Roof",
+      "fSummary": "Short description",
+      "fCaption": "Photo caption (optional)",
+      "fTaken": "Date taken",
+      "create": "Create project",
+      "save": "Save",
+      "saved": "Saved.",
+      "edit": "Edit details",
+      "addPhoto": "Add a photo",
+      "uploading": "Uploading…",
+      "photoAdded": "Photo added.",
+      "noPhotos": "No photos yet — add genuine LBH photos before publishing.",
+      "publish": "Publish",
+      "unpublish": "Unpublish",
+      "isPublished": "Published",
+      "isDraft": "Not published",
+      "delete": "Delete project",
+      "deleteConfirm": "Delete this project and its photos?",
+      "deletePhoto": "Remove",
+      "deletePhotoConfirm": "Remove this photo?",
+      "error": {
+        "invalid": "Please check the details.",
+        "db": "Could not save — try again.",
+        "auth": "Not allowed — log in again with 2FA.",
+        "upload": "Upload failed — try again.",
+        "filetype": "Use a JPG, PNG or WebP photo.",
+        "toobig": "That file is too big.",
+        "heic": "HEIC photos aren't supported — use JPG.",
+        "noPhotos": "Add at least one photo before publishing.",
+        "error": "Something went wrong — try again.",
+        "camera": "Something went wrong — try again.",
+        "capturetime": "Something went wrong — try again."
       }
     }
   },
@@ -2054,6 +2107,11 @@
         "a": "The website and your account are available in English, Shona and Ndebele."
       }
     },
-    "loading": "Loading…"
+    "loading": "Loading…",
+    "projectsPage": {
+      "metaTitle": "Projects",
+      "title": "LBH projects, photographed on site.",
+      "intro": "Real LBH projects with photos taken by our team. Client details are kept private."
+    }
   }
 }
