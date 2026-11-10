@@ -35,6 +35,16 @@
 
   --radius-card: 16px;
 
+  /* ---- Redesign (2026-11): warm ivory, charcoal text, stone accent ---- */
+  --color-ivory: #f5f1e8;
+  --color-paper: #fbf9f4;
+  --color-sand: #ebe4d5;
+  --color-rule: #ddd5c4;
+  --color-charcoal: #23261f;
+  --color-slate: #565b52;
+  --color-stone: #a8977a;
+  --font-serif: var(--font-source-serif), Georgia, "Times New Roman", serif;
+
   --shadow-card: 0 2px 12px rgba(22, 58, 43, 0.08), 0 1px 3px rgba(22, 58, 43, 0.06);
   --shadow-card-hover: 0 6px 24px rgba(22, 58, 43, 0.14), 0 2px 6px rgba(22, 58, 43, 0.08);
 }
@@ -281,4 +291,64 @@ body {
 :focus-visible {
   outline: 3px solid var(--color-accent);
   outline-offset: 2px;
+}
+
+
+/* =====================================================================
+   LBH design system (redesign). Prefix "ds-". Square-ish corners, few
+   icons, serif headings, no gradients or glass. Used by the public site
+   and the customer account; admin/field keep their own styles for now.
+   ===================================================================== */
+@layer components {
+  .ds-page { background: var(--color-ivory); color: var(--color-charcoal); }
+  .ds-wrap { width: 100%; max-width: 1200px; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .ds-wrap { padding-inline: 2rem; } }
+
+  .ds-eyebrow {
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--color-forest);
+  }
+  .ds-display {
+    font-family: var(--font-serif); font-weight: 500; letter-spacing: -0.015em;
+    line-height: 1.04; font-size: clamp(2.35rem, 7.2vw, 4.6rem);
+  }
+  .ds-h2 {
+    font-family: var(--font-serif); font-weight: 500; letter-spacing: -0.01em;
+    line-height: 1.12; font-size: clamp(1.75rem, 4vw, 2.6rem);
+  }
+  .ds-h3 { font-family: var(--font-serif); font-weight: 500; line-height: 1.2; font-size: 1.35rem; }
+  .ds-lead { font-size: 1.0625rem; line-height: 1.65; color: var(--color-slate); }
+  @media (min-width: 768px) { .ds-lead { font-size: 1.125rem; } }
+  .ds-body { font-size: 0.97rem; line-height: 1.65; color: var(--color-slate); }
+
+  .ds-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    min-height: 48px; padding: 0.75rem 1.4rem; border-radius: 4px;
+    font-weight: 600; font-size: 0.95rem; letter-spacing: 0.005em;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .ds-btn:focus-visible, .ds-link:focus-visible, .ds-navlink:focus-visible {
+    outline: 2px solid var(--color-forest); outline-offset: 3px;
+  }
+  .ds-btn-primary { background: var(--color-forest); color: #fff; }
+  .ds-btn-primary:hover { background: var(--color-forest-dark); }
+  .ds-btn-light { background: var(--color-paper); color: var(--color-charcoal); }
+  .ds-btn-light:hover { background: #fff; }
+  .ds-btn-outline { border: 1px solid var(--color-charcoal); color: var(--color-charcoal); }
+  .ds-btn-outline:hover { background: var(--color-charcoal); color: #fff; }
+  .ds-link { font-weight: 600; color: var(--color-forest); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  .ds-link:hover { text-decoration-thickness: 2px; }
+  .ds-navlink { font-size: 0.92rem; font-weight: 500; color: var(--color-charcoal); }
+  .ds-navlink:hover { color: var(--color-forest); }
+
+  .ds-rule { border-top: 1px solid var(--color-rule); }
+  .ds-panel { background: var(--color-paper); border: 1px solid var(--color-rule); border-radius: 6px; }
+  .ds-tag {
+    display: inline-flex; align-items: center; gap: 0.35rem; border-radius: 3px; padding: 0.15rem 0.5rem;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+    background: var(--color-sand); color: var(--color-charcoal);
+  }
+  .ds-tag-green { background: #e2ece5; color: var(--color-forest); }
+  .ds-tag-alert { background: #f6e6dc; color: #8a3b12; }
+  .ds-credit { font-size: 0.68rem; color: var(--color-slate); }
 }

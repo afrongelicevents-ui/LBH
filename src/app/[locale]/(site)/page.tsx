@@ -1,31 +1,20 @@
 import { setRequestLocale } from "next-intl/server";
-import { getSitePhotos } from "@/lib/sitePhotos";
-import Hero from "@/components/home/Hero";
-import ProblemStrip from "@/components/home/ProblemStrip";
-import ServicesSection from "@/components/home/ServicesSection";
-import HowItWorks from "@/components/home/HowItWorks";
-import LiveBanner from "@/components/home/LiveBanner";
-import TrustStrip from "@/components/home/TrustStrip";
-import CtaBand from "@/components/home/CtaBand";
+import { STOCK_PHOTOS } from "@/config/stockPhotos";
+import { HomeHero, TrustRow, ServicesEditorial, BuildAccountShowcase, Process, WhyLbh, FinalCta } from "@/components/site/home/HomeSections";
 
-export default async function HomePage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const photos = await getSitePhotos();
-
+  const photos = STOCK_PHOTOS;
   return (
     <>
-      <Hero photo={photos.hero} />
-      <ProblemStrip />
-      <ServicesSection photos={photos} />
-      <HowItWorks />
-      <LiveBanner photo={photos.live_feed} logo={photos.logo} />
-      <TrustStrip />
-      <CtaBand />
+      <HomeHero photo={photos.hero} />
+      <TrustRow />
+      <ServicesEditorial photos={photos} />
+      <BuildAccountShowcase />
+      <Process />
+      <WhyLbh />
+      <FinalCta />
     </>
   );
 }

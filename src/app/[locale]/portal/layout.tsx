@@ -1,9 +1,16 @@
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth/guard";
-import PortalShell from "@/components/portal/PortalShell";
-import { portalNavFor } from "@/config/portalNav";
+import { getSitePhotos } from "@/lib/sitePhotos";
+import SiteHeader from "@/components/site/SiteHeader";
+import SiteFooter from "@/components/site/SiteFooter";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
-export default async function PortalLayout({
+/**
+ * Customer account: the SAME header, ☰ menu and footer as the public website,
+ * so signing in never feels like leaving LBH. Access is still checked on the
+ * server (clients only) and by the database's row-level security.
+ */
+export default async function AccountLayout({
   children,
   params,
 }: {
@@ -13,16 +20,18 @@ export default async function PortalLayout({
   const { locale } = await params;
   setRequestLocale(locale);
   const { profile } = await requireRole(locale, ["client"]);
-  const t = await getTranslations();
-
+  const photos = await getSitePhotos();
   return (
-    <PortalShell
-      locale={locale}
-      profile={profile}
-      areaKey="client"
-      nav={portalNavFor("client").map((n) => ({ ...n, label: t(n.label as never) }))}
-    >
-      {children}
-    </PortalShell>
+    <div className="ds-page flex min-h-screen flex-1 flex-col">
+      <SiteHeader
+        logo={photos.logo}
+        initialProfile={{ id: profile.id, role: profile.role, full_name: profile.full_name, email: profile.email, staff_kind: profile.staff_kind }}
+      />
+      <main className="flex-1 pb-16">
+        <div className="ds-wrap pt-6 md:pt-10">{children}</div>
+      </main>
+      <SiteFooter logo={photos.logo} />
+      <WhatsAppButton />
+    </div>
   );
 }

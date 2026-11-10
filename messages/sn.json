@@ -1260,6 +1260,41 @@
       "auth": "Pinda zvakare.",
       "db": "Hazvina kuchengetwa — edza zvakare.",
       "country": "Nyora nyika yaunogara."
+    },
+    "dashboard": {
+      "hello": "Welcome back, {name}",
+      "intro": "Your projects, approvals and Build Account in one place.",
+      "newLand": "Verify land",
+      "newMaterials": "Order materials",
+      "welcomeTitle": "Welcome to LBH, {name}.",
+      "welcomeText": "Book a free consultation or start a request below.",
+      "active": "Active projects",
+      "waiting": "Awaiting your approval",
+      "balance": "Build Account",
+      "attention": "{count, plural, one {# item needs your approval} other {# items need your approval}} — nothing proceeds until you decide.",
+      "count": "{count, plural, one {# project} other {# projects}}",
+      "noProjects": "No projects yet. Book a free consultation or start a request.",
+      "type": {
+        "land_verification": "Land verification",
+        "materials": "Materials",
+        "build": "Construction"
+      },
+      "noUpdates": "No updates yet.",
+      "ev": {
+        "approval": "Approval needed: {title}",
+        "report": "Report ready: {title}",
+        "payment": "Payment confirmed: {amount} · {title}"
+      },
+      "baBalance": "Balance",
+      "baIn": "Money sent in",
+      "baSpent": "Spent",
+      "baOnWay": "{amount} on its way",
+      "baOpen": "Open Build Account",
+      "shortcuts": "Shortcuts",
+      "bookCall": "Book a consultation",
+      "helpTitle": "Need help?",
+      "helpText": "Message the LBH team — we reply on WhatsApp and in your account.",
+      "helpChat": "Chat with LBH"
     }
   },
   "labels": {
@@ -1573,5 +1608,216 @@
       "more": "Zvimwe"
     },
     "chartTitle": "Mari yatumirwa pamwedzi"
+  },
+  "site": {
+    "mainNav": "Main",
+    "menu": "Menu",
+    "close": "Close",
+    "closeMenu": "Close menu",
+    "myAccount": "My account",
+    "staffArea": "Staff area",
+    "openStaffArea": "Open my staff area",
+    "signedInAs": "Signed in as {name}",
+    "yourAccount": "Your account",
+    "website": "LBH website",
+    "explore": "Explore LBH",
+    "logOut": "Log out",
+    "bookConsultation": "Book a free consultation",
+    "stockPhoto": "Stock photo",
+    "nav": {
+      "home": "Home",
+      "services": "Our services",
+      "howItWorks": "How it works",
+      "buildAccount": "Build Account",
+      "projects": "Projects",
+      "about": "About LBH",
+      "faq": "FAQ",
+      "contact": "Contact"
+    },
+    "account": {
+      "dashboard": "My dashboard",
+      "projects": "My projects",
+      "buildAccount": "My Build Account",
+      "progress": "Project progress",
+      "finance": "Financial overview",
+      "documents": "Receipts & documents",
+      "photos": "Project photographs",
+      "reports": "Reports",
+      "updates": "Updates",
+      "approvals": "Approvals",
+      "support": "Support",
+      "settings": "Account settings"
+    },
+    "footer": {
+      "about": "Let's Build Home helps people living abroad build in Zimbabwe — with a local team that checks the land, buys and records materials, oversees the work and reports back with dated photos.",
+      "servicesTitle": "Services",
+      "companyTitle": "LBH",
+      "contactTitle": "Contact",
+      "whatsapp": "WhatsApp us",
+      "based": "Based in Zimbabwe",
+      "terms": "Terms",
+      "privacy": "Privacy policy",
+      "notABank": "The Build Account is a record of your build money, not a bank account."
+    },
+    "home": {
+      "hero": {
+        "eyebrow": "Construction oversight in Zimbabwe",
+        "title": "Build your home back home.",
+        "subtitle": "We'll be your eyes on the ground.",
+        "text": "Build with confidence, wherever in the world you are.",
+        "cta": "Book a free consultation",
+        "secondary": "How it works"
+      },
+      "trust": {
+        "label": "Why clients trust LBH",
+        "verified": {
+          "title": "Verified land & suppliers",
+          "text": "Stands and quotes checked before you pay."
+        },
+        "process": {
+          "title": "Transparent process",
+          "text": "Written quotes. Nothing bought without your approval."
+        },
+        "photos": {
+          "title": "Dated photo updates",
+          "text": "Every visit and purchase recorded with photos."
+        },
+        "support": {
+          "title": "Dedicated support",
+          "text": "One team to talk to, by WhatsApp or chat."
+        }
+      },
+      "services": {
+        "eyebrow": "Our services",
+        "title": "Everything a build needs, handled on the ground.",
+        "intro": "Each job starts with a free consultation and a written quote. You decide what happens next — LBH does the work locally and shows you the evidence.",
+        "more": "Learn more",
+        "soonTag": "Coming soon",
+        "camera": "A live site camera, so you can look in on your build from anywhere.",
+        "land": {
+          "title": "Land verification",
+          "text": "Before you pay for a stand, we check it is real, properly pegged and legally clean.",
+          "p1": "Title checked by a qualified lawyer",
+          "p2": "Pegs confirmed with the council",
+          "p3": "Written report with photos and GPS"
+        },
+        "materials": {
+          "title": "Materials procurement",
+          "text": "We collect supplier quotes side by side and buy only what you approve.",
+          "p1": "Quotes compared from several suppliers",
+          "p2": "Nothing bought without your approval",
+          "p3": "Every receipt photographed and kept"
+        },
+        "onsite": {
+          "title": "On-site management",
+          "text": "Our team manages your build stage by stage, from foundation to roof.",
+          "p1": "Builders and deliveries overseen on site",
+          "p2": "Each stage inspected before the next",
+          "p3": "You approve every stage"
+        },
+        "reporting": {
+          "title": "Progress reporting",
+          "text": "You see what is happening on site, when it happened, and what it cost.",
+          "p1": "Dated photographs from every visit",
+          "p2": "Inspection findings in plain words",
+          "p3": "Spending recorded in your Build Account"
+        }
+      },
+      "ba": {
+        "eyebrow": "LBH Build Account",
+        "title": "Your build, in one place — from anywhere.",
+        "text": "The Build Account shows every dollar sent home, every receipt, and what is left, stage by stage. It is part of your LBH account — no separate app.",
+        "f1": "Balance, money sent and spending by stage",
+        "f2": "Receipts scanned and kept with each purchase",
+        "f3": "Budget per stage with a warning when it runs over",
+        "f4": "Approvals, reports and updates for your project",
+        "f5": "Family can view or add receipts — only if you invite them",
+        "cta": "About the Build Account",
+        "cta2": "Create an account",
+        "demo": {
+          "label": "Build Account preview with sample information",
+          "title": "Family home · Harare",
+          "sample": "Sample data",
+          "budget": "Budget",
+          "spent": "Spent",
+          "left": "Remaining",
+          "progress": "Construction progress",
+          "progressValue": "Stage 3 of 5",
+          "s1": "Foundation",
+          "s2": "Slab",
+          "s3": "Window level",
+          "s4": "Wall plate",
+          "s5": "Roof",
+          "receipts": "Recent receipts",
+          "r1": "Cement 42.5N · 40 bags",
+          "r2": "Common bricks · 6,000",
+          "r3": "River sand · 2 loads",
+          "updates": "Updates",
+          "u1": "Approval needed: window-level supplier",
+          "u1When": "Today",
+          "u2": "Inspection report ready: slab",
+          "u2When": "3 days ago",
+          "u3": "Payment confirmed for the slab stage",
+          "u3When": "Last week",
+          "note": "Illustration with sample figures — not a real client.",
+          "receiptOk": "Receipt"
+        }
+      },
+      "process": {
+        "eyebrow": "How it works",
+        "title": "Four steps, with you in control at every one.",
+        "more": "See the full process",
+        "s1": {
+          "title": "Request a service",
+          "text": "Book a free consultation and tell us about your land or build."
+        },
+        "s2": {
+          "title": "LBH verifies and manages",
+          "text": "Our team checks, quotes, buys and oversees the work in Zimbabwe."
+        },
+        "s3": {
+          "title": "Receive evidence and reports",
+          "text": "Dated photos, receipts and inspection reports in your account."
+        },
+        "s4": {
+          "title": "Review and approve next steps",
+          "text": "Nothing moves forward until you approve it."
+        }
+      },
+      "why": {
+        "eyebrow": "Why LBH",
+        "title": "Someone you can trust, on the ground.",
+        "text": "Building from abroad is a big commitment. We make sure you can see what your money is doing.",
+        "local": {
+          "title": "Local presence",
+          "text": "A team based in Zimbabwe that visits your stand and site."
+        },
+        "oversight": {
+          "title": "Construction oversight",
+          "text": "Each stage is inspected before the next one starts."
+        },
+        "money": {
+          "title": "Visible spending",
+          "text": "Quotes, receipts and balances you can check at any time."
+        },
+        "photos": {
+          "title": "Photographic evidence",
+          "text": "Dated photos from every visit, purchase and delivery."
+        },
+        "contact": {
+          "title": "Regular communication",
+          "text": "Updates in your account, and a team you can message."
+        },
+        "account": {
+          "title": "Accountability",
+          "text": "Written quotes and your approval before money is spent."
+        }
+      },
+      "cta": {
+        "title": "Let's build your dream together.",
+        "text": "Start your construction journey with a team on the ground in Zimbabwe.",
+        "button": "Book your free consultation"
+      }
+    }
   }
 }
