@@ -1,10 +1,10 @@
 import Image from "next/image";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { sitePhotoUrl } from "@/config/sitePhotos";
 import { loadPublishedProjects, showProjectsInNav } from "@/lib/projects";
+import { Link as NavLink } from "@/i18n/navigation";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -12,12 +12,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return { title: t("metaTitle"), description: t("intro") };
 }
 
-/** LBH projects — genuine LBH photos only. Hidden (404) until the admin publishes real content. */
+/** LBH projects — genuine LBH photos only. Until the admin publishes real content, the page says they are coming. */
 export default async function ProjectsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  if (!(await showProjectsInNav())) notFound();
-  const projects = await loadPublishedProjects();
+  const projects = (await showProjectsInNav()) ? await loadPublishedProjects() : [];
   const t = await getTranslations("site.projectsPage");
   const ts = await getTranslations("site");
   return (
@@ -29,6 +28,12 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
           <p className="ds-lead mt-5 max-w-2xl">{t("intro")}</p>
         </div>
       </header>
+      {projects.length === 0 && (
+        <section className="ds-wrap py-12 md:py-16" data-testid="projects-empty">
+          <p className="ds-lead max-w-2xl">{t("empty")}</p>
+          <NavLink href="/services" className="ds-link mt-5 inline-block">{ts("nav.services")} →</NavLink>
+        </section>
+      )}
       {projects.map((p, i) => {
         const photos = [...(p.project_photos ?? [])].sort((a, b) => a.sort - b.sort);
         return (

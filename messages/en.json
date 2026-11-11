@@ -1844,13 +1844,15 @@
       "based": "Based in Zimbabwe",
       "terms": "Terms",
       "privacy": "Privacy policy",
-      "notABank": "The Build Account is a record of your build money, not a bank account."
+      "notABank": "The Build Account is a record of your build money, not a bank account.",
+      "photoCredits": "Photo credits",
+      "linksTitle": "Website links"
     },
     "home": {
       "hero": {
         "eyebrow": "Construction oversight in Zimbabwe",
         "title": "Build your home back home.",
-        "subtitle": "With confidence, wherever in the world you are.",
+        "subtitle": "We'll be your eyes on the ground.",
         "text": "Build with confidence, wherever in the world you are.",
         "cta": "Book a Consultation",
         "secondary": "How it works"
@@ -1858,19 +1860,19 @@
       "trust": {
         "label": "Why clients trust LBH",
         "verified": {
-          "title": "Independent Land Checks",
+          "title": "Independent land checks",
           "text": "Stands and quotes checked before you pay."
         },
         "process": {
-          "title": "Transparent Process",
+          "title": "Transparent process",
           "text": "Written quotes. Nothing bought without your approval."
         },
         "photos": {
-          "title": "Regular Updates",
+          "title": "Dated photo updates",
           "text": "Every visit and purchase recorded with photos."
         },
         "support": {
-          "title": "Dedicated Support",
+          "title": "Dedicated support",
           "text": "One team to talk to, by WhatsApp or chat."
         }
       },
@@ -1962,19 +1964,23 @@
         "more": "See the full process",
         "s1": {
           "title": "Request a service",
-          "text": "Book a free consultation and tell us about your land or build."
+          "text": "Book a free consultation and tell us about your land or build.",
+          "short": "Request a service"
         },
         "s2": {
           "title": "LBH verifies and manages",
-          "text": "Our team checks, quotes, buys and oversees the work in Zimbabwe."
+          "text": "Our team checks, quotes, buys and oversees the work in Zimbabwe.",
+          "short": "We verify & manage"
         },
         "s3": {
           "title": "Receive evidence and reports",
-          "text": "Dated photos, receipts and inspection reports in your account."
+          "text": "Dated photos, receipts and inspection reports in your account.",
+          "short": "You see the proof"
         },
         "s4": {
           "title": "Review and approve next steps",
-          "text": "Nothing moves forward until you approve it."
+          "text": "Nothing moves forward until you approve it.",
+          "short": "You approve"
         }
       },
       "why": {
@@ -2144,7 +2150,8 @@
     "projectsPage": {
       "metaTitle": "Projects",
       "title": "LBH projects, photographed on site.",
-      "intro": "Real LBH projects with photos taken by our team. Client details are kept private."
+      "intro": "Real LBH projects with photos taken by our team. Client details are kept private.",
+      "empty": "Our first project stories are on the way. We only show real LBH builds, photographed by our own team — never stock photos."
     }
   }
 }

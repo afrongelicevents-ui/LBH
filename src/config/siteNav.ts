@@ -9,18 +9,18 @@ export interface SiteNavItem {
 }
 
 /**
- * Public pages. "Projects" is only listed once the admin has published real
- * LBH project photos and switched it on (Admin → Settings → Projects).
+ * Public pages in the ☰ menu (FAQ is linked from the footer). Projects is
+ * always listed; until real LBH projects are published the page says so.
  */
-export function publicNav(showProjects: boolean): SiteNavItem[] {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function publicNav(_showProjects?: boolean): SiteNavItem[] {
   return [
     { href: "/", key: "home" },
     { href: "/services", key: "services" },
     { href: "/how-it-works", key: "howItWorks" },
     { href: "/build-account", key: "buildAccount" },
-    ...(showProjects ? [{ href: "/projects", key: "projects" }] : []),
+    { href: "/projects", key: "projects" },
     { href: "/about", key: "about" },
-    { href: "/faq", key: "faq" },
     { href: "/contact", key: "contact" },
   ];
 }
@@ -30,8 +30,8 @@ export const HEADER_LINKS: SiteNavItem[] = [
   { href: "/services", key: "services" },
   { href: "/how-it-works", key: "howItWorks" },
   { href: "/build-account", key: "buildAccount" },
+  { href: "/projects", key: "projects" },
   { href: "/about", key: "about" },
-  { href: "/faq", key: "faq" },
 ];
 
 export const ACCOUNT_NAV: SiteNavItem[] = [

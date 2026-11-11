@@ -1845,13 +1845,15 @@
       "based": "Tiri muZimbabwe",
       "terms": "Mitemo",
       "privacy": "Mutemo wekuvanzika",
-      "notABank": "Build Account chinyorwa chemari yako yekuvaka, kwete account yebhangi."
+      "notABank": "Build Account chinyorwa chemari yako yekuvaka, kwete account yebhangi.",
+      "photoCredits": "Vatori vemifananidzo",
+      "linksTitle": "Zvinongedzo zvewebhusaiti"
     },
     "home": {
       "hero": {
         "eyebrow": "Kutarisira kuvaka muZimbabwe",
         "title": "Vaka imba yako kumusha.",
-        "subtitle": "Vaka wakavimba, chero kwaunogara pasi rose.",
+        "subtitle": "Tichava meso ako ikoko.",
         "text": "Vaka wakavimba, chero kwaunogara pasi rose.",
         "cta": "Bhuka runhare rwemahara",
         "secondary": "Zvinofamba sei"
@@ -1963,19 +1965,23 @@
         "more": "Ona nzira yese",
         "s1": {
           "title": "Kumbira basa",
-          "text": "Bhuka runhare rwemahara utiudze nezvestendi yako kana kuvaka kwako."
+          "text": "Bhuka runhare rwemahara utiudze nezvestendi yako kana kuvaka kwako.",
+          "short": "Kumbira basa"
         },
         "s2": {
           "title": "LBH inoongorora yotarisira",
-          "text": "Timu yedu inoongorora, inopa kotesheni, inotenga uye inotarisira basa muZimbabwe."
+          "text": "Timu yedu inoongorora, inopa kotesheni, inotenga uye inotarisira basa muZimbabwe.",
+          "short": "Tinoongorora"
         },
         "s3": {
           "title": "Gamuchira umbowo nemagwaro",
-          "text": "Mifananidzo ine zuva, marisiti nemagwaro ekuongorora muaccount yako."
+          "text": "Mifananidzo ine zuva, marisiti nemagwaro ekuongorora muaccount yako.",
+          "short": "Unoona umbowo"
         },
         "s4": {
           "title": "Ongorora ubvumire zvinotevera",
-          "text": "Hapana chinofamba kusvika wabvumira."
+          "text": "Hapana chinofamba kusvika wabvumira.",
+          "short": "Unobvumira"
         }
       },
       "why": {
@@ -2145,7 +2151,8 @@
     "projectsPage": {
       "metaTitle": "Mapurojekiti",
       "title": "Mapurojekiti eLBH, akatorwa mifananidzo pasaiti.",
-      "intro": "Mapurojekiti chaiwo eLBH nemifananidzo yakatorwa netimu yedu. Ruzivo rwevatengi runochengetwa rwakavanzika."
+      "intro": "Mapurojekiti chaiwo eLBH nemifananidzo yakatorwa netimu yedu. Ruzivo rwevatengi runochengetwa rwakavanzika.",
+      "empty": "Nyaya dzepurojekiti dzedu dzekutanga dziri kuuya. Tinoratidza chete kuvaka kwechokwadi kweLBH, kwakatorwa mifananidzo nevashandi vedu — kwete mifananidzo yekutenga."
     }
   }
 }

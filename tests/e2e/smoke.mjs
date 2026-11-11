@@ -262,8 +262,7 @@ console.log("\nPublic website");
     await m.locator('header[data-auth="out"]').waitFor({ timeout: 15000 });
     await m.getByTestId("menu-button").click();
     const menu = m.getByTestId("site-menu");
-    for (const label of ["Our services", "How it works", "Build Account", "About LBH", "FAQ", "Contact"]) await menu.getByText(label, { exact: true }).waitFor();
-    assert((await menu.getByText("Projects", { exact: true }).count()) === 0, "Projects listed before real content exists");
+    for (const label of ["Home", "Our services", "How it works", "Build Account", "Projects", "About LBH", "Contact", "Log in", "Create account"]) await menu.getByText(label, { exact: true }).first().waitFor();
     await menu.getByTestId("menu-book-call").click();
     await m.waitForURL(/book-a-call/);
     await m.context().close();
@@ -272,11 +271,15 @@ console.log("\nPublic website");
   await step("homepage: new headline, trust row, sample data labelled, no prices in the copy", async () => {
     await page.goto(`${BASE}/en`);
     await page.getByRole("heading", { level: 1, name: "Build your home back home." }).waitFor();
-    await page.getByText("Independent Land Checks").waitFor();
-    await page.getByTestId("sample-tag").waitFor();
-    await page.locator("figcaption:visible", { hasText: "Stock photo" }).first().waitFor();
+    await page.getByText("Independent land checks").first().waitFor();
+    // short homepage: 4 service tiles → their own pages; no credits on the images (listed on About)
+    assert((await page.getByTestId("service-tiles").locator('a[href*="/services/"]').count()) === 4, "service tiles");
+    assert((await page.locator("main figcaption").count()) === 0, "photo credit text on the homepage");
+    assert((await page.locator('main a[href$="/book-a-call"]').count()) === 2, "booking buttons on the homepage");
     const hero = await page.getByTestId("home-hero").innerText();
     assert(!/\$\s?\d/.test(hero), "a price appears in the hero");
+    await page.locator('footer a[href$="/about#photo-credits"]').click();
+    await page.locator("#photo-credits").getByText("Thatlowdownwoman").first().waitFor();
   });
 
   await step("language switcher → Shona → Ndebele", async () => {
@@ -318,10 +321,11 @@ console.log("\nPublic website");
     assert(data?.length === 1, "interest not stored");
   });
 
-  await step("Build Account section on the homepage → info page (plans, not a bank account)", async () => {
+  await step("Build Account page: labelled sample preview, plans, not a bank account", async () => {
     await page.goto(`${BASE}/en`);
-    await page.getByTestId("home-ba").getByRole("link", { name: "About the Build Account" }).click();
+    await page.locator('footer a[href$="/build-account"]').click();
     await page.waitForURL(/\/build-account$/);
+    await page.getByTestId("home-ba").getByTestId("sample-tag").waitFor();
     await page.getByTestId("ba-info").waitFor();
     await page.getByText("not a bank account", { exact: false }).first().waitFor();
     await page.getByTestId("ba-info-plans").getByText("Free", { exact: true }).waitFor();
@@ -935,7 +939,8 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
   await step("Projects: hidden until real content; admin adds a project + photo, publishes, shows it in the menu", async () => {
     const visitor = await (await newCtx()).newPage();
     const r0 = await visitor.goto(`${BASE}/en/projects`);
-    assert(r0.status() === 404, `Projects page public too early (${r0.status()})`);
+    assert(r0.status() === 200, `projects page ${r0.status()}`);
+    await visitor.getByTestId("projects-empty").waitFor(); // "coming soon" until real content
     await page.goto(`${BASE}/en/admin/settings/projects`);
     const form = page.getByTestId("project-new");
     await form.locator('input[name="title"]').fill("E2E Family home, Ruwa");
@@ -952,7 +957,9 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
     await card.getByTestId(`publish-${proj.id}`).click();
     await card.getByText("Published", { exact: true }).waitFor({ timeout: 20000 });
     // still hidden until the admin switches the menu on
-    assert((await visitor.goto(`${BASE}/en/projects`)).status() === 404, "visible before switched on");
+    await visitor.goto(`${BASE}/en/projects`);
+    await visitor.getByTestId("projects-empty").waitFor();
+    assert((await visitor.getByText("E2E Family home, Ruwa").count()) === 0, "visible before switched on");
     await page.getByTestId("projects-menu-toggle").getByRole("button", { name: "Show in menu" }).click();
     await page.getByTestId("projects-menu-toggle").getByText("Shown in the menu.").waitFor({ timeout: 20000 });
     const r1 = await visitor.goto(`${BASE}/en/projects`);

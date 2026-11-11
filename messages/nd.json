@@ -1845,13 +1845,15 @@
       "based": "SiseZimbabwe",
       "terms": "Imithetho",
       "privacy": "Inqubomgomo yobumfihlo",
-      "notABank": "I-Build Account yirekhodi yemali yokwakha kwakho, akusiyo i-akhawunti yebhange."
+      "notABank": "I-Build Account yirekhodi yemali yokwakha kwakho, akusiyo i-akhawunti yebhange.",
+      "photoCredits": "Abathathi bezithombe",
+      "linksTitle": "Amalinki ewebhusayithi"
     },
     "home": {
       "hero": {
         "eyebrow": "Ukuqondisa ukwakha eZimbabwe",
         "title": "Yakha umuzi wakho ekhaya.",
-        "subtitle": "Yakha uzethemba, loba ukuphi emhlabeni.",
+        "subtitle": "Sizakuba ngamehlo akho lapha ekhaya.",
         "text": "Yakha uzethemba, loba ukuphi emhlabeni.",
         "cta": "Bhuka ukubonisana kwamahala",
         "secondary": "Kusebenza njani"
@@ -1963,19 +1965,23 @@
         "more": "Bona inqubo yonke",
         "s1": {
           "title": "Cela umsebenzi",
-          "text": "Bhuka ukubonisana kwamahala usitshele ngesitandi sakho kumbe ukwakha kwakho."
+          "text": "Bhuka ukubonisana kwamahala usitshele ngesitandi sakho kumbe ukwakha kwakho.",
+          "short": "Cela umsebenzi"
         },
         "s2": {
           "title": "I-LBH iyahlola njalo iphathe",
-          "text": "Iqembu lethu liyahlola, linike amakhotheshini, lithenge njalo liqondise umsebenzi eZimbabwe."
+          "text": "Iqembu lethu liyahlola, linike amakhotheshini, lithenge njalo liqondise umsebenzi eZimbabwe.",
+          "short": "Siyahlola"
         },
         "s3": {
           "title": "Thola ubufakazi lemibiko",
-          "text": "Izithombe ezilosuku, amarisidi lemibiko yokuhlola ku-akhawunti yakho."
+          "text": "Izithombe ezilosuku, amarisidi lemibiko yokuhlola ku-akhawunti yakho.",
+          "short": "Ubona ubufakazi"
         },
         "s4": {
           "title": "Hlola uvume izinyathelo ezilandelayo",
-          "text": "Akulalutho oluqhubekayo uze ukuvume."
+          "text": "Akulalutho oluqhubekayo uze ukuvume.",
+          "short": "Uyavuma"
         }
       },
       "why": {
@@ -2145,7 +2151,8 @@
     "projectsPage": {
       "metaTitle": "Amaphrojekthi",
       "title": "Amaphrojekthi e-LBH, athathwe izithombe esayithini.",
-      "intro": "Amaphrojekthi e-LBH aqotho alezithombe ezithathwe liqembu lethu. Imininingwane yamakhasimende igcinwa iyimfihlo."
+      "intro": "Amaphrojekthi e-LBH aqotho alezithombe ezithathwe liqembu lethu. Imininingwane yamakhasimende igcinwa iyimfihlo.",
+      "empty": "Izindaba zamaphrojekthi ethu okuqala ziyeza. Sitshengisa kuphela ukwakha kweqiniso kwe-LBH, okuthathwe izithombe yiqembu lethu — hatshi izithombe zokuthenga."
     }
   }
 }

@@ -5,6 +5,7 @@ import { getUserProfile } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { formatCents } from "@/lib/money";
 import SectionTitle from "@/components/SectionTitle";
+import { BuildAccountPreview } from "@/components/site/home/HomeSections";
 import { ArrowRightIcon, CheckCircleIcon, ReceiptIcon, ShieldCheckIcon } from "@/components/icons";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -39,6 +40,11 @@ export default async function BuildAccountInfo({ params }: { params: Promise<{ l
         </div>
         <SectionTitle as="h1">{t("title")}</SectionTitle>
         <p className="mt-4 text-center text-base text-muted md:text-lg">{t("intro")}</p>
+
+        {/* what it looks like (labelled sample data) */}
+        <div className="mt-8 overflow-hidden rounded-[6px]">
+          <BuildAccountPreview showLink={false} />
+        </div>
 
         <section className="card mt-8 p-5 md:p-6">
           <h2 className="text-lg font-bold text-forest">{t("whatTitle")}</h2>

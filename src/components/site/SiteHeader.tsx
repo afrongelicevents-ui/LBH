@@ -113,7 +113,7 @@ export default function SiteHeader({
           <span className="font-serif text-[1.15rem] leading-none text-forest md:text-[1.3rem]">{tc("brand")}</span>
         </Link>
 
-        <nav aria-label={t("mainNav")} className="ml-8 hidden flex-1 items-center gap-6 whitespace-nowrap xl:gap-8 lg:flex">
+        <nav aria-label={t("mainNav")} className="ml-8 hidden flex-1 items-center gap-5 whitespace-nowrap xl:flex 2xl:gap-7">
           {HEADER_LINKS.map((l) => (
             <Link
               key={l.key}
@@ -132,10 +132,10 @@ export default function SiteHeader({
           </div>
           {visitor && (
             <>
-              <Link href="/login" className="ds-navlink hidden px-1.5 sm:inline" data-testid="header-login">
+              <Link href="/login" className="ds-navlink hidden px-1.5 whitespace-nowrap sm:inline" data-testid="header-login">
                 {tc("login")}
               </Link>
-              <Link href="/signup" className="ds-btn ds-btn-primary hidden min-h-10 px-4 py-2 text-sm sm:inline-flex" data-testid="header-signup">
+              <Link href="/signup" className="ds-btn ds-btn-primary hidden min-h-10 px-4 py-2 text-sm whitespace-nowrap sm:inline-flex" data-testid="header-signup">
                 {tc("createAccount")}
               </Link>
             </>
