@@ -843,6 +843,20 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
     await shot(page, "admin-needs-you");
   });
 
+  await step("invite staff from Settings → the new lawyer is a lawyer, not a client", async () => {
+    const email = `invited-lawyer-${Date.now()}@example.test`;
+    await page.goto(`${BASE}/en/admin/settings`);
+    const form = page.locator("form", { has: page.locator('select[name="role"]') });
+    await form.locator('input[name="full_name"]').fill("E2E Invited Lawyer");
+    await form.locator('input[name="email"]').fill(email);
+    await form.locator('select[name="role"]').selectOption("lawyer");
+    await form.locator('button[type="submit"]').click();
+    await page.getByText("Invite sent.").waitFor({ timeout: 15000 });
+    const { data: p } = await db.from("profiles").select("id, role, staff_kind").eq("email", email).single();
+    assert(p.role === "field" && p.staff_kind === "lawyer", `invited lawyer has profile ${p.role}/${p.staff_kind}`);
+    await db.auth.admin.deleteUser(p.id);
+  });
+
   await step("Website photos: replace the hero with a big phone photo → resized, live on the homepage", async () => {
     await page.goto(`${BASE}/en/admin/settings`);
     await page.getByTestId("website-photos-link").click();

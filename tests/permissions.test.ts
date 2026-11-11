@@ -396,6 +396,31 @@ d("RLS & business rules (local Supabase)", () => {
     });
   });
 
+  describe("staff invited from the Admin Portal get their role (not 'client')", () => {
+    // inviteStaff() uses admin.createUser({ app_metadata: { role } }); Supabase
+    // writes that metadata after the insert, so the profile must follow it.
+    for (const [app, role, kind] of [
+      [{ role: "admin" }, "admin", null],
+      [{ role: "field" }, "field", "field_agent"],
+      [{ role: "field", staff_kind: "lawyer" }, "field", "lawyer"],
+    ] as const) {
+      it(`${JSON.stringify(app)} → ${role}${kind ? ` / ${kind}` : ""}`, async () => {
+        const { data, error } = await service.auth.admin.createUser({
+          email: `invite-${crypto.randomUUID()}@example.test`,
+          email_confirm: false,
+          app_metadata: app,
+        });
+        expect(error).toBeNull();
+        try {
+          const { data: p } = await service.from("profiles").select("role, staff_kind").eq("id", data!.user!.id).single();
+          expect(p).toEqual({ role, staff_kind: kind });
+        } finally {
+          await service.auth.admin.deleteUser(data!.user!.id);
+        }
+      });
+    }
+  });
+
   describe("profiles", () => {
     it("client cannot change their profile email", async () => {
       await client.from("profiles").update({ email: "victim@example.test" }).eq("id", IDS.client);

@@ -620,6 +620,19 @@ export async function inviteStaff(
     });
     if (error) return { ok: false, error: "exists" };
 
+    // Supabase writes app_metadata after the auth user is inserted, so the
+    // profile made by the sign-up trigger starts as "client". Set the staff
+    // role on the profile here (migration 20261111000000 does the same in
+    // the database for any other way staff are created).
+    const { error: roleErr } = await admin
+      .from("profiles")
+      .update({ role: d.role === "lawyer" ? "field" : d.role, staff_kind: d.role === "lawyer" ? "lawyer" : d.role === "field" ? "field_agent" : null })
+      .eq("id", created.user.id);
+    if (roleErr) {
+      await admin.auth.admin.deleteUser(created.user.id);
+      return { ok: false, error: "auth" };
+    }
+
     const { data: link } = await admin.auth.admin.generateLink({
       type: "invite",
       email: d.email.toLowerCase(),
