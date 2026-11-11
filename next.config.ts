@@ -72,9 +72,10 @@ const nextConfig: NextConfig = {
     // tesseract.js starts its worker from a path built at run time, which file
     // tracing can't follow: ship the worker and everything it loads explicitly.
     // "[locale]" would be read as a glob character class: use a wildcard segment.
-    // The Build Account lives under /account (it moved from /portal, and the
-    // files stopped shipping: every receipt scan failed on the live site).
-    "/*/account/build-account/**": [
+    // The Build Account lives in /[locale]/account/(customer)/build-account —
+    // the route group is a path segment too. (It moved from /portal and the
+    // files stopped shipping: every receipt scan failed on the live site.)
+    "/*/account/*/build-account/**": [
       "./node_modules/@tesseract.js-data/eng/4.0.0/**",
       "./node_modules/tesseract.js/**",
       "./node_modules/tesseract.js-core/**",
