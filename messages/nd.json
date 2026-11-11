@@ -306,7 +306,10 @@
       "errorTerms": "Vuma Imigomo loMthetho Wobumfihlo.",
       "errorRequired": "Gcwalisa konke okudingekayo.",
       "errorRate": "Imizamo eminengi — zama futhi ngemva kwehora.",
-      "errorGeneric": "Kukhona okungahambanga kahle. Zama futhi, kumbe usithinte ku-WhatsApp."
+      "errorGeneric": "Kukhona okungahambanga kahle. Zama futhi, kumbe usithinte ku-WhatsApp.",
+      "errorExists": "I-email le isivele ile-akhawunti — ngena kumbe utshintshe iphasiwedi yakho.",
+      "existsLogin": "Ngena",
+      "existsReset": "Ukhohlwe iphasiwedi? Yitshintshe ekhasini lokungena"
     },
     "confirmFailedTitle": "Ilinki le kayisebenzanga",
     "confirming": "Kuqinisekiswa i-email yakho…",

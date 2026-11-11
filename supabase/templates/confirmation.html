@@ -1,6 +1,49 @@
-<h2>Confirm your email — LBH (Let's Build Home)</h2>
-
-<p>Thank you for creating your LBH account.</p>
-<p>Tap the link below to confirm this email address and open your portal:</p>
-<p><a href="{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=email">Confirm my email</a></p>
-<p>If you did not create an LBH account, you can ignore this email.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Confirm your Let's Build Home account</title>
+</head>
+<body style="margin:0;padding:0;background:#f5f1e8;">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;">One tap to confirm your email and open your account.</div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f1e8;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+          <tr>
+            <td style="padding:0 4px 20px;">
+              <a href="{{ .SiteURL }}" style="text-decoration:none;">
+                <img src="{{ .SiteURL }}/images/logo.jpg" width="48" height="38" alt="" style="vertical-align:middle;border:0;border-radius:4px;background:#fff;">
+                <span style="vertical-align:middle;margin-left:10px;font-family:Georgia,'Times New Roman',serif;font-size:21px;color:#163a2b;">Let's Build Home</span>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td style="background:#fbf9f4;border:1px solid #ddd5c4;border-top:4px solid #163a2b;border-radius:6px;padding:32px 28px;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;">
+              <h1 style="margin:0 0 18px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:28px;line-height:1.2;color:#23261f;">Welcome to Let's Build Home</h1>
+              <p style="margin:0 0 14px;font-size:16px;line-height:1.6;color:#23261f;">Hi{{ if .Data.full_name }} {{ .Data.full_name }}{{ end }},</p>
+              <p style="margin:0 0 14px;font-size:16px;line-height:1.6;color:#23261f;">Thanks for creating your account. Please confirm your email address so we know it's really you — then your account is ready.</p>
+              <table role="presentation" cellpadding="0" cellspacing="0" style="margin:24px 0 22px;">
+                <tr>
+                  <td style="background:#163a2b;border-radius:4px;">
+                    <a href="{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=signup&next=/account" style="display:inline-block;padding:14px 26px;font-size:16px;font-weight:600;color:#ffffff;text-decoration:none;">Confirm my email &rarr;</a>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin:0;font-size:14px;line-height:1.55;color:#565b52;">This link works once and expires in 1 hour. If you didn't create an account, you can ignore this email.</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px 4px 0;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:12px;line-height:1.6;color:#565b52;">
+              Let's Build Home &middot; Construction oversight in Zimbabwe<br>
+              <a href="{{ .SiteURL }}" style="color:#163a2b;">letsbuildhome.co.zw</a> &middot; This is an automatic email, please don't reply to it.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

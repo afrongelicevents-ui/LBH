@@ -306,7 +306,10 @@
       "errorTerms": "Bvuma Mitemo neMutemo Wekuchengetedza.",
       "errorRequired": "Zadza zvese zvinodiwa.",
       "errorRate": "Kuedza kwawanda — edza zvakare mushure meawa.",
-      "errorGeneric": "Pane chakanganisika. Edza zvakare, kana tibate paWhatsApp."
+      "errorGeneric": "Pane chakanganisika. Edza zvakare, kana tibate paWhatsApp.",
+      "errorExists": "Email iyi yatova neaccount — pinda kana kuti chinja password yako.",
+      "existsLogin": "Pinda",
+      "existsReset": "Wakanganwa password? Ichinje papeji rekupinda"
     },
     "confirmFailedTitle": "Link iyi haina kushanda",
     "confirming": "Kusimbisa email yako…",
