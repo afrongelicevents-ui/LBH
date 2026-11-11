@@ -160,15 +160,17 @@ export default function ChatPanel({
           <ArrowRightIcon width={18} height={18} />
         </button>
       </form>
-      <a
-        href={waLink()}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center justify-center gap-2 border-t border-line py-2.5 text-xs font-semibold text-forest"
-      >
-        <WhatsAppIcon width={16} height={16} className="text-whatsapp" />
-        {t("orWhatsapp")}
-      </a>
+      {waLink() && (
+        <a
+          href={waLink()!}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2 border-t border-line py-2.5 text-xs font-semibold text-forest"
+        >
+          <WhatsAppIcon width={16} height={16} className="text-whatsapp" />
+          {t("orWhatsapp")}
+        </a>
+      )}
     </div>
   );
 }

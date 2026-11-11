@@ -38,10 +38,12 @@ export default function SiteFooter({ logo = "/images/logo.jpg" }: { logo?: strin
             ))}
           </ul>
         </nav>
-        <a href={waLink()} target="_blank" rel="noopener noreferrer" className="inline-flex w-fit items-center gap-2 rounded-[4px] border border-[#5d6157] px-3.5 py-2 text-sm text-white hover:border-white" data-testid="footer-whatsapp">
-          <WhatsAppIcon width={18} height={18} />
-          {t("footer.whatsapp")}
-        </a>
+        {waLink() && (
+          <a href={waLink()!} target="_blank" rel="noopener noreferrer" className="inline-flex w-fit items-center gap-2 rounded-[4px] border border-[#5d6157] px-3.5 py-2 text-sm text-white hover:border-white" data-testid="footer-whatsapp">
+            <WhatsAppIcon width={18} height={18} />
+            {t("footer.whatsapp")}
+          </a>
+        )}
       </div>
 
       <div className="ds-wrap mt-7 flex flex-col gap-3 border-t border-[#3a3d35] pt-5 text-xs text-[#a19d92] md:flex-row md:items-center md:justify-between">

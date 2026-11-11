@@ -149,9 +149,11 @@ export default async function StatementPage({
                         ) : (
                           <>
                             <StatusBadge tone="grey" dot={false}>{t("noReceipt")}</StatusBadge>
-                            <a href={askLink(e)} target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-forest underline underline-offset-2" data-testid="ask-receipt">
-                              {t("askForReceipt")}
-                            </a>
+                            {askLink(e) && (
+                              <a href={askLink(e)!} target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-forest underline underline-offset-2" data-testid="ask-receipt">
+                                {t("askForReceipt")}
+                              </a>
+                            )}
                             {page.canAddTo(e.account_id) && e.source !== "lbh_purchase" && <AttachReceipt ownerId={ctx.ownerId} entryId={e.id} />}
                           </>
                         ))}

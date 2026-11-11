@@ -6,9 +6,11 @@ import { WhatsAppIcon } from "./icons";
  *  On phones it is a slim tab on the screen edge, so it never covers a button. */
 export default function WhatsAppButton() {
   const t = useTranslations("common");
+  const href = waLink();
+  if (!href) return null;
   return (
     <a
-      href={waLink()}
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={t("whatsapp")}

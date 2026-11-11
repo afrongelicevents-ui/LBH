@@ -105,7 +105,7 @@ export async function submitBooking(
         `Thank you — we received your request for a free first call ` +
         `(${d.slot}, ${d.callType}). We will confirm the exact time by email ` +
         `and WhatsApp.\n\nTalk soon,\nLBH — Let's Build Home\n` +
-        `WhatsApp: https://wa.me/${site.whatsappNumber}` +
+        (site.whatsappNumber ? `WhatsApp: https://wa.me/${site.whatsappNumber}` : "") +
         inviteNote,
     });
 
