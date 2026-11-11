@@ -403,3 +403,51 @@ html[data-menu="open"] .wa-float { display: none; }
 }
 /* staff areas (admin, field): same palette and type, their own separate frame */
 .ds-staff { background: var(--color-ivory); }
+
+/* =====================================================================
+   Homepage hero + trust row (reference: split layout, photo fading
+   into the ivory). Header is 64px on phones, 72px from md up.
+   ===================================================================== */
+.lbh-hero-title {
+  font-weight: 500; letter-spacing: -0.02em; line-height: 1.02;
+  font-size: clamp(2.5rem, 10.5vw, 3.2rem);
+}
+/* phone: photo fades into ivory at the bottom */
+.lbh-hero-photo {
+  -webkit-mask-image: linear-gradient(to bottom, #000 45%, rgba(0,0,0,0.4) 72%, transparent 92%);
+  mask-image: linear-gradient(to bottom, #000 45%, rgba(0,0,0,0.4) 72%, transparent 92%);
+}
+/* the stock-photo credit: tiny and quiet, top corner, out of the fade */
+.lbh-hero-credit {
+  top: 0; bottom: auto !important; background: transparent !important;
+  color: #fff !important; opacity: 0.6; font-size: 9px !important;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+}
+.lbh-trust-item:nth-child(odd) { border-right: 1px solid var(--color-rule); padding-right: 0.75rem; }
+.lbh-trust-item:nth-child(even) { padding-left: 1rem; }
+.lbh-trust-item:nth-child(-n + 2) { border-bottom: 1px solid var(--color-rule); }
+@media (min-width: 768px) {
+  .lbh-hero {
+    /* hero + trust row = one screen (72px header, 104px trust row) */
+    height: clamp(460px, calc(100svh - 72px - 104px), 760px);
+  }
+  .lbh-hero-title { font-size: clamp(3rem, 4.7vw, 4.75rem); }
+  /* desktop: photo fades into ivory on its left edge (plus a whisper at the bottom) */
+  .lbh-hero-photo {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 14%, #000 38%),
+      linear-gradient(to top, transparent 0%, #000 12%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 14%, #000 38%),
+      linear-gradient(to top, transparent 0%, #000 12%);
+    mask-composite: intersect;
+  }
+  .lbh-hero-credit { top: auto; bottom: 0 !important; color: var(--color-charcoal) !important; opacity: 0.45; text-shadow: none; }
+  .lbh-trust ul { height: 104px; }
+  .lbh-trust-item, .lbh-trust-item:nth-child(n) {
+    border-bottom: 0; padding: 0; border-right: 0; position: relative;
+  }
+  .lbh-trust-item + .lbh-trust-item::before {
+    content: ""; position: absolute; left: 0; top: 50%; height: 52px; transform: translateY(-50%);
+    width: 1px; background: var(--color-rule);
+  }
+}

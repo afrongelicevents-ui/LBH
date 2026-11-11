@@ -271,8 +271,8 @@ console.log("\nPublic website");
 
   await step("homepage: new headline, trust row, sample data labelled, no prices in the copy", async () => {
     await page.goto(`${BASE}/en`);
-    await page.getByRole("heading", { level: 1, name: "Build your home back home." }).waitFor();
-    await page.getByText("Independent land checks").waitFor();
+    await page.getByRole("heading", { level: 1, name: "Build your home back home" }).waitFor();
+    await page.getByText("Independent Land Checks").waitFor();
     await page.getByTestId("sample-tag").waitFor();
     await page.locator("figcaption:visible", { hasText: "Stock photo" }).first().waitFor();
     const hero = await page.getByTestId("home-hero").innerText();

@@ -998,7 +998,7 @@
         "hero": {
           "name": "Hero (homepage top)",
           "where": "Big photo at the top of the homepage, behind the headline. Also the Field Portal banner.",
-          "tip": "Wide (landscape) photo, at least {min} px wide. Put the building on the RIGHT half — the left side is covered by the green fade and the headline."
+          "tip": "Wide (landscape) photo, at least {min} px wide. Put the building on the RIGHT half — the left side softly fades into the background next to the headline."
         },
         "land": {
           "name": "Land verification",
@@ -1846,28 +1846,28 @@
     "home": {
       "hero": {
         "eyebrow": "Construction oversight in Zimbabwe",
-        "title": "Build your home back home.",
-        "subtitle": "We'll be your eyes on the ground.",
+        "title": "Build your home back home",
+        "subtitle": "With confidence, wherever in the world you are.",
         "text": "Build with confidence, wherever in the world you are.",
-        "cta": "Book a free consultation",
+        "cta": "Book a Consultation",
         "secondary": "How it works"
       },
       "trust": {
         "label": "Why clients trust LBH",
         "verified": {
-          "title": "Independent land checks",
+          "title": "Independent Land Checks",
           "text": "Stands and quotes checked before you pay."
         },
         "process": {
-          "title": "Transparent process",
+          "title": "Transparent Process",
           "text": "Written quotes. Nothing bought without your approval."
         },
         "photos": {
-          "title": "Dated photo updates",
+          "title": "Regular Updates",
           "text": "Every visit and purchase recorded with photos."
         },
         "support": {
-          "title": "Dedicated support",
+          "title": "Dedicated Support",
           "text": "One team to talk to, by WhatsApp or chat."
         }
       },

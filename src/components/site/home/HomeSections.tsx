@@ -9,36 +9,40 @@ const SAMPLE = { budget: 4200000, spent: 1845000 };
 export type HomePhotos = Record<"hero" | "land" | "materials" | "onsite" | "reporting", PhotoSource>;
 
 /* ------------------------------------------------------------------ */
-/* Hero                                                                */
+/* Hero — text on ivory at left, photo on the right fading into it.   */
+/* Desktop: hero + trust row fill exactly one screen under the header. */
+/* Phone: a short photo (≤40% of the screen) that fades into ivory,    */
+/* with the headline and button sliding up over the faded part.        */
 /* ------------------------------------------------------------------ */
 export function HomeHero({ photo }: { photo: PhotoSource }) {
   const t = useTranslations("site.home.hero");
   const ts = useTranslations("site");
   return (
-    <section className="relative isolate" aria-labelledby="hero-title" data-testid="home-hero">
-      <div className="relative md:min-h-[620px] lg:min-h-[680px]">
-        {/* one photo for every screen: on top on phones, behind the text on larger screens */}
-        <div className="relative h-[46vh] min-h-[280px] md:absolute md:inset-0 md:h-auto md:min-h-0">
-          <Photo photo={photo} sizes="100vw" priority className="h-full w-full" stockLabel={ts("stockPhoto")} />
-          <div aria-hidden className="absolute inset-y-0 left-0 hidden w-[62%] bg-gradient-to-r from-charcoal/70 via-charcoal/40 to-transparent md:block" />
-        </div>
-        <div className="ds-wrap relative py-10 md:flex md:min-h-[620px] md:items-end md:py-20 lg:min-h-[680px]">
-          <div className="max-w-xl md:text-white">
-            <p className="ds-eyebrow md:text-[#e6e1d3]">{t("eyebrow")}</p>
-            <h1 id="hero-title" className="ds-display mt-4 text-charcoal md:text-white">
-              {t("title")}
-            </h1>
-            <p className="mt-4 font-serif text-2xl italic text-forest md:text-[#f1ede2]">{t("subtitle")}</p>
-            <p className="ds-lead mt-4 md:text-[#e6e1d3]">{t("text")}</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Link href="/book-a-call" className="ds-btn ds-btn-primary md:bg-paper md:text-charcoal md:hover:bg-white" data-testid="hero-cta">
-                {t("cta")}
-              </Link>
-              <Link href="/how-it-works" className="ds-btn ds-btn-outline md:border-white/70 md:text-white md:hover:bg-white md:hover:text-charcoal">
-                {t("secondary")}
-              </Link>
-            </div>
-          </div>
+    <section className="lbh-hero relative isolate overflow-hidden bg-ivory" aria-labelledby="hero-title" data-testid="home-hero">
+      <div className="lbh-hero-photo relative h-[40svh] max-h-[400px] min-h-[220px] md:absolute md:inset-y-0 md:right-0 md:h-auto md:max-h-none md:min-h-0 md:w-[62%]">
+        <Photo
+          photo={photo}
+          sizes="(min-width: 768px) 62vw, 100vw"
+          priority
+          className="h-full w-full"
+          creditClassName="lbh-hero-credit"
+          stockLabel={ts("stockPhoto")}
+        />
+      </div>
+      <div className="ds-wrap relative -mt-14 pb-8 md:mt-0 md:flex md:h-full md:items-center md:py-12">
+        <div className="md:max-w-[52%] lg:max-w-[50%]">
+          <p className="ds-eyebrow flex items-center gap-3 text-[0.68rem] tracking-[0.12em] text-charcoal md:gap-4 md:text-xs md:tracking-[0.14em]">
+            <span className="whitespace-nowrap">{t("eyebrow")}</span>
+            <span aria-hidden className="h-px w-10 shrink-0 bg-stone md:w-24" />
+          </p>
+          <h1 id="hero-title" className="lbh-hero-title mt-4 font-serif text-charcoal md:mt-6">
+            {t("title")}
+          </h1>
+          <p className="mt-3 font-serif text-[1.2rem] leading-snug text-forest italic md:mt-5 md:text-[1.6rem]">{t("subtitle")}</p>
+          <Link href="/book-a-call" className="ds-btn ds-btn-primary mt-6 md:mt-9" data-testid="hero-cta">
+            {t("cta")}
+            <span aria-hidden>→</span>
+          </Link>
         </div>
       </div>
     </section>
@@ -46,28 +50,32 @@ export function HomeHero({ photo }: { photo: PhotoSource }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Trust indicators — a quiet row, not cards                          */
+/* Trust indicators — thin outline icons, hairline dividers           */
 /* ------------------------------------------------------------------ */
 const TRUST_ICONS: Record<string, React.ReactNode> = {
-  verified: <path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3zM8.8 12.2l2.2 2.2 4.4-4.6" />,
-  process: <path d="M5 5h14v14H5zM9 9h6M9 12h6M9 15h4" />,
-  photos: <path d="M4 8h3l1.5-2h7L17 8h3v11H4zM12 17a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" />,
-  support: <path d="M5 13v-1a7 7 0 0114 0v1M5 13h3v5H5zM16 13h3v5h-3M16 18c0 1.5-1.5 2.5-4 2.5" />,
+  // shield with a tick
+  verified: <path d="M12 3l7.5 2.8v5.7c0 4.6-3.1 8.3-7.5 9.9-4.4-1.6-7.5-5.3-7.5-9.9V5.8L12 3zM8.6 12.1l2.4 2.4 4.5-4.7" />,
+  // camera
+  process: <path d="M3.5 8.5A1.5 1.5 0 015 7h2.6l1.6-2.2h5.6L16.4 7H19a1.5 1.5 0 011.5 1.5v9A1.5 1.5 0 0119 19H5a1.5 1.5 0 01-1.5-1.5zM12 16.2a3.4 3.4 0 100-6.8 3.4 3.4 0 000 6.8z" />,
+  // handshake
+  photos: <path d="M2.5 9.5L6 6l3 1.5M21.5 9.5L18 6l-4.5 1.6-3.8 3.2a1.3 1.3 0 001.8 1.9l2.3-1.6 5 4.4M2.5 9.5l3.3 5.6M18.8 15.5l-1.5 1.4M5.8 15.1l1.6 1.5m0 0l1.3-1.2m-1.3 1.2l1.7 1.6 1.4-1.3m0 0l1.7 1.6 1.4-1.2m-3.1-.4l-1.6-1.5m4.7 1.9l1.5 1.3 1.8-1.6-4.2-3.8" />,
+  // headset
+  support: <path d="M4.5 13.5V12a7.5 7.5 0 0115 0v1.5M4.5 13.5h2.8v5H6a1.5 1.5 0 01-1.5-1.5zM19.5 13.5h-2.8v5H18a1.5 1.5 0 001.5-1.5zM16.7 18.5c0 1.4-1.6 2.3-3.7 2.3" />,
 };
 export function TrustRow() {
   const t = useTranslations("site.home.trust");
   const keys = ["verified", "process", "photos", "support"] as const;
   return (
-    <section aria-label={t("label")} className="border-b border-rule bg-paper">
-      <ul className="ds-wrap grid grid-cols-2 gap-x-6 gap-y-6 py-8 md:grid-cols-4 md:py-10">
+    <section aria-label={t("label")} className="lbh-trust border-y border-rule bg-paper" data-testid="home-trust">
+      <ul className="ds-wrap grid grid-cols-2 md:grid-cols-4">
         {keys.map((k) => (
-          <li key={k} className="flex items-start gap-3">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="mt-0.5 shrink-0 text-forest">
+          <li key={k} className="lbh-trust-item flex items-center gap-3 py-4 md:justify-center md:gap-4 md:py-0">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="h-8 w-8 shrink-0 text-forest md:h-10 md:w-10">
               {TRUST_ICONS[k]}
             </svg>
-            <span>
-              <span className="block text-[15px] font-semibold text-charcoal">{t(`${k}.title`)}</span>
-              <span className="mt-0.5 block text-sm leading-snug text-slate">{t(`${k}.text`)}</span>
+            <span className="max-w-[9rem] font-serif text-[0.98rem] leading-tight text-charcoal md:text-[1.15rem]">
+              {t(`${k}.title`)}
+              <span className="sr-only">: {t(`${k}.text`)}</span>
             </span>
           </li>
         ))}
