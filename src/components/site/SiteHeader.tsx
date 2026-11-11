@@ -132,7 +132,7 @@ export default function SiteHeader({
           </div>
           {visitor && (
             <>
-              <Link href="/login" className="ds-navlink px-1.5" data-testid="header-login">
+              <Link href="/login" className="ds-navlink hidden px-1.5 sm:inline" data-testid="header-login">
                 {tc("login")}
               </Link>
               <Link href="/signup" className="ds-btn ds-btn-primary hidden min-h-10 px-4 py-2 text-sm sm:inline-flex" data-testid="header-signup">
@@ -158,10 +158,10 @@ export default function SiteHeader({
             onClick={() => setOpen(true)}
             aria-expanded={open}
             aria-controls="site-menu"
-            className="flex h-10 items-center gap-2 rounded-[4px] border border-rule px-3 text-sm font-medium text-charcoal hover:border-charcoal"
+            className="flex h-11 w-11 items-center justify-center gap-2 rounded-[6px] bg-forest text-white hover:bg-forest-dark sm:h-10 sm:w-auto sm:rounded-[4px] sm:border sm:border-rule sm:bg-transparent sm:px-3 sm:text-sm sm:font-medium sm:text-charcoal sm:hover:border-charcoal sm:hover:bg-transparent"
             data-testid="menu-button"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden className="h-[22px] w-[22px] sm:h-[18px] sm:w-[18px]">
               <path d="M4 7h16M4 12h16M4 17h16" />
             </svg>
             <span className="hidden sm:inline">{t("menu")}</span>

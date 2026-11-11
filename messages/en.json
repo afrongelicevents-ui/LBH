@@ -1846,7 +1846,7 @@
     "home": {
       "hero": {
         "eyebrow": "Construction oversight in Zimbabwe",
-        "title": "Build your home back home",
+        "title": "Build your home back home.",
         "subtitle": "With confidence, wherever in the world you are.",
         "text": "Build with confidence, wherever in the world you are.",
         "cta": "Book a Consultation",
@@ -1879,33 +1879,38 @@
         "soonTag": "Coming soon",
         "camera": "A live site camera, so you can look in on your build from anywhere.",
         "land": {
-          "title": "Land verification",
+          "title": "Land Verification",
           "text": "Before you pay for a stand, we check it is real, properly pegged and legally clean.",
           "p1": "Title checked by a qualified lawyer",
           "p2": "Pegs confirmed with the council",
-          "p3": "Written report with photos and GPS"
+          "p3": "Written report with photos and GPS",
+          "short": "Independent checks before you pay."
         },
         "materials": {
-          "title": "Materials procurement",
+          "title": "Materials Procurement",
           "text": "We collect supplier quotes side by side and buy only what you approve.",
           "p1": "Quotes compared from several suppliers",
           "p2": "Nothing bought without your approval",
-          "p3": "Every receipt photographed and kept"
+          "p3": "Every receipt photographed and kept",
+          "short": "Quotes compared — you approve every purchase."
         },
         "onsite": {
-          "title": "On-site management",
+          "title": "On-site Management",
           "text": "Our team manages your build stage by stage, from foundation to roof.",
           "p1": "Builders and deliveries overseen on site",
           "p2": "Each stage inspected before the next",
-          "p3": "You approve every stage"
+          "p3": "You approve every stage",
+          "short": "Each stage checked before the next."
         },
         "reporting": {
-          "title": "Progress reporting",
+          "title": "Progress Reporting",
           "text": "You see what is happening on site, when it happened, and what it cost.",
           "p1": "Dated photographs from every visit",
           "p2": "Inspection findings in plain words",
-          "p3": "Spending recorded in your Build Account"
-        }
+          "p3": "Spending recorded in your Build Account",
+          "short": "Dated photos and reports, wherever you are."
+        },
+        "all": "All services"
       },
       "ba": {
         "eyebrow": "LBH Build Account",
@@ -1945,7 +1950,8 @@
           "u3When": "Last week",
           "note": "Illustration with sample figures — not a real client.",
           "receiptOk": "Receipt"
-        }
+        },
+        "short": "Every dollar sent home, every receipt and what is left — stage by stage, in your LBH account."
       },
       "process": {
         "eyebrow": "How it works",
@@ -2012,45 +2018,69 @@
       "whatWeDo": "What we do",
       "youReceive": "You receive:",
       "land": {
-        "title": "Land verification",
+        "title": "Land Verification",
         "text": "Before you pay for a stand, we make sure it is real, properly pegged and legally clean. A qualified lawyer checks the title (included in the service), a council officer confirms the pegs on site, and our team measures the stand and records its GPS position with dated photos and video.",
         "p1": "Title deed checked by a qualified lawyer",
         "p2": "Pegs confirmed on site with the council",
         "p3": "Measurements, GPS position, dated photos and video",
         "p4": "Red flags explained in plain words",
-        "receive": "a written report in your account, with the evidence attached."
+        "receive": "a written report in your account, with the evidence attached.",
+        "how1": "You send us the stand number, location and any papers you have.",
+        "how2": "A qualified lawyer checks the title and the council confirms the pegs.",
+        "how3": "Our team visits the stand to measure it and record GPS, photos and video.",
+        "how4": "You get a written report with any red flags explained — before you pay."
       },
       "materials": {
-        "title": "Materials procurement",
+        "title": "Materials Procurement",
         "text": "Tell us what your build needs and we collect quotes from several suppliers, side by side. Nothing is bought until you approve it. Every purchase is recorded with its receipt, and deliveries are photographed when they arrive on site.",
         "p1": "Quotes compared from several suppliers",
         "p2": "Nothing bought without your written approval",
         "p3": "Every receipt photographed and kept",
         "p4": "Deliveries checked and photographed on site",
-        "receive": "the quotes, your approval, receipts and delivery photos in your account."
+        "receive": "the quotes, your approval, receipts and delivery photos in your account.",
+        "how1": "You send your materials list or plans — or we help you make one.",
+        "how2": "We collect quotes from several suppliers and compare them side by side.",
+        "how3": "You approve the quote in writing. Nothing is bought before that.",
+        "how4": "We buy, check the delivery on site and add receipts and photos to your account."
       },
       "onsite": {
-        "title": "On-site management",
+        "title": "On-site Management",
         "text": "For a full build, our team manages the work stage by stage — foundation, slab, window level, wall plate, roof and finishes. Each stage is quoted, bought, built and inspected before the next one starts, and you approve every stage.",
         "p1": "Stage-by-stage plan for your build",
         "p2": "Builders and deliveries overseen on site",
         "p3": "Each stage inspected before the next one starts",
         "p4": "Your approval before every new stage",
-        "receive": "a clear view of each stage — what was done, what it cost, and what comes next."
+        "receive": "a clear view of each stage — what was done, what it cost, and what comes next.",
+        "how1": "We agree a stage-by-stage plan for your build with you.",
+        "how2": "Each stage is quoted, and work starts only after you approve it.",
+        "how3": "Our team oversees the builders and deliveries on site.",
+        "how4": "Each stage is inspected before the next one begins."
       },
       "reporting": {
-        "title": "Progress reporting",
+        "title": "Progress Reporting",
         "text": "You see what is happening on your site, when it happened and what it cost. Photos are dated from our visits, inspection findings are written in plain words, and spending is recorded in your Build Account as it happens.",
         "p1": "Dated photographs from every visit",
         "p2": "Inspection findings in plain words",
         "p3": "Spending and receipts in your Build Account",
         "p4": "Updates in your account when something needs you",
-        "receive": "reports and updates in your LBH account — on your phone, wherever you are."
+        "receive": "reports and updates in your LBH account — on your phone, wherever you are.",
+        "how1": "Our team visits your site on an agreed schedule.",
+        "how2": "Every visit is recorded with dated photos and inspection notes.",
+        "how3": "Reports and spending appear in your LBH account.",
+        "how4": "When something needs your decision, you are told straight away."
       },
       "camera": {
         "title": "Live site camera",
         "text": "A camera on your site, so you can look in on your build from anywhere. Leave your email and we will tell you when it is available."
-      }
+      },
+      "breadcrumb": "Breadcrumb",
+      "backAll": "← All services",
+      "included": "What's included",
+      "howTitle": "How it works",
+      "priceLabel": "Price",
+      "priceValue": "Quote after consultation",
+      "priceText": "Every stand and build is different, so your price is a written quote after a free consultation. Nothing starts without your approval.",
+      "others": "Other services"
     },
     "howPage": {
       "title": "From first call to finished report — with you in control."

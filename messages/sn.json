@@ -1847,7 +1847,7 @@
     "home": {
       "hero": {
         "eyebrow": "Kutarisira kuvaka muZimbabwe",
-        "title": "Vaka imba yako kumusha",
+        "title": "Vaka imba yako kumusha.",
         "subtitle": "Vaka wakavimba, chero kwaunogara pasi rose.",
         "text": "Vaka wakavimba, chero kwaunogara pasi rose.",
         "cta": "Bhuka runhare rwemahara",
@@ -1884,29 +1884,34 @@
           "text": "Usati wabhadhara stendi, tinoongorora kuti ndeyechokwadi, yakaiswa zvipandi zvakanaka uye yakachena pamutemo.",
           "p1": "Title inoongororwa negweta rine ruzivo",
           "p2": "Zvipandi zvinosimbiswa nekanzuru",
-          "p3": "Gwaro rakanyorwa rine mifananidzo neGPS"
+          "p3": "Gwaro rakanyorwa rine mifananidzo neGPS",
+          "short": "Ongororo dzakazvimirira usati wabhadhara."
         },
         "materials": {
           "title": "Kutenga zvivakwa",
           "text": "Tinounganidza makotesheni evatengesi tozvienzanisa, totenga chete zvawabvumira.",
           "p1": "Makotesheni anoenzaniswa kubva kuvatengesi vakawanda",
           "p2": "Hapana chinotengwa usina kubvumira",
-          "p3": "Risiti yega yega inotorwa mufananidzo yochengetwa"
+          "p3": "Risiti yega yega inotorwa mufananidzo yochengetwa",
+          "short": "Makotesheni anoenzaniswa — iwe unobvumira zvese."
         },
         "onsite": {
           "title": "Kutarisira basa pasaiti",
           "text": "Timu yedu inotarisira kuvaka kwako nhanho nenhanho, kubva pafaundesheni kusvika padenga.",
           "p1": "Vavaki nezvinosvitswa zvinotariswa pasaiti",
           "p2": "Nhanho yega yega inoongororwa isati yatevera imwe",
-          "p3": "Unobvumira nhanho yega yega"
+          "p3": "Unobvumira nhanho yega yega",
+          "short": "Nhanho yega yega inoongororwa isati yatanga inotevera."
         },
         "reporting": {
           "title": "Kuzivisa kufambira mberi",
           "text": "Unoona zviri kuitika pasaiti, kuti zvakaitika riini, uye kuti zvakadhura zvakadii.",
           "p1": "Mifananidzo ine zuva pakushanya kwese",
           "p2": "Zvakawanikwa pakuongorora nemashoko ari nyore",
-          "p3": "Mari yashandiswa inonyorwa muBuild Account yako"
-        }
+          "p3": "Mari yashandiswa inonyorwa muBuild Account yako",
+          "short": "Mifananidzo ine zuva nemagwaro, chero kwauri."
+        },
+        "all": "Mabasa ese"
       },
       "ba": {
         "eyebrow": "LBH Build Account",
@@ -1946,7 +1951,8 @@
           "u3When": "Svondo rapfuura",
           "note": "Muenzaniso une nhamba dzekuedzesera — haasi mutengi chaiye.",
           "receiptOk": "Risiti"
-        }
+        },
+        "short": "Dhora rega rega rakatumirwa kumusha, risiti yega yega nezvasara — nhanho nenhanho, muaccount yako yeLBH."
       },
       "process": {
         "eyebrow": "Zvinofamba sei",
@@ -2019,7 +2025,11 @@
         "p2": "Zvipandi zvinosimbiswa panzvimbo nekanzuru",
         "p3": "Zviyero, GPS, mifananidzo nevhidhiyo zvine zuva",
         "p4": "Yambiro dzinotsanangurwa nemashoko ari nyore",
-        "receive": "gwaro rakanyorwa muaccount yako, rine umbowo hwakabatanidzwa."
+        "receive": "gwaro rakanyorwa muaccount yako, rine umbowo hwakabatanidzwa.",
+        "how1": "Unotitumira nhamba yestendi, kwainowanikwa nemapepa aunawo.",
+        "how2": "Gweta rine ruzivo rinoongorora title uye kanzuru inosimbisa zvipandi.",
+        "how3": "Timu yedu inoshanyira stendi kuti iiyere yonyora GPS, mifananidzo nevhidhiyo.",
+        "how4": "Unowana gwaro rakanyorwa rinotsanangura yambiro — usati wabhadhara."
       },
       "materials": {
         "title": "Kutenga zvivakwa",
@@ -2028,7 +2038,11 @@
         "p2": "Hapana chinotengwa usina kubvumira nechinyorwa",
         "p3": "Risiti yega yega inotorwa mufananidzo yochengetwa",
         "p4": "Zvinosvitswa zvinoongororwa nekutorwa mifananidzo pasaiti",
-        "receive": "makotesheni, mvumo yako, marisiti nemifananidzo yezvasvitswa muaccount yako."
+        "receive": "makotesheni, mvumo yako, marisiti nemifananidzo yezvasvitswa muaccount yako.",
+        "how1": "Unotitumira rondedzero yezvivakwa kana purani — kana kuti tinokubatsira kuigadzira.",
+        "how2": "Tinounganidza makotesheni kubva kuvatengesi vakawanda toaenzanisa.",
+        "how3": "Unobvumira kotesheni nechinyorwa. Hapana chinotengwa izvi zvisati zvaitika.",
+        "how4": "Tinotenga, toongorora zvasvitswa pasaiti toisa marisiti nemifananidzo muaccount yako."
       },
       "onsite": {
         "title": "Kutarisira basa pasaiti",
@@ -2037,7 +2051,11 @@
         "p2": "Vavaki nezvinosvitswa zvinotariswa pasaiti",
         "p3": "Nhanho yega yega inoongororwa isati yatanga inotevera",
         "p4": "Mvumo yako nhanho itsva yega yega isati yatanga",
-        "receive": "kuona zvakajeka nhanho yega yega — zvakaitwa, zvakadhura, nezvinotevera."
+        "receive": "kuona zvakajeka nhanho yega yega — zvakaitwa, zvakadhura, nezvinotevera.",
+        "how1": "Tinobvumirana newe purani yekuvaka nhanho nenhanho.",
+        "how2": "Nhanho yega yega inopiwa kotesheni, uye basa rinotanga chete wabvumira.",
+        "how3": "Timu yedu inotarisira vavaki nezvinosvitswa pasaiti.",
+        "how4": "Nhanho yega yega inoongororwa isati yatanga inotevera."
       },
       "reporting": {
         "title": "Kuzivisa kufambira mberi",
@@ -2046,12 +2064,24 @@
         "p2": "Zvakawanikwa pakuongorora nemashoko ari nyore",
         "p3": "Mari yashandiswa nemarisiti muBuild Account yako",
         "p4": "Nyaya itsva muaccount yako kana pane chinoda iwe",
-        "receive": "magwaro nenyaya itsva muaccount yako yeLBH — parunhare rwako, chero kwauri."
+        "receive": "magwaro nenyaya itsva muaccount yako yeLBH — parunhare rwako, chero kwauri.",
+        "how1": "Timu yedu inoshanyira saiti yako panguva dzakabvumiranwa.",
+        "how2": "Kushanya kwega kwega kunonyorwa nemifananidzo ine zuva nezvakawanikwa.",
+        "how3": "Magwaro nemari yashandiswa zvinoonekwa muaccount yako yeLBH.",
+        "how4": "Kana pane chinoda sarudzo yako, unoziviswa pakarepo."
       },
       "camera": {
         "title": "Kamera live pasaiti",
         "text": "Kamera pasaiti yako, kuti uone kuvaka kwako uri chero kupi. Siya email yako tichakuzivisa kana yave kuwanikwa."
-      }
+      },
+      "breadcrumb": "Nzira",
+      "backAll": "← Mabasa ese",
+      "included": "Zvinosanganisirwa",
+      "howTitle": "Zvinofamba sei",
+      "priceLabel": "Mutengo",
+      "priceValue": "Kotesheni mushure merunhare",
+      "priceText": "Stendi yega yega nekuvaka kwega kwega zvakasiyana, saka mutengo wako ikotesheni yakanyorwa mushure merunhare rwemahara. Hapana chinotanga usina kubvumira.",
+      "others": "Mamwe mabasa"
     },
     "howPage": {
       "title": "Kubva parunhare rwekutanga kusvika pagwaro rakapera — iwe uchitonga."

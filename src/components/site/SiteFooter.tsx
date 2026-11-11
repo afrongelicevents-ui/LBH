@@ -3,14 +3,14 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { site, waLink } from "@/config/site";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
+import { SERVICES, servicePath } from "@/config/services";
 
 /** One footer for the website and the customer account. */
 export default function SiteFooter({ logo = "/images/logo.jpg" }: { logo?: string }) {
   const t = useTranslations("site");
   const tc = useTranslations("common");
   const year = new Date().getFullYear();
-  const services = ["land", "materials", "onsite", "reporting"] as const;
-
+  
   return (
     <footer className="bg-charcoal pb-24 text-[#d9d6cd] md:pb-10" data-testid="site-footer">
       <div className="ds-wrap grid gap-10 pt-14 md:grid-cols-12 md:gap-8 md:pt-16">
@@ -27,9 +27,9 @@ export default function SiteFooter({ logo = "/images/logo.jpg" }: { logo?: strin
         <nav aria-label={t("footer.servicesTitle")} className="md:col-span-3">
           <h2 className="text-xs font-semibold tracking-[0.14em] text-white uppercase">{t("footer.servicesTitle")}</h2>
           <ul className="mt-4 space-y-2.5 text-sm">
-            {services.map((s) => (
+            {SERVICES.map(({ key: s }) => (
               <li key={s}>
-                <Link href={`/services#${s}`} className="hover:text-white">
+                <Link href={servicePath(s)} className="hover:text-white">
                   {t(`home.services.${s}.title`)}
                 </Link>
               </li>
@@ -69,9 +69,6 @@ export default function SiteFooter({ logo = "/images/logo.jpg" }: { logo?: strin
             </li>
             <li className="text-[#b9b5aa]">{t("footer.based")}</li>
           </ul>
-          <Link href="/book-a-call" className="ds-btn mt-6 border border-[#5d6157] px-4 text-sm text-white hover:border-white">
-            {t("bookConsultation")}
-          </Link>
         </div>
       </div>
 

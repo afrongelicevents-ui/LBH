@@ -1847,7 +1847,7 @@
     "home": {
       "hero": {
         "eyebrow": "Ukuqondisa ukwakha eZimbabwe",
-        "title": "Yakha umuzi wakho ekhaya",
+        "title": "Yakha umuzi wakho ekhaya.",
         "subtitle": "Yakha uzethemba, loba ukuphi emhlabeni.",
         "text": "Yakha uzethemba, loba ukuphi emhlabeni.",
         "cta": "Bhuka ukubonisana kwamahala",
@@ -1884,29 +1884,34 @@
           "text": "Ungakabhadali isitandi, siyahlola ukuthi ngesiqotho, sibekwe izikhonkwane kuhle njalo simsulwa ngokomthetho.",
           "p1": "I-title ihlolwa ngummeli oleziqu",
           "p2": "Izikhonkwane ziqinisekiswa lekhansili",
-          "p3": "Umbiko obhaliweyo olezithombe le-GPS"
+          "p3": "Umbiko obhaliweyo olezithombe le-GPS",
+          "short": "Ukuhlola okuzimeleyo ungakabhadali."
         },
         "materials": {
           "title": "Ukuthenga impahla",
           "text": "Siqoqa amakhotheshini abathengisi siwaqathanise, sithenge kuphela lokho okuvumayo.",
           "p1": "Amakhotheshini aqathaniswa kubathengisi abanengi",
           "p2": "Akulalutho oluthengwayo ungavumanga",
-          "p3": "Irisidi yinye ngayinye ithathwa isithombe igcinwe"
+          "p3": "Irisidi yinye ngayinye ithathwa isithombe igcinwe",
+          "short": "Amakhotheshini ayaqhathaniswa — wena uvuma konke."
         },
         "onsite": {
           "title": "Ukuphatha emsebenzini",
           "text": "Iqembu lethu liphatha ukwakha kwakho isigaba ngesigaba, kusukela esisekelweni kusiya ophahleni.",
           "p1": "Abakhi lokuletha kuqondiswa esayithini",
           "p2": "Isigaba ngasinye siyahlolwa kungakaqalwa esilandelayo",
-          "p3": "Uvuma isigaba sinye ngasinye"
+          "p3": "Uvuma isigaba sinye ngasinye",
+          "short": "Isigaba ngasinye siyahlolwa kuqala."
         },
         "reporting": {
           "title": "Imibiko yenqubekelaphambili",
           "text": "Ubona okwenzakalayo esayithini, ukuthi kwenzakale nini, lokuthi kubize malini.",
           "p1": "Izithombe ezilosuku zakho konke ukuvakasha",
           "p2": "Okutholakele ekuhloleni ngamazwi alula",
-          "p3": "Ukusetshenziswa kwemali kubhalwa ku-Build Account yakho"
-        }
+          "p3": "Ukusetshenziswa kwemali kubhalwa ku-Build Account yakho",
+          "short": "Izithombe ezilosuku lemibiko, loba ukuphi."
+        },
+        "all": "Imisebenzi yonke"
       },
       "ba": {
         "eyebrow": "LBH Build Account",
@@ -1946,7 +1951,8 @@
           "u3When": "Iviki eledlulayo",
           "note": "Umfanekiso onezibalo zesibonelo — akusilo khasimende eliqotho.",
           "receiptOk": "Irisidi"
-        }
+        },
+        "short": "Idola ngalinye elithunyelwe ekhaya, irisidi ngayinye lokuseleyo — isigaba ngesigaba, ku-akhawunti yakho ye-LBH."
       },
       "process": {
         "eyebrow": "Kusebenza njani",
@@ -2019,7 +2025,11 @@
         "p2": "Izikhonkwane ziqinisekiswa esayithini lekhansili",
         "p3": "Izilinganiso, indawo ye-GPS, izithombe lamavidiyo alosuku",
         "p4": "Izixwayiso ezinkulu zichazwa ngamazwi alula",
-        "receive": "umbiko obhaliweyo ku-akhawunti yakho, lobufakazi bufakiwe."
+        "receive": "umbiko obhaliweyo ku-akhawunti yakho, lobufakazi bufakiwe.",
+        "how1": "Usithumelela inombolo yesitendi, lapho esikhona lamaphepha olawo.",
+        "how2": "Ummeli oqeqeshiweyo uhlola i-title lekhansili iqinisekisa izikhonkwane.",
+        "how3": "Iqembu lethu livakatshela isitendi ukusilinganisa lokuthatha i-GPS, izithombe levidiyo.",
+        "how4": "Uthola umbiko obhaliweyo ochaza izixwayiso — ungakabhadali."
       },
       "materials": {
         "title": "Ukuthenga impahla",
@@ -2028,7 +2038,11 @@
         "p2": "Akulalutho oluthengwayo ungavumanga ngombhalo",
         "p3": "Irisidi yinye ngayinye ithathwa isithombe igcinwe",
         "p4": "Impahla elethwayo iyahlolwa ithathwe izithombe esayithini",
-        "receive": "amakhotheshini, imvumo yakho, amarisidi lezithombe zokuletha ku-akhawunti yakho."
+        "receive": "amakhotheshini, imvumo yakho, amarisidi lezithombe zokuletha ku-akhawunti yakho.",
+        "how1": "Usithumelela uhlu lwezinto zokwakha kumbe amapulani — kumbe sikusize ukuwenza.",
+        "how2": "Siqoqa amakhotheshini kubathengisi abanengi siwaqhathanise.",
+        "how3": "Uvuma ikhotheshini ngokubhala. Akukho okuthengwayo ngaphambi kwalokho.",
+        "how4": "Siyathenga, sihlole okulethiweyo esayithini sifake amarisidi lezithombe ku-akhawunti yakho."
       },
       "onsite": {
         "title": "Ukuphatha emsebenzini",
@@ -2037,7 +2051,11 @@
         "p2": "Abakhi lokuletha kuqondiswa esayithini",
         "p3": "Isigaba ngasinye siyahlolwa kungakaqalwa esilandelayo",
         "p4": "Imvumo yakho ngaphambi kwesigaba ngasinye esitsha",
-        "receive": "ukubona okucacileyo kwesigaba ngasinye — okwenziweyo, okubizileyo, lokulandelayo."
+        "receive": "ukubona okucacileyo kwesigaba ngasinye — okwenziweyo, okubizileyo, lokulandelayo.",
+        "how1": "Sivumelana lawe ngepulani yokwakha isigaba ngesigaba.",
+        "how2": "Isigaba ngasinye siyakhotheshelwa, umsebenzi uqala kuphela usuvumile.",
+        "how3": "Iqembu lethu liqondisa abakhi lokulethiweyo esayithini.",
+        "how4": "Isigaba ngasinye siyahlolwa ngaphambi kokuthi esilandelayo siqale."
       },
       "reporting": {
         "title": "Imibiko yenqubekelaphambili",
@@ -2046,12 +2064,24 @@
         "p2": "Okutholakele ekuhloleni ngamazwi alula",
         "p3": "Ukusetshenziswa kwemali lamarisidi ku-Build Account yakho",
         "p4": "Okutsha ku-akhawunti yakho nxa kukhona okudinga wena",
-        "receive": "imibiko lokutsha ku-akhawunti yakho ye-LBH — efonini yakho, loba ukuphi."
+        "receive": "imibiko lokutsha ku-akhawunti yakho ye-LBH — efonini yakho, loba ukuphi.",
+        "how1": "Iqembu lethu livakatshela isayithi yakho ngezikhathi esivumelene ngazo.",
+        "how2": "Ukuvakatsha ngakunye kubhalwa ngezithombe ezilosuku lalokho okutholakeleyo.",
+        "how3": "Imibiko lemali esetshenzisiweyo kuvela ku-akhawunti yakho ye-LBH.",
+        "how4": "Nxa kukhona okudinga isinqumo sakho, uyaziswa khonokho."
       },
       "camera": {
         "title": "Ikhamera yesayithi ye-live",
         "text": "Ikhamera esayithini yakho, ukuze ubone ukwakha kwakho ulapho okhona. Tshiya i-email yakho, sizakwazisa nxa isitholakala."
-      }
+      },
+      "breadcrumb": "Indlela",
+      "backAll": "← Imisebenzi yonke",
+      "included": "Okufakiweyo",
+      "howTitle": "Kusebenza njani",
+      "priceLabel": "Intengo",
+      "priceValue": "Ikhotheshini ngemva kokubonisana",
+      "priceText": "Isitendi ngasinye lokwakha ngakunye kwehlukene, ngakho intengo yakho yikhotheshini ebhaliweyo ngemva kokubonisana kwamahala. Akukho okuqalayo ungakavumi.",
+      "others": "Eminye imisebenzi"
     },
     "howPage": {
       "title": "Kusukela ocingweni lwakuqala kusiya embikweni ophelileyo — wena uphethe."
