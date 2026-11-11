@@ -361,8 +361,10 @@ console.log("\nPublic website");
     await page.getByText("confirm your email first").waitFor({ timeout: 10000 });
 
     const msg = await latestEmailTo(email);
-    // Supabase's standard confirmation email (as on the live free plan)
-    const link = /href="([^"]+\/auth\/v1\/verify[^"]+)"/.exec(msg.HTML)?.[1]?.replaceAll("&amp;", "&");
+    // the LBH-branded email links to the site's /api/auth/confirm (Supabase's
+    // standard email, with an /auth/v1/verify link, is accepted too)
+    assert(/Confirm your Let's Build Home account/.test(msg.Subject), `wrong email: ${msg.Subject}`);
+    const link = /href="([^"]+\/(?:api\/auth\/confirm|auth\/v1\/verify)[^"]+)"/.exec(msg.HTML)?.[1]?.replaceAll("&amp;", "&");
     assert(link, "confirmation link missing from email");
     await page.goto(link);
     await page.waitForURL(/\/account/, { timeout: 20000 });
