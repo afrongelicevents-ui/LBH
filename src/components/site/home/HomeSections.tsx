@@ -31,7 +31,7 @@ export function HomeHero({ photo }: { photo: PhotoSource }) {
           stockLabel={ts("stockPhoto")}
         />
       </div>
-      <div className="ds-wrap relative py-9 md:flex md:h-full md:items-center md:py-12">
+      <div className="ds-wrap relative py-6 md:flex md:h-full md:items-center md:py-12">
         <div className="max-w-[60%] md:max-w-[52%] lg:max-w-[50%]">
           <h1 id="hero-title" className="lbh-hero-title font-serif text-charcoal">
             {t("title")}
@@ -90,21 +90,21 @@ export function ServiceTiles({ photos }: { photos: HomePhotos }) {
   const t = useTranslations("site.home.services");
   const ts = useTranslations("site");
   return (
-    <section aria-labelledby="services-title" className="py-9 md:py-14" data-testid="home-services">
+    <section aria-labelledby="services-title" className="py-7 md:py-14" data-testid="home-services">
       <div className="ds-wrap">
         <h2 id="services-title" className="ds-eyebrow flex items-center gap-4 text-[0.72rem] text-charcoal md:text-xs">
           <span aria-hidden className="h-px flex-1 bg-stone md:hidden" />
           {t("eyebrow")}
           <span aria-hidden className="h-px flex-1 bg-stone" />
         </h2>
-        <ul className="mt-5 grid grid-cols-2 gap-x-3 gap-y-4 md:mt-7 md:grid-cols-4 md:gap-6" data-testid="service-tiles">
+        <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-3.5 md:mt-7 md:grid-cols-4 md:gap-6" data-testid="service-tiles">
           {SERVICES.map((s) => (
             <li key={s.key}>
               <Link href={servicePath(s.key)} className="group block" data-testid={`tile-${s.key}`}>
                 <Photo
                   photo={photos[s.key]}
                   sizes="(min-width: 768px) 25vw, 50vw"
-                  className="aspect-[4/3] w-full rounded-[4px]"
+                  className="aspect-[3/2] w-full rounded-[4px] md:aspect-[4/3]"
                   hideCredit
                   stockLabel={ts("stockPhoto")}
                 />
@@ -127,14 +127,14 @@ export function ServiceTiles({ photos }: { photos: HomePhotos }) {
 export function Process() {
   const t = useTranslations("site.home.process");
   return (
-    <section aria-labelledby="process-title" className="border-y border-rule bg-paper py-7 md:py-11" data-testid="home-process">
+    <section aria-labelledby="process-title" className="border-y border-rule bg-paper py-6 md:py-11" data-testid="home-process">
       <div className="ds-wrap">
         <h2 id="process-title" className="ds-eyebrow flex items-center gap-4 text-[0.72rem] text-charcoal md:text-xs">
           <span aria-hidden className="h-px flex-1 bg-stone md:hidden" />
           {t("eyebrow")}
           <span aria-hidden className="h-px flex-1 bg-stone" />
         </h2>
-        <ol className="mt-5 grid grid-cols-4 gap-2 md:mt-7 md:gap-8">
+        <ol className="mt-4 grid grid-cols-4 gap-2 md:mt-7 md:gap-8">
           {[1, 2, 3, 4].map((n) => (
             <li key={n} className="border-t border-charcoal/70 pt-2.5 md:pt-4">
               <span className="block font-serif text-[1.6rem] leading-none text-stone-ink md:text-3xl">{n}</span>
@@ -152,53 +152,55 @@ export function Process() {
 /* ------------------------------------------------------------------ */
 export function BuildAccountPreview({ showLink = true }: { showLink?: boolean }) {
   const t = useTranslations("site.home.ba");
-  const stages = [1, 2, 3, 4, 5].map((n) => ({ name: t(`demo.s${n}`), state: n < 3 ? "done" : n === 3 ? "now" : "next" }));
+  const STAGES = 6;
+  const NOW = 3;
   return (
-    <section aria-labelledby="ba-title" className="bg-forest py-12 text-[#e8e4d8] md:py-16" data-testid="home-ba">
-      <div className="ds-wrap grid gap-8 md:grid-cols-12 md:items-center md:gap-12">
-        <div className="md:col-span-6">
-          <p className="ds-eyebrow text-[#c9bfa6]">{t("eyebrow")}</p>
-          <h2 id="ba-title" className="ds-h2 mt-2 text-white">{t("title")}</h2>
-          <p className="mt-3 max-w-lg text-[1rem] leading-relaxed text-[#d6d1c3]">{t("short")}</p>
+    <section aria-labelledby="ba-title" className="bg-forest py-7 text-[#e8e4d8] md:py-14" data-testid="home-ba">
+      <div className="ds-wrap grid gap-4 md:grid-cols-12 md:items-center md:gap-12">
+        <div className="md:col-span-5">
+          <p className="ds-eyebrow text-[0.7rem] text-[#c9bfa6] md:text-xs">{t("eyebrow")}</p>
+          <h2 id="ba-title" className="mt-2 font-serif text-[1.45rem] leading-[1.15] text-white md:text-[clamp(1.75rem,3.2vw,2.4rem)]">{t("title")}</h2>
+          <p className="mt-2 text-[0.92rem] leading-snug text-[#d6d1c3] md:mt-3 md:text-[1rem]">{t("short")}</p>
           {showLink && (
-            <Link href="/build-account" className="mt-6 inline-flex items-center gap-2 font-semibold text-white underline decoration-1 underline-offset-4 hover:decoration-2">
-              {t("cta")} <span aria-hidden>→</span>
+            <Link href="/build-account" className="mt-4 hidden items-center gap-2 font-semibold text-white underline decoration-1 underline-offset-4 hover:decoration-2 md:inline-flex" data-testid="ba-see-how">
+              {t("seeHow")} <span aria-hidden>→</span>
             </Link>
           )}
         </div>
 
-        <div className="md:col-span-6" aria-label={t("demo.label")}>
+        <div className="md:col-span-7" aria-label={t("demo.label")}>
           <div className="overflow-hidden rounded-[6px] bg-paper text-charcoal shadow-[0_24px_48px_-24px_rgba(0,0,0,0.5)]">
-            <div className="flex items-center justify-between border-b border-rule px-5 py-3">
-              <span className="font-serif text-[1.02rem] text-forest">{t("demo.title")}</span>
+            <div className="flex items-center justify-between border-b border-rule px-4 py-2.5 md:px-5 md:py-3">
+              <span className="font-serif text-[0.98rem] text-forest md:text-[1.05rem]">{t("demo.title")}</span>
               <span className="ds-tag ds-tag-alert" data-testid="sample-tag">{t("demo.sample")}</span>
             </div>
             <div className="grid grid-cols-3 divide-x divide-rule border-b border-rule">
               {(["budget", "spent", "left"] as const).map((k) => (
-                <div key={k} className="px-4 py-3 sm:px-5">
-                  <p className="text-[11px] font-semibold tracking-wider text-slate uppercase">{t(`demo.${k}`)}</p>
-                  <p className="mt-1 font-serif text-lg sm:text-xl">
+                <div key={k} className="px-3 py-2.5 md:px-5 md:py-3">
+                  <p className="text-[10px] font-semibold tracking-wider text-slate uppercase md:text-[11px]">{t(`demo.${k}`)}</p>
+                  <p className="mt-0.5 font-serif text-[1.05rem] md:text-xl">
                     {formatCents(k === "budget" ? SAMPLE.budget : k === "spent" ? SAMPLE.spent : SAMPLE.budget - SAMPLE.spent).replace(".00", "")}
                   </p>
                 </div>
               ))}
             </div>
-            <div className="px-5 py-3.5">
-              <div className="flex items-center justify-between text-sm">
-                <span className="font-semibold">{t("demo.progress")}</span>
-                <span className="text-slate">{t("demo.progressValue")}</span>
-              </div>
-              <ol className="mt-2.5 grid grid-cols-5 gap-1.5">
-                {stages.map((s) => (
-                  <li key={s.name}>
-                    <span className={`block h-1.5 rounded-full ${s.state === "done" ? "bg-forest" : s.state === "now" ? "bg-stone" : "bg-sand"}`} />
-                    <span className={`mt-1.5 truncate text-[11px] ${s.state === "now" ? "block font-semibold whitespace-nowrap text-charcoal" : "hidden text-slate sm:block"}`}>{s.name}</span>
-                  </li>
+            <div className="px-4 py-3 md:px-5 md:py-3.5">
+              <p className="text-[0.82rem] font-semibold md:text-sm">{t("demo.progress")}</p>
+              <ol className="mt-2 grid grid-cols-6 gap-1" aria-hidden>
+                {Array.from({ length: STAGES }, (_, i) => (
+                  <li key={i} className={`h-1.5 rounded-full ${i + 1 < NOW ? "bg-forest" : i + 1 === NOW ? "bg-stone" : "bg-sand"}`} />
                 ))}
               </ol>
+              <p className="mt-2 text-[0.82rem] text-slate md:text-sm" data-testid="ba-stage">
+                {t("demo.stageOf", { n: NOW, total: STAGES })} · <span className="font-semibold text-charcoal">{t(`demo.s${NOW}`)}</span>
+              </p>
             </div>
           </div>
-          <p className="mt-2.5 text-xs text-[#c9c3b3]">{t("demo.note")}</p>
+          {showLink && (
+            <Link href="/build-account" className="mt-4 inline-flex items-center gap-2 text-[0.95rem] font-semibold text-white underline decoration-1 underline-offset-4 md:hidden" data-testid="ba-see-how-phone">
+              {t("seeHow")} <span aria-hidden>→</span>
+            </Link>
+          )}
         </div>
       </div>
     </section>
@@ -212,8 +214,8 @@ export function FinalCta() {
   const t = useTranslations("site.home.cta");
   const th = useTranslations("site.home.hero");
   return (
-    <section aria-labelledby="cta-title" className="bg-sand py-10 md:py-14">
-      <div className="ds-wrap flex flex-col items-start gap-5 md:flex-row md:items-center md:justify-between">
+    <section aria-labelledby="cta-title" className="bg-sand py-7 md:py-14">
+      <div className="ds-wrap flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
         <h2 id="cta-title" className="ds-h2 max-w-xl">{t("title")}</h2>
         <Link href="/book-a-call" className="ds-btn ds-btn-primary shrink-0" data-testid="final-cta">
           {th("cta")} <span aria-hidden>→</span>

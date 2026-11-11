@@ -1955,9 +1955,12 @@
           "u3": "Mubhadharo wenhanho yeslab wasimbiswa",
           "u3When": "Svondo rapfuura",
           "note": "Muenzaniso une nhamba dzekuedzesera — haasi mutengi chaiye.",
-          "receiptOk": "Risiti"
+          "receiptOk": "Risiti",
+          "s6": "Kupedzisa",
+          "stageOf": "Nhanho {n} pa{total}"
         },
-        "short": "Dhora rega rega rakatumirwa kumusha, risiti yega yega nezvasara — nhanho nenhanho, muaccount yako yeLBH."
+        "short": "Dhora rega rega, risiti nenhanho — panzvimbo imwe.",
+        "seeHow": "Ona kuti Build Account inoshanda sei"
       },
       "process": {
         "eyebrow": "Zvinofamba sei",

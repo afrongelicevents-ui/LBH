@@ -1954,9 +1954,12 @@
           "u3": "Payment confirmed for the slab stage",
           "u3When": "Last week",
           "note": "Illustration with sample figures — not a real client.",
-          "receiptOk": "Receipt"
+          "receiptOk": "Receipt",
+          "s6": "Finishes",
+          "stageOf": "Stage {n} of {total}"
         },
-        "short": "Every dollar sent home, every receipt and what is left — stage by stage, in your LBH account."
+        "short": "Every dollar, receipt and stage — in one place.",
+        "seeHow": "See how the Build Account works"
       },
       "process": {
         "eyebrow": "How it works",

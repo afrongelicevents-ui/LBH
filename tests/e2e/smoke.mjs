@@ -276,6 +276,11 @@ console.log("\nPublic website");
     assert((await page.getByTestId("service-tiles").locator('a[href*="/services/"]').count()) === 4, "service tiles");
     assert((await page.locator("main figcaption").count()) === 0, "photo credit text on the homepage");
     assert((await page.locator('main a[href$="/book-a-call"]').count()) === 2, "booking buttons on the homepage");
+    // Build Account band: labelled sample, full stage name, one link to /build-account
+    const ba = page.getByTestId("home-ba");
+    await ba.getByTestId("sample-tag").waitFor();
+    assert((await ba.getByTestId("ba-stage").innerText()) === "Stage 3 of 6 · Window level", "stage label");
+    assert((await ba.locator('a[href$="/build-account"]').count()) >= 1, "See how the Build Account works link");
     const hero = await page.getByTestId("home-hero").innerText();
     assert(!/\$\s?\d/.test(hero), "a price appears in the hero");
     await page.locator('footer a[href$="/about#photo-credits"]').click();

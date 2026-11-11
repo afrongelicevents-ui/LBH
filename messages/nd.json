@@ -1955,9 +1955,12 @@
           "u3": "Inkokhelo iqinisekisiwe yesigaba se-slab",
           "u3When": "Iviki eledlulayo",
           "note": "Umfanekiso onezibalo zesibonelo — akusilo khasimende eliqotho.",
-          "receiptOk": "Irisidi"
+          "receiptOk": "Irisidi",
+          "s6": "Ukuqedisa",
+          "stageOf": "Isigaba {n} ku-{total}"
         },
-        "short": "Idola ngalinye elithunyelwe ekhaya, irisidi ngayinye lokuseleyo — isigaba ngesigaba, ku-akhawunti yakho ye-LBH."
+        "short": "Idola ngalinye, irisidi lesigaba — endaweni eyodwa.",
+        "seeHow": "Bona ukuthi i-Build Account isebenza njani"
       },
       "process": {
         "eyebrow": "Kusebenza njani",

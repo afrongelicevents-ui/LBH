@@ -21,8 +21,8 @@ export default function SiteFooter({ logo = "/images/logo.jpg" }: { logo?: strin
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-charcoal pb-8 text-[#d9d6cd] md:pb-8" data-testid="site-footer">
-      <div className="ds-wrap flex flex-col gap-6 pt-9 md:flex-row md:items-center md:justify-between md:pt-10">
+    <footer className="bg-charcoal pb-6 text-[#d9d6cd] md:pb-8" data-testid="site-footer">
+      <div className="ds-wrap flex flex-col gap-5 pt-7 md:flex-row md:items-center md:justify-between md:pt-10">
         <Link href="/" className="inline-flex items-center gap-3" aria-label={tc("brand")}>
           <span className="rounded-[4px] bg-paper p-1">
             <Image src={logo} alt="" width={96} height={76} className="h-8 w-auto" />
@@ -46,7 +46,7 @@ export default function SiteFooter({ logo = "/images/logo.jpg" }: { logo?: strin
         )}
       </div>
 
-      <div className="ds-wrap mt-7 flex flex-col gap-3 border-t border-[#3a3d35] pt-5 text-xs text-[#a19d92] md:flex-row md:items-center md:justify-between">
+      <div className="ds-wrap mt-6 flex flex-col gap-3 border-t border-[#3a3d35] pt-4 text-xs text-[#a19d92] md:flex-row md:items-center md:justify-between">
         <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <span>© {year} {tc("brand")}</span>
           <span aria-hidden>·</span>
