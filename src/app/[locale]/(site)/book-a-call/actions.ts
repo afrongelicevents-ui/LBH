@@ -4,6 +4,7 @@ import { bookingSchema } from "@/lib/booking";
 import { resolveCountry } from "@/lib/country";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { rateLimited } from "@/lib/ratelimit";
+import { brandedHtml, brandedText, inviteLink, type BrandedEmail } from "@/lib/emailLayout";
 import { sendEmail } from "@/lib/email";
 import { site } from "@/config/site";
 
@@ -45,7 +46,7 @@ export async function submitBooking(
     });
 
     let clientId: string | null = null;
-    let inviteNote = "";
+    let invite: string | null = null;
 
     if (existingId) {
       const { data: existingProfile } = await admin
@@ -77,9 +78,7 @@ export async function submitBooking(
             redirectTo: `${site.url}/account/password`,
           },
         });
-        if (link?.properties?.action_link) {
-          inviteNote = `\n\nSet up your LBH portal account (view quotes, approve costs, read reports):\n${link.properties.action_link}`;
-        }
+        invite = inviteLink(link?.properties?.hashed_token);
       }
     }
 
@@ -97,16 +96,23 @@ export async function submitBooking(
     });
     if (insertErr) throw new Error(insertErr.message);
 
+    const mail: BrandedEmail = {
+      preheader: "We received your request — we'll confirm the time soon.",
+      title: "Your free first call is booked",
+      paragraphs: [
+        `Hi ${d.name},`,
+        `Thank you — we received your request for a free first call (${d.slot}, ${d.callType}). We will confirm the exact time by email${site.whatsappNumber ? " and WhatsApp" : ""}.`,
+        ...(invite ? ["Your LBH account is ready too: see quotes, approve costs and read reports in one place."] : []),
+        "Talk soon — the Let's Build Home team.",
+      ],
+      ...(invite ? { button: { label: "Set up my account", href: invite } } : {}),
+      note: "The call is free, with no obligation.",
+    };
     await sendEmail({
       to: d.email,
-      subject: "LBH — your free first call is booked",
-      text:
-        `Hi ${d.name},\n\n` +
-        `Thank you — we received your request for a free first call ` +
-        `(${d.slot}, ${d.callType}). We will confirm the exact time by email ` +
-        `and WhatsApp.\n\nTalk soon,\nLBH — Let's Build Home\n` +
-        (site.whatsappNumber ? `WhatsApp: https://wa.me/${site.whatsappNumber}` : "") +
-        inviteNote,
+      subject: "Your free first call is booked — Let's Build Home",
+      text: brandedText(mail),
+      html: brandedHtml(mail),
     });
 
     return { status: "ok" };

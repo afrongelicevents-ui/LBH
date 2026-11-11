@@ -9,6 +9,8 @@ export async function sendEmail(opts: {
   to: string;
   subject: string;
   text: string;
+  /** Optional LBH-branded HTML (see emailLayout.ts); text stays as the fallback. */
+  html?: string;
 }): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.EMAIL_FROM ?? "LBH <noreply@letsbuildhome.co.zw>";
@@ -31,6 +33,7 @@ export async function sendEmail(opts: {
       to: [opts.to],
       subject: opts.subject,
       text: opts.text,
+      ...(opts.html ? { html: opts.html } : {}),
     }),
   });
   if (!res.ok) {

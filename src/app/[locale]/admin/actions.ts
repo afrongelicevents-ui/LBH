@@ -6,6 +6,7 @@ import { requireAdminAction } from "@/lib/auth/admin-guard";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { confirmPaymentByReference } from "@/lib/payments";
 import { parseDollarsToCents } from "@/lib/money";
+import { brandedHtml, brandedText, inviteLink, type BrandedEmail } from "@/lib/emailLayout";
 import { sendEmail } from "@/lib/email";
 import { site } from "@/config/site";
 import { parseUploadRefs, storeQuoteFile, uploadErrorCode } from "@/lib/uploads";
@@ -638,11 +639,14 @@ export async function inviteStaff(
       email: d.email.toLowerCase(),
       options: { redirectTo: `${site.url}/account/password` },
     });
-    await sendEmail({
-      to: d.email,
-      subject: "LBH — your staff account",
-      text: `Hi ${d.full_name},\n\nAn LBH ${d.role} account was created for you. Set your password here:\n${link?.properties?.action_link ?? site.url}\n\nYou will be asked to set up two-factor authentication on first login.\n\nLBH`,
-    });
+    const mail: BrandedEmail = {
+      preheader: "Set your password to open your LBH staff account.",
+      title: "Your LBH staff account",
+      paragraphs: [`Hi ${d.full_name},`, `An LBH ${d.role} account was created for you. Choose your password to open it.`],
+      button: { label: "Set my password", href: inviteLink(link?.properties?.hashed_token) ?? `${site.url}/login` },
+      note: "On your first login you will be asked to set up two-factor authentication with an authenticator app.",
+    };
+    await sendEmail({ to: d.email, subject: "Your LBH staff account — Let's Build Home", text: brandedText(mail), html: brandedHtml(mail) });
 
     await supabase.rpc("admin_log_audit", {
       p_action: "staff.invited",
