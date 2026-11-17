@@ -6,7 +6,7 @@ import { formatCents } from "@/lib/money";
 /** Illustration only — clearly labelled "Sample data" on the page. */
 const SAMPLE = { budget: 4200000, spent: 1845000 };
 
-export type HomePhotos = Record<"hero" | "land" | "materials" | "onsite" | "reporting", PhotoSource>;
+export type HomePhotos = Record<"hero" | "land" | "materials" | "onsite" | "reporting" | "interiors", PhotoSource>;
 
 /* ------------------------------------------------------------------ */
 /* Hero                                                                */
@@ -77,17 +77,19 @@ export function TrustRow() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Services — alternating editorial rows                              */
+/* Services — three groups that follow a build: Land · Build · Finish  */
 /* ------------------------------------------------------------------ */
-export function ServicesEditorial({ photos }: { photos: HomePhotos }) {
+const GROUPS = [
+  { key: "land", href: "/services#land", items: [["land", "/services#land"], ["landBuying", "/services#land-buying"]] },
+  { key: "build", href: "/services#build", items: [["materials", "/services#materials"], ["onsite", "/services#onsite"], ["reporting", "/services#reporting"]] },
+  { key: "finish", href: "/services/interiors", items: [["interiors", "/services/interiors"]] },
+] as const;
+
+export function ServicesGroups({ photos }: { photos: HomePhotos }) {
   const t = useTranslations("site.home.services");
+  const tg = useTranslations("site.groups");
   const ts = useTranslations("site");
-  const rows = [
-    { key: "land", photo: photos.land },
-    { key: "materials", photo: photos.materials },
-    { key: "onsite", photo: photos.onsite },
-    { key: "reporting", photo: photos.reporting },
-  ] as const;
+  const photoFor = { land: photos.land, build: photos.onsite, finish: photos.interiors };
   return (
     <section aria-labelledby="services-title" className="py-16 md:py-24" data-testid="home-services">
       <div className="ds-wrap">
@@ -99,37 +101,31 @@ export function ServicesEditorial({ photos }: { photos: HomePhotos }) {
           <p className="ds-lead md:col-span-6 md:col-start-7 md:pt-8">{t("intro")}</p>
         </div>
 
-        <div className="mt-12 space-y-14 md:mt-16 md:space-y-20">
-          {rows.map((r, i) => (
-            <article key={r.key} id={r.key} className="grid scroll-mt-24 items-center gap-6 md:grid-cols-12 md:gap-10">
-              <Photo
-                photo={r.photo}
-                sizes="(min-width: 768px) 55vw, 100vw"
-                className={`aspect-[4/3] w-full rounded-[3px] md:col-span-7 ${i % 2 ? "md:order-2" : ""}`}
-                stockLabel={ts("stockPhoto")}
-              />
-              <div className={`md:col-span-5 ${i % 2 ? "md:order-1" : ""}`}>
-                <p className="font-serif text-lg text-stone-ink">{String(i + 1).padStart(2, "0")}</p>
-                <h3 className="ds-h3 mt-1 text-[1.6rem]">{t(`${r.key}.title`)}</h3>
-                <p className="ds-body mt-3">{t(`${r.key}.text`)}</p>
-                <ul className="mt-4 space-y-1.5 text-[15px] text-charcoal">
-                  {[1, 2, 3].map((n) => (
-                    <li key={n} className="flex gap-2.5">
-                      <span aria-hidden className="mt-[0.6rem] h-px w-3 shrink-0 bg-forest" />
-                      {t(`${r.key}.p${n}`)}
-                    </li>
-                  ))}
-                </ul>
-                <Link href={`/services#${r.key}`} className="ds-link mt-5 inline-block text-[15px]">
-                  {t("more")}
-                  <span className="sr-only"> — {t(`${r.key}.title`)}</span>
-                </Link>
-              </div>
-            </article>
+        <ol className="mt-12 grid gap-10 md:mt-14 md:grid-cols-3 md:gap-8">
+          {GROUPS.map((g, i) => (
+            <li key={g.key} id={`group-${g.key}`} data-testid={`group-${g.key}`} className="flex flex-col">
+              <Photo photo={photoFor[g.key]} sizes="(min-width: 768px) 33vw, 100vw" className="aspect-[4/3] w-full rounded-[3px]" stockLabel={ts("stockPhoto")} />
+              <p className="mt-5 font-serif text-lg text-stone-ink">{String(i + 1).padStart(2, "0")}</p>
+              <h3 className="ds-h3 text-[1.6rem]">{tg(`${g.key}.title`)}</h3>
+              <p className="ds-body mt-2">{tg(`${g.key}.text`)}</p>
+              <ul className="mt-4 border-t border-rule text-[15px]">
+                {g.items.map(([k, href]) => (
+                  <li key={k} className="border-b border-rule">
+                    <Link href={href} className="flex items-center justify-between py-2.5 text-charcoal hover:text-forest">
+                      {tg(`items.${k}`)}
+                      <span aria-hidden className="text-slate">→</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <Link href={g.href} className="ds-link mt-4 inline-block text-[15px]">
+                {tg(`${g.key}.more`)}
+              </Link>
+            </li>
           ))}
-        </div>
+        </ol>
 
-        <p className="mt-14 border-t border-rule pt-5 text-sm text-slate" data-testid="camera-soon">
+        <p className="mt-12 border-t border-rule pt-5 text-sm text-slate" data-testid="camera-soon">
           <span className="ds-tag mr-2">{t("soonTag")}</span>
           {t("camera")}
         </p>

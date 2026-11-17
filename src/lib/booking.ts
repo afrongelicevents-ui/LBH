@@ -10,7 +10,7 @@ export const bookingSchema = z.object({
     .trim()
     .regex(/^\+?[0-9\s\-()]{7,20}$/, "invalid phone"),
   ...countryFields,
-  service: z.enum(["land", "materials", "monitoring", "camera", "not-sure"]),
+  service: z.enum(["land", "materials", "monitoring", "camera", "interiors", "not-sure"]),
   description: z.string().trim().max(2000).optional().default(""),
   slot: z.enum(["morning", "afternoon", "evening", "weekend"]),
   callType: z.enum(["phone", "video"]),

@@ -1,5 +1,5 @@
 /**
- * Build step: download the five licensed Wikimedia Commons photos (CC BY-SA 4.0)
+ * Build step: download the licensed Wikimedia Commons photos (CC BY-SA 4.0)
  * used until genuine LBH photos are uploaded, resize them, and record which ones
  * are available. Never fails the build: if a download fails, the site keeps its
  * labelled placeholders for that photo.
@@ -17,6 +17,7 @@ const PHOTOS = {
   onsite: { url: "https://upload.wikimedia.org/wikipedia/commons/7/71/Zambia_-Constructing_a_house.jpg", width: 1600 },
   reporting: { url: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Building_in_progress.jpg", width: 1600 },
   land: { url: "https://upload.wikimedia.org/wikipedia/commons/0/01/Two_garage_house.jpg", width: 1600 },
+  interiors: { url: "https://upload.wikimedia.org/wikipedia/commons/3/38/Living_Room_2.jpg", width: 1600 },
 };
 
 mkdirSync(OUT, { recursive: true });

@@ -8,7 +8,7 @@ import LocaleDropdown from "@/components/LocaleDropdown";
 import SignOutButton from "@/components/portal/SignOutButton";
 import { signOut } from "@/lib/auth/actions";
 import { homeForRole } from "@/lib/auth/roles";
-import { ACCOUNT_NAV, HEADER_LINKS, publicNav } from "@/config/siteNav";
+import { ACCOUNT_NAV, HEADER_LINKS, SERVICE_GROUPS, publicNav } from "@/config/siteNav";
 import { initialsOf, useAuthProfile, type HeaderProfile } from "@/components/auth/useAuthProfile";
 
 function isActive(pathname: string, href: string) {
@@ -114,16 +114,39 @@ export default function SiteHeader({
         </Link>
 
         <nav aria-label={t("mainNav")} className="ml-8 hidden flex-1 items-center gap-6 whitespace-nowrap xl:gap-8 lg:flex">
-          {HEADER_LINKS.map((l) => (
-            <Link
-              key={l.key}
-              href={l.href}
-              className="ds-navlink"
-              aria-current={isActive(pathname, l.href) ? "page" : undefined}
-            >
-              {t(`nav.${l.key}`)}
-            </Link>
-          ))}
+          {HEADER_LINKS.map((l) =>
+            l.key === "services" ? (
+              <div key={l.key} className="group relative" data-testid="nav-services">
+                <Link href={l.href} className="ds-navlink inline-flex items-center gap-1" aria-current={isActive(pathname, l.href) ? "page" : undefined}>
+                  {t(`nav.${l.key}`)}
+                  <svg width="11" height="11" viewBox="0 0 12 12" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+                    <path d="M2.5 4.5L6 8l3.5-3.5" />
+                  </svg>
+                </Link>
+                <div className="invisible absolute top-full left-[-1rem] z-50 pt-3 opacity-0 transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+                  <ul className="w-64 border border-rule bg-paper py-2 shadow-lg">
+                    {SERVICE_GROUPS.map((g) => (
+                      <li key={g.key}>
+                        <Link href={g.href} className="block px-4 py-2.5 hover:bg-sand">
+                          <span className="block font-serif text-[1.05rem] text-charcoal">{t(`groups.${g.key}.title`)}</span>
+                          <span className="block text-xs text-slate">{t(`groups.${g.key}.short`)}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ) : (
+              <Link
+                key={l.key}
+                href={l.href}
+                className="ds-navlink"
+                aria-current={isActive(pathname, l.href) ? "page" : undefined}
+              >
+                {t(`nav.${l.key}`)}
+              </Link>
+            )
+          )}
         </nav>
 
         <div className="ml-auto flex items-center gap-2 md:gap-3">
@@ -242,6 +265,19 @@ export default function SiteHeader({
                       >
                         {t(`nav.${l.key}`)}
                       </Link>
+                      {l.key === "services" && (
+                        <ul className="border-b border-rule py-1.5 pl-4" data-testid="menu-service-groups">
+                          {SERVICE_GROUPS.map((g) => (
+                            <li key={g.key}>
+                              <Link href={g.href} className="flex items-baseline gap-2 py-1.5 text-sm text-charcoal hover:text-forest">
+                                <span aria-hidden className="h-px w-3 bg-stone" />
+                                {t(`groups.${g.key}.title`)}
+                                <span className="text-xs text-slate">· {t(`groups.${g.key}.short`)}</span>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </li>
                   ))}
                 </ul>

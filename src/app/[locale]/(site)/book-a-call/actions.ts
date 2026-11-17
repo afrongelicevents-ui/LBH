@@ -6,6 +6,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { rateLimited } from "@/lib/ratelimit";
 import { sendEmail } from "@/lib/email";
 import { site } from "@/config/site";
+import { findOrCreateClient } from "@/lib/clientAccount";
 
 export type BookingResult =
   | { status: "ok" }
@@ -38,50 +39,12 @@ export async function submitBooking(
   const admin = createAdminClient();
 
   try {
-    // Existing account? Matched on the verified auth email (auth.users),
-    // never on the user-editable profile row.
-    const { data: existingId } = await admin.rpc("find_user_id_by_email", {
-      p_email: d.email,
+    const { clientId, inviteNote } = await findOrCreateClient(admin, {
+      email: d.email,
+      name: d.name,
+      whatsapp: d.whatsapp,
+      country: resolveCountry(d) ?? "other",
     });
-
-    let clientId: string | null = null;
-    let inviteNote = "";
-
-    if (existingId) {
-      const { data: existingProfile } = await admin
-        .from("profiles")
-        .select("role")
-        .eq("id", existingId)
-        .single();
-      // Only attach bookings to client accounts, never to staff.
-      if (existingProfile?.role === "client") clientId = existingId as string;
-    } else {
-      const { data: created, error: createErr } =
-        await admin.auth.admin.createUser({
-          email: d.email.toLowerCase(),
-          email_confirm: false,
-          user_metadata: {
-            full_name: d.name,
-            whatsapp: d.whatsapp,
-            country: resolveCountry(d) ?? "other",
-          },
-        });
-      if (createErr) {
-        console.error(`[booking] createUser: ${createErr.message}`);
-      } else {
-        clientId = created.user.id;
-        const { data: link } = await admin.auth.admin.generateLink({
-          type: "invite",
-          email: d.email.toLowerCase(),
-          options: {
-            redirectTo: `${site.url}/account/password`,
-          },
-        });
-        if (link?.properties?.action_link) {
-          inviteNote = `\n\nSet up your LBH portal account (view quotes, approve costs, read reports):\n${link.properties.action_link}`;
-        }
-      }
-    }
 
     const { error: insertErr } = await admin.from("call_bookings").insert({
       client_id: clientId,

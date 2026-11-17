@@ -35,6 +35,9 @@ export default function SiteFooter({ logo = "/images/logo.jpg" }: { logo?: strin
               </li>
             ))}
             <li>
+              <Link href="/services/interiors" className="hover:text-white">{t("groups.items.interiors")}</Link>
+            </li>
+            <li>
               <Link href="/build-account" className="hover:text-white">{t("nav.buildAccount")}</Link>
             </li>
           </ul>

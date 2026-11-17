@@ -201,7 +201,8 @@
     "countryZW": "Zimbabwe",
     "countryOtherName": "Which country do you live in?",
     "countryOtherPlaceholder": "e.g. Botswana, Australia, Canada",
-    "errorCountry": "Please write the country you live in."
+    "errorCountry": "Please write the country you live in.",
+    "services": {}
   },
   "termsPage": {
     "metaTitle": "Terms of Service",
@@ -555,7 +556,8 @@
     "requestType": {
       "land_verification": "Land verification",
       "materials": "Materials",
-      "build": "Construction build"
+      "build": "Construction build",
+      "interiors": "Interiors & furnishing"
     },
     "jobStatus": {
       "assigned": "Assigned",
@@ -1039,6 +1041,41 @@
           "name": "Progress reporting",
           "where": "Homepage and Services page — the progress reporting section.",
           "tip": "A house partly built, or an inspection on site. At least {min}px wide."
+        },
+        "interiors": {
+          "name": "Interiors & furnishing",
+          "where": "Homepage (Finish column), Services page and the Interiors page header.",
+          "tip": "A finished, furnished room. At least {min}px wide."
+        },
+        "interiors_before_1": {
+          "name": "Interiors — before 1",
+          "where": "Interiors page, before/after gallery, pair 1 (before).",
+          "tip": "The empty room before furnishing. Upright photo works best. At least {min}px wide."
+        },
+        "interiors_after_1": {
+          "name": "Interiors — after 1",
+          "where": "Interiors page, before/after gallery, pair 1 (after).",
+          "tip": "The same room after LBH furnished it, from the same angle. At least {min}px wide."
+        },
+        "interiors_before_2": {
+          "name": "Interiors — before 2",
+          "where": "Interiors page, before/after gallery, pair 2 (before).",
+          "tip": "The empty room before furnishing. Upright photo works best. At least {min}px wide."
+        },
+        "interiors_after_2": {
+          "name": "Interiors — after 2",
+          "where": "Interiors page, before/after gallery, pair 2 (after).",
+          "tip": "The same room after LBH furnished it, from the same angle. At least {min}px wide."
+        },
+        "interiors_before_3": {
+          "name": "Interiors — before 3",
+          "where": "Interiors page, before/after gallery, pair 3 (before).",
+          "tip": "The empty room before furnishing. Upright photo works best. At least {min}px wide."
+        },
+        "interiors_after_3": {
+          "name": "Interiors — after 3",
+          "where": "Interiors page, before/after gallery, pair 3 (after).",
+          "tip": "The same room after LBH furnished it, from the same angle. At least {min}px wide."
         }
       },
       "kindQuestion": "What is this photo?",
@@ -1349,7 +1386,8 @@
       "type": {
         "land_verification": "Land verification",
         "materials": "Materials",
-        "build": "Construction"
+        "build": "Construction",
+        "interiors": "Interiors & furnishing"
       },
       "noUpdates": "No updates yet.",
       "ev": {
@@ -1873,8 +1911,8 @@
       },
       "services": {
         "eyebrow": "Our services",
-        "title": "Everything a build needs, handled on the ground.",
-        "intro": "Each job starts with a free consultation and a written quote. You decide what happens next — LBH does the work locally and shows you the evidence.",
+        "title": "From the land to the last cushion.",
+        "intro": "Three stages, one team on the ground. Every job starts with a free consultation and a written quote — you decide what happens next.",
         "more": "Learn more",
         "soonTag": "Coming soon",
         "camera": "A live site camera, so you can look in on your build from anywhere.",
@@ -2006,7 +2044,7 @@
     "servicesPage": {
       "metaTitle": "Our services",
       "metaDescription": "Land verification, materials procurement, on-site management and progress reporting for homes built in Zimbabwe from abroad.",
-      "title": "Four services, one team on the ground in Zimbabwe.",
+      "title": "Land, build and finish — one team on the ground in Zimbabwe.",
       "intro": "Every job starts with a free consultation and a written quote. Prices depend on your stand and your build, so they are never shown publicly — your quote is personal to you. Nothing is bought or started without your approval.",
       "jump": "Services on this page",
       "whatWeDo": "What we do",
@@ -2050,7 +2088,17 @@
       "camera": {
         "title": "Live site camera",
         "text": "A camera on your site, so you can look in on your build from anywhere. Leave your email and we will tell you when it is available."
-      }
+      },
+      "landBuying": {
+        "title": "Land buying",
+        "text": "Looking for a stand? Tell us the area, size and budget. We look for stands that fit, check each one before you commit, and help you through the purchase — you decide, and you pay the seller only when the checks are clear.",
+        "p1": "Stands that match your area, size and budget",
+        "p2": "Each stand verified before you commit",
+        "p3": "Help with the agreement of sale and the transfer",
+        "p4": "Nothing paid without your approval",
+        "receive": "a shortlist with the evidence, and support until the stand is in your name."
+      },
+      "interiorsTeaser": "When your house is finished or nearly finished, we design your rooms in 3D with you, find real furniture, appliances and finishes from shops with prices, then buy, deliver and furnish — with photos of every room."
     },
     "howPage": {
       "title": "From first call to finished report — with you in control."
@@ -2112,6 +2160,206 @@
       "metaTitle": "Projects",
       "title": "LBH projects, photographed on site.",
       "intro": "Real LBH projects with photos taken by our team. Client details are kept private."
+    },
+    "groups": {
+      "land": {
+        "title": "Land",
+        "short": "Check and buy the right stand",
+        "text": "Before you build: make sure the land is real, legal and right for you.",
+        "more": "Land services"
+      },
+      "build": {
+        "title": "Build",
+        "short": "Materials, site management, reports",
+        "text": "While you build: materials bought well, work managed on site, and dated reports.",
+        "more": "Build services"
+      },
+      "finish": {
+        "title": "Finish",
+        "short": "Interiors & furnishing",
+        "text": "When the house is ready: design the rooms and furnish your home.",
+        "more": "See packages and book"
+      },
+      "items": {
+        "land": "Land verification",
+        "landBuying": "Land buying",
+        "materials": "Materials procurement",
+        "onsite": "On-site management",
+        "reporting": "Progress reporting",
+        "interiors": "Interiors & furnishing"
+      }
+    },
+    "interiors": {
+      "metaTitle": "Interiors & furnishing",
+      "title": "Design and furnish your home back home, from anywhere.",
+      "intro": "We design your rooms with you, find what you need from real shops, buy it, deliver it and furnish the house — and show you every room in photos.",
+      "cta": "Book a design consultation",
+      "whatTitle": "What we do",
+      "whatIntro": "Everything to turn a finished house into a home, handled on the ground.",
+      "what": {
+        "design": {
+          "title": "Interior design",
+          "text": "A plan for each room that fits how you live and your budget."
+        },
+        "threeD": {
+          "title": "3D room designs",
+          "text": "See your rooms before anything is bought, and change them with us."
+        },
+        "furniture": {
+          "title": "Choosing furniture",
+          "text": "Sofas, beds, tables and storage from real shops in Zimbabwe."
+        },
+        "appliances": {
+          "title": "Appliances",
+          "text": "Fridge, stove, washing machine and more, compared on price."
+        },
+        "finishes": {
+          "title": "Colours, curtains and flooring",
+          "text": "Paint colours, curtains and blinds, tiles and flooring."
+        },
+        "buy": {
+          "title": "Buying everything",
+          "text": "Only what you approve, with every receipt recorded."
+        },
+        "furnish": {
+          "title": "Furnishing the house",
+          "text": "Delivery, assembly and setting up each room."
+        }
+      },
+      "howTitle": "How it works",
+      "steps": {
+        "s1": {
+          "title": "Book a design consultation",
+          "text": "A video or phone call about your house, your rooms and how you live."
+        },
+        "s2": {
+          "title": "Share your plans and style",
+          "text": "Send plans, photos of the rooms, and the styles and items you like."
+        },
+        "s3": {
+          "title": "We design your rooms in 3D",
+          "text": "We go through the designs with you on a video call and adjust them together."
+        },
+        "s4": {
+          "title": "Real options with prices",
+          "text": "You get options from real shops with prices, and choose what you want."
+        },
+        "s5": {
+          "title": "Approve and pay",
+          "text": "Nothing is bought until you approve the quote and pay."
+        },
+        "s6": {
+          "title": "We buy, deliver and furnish",
+          "text": "We buy, deliver and set up every room — with photos of each one."
+        }
+      },
+      "packagesTitle": "Packages",
+      "packagesIntro": "Every home is different, so each package is quoted after the consultation.",
+      "quoted": "Quoted after consultation",
+      "packages": {
+        "consultation": {
+          "title": "Design consultation",
+          "text": "A call with our designer about your rooms, style and budget.",
+          "p1": "Advice for each room",
+          "p2": "Ideas for colours and layout",
+          "p3": "A written summary after the call"
+        },
+        "design3d": {
+          "title": "3D design",
+          "text": "Your rooms designed in 3D, adjusted with you on a video call.",
+          "p1": "3D designs of your chosen rooms",
+          "p2": "Changes together on a video call",
+          "p3": "A list of items with shop prices"
+        },
+        "full": {
+          "title": "Design + furnishing",
+          "text": "We design, buy, deliver and furnish the whole house for you.",
+          "p1": "Everything in 3D design",
+          "p2": "Buying, delivery and set-up",
+          "p3": "Photos of every finished room"
+        }
+      },
+      "galleryTitle": "Before and after",
+      "galleryIntro": "Real LBH rooms, before and after furnishing. Photos are added here as projects are finished.",
+      "before": "Before",
+      "after": "After",
+      "beforeAlt": "Room {n} before furnishing",
+      "afterAlt": "Room {n} after furnishing",
+      "photoSoon": "Photo coming soon",
+      "bookTitle": "Book a design consultation",
+      "bookIntro": "Tell us about your house. We will confirm a time for the call by email and WhatsApp, and set up your LBH account so you can follow everything.",
+      "bookIntroSignedIn": "Tell us about your house. Your interiors project is created in your account straight away, with your photos and plans.",
+      "form": {
+        "location": "Where is the house?",
+        "locationHint": "e.g. Harare South, Stand 412",
+        "houseStatus": "The house is…",
+        "status": {
+          "finished": "Finished",
+          "nearly_finished": "Nearly finished"
+        },
+        "rooms": "Which rooms?",
+        "room": {
+          "living": "Living room",
+          "dining": "Dining room",
+          "kitchen": "Kitchen",
+          "main_bedroom": "Main bedroom",
+          "bedrooms": "Other bedrooms",
+          "bathrooms": "Bathrooms",
+          "outdoor": "Patio / outdoor",
+          "whole_house": "Whole house"
+        },
+        "budget": "Budget range (USD)",
+        "budgets": {
+          "under_2k": "Under 2,000",
+          "2k_5k": "2,000 – 5,000",
+          "5k_10k": "5,000 – 10,000",
+          "10k_20k": "10,000 – 20,000",
+          "over_20k": "Over 20,000",
+          "not_sure": "Not sure yet"
+        },
+        "timeline": "When would you like it done?",
+        "timelines": {
+          "asap": "As soon as possible",
+          "1_3_months": "In 1–3 months",
+          "3_6_months": "In 3–6 months",
+          "later": "Later"
+        },
+        "choose": "Choose…",
+        "styles": "Items and styles you like",
+        "stylesHint": "e.g. warm wood, light colours, a big dining table, links to pictures you like",
+        "photos": "Photos or plans of the house",
+        "photosHint": "Up to 10 photos (JPG, PNG) or PDF plans.",
+        "photosAfter": "After booking you can add photos and plans in your LBH account.",
+        "slot": "Best time for the call",
+        "slots": {
+          "morning": "Morning",
+          "afternoon": "Afternoon",
+          "evening": "Evening",
+          "weekend": "Weekend"
+        },
+        "callType": "Call by",
+        "callTypes": {
+          "video": "Video call",
+          "phone": "Phone"
+        },
+        "submit": "Book a design consultation",
+        "sending": "Sending…",
+        "uploading": "Uploading photos…",
+        "noteVisitor": "Free consultation. No payment now — you approve a quote before anything is bought.",
+        "noteSignedIn": "Your project appears in your account straight away.",
+        "thanksTitle": "Thank you — your consultation is booked.",
+        "thanksText": "We will confirm the time by email and WhatsApp. Check your email to set up your LBH account, where you can add photos and plans.",
+        "errors": {
+          "invalid": "Please fill in the required fields.",
+          "rooms": "Choose at least one room.",
+          "rate": "Too many requests — please try again later.",
+          "toobig": "A file is too big.",
+          "filetype": "Use JPG, PNG or PDF files.",
+          "upload": "Upload failed — please try again.",
+          "network": "No connection — please try again.",
+          "staff": "Staff accounts can't book a consultation."
+        }
+      }
     }
   }
 }

@@ -1056,4 +1056,47 @@ d("RLS & business rules (local Supabase)", () => {
       expect(data?.public).toBe(false);
     });
   });
+  // ---------- Interiors & furnishing ----------
+  describe("Interiors: clients see and choose only their own options; only LBH buys", () => {
+    const REQ = "70000000-0000-4000-a000-000000000001";
+    const OPTION = "71000000-0000-4000-a000-000000000003";
+    const BOUGHT = "71000000-0000-4000-a000-000000000004";
+    beforeAll(async () => {
+      await service.from("interior_items").update({ status: "option", chosen_at: null }).eq("id", OPTION);
+    });
+
+    it("owner sees the items; other clients, field staff and visitors do not", async () => {
+      expect(((await client.from("interior_items").select("id").eq("request_id", REQ)).data ?? []).length).toBeGreaterThanOrEqual(4);
+      expect((await client2.from("interior_items").select("id").eq("request_id", REQ)).data).toHaveLength(0);
+      expect((await agent.from("interior_items").select("id").eq("request_id", REQ)).data).toHaveLength(0);
+      expect((await anon.from("interior_items").select("id")).data ?? []).toHaveLength(0);
+      expect((await client2.from("interior_photos").select("id").eq("request_id", REQ)).data).toHaveLength(0);
+    });
+
+    it("a client can create an interiors request for themselves, but not edit items or mark them bought", async () => {
+      const r = await client.from("service_requests").insert({ client_id: IDS.client, type: "interiors", status: "new", title: "TEST interiors" }).select("id").single();
+      expect(r.error).toBeNull();
+      await service.from("service_requests").delete().eq("id", r.data!.id);
+      await client.from("interior_items").update({ status: "bought", price_cents: 1 }).eq("id", OPTION);
+      const { data } = await service.from("interior_items").select("status, price_cents").eq("id", OPTION).single();
+      expect(data).toEqual({ status: "option", price_cents: 9500 });
+      expect((await client.from("interior_items").insert({ request_id: REQ, room: "x", name: "x", price_cents: 1 })).error).not.toBeNull();
+    });
+
+    it("choosing goes through the RPC: owner only, and never after LBH bought it", async () => {
+      expect((await client2.rpc("interior_choose", { p_item: OPTION, p_choose: true })).error).not.toBeNull();
+      expect((await client.rpc("interior_choose", { p_item: OPTION, p_choose: true })).error).toBeNull();
+      expect((await service.from("interior_items").select("status").eq("id", OPTION).single()).data?.status).toBe("chosen");
+      expect((await client.rpc("interior_choose", { p_item: BOUGHT, p_choose: false })).error?.message).toMatch(/already bought/);
+      await service.from("interior_items").update({ status: "option", chosen_at: null }).eq("id", OPTION);
+    });
+
+    it("admin manages items; room photos must sit in the request's own folder", async () => {
+      const add = await admin.from("interior_items").insert({ request_id: REQ, room: "Kitchen", name: "TEST kettle", price_cents: 2500 }).select("id").single();
+      expect(add.error).toBeNull();
+      await admin.from("interior_items").delete().eq("id", add.data!.id);
+      const bad = await admin.from("interior_photos").insert({ request_id: REQ, room: "Kitchen", storage_path: `interiors/${IDS.reqLand}/${crypto.randomUUID()}.jpg` });
+      expect(bad.error).not.toBeNull();
+    });
+  });
 });

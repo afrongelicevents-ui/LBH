@@ -2,7 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { DEFAULT_PHOTOS, sitePhotoUrl, type SitePhotoSlot, type SitePhotoUrls } from "@/config/sitePhotos";
-import { STOCK_PHOTOS } from "@/config/stockPhotos";
+import { STOCK_PHOTOS, type PagePhotoKey } from "@/config/stockPhotos";
 import type { PhotoSource } from "@/components/site/Photo";
 
 export interface StoredSitePhoto {
@@ -44,7 +44,7 @@ export const getSitePhotos = cache(async (): Promise<SitePhotoUrls> => {
  * labelled (real LBH photo, or stock with a credit); otherwise the licensed
  * stock / placeholder photo with its visible credit.
  */
-export const getPagePhotos = cache(async (): Promise<Record<"hero" | "land" | "materials" | "onsite" | "reporting", PhotoSource>> => {
+export const getPagePhotos = cache(async (): Promise<Record<PagePhotoKey, PhotoSource>> => {
   const out = { ...STOCK_PHOTOS };
   for (const p of await loadStoredSitePhotos()) {
     if (!(p.slot in out) || !p.kind) continue;
@@ -52,4 +52,14 @@ export const getPagePhotos = cache(async (): Promise<Record<"hero" | "land" | "m
     out[key] = { src: sitePhotoUrl(p.storage_path), kind: p.kind, credit: p.credit || undefined, alt: STOCK_PHOTOS[key].alt };
   }
   return out;
+});
+
+/** Before/after gallery on the interiors page: only admin uploads (no stock). */
+export const getInteriorGallery = cache(async () => {
+  const stored = await loadStoredSitePhotos();
+  const url = (slot: string) => {
+    const p = stored.find((x) => x.slot === slot);
+    return p ? sitePhotoUrl(p.storage_path) : null;
+  };
+  return [1, 2, 3].map((n) => ({ n, before: url(`interiors_before_${n}`), after: url(`interiors_after_${n}`) }));
 });

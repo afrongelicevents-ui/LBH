@@ -2,7 +2,9 @@
  * Photos on the public website that the admin can replace
  * (Admin Portal → Settings → Website photos). No custom photo = default.
  */
-export type SitePhotoSlot = "hero" | "land" | "materials" | "monitoring" | "camera" | "live_feed" | "logo" | "onsite" | "reporting";
+export type SitePhotoSlot =
+  | "hero" | "land" | "materials" | "monitoring" | "camera" | "live_feed" | "logo" | "onsite" | "reporting"
+  | "interiors" | "interiors_before_1" | "interiors_after_1" | "interiors_before_2" | "interiors_after_2" | "interiors_before_3" | "interiors_after_3";
 
 export interface SitePhotoDef {
   slot: SitePhotoSlot;
@@ -22,6 +24,13 @@ export const SITE_PHOTOS: SitePhotoDef[] = [
   { slot: "materials", defaultSrc: "/images/materials.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
   { slot: "onsite", defaultSrc: "/images/monitoring.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
   { slot: "reporting", defaultSrc: "/images/hero.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
+  { slot: "interiors", defaultSrc: "/images/stock/interiors.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
+  { slot: "interiors_before_1", defaultSrc: "/images/hero.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
+  { slot: "interiors_after_1", defaultSrc: "/images/hero.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
+  { slot: "interiors_before_2", defaultSrc: "/images/hero.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
+  { slot: "interiors_after_2", defaultSrc: "/images/hero.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
+  { slot: "interiors_before_3", defaultSrc: "/images/hero.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
+  { slot: "interiors_after_3", defaultSrc: "/images/hero.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
   { slot: "logo", defaultSrc: "/images/logo.jpg", maxWidth: 800, minWidth: 300, preview: "logo" },
 ];
 
