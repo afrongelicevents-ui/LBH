@@ -1467,7 +1467,7 @@ console.log("\nInteriors & furnishing");
     await f.locator('input[name="name"]').fill("E2E Interiors Visitor");
     await f.locator('input[name="email"]').fill(email);
     await f.locator('input[name="whatsapp"]').fill("+447700900321");
-    await f.locator('select[name="country"]').selectOption("UK");
+    await f.locator('select[name="country"]').selectOption("uk");
     await f.locator('input[name="location"]').fill("Borrowdale, Harare");
     await f.locator('input[value="nearly_finished"]').check();
     await f.locator('input[value="living"]').check();
