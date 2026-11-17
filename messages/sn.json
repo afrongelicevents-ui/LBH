@@ -556,7 +556,8 @@
     "requestType": {
       "land_verification": "Kuongorora stendi",
       "materials": "Zvivakwa",
-      "build": "Kuvaka"
+      "build": "Kuvaka",
+      "interiors": "Mukati meimba nemidziyo"
     },
     "jobStatus": {
       "assigned": "Rakapiwa",
@@ -1040,6 +1041,41 @@
           "name": "Kuzivisa kufambira mberi",
           "where": "Peji rekutanga nepeji reMabasa — chikamu chekuzivisa kufambira mberi.",
           "tip": "Imba yakavakwa hafu, kana kuongorora kuri kuitwa pasaiti. Upamhi hunosvika {min}px zvishoma."
+        },
+        "interiors": {
+          "name": "Mukati meimba nemidziyo",
+          "where": "Peji rekutanga (koramu yeFinish), peji reServices nepamusoro pepeji reInteriors.",
+          "tip": "Imba yapera, ine midziyo. {min}px zvishoma pakufara."
+        },
+        "interiors_before_1": {
+          "name": "Mukati meimba — kare 1",
+          "where": "Peji reInteriors, gallery yekare/zvino, vaviri 1 (kare).",
+          "tip": "Imba isina chinhu isati yaiswa midziyo. Mufananidzo wakamira ndiwo wakanaka. {min}px zvishoma pakufara."
+        },
+        "interiors_after_1": {
+          "name": "Mukati meimba — zvino 1",
+          "where": "Peji reInteriors, gallery yekare/zvino, vaviri 1 (zvino).",
+          "tip": "Imba imwe chete iyoyo LBH yaisa midziyo, yakatorwa kubva pakona imwe chete. {min}px zvishoma pakufara."
+        },
+        "interiors_before_2": {
+          "name": "Mukati meimba — kare 2",
+          "where": "Peji reInteriors, gallery yekare/zvino, vaviri 2 (kare).",
+          "tip": "Imba isina chinhu isati yaiswa midziyo. Mufananidzo wakamira ndiwo wakanaka. {min}px zvishoma pakufara."
+        },
+        "interiors_after_2": {
+          "name": "Mukati meimba — zvino 2",
+          "where": "Peji reInteriors, gallery yekare/zvino, vaviri 2 (zvino).",
+          "tip": "Imba imwe chete iyoyo LBH yaisa midziyo, yakatorwa kubva pakona imwe chete. {min}px zvishoma pakufara."
+        },
+        "interiors_before_3": {
+          "name": "Mukati meimba — kare 3",
+          "where": "Peji reInteriors, gallery yekare/zvino, vaviri 3 (kare).",
+          "tip": "Imba isina chinhu isati yaiswa midziyo. Mufananidzo wakamira ndiwo wakanaka. {min}px zvishoma pakufara."
+        },
+        "interiors_after_3": {
+          "name": "Mukati meimba — zvino 3",
+          "where": "Peji reInteriors, gallery yekare/zvino, vaviri 3 (zvino).",
+          "tip": "Imba imwe chete iyoyo LBH yaisa midziyo, yakatorwa kubva pakona imwe chete. {min}px zvishoma pakufara."
         }
       },
       "kindQuestion": "Mufananidzo uyu chii?",
@@ -1164,6 +1200,45 @@
         "error": "Pane chakanganisika — edza zvakare.",
         "camera": "Pane chakanganisika — edza zvakare.",
         "capturetime": "Pane chakanganisika — edza zvakare."
+      }
+    },
+    "interiors": {
+      "itemsTitle": "Mukati meimba — zvinhu nemifananidzo",
+      "itemsHint": "Isa sarudzo pakamuri kega kega, nechitoro nemutengo. Mutengi anosarudza; wozonyora kuti zvinhu zvatengwa (nemufananidzo werisiti) uye zvasvitswa. Zvinhu zvatengwa zvinopinda muBuild Account yemutengi.",
+      "room": "Kamuri",
+      "chooseRoom": "Sarudza kamuri…",
+      "name": "Chinhu",
+      "nameHint": "semuenzaniso sofa yevanhu 3, jira regireyi",
+      "shop": "Chitoro",
+      "qty": "Huwandu",
+      "price": "Mutengo pachimwe (USD)",
+      "link": "Link (kana uinayo)",
+      "note": "Chinyorwa kumutengi (kana uchida)",
+      "addItemTitle": "Isa sarudzo",
+      "addItem": "Isa sarudzo",
+      "itemAdded": "Sarudzo yaiswa.",
+      "remove": "Bvisa",
+      "bought": "Nyora kuti chatengwa",
+      "boughtWithReceipt": "Chatengwa + mufananidzo werisiti",
+      "delivered": "Nyora kuti chasvitswa",
+      "hasReceipt": "risiti yachengetwa",
+      "chosenTotal": "Zvasarudzwa nemutengi: {total}",
+      "photosTitle": "Mifananidzo yemakamuri",
+      "caption": "Tsananguro (kana uchida)",
+      "addPhotos": "Isa mifananidzo",
+      "uploading": "Kuisa…",
+      "photosAdded": "Mifananidzo yaiswa.",
+      "removePhoto": "Bvisa",
+      "error": {
+        "invalid": "Tarisa zvawanyora.",
+        "db": "Hazvina kuchengetwa.",
+        "chosen": "Mutengi asarudza chinhu ichi — hachigoni kubviswa.",
+        "notChosen": "Zvinhu zvasarudzwa chete ndizvo zvinogona kutengwa.",
+        "notBought": "Tanga wanyora kuti chatengwa.",
+        "filetype": "Shandisa mufananidzo weJPG, PNG kana WebP.",
+        "toobig": "Mufananidzo wakakura zvakanyanya.",
+        "upload": "Kuisa kwakundikana.",
+        "error": "Pane chakanganisika — edza zvakare."
       }
     }
   },
@@ -1350,7 +1425,8 @@
       "type": {
         "land_verification": "Kuongorora stendi",
         "materials": "Zvivakwa",
-        "build": "Kuvaka"
+        "build": "Kuvaka",
+        "interiors": "Mukati meimba nemidziyo"
       },
       "noUpdates": "Hapana nyaya itsva parizvino.",
       "ev": {
@@ -1480,6 +1556,33 @@
         "failed": "Yakundikana",
         "cancelled": "Yakanzurwa"
       }
+    },
+    "interiors": {
+      "created": "Runhare rwako rwekuronga mukati meimba rwabhukwa. Tichasimbisa nguva yerunhare ne email uye paWhatsApp.",
+      "call": "Runhare rwekuronga",
+      "nextTitle": "Zvinotevera",
+      "nextText": "Kana runhare rwapera tinotumira kotesheni yako pano. Kana waibvumira, tinogadzira makamuri ako mu3D toisa sarudzo chaidzo dzinobva muzvitoro, nemitengo, kuti iwe usarudze.",
+      "itemsTitle": "Sarudzo dzemakamuri ako",
+      "itemsHint": "Sarudza zvinhu zvaunoda. Hapana chinotengwa kusvika wachisarudza — unogona kuchinja pfungwa kusvika tachitenga.",
+      "choose": "Sarudza",
+      "decline": "Kwete ichi",
+      "undo": "Dzosera",
+      "failed": "Hazvina kuchengetwa — edza zvakare.",
+      "alreadyBought": "Chakatotengwa — taura nesu kuti tichichinje.",
+      "qtyEach": "{qty} × {price}",
+      "viewItem": "Ona chinhu",
+      "status": {
+        "option": "Chekusarudza",
+        "chosen": "Chasarudzwa",
+        "declined": "Hachina kusarudzwa",
+        "bought": "Chatengwa",
+        "delivered": "Chasvitswa"
+      },
+      "chosenTitle": "Zvinhu zvawasarudza",
+      "total": "Zvese pamwe",
+      "chosenNote": "Zvinhu zvatengwa zvinooneka muBuild Account yako pamwe nemarisiti azvo.",
+      "receipt": "Risiti",
+      "photosTitle": "Mifananidzo yekamuri imwe neimwe"
     }
   },
   "labels": {
@@ -1792,7 +1895,10 @@
       "budget": "Bhajeti",
       "more": "Zvimwe"
     },
-    "chartTitle": "Mari yatumirwa pamwedzi"
+    "chartTitle": "Mari yatumirwa pamwedzi",
+    "furnishTitle": "Wagadzirira kuisa midziyo mumba mako here?",
+    "furnishText": "Kuvaka kwako kwasvika panhanho yekupedzisa. Tinogona kugadzira makamuri ako mu3D, kutsvaga fanicha nemidziyo yemumba nemitengo yazvo, uye kuisa midziyo mumba.",
+    "furnishCta": "Bhuka runhare rwekuronga mukati meimba"
   },
   "site": {
     "mainNav": "Menyu huru",
@@ -1874,8 +1980,8 @@
       },
       "services": {
         "eyebrow": "Mabasa edu",
-        "title": "Zvese zvinodiwa pakuvaka, zvinoitwa ikoko.",
-        "intro": "Basa rega rega rinotanga nerunhare rwemahara nekotesheni yakanyorwa. Ndiwe unosarudza zvinotevera — LBH inoita basa ikoko yokuratidza umbowo.",
+        "title": "Kubva pastendi kusvika pamutsago wekupedzisira.",
+        "intro": "Nhanho nhatu, timu imwe iri ikoko. Basa rega rega rinotanga nerunhare rwemahara nekotesheni yakanyorwa — ndiwe unosarudza zvinotevera.",
         "more": "Dzidza zvakawanda",
         "soonTag": "Chiri kuuya",
         "camera": "Kamera live pasaiti, kuti uone kuvaka kwako uri chero kupi.",
@@ -2007,7 +2113,7 @@
     "servicesPage": {
       "metaTitle": "Mabasa edu",
       "metaDescription": "Kuongorora stendi, kutenga zvivakwa, kutarisira basa pasaiti nekuzivisa kufambira mberi kwedzimba dzinovakwa muZimbabwe kubva kunze kwenyika.",
-      "title": "Mabasa mana, timu imwe iri ikoko muZimbabwe.",
+      "title": "Stendi, kuvaka nekupedzisa — timu imwe iri ikoko muZimbabwe.",
       "intro": "Basa rega rega rinotanga nerunhare rwemahara nekotesheni yakanyorwa. Mitengo inoenderana nestendi yako nekuvaka kwako, saka haimboratidzwi pachena — kotesheni yako ndeyako chete. Hapana chinotengwa kana kutangwa usina kubvumira.",
       "jump": "Mabasa ari papeji rino",
       "whatWeDo": "Zvatinoita",
@@ -2051,7 +2157,17 @@
       "camera": {
         "title": "Kamera live pasaiti",
         "text": "Kamera pasaiti yako, kuti uone kuvaka kwako uri chero kupi. Siya email yako tichakuzivisa kana yave kuwanikwa."
-      }
+      },
+      "landBuying": {
+        "title": "Kutenga stendi",
+        "text": "Uri kutsvaga stendi here? Tiudze nzvimbo, saizi nebhajeti. Tinotsvaga stendi dzakakodzera, toongorora imwe neimwe usati wazvipira, tokubatsira pakutenga — ndiwe unosarudza, uye unobhadhara mutengesi chete kana kuongorora kwabuda kwakachena.",
+        "p1": "Stendi dzinoenderana nenzvimbo, saizi nebhajeti yako",
+        "p2": "Stendi yega yega inoongororwa usati wazvipira",
+        "p3": "Rubatsiro pachibvumirano chekutenga nepakuchinja zita",
+        "p4": "Hapana chinobhadharwa usina kubvumira",
+        "receive": "rondedzero yestendi dzakasarudzwa ine umbowo, nerubatsiro kusvika stendi yava muzita rako."
+      },
+      "interiorsTeaser": "Kana imba yako yapera kana kuti yava kuda kupera, tinogadzira makamuri ako mu3D tiri pamwe chete, totsvaga fanicha chaiyo, midziyo yemumba nezvekupedzisa kubva muzvitoro nemitengo, tozotenga, kusvitsa nekuisa midziyo — nemifananidzo yekamuri yega yega."
     },
     "howPage": {
       "title": "Kubva parunhare rwekutanga kusvika pagwaro rakapera — iwe uchitonga."
@@ -2113,6 +2229,206 @@
       "metaTitle": "Mapurojekiti",
       "title": "Mapurojekiti eLBH, akatorwa mifananidzo pasaiti.",
       "intro": "Mapurojekiti chaiwo eLBH nemifananidzo yakatorwa netimu yedu. Ruzivo rwevatengi runochengetwa rwakavanzika."
+    },
+    "groups": {
+      "land": {
+        "title": "Stendi",
+        "short": "Ongorora utenge stendi yakakodzera",
+        "text": "Usati wavaka: ita shuwa kuti stendi ndeyechokwadi, yakachena pamutemo uye yakakukodzera.",
+        "more": "Mabasa estendi"
+      },
+      "build": {
+        "title": "Kuvaka",
+        "short": "Zvivakwa, kutarisira saiti, magwaro",
+        "text": "Paunenge uchivaka: zvivakwa zvinotengwa zvakanaka, basa rinotarisirwa pasaiti, nemagwaro ane zuva.",
+        "more": "Mabasa ekuvaka"
+      },
+      "finish": {
+        "title": "Kupedzisa",
+        "short": "Mukati meimba nemidziyo",
+        "text": "Kana imba yagadzirira: ronga makamuri uise midziyo mumba mako.",
+        "more": "Ona mapakeji ubhuke"
+      },
+      "items": {
+        "land": "Kuongorora stendi",
+        "landBuying": "Kutenga stendi",
+        "materials": "Kutenga zvivakwa",
+        "onsite": "Kutarisira basa pasaiti",
+        "reporting": "Kuzivisa kufambira mberi",
+        "interiors": "Mukati meimba nemidziyo"
+      }
+    },
+    "interiors": {
+      "metaTitle": "Mukati meimba nemidziyo",
+      "title": "Ronga uise midziyo mumba mako kumusha, uri chero kupi.",
+      "intro": "Tinoronga makamuri ako tiri pamwe chete, totsvaga zvaunoda muzvitoro chaizvo, tozvitenga, tozvisvitsa toisa midziyo mumba — tokuratidza kamuri yega yega nemifananidzo.",
+      "cta": "Bhuka runhare rwekuronga",
+      "whatTitle": "Zvatinoita",
+      "whatIntro": "Zvese zvinodiwa kuti imba yapera ive musha, zvinoitwa ikoko.",
+      "what": {
+        "design": {
+          "title": "Kuronga mukati meimba",
+          "text": "Purani yekamuri yega yega inoenderana nemararamiro ako nebhajeti yako."
+        },
+        "threeD": {
+          "title": "Makamuri mu3D",
+          "text": "Ona makamuri ako pasati patengwa chinhu, uachinje tiri pamwe chete."
+        },
+        "furniture": {
+          "title": "Kusarudza fanicha",
+          "text": "Masofa, mibhedha, matafura nezvekuchengetera kubva muzvitoro chaizvo muZimbabwe."
+        },
+        "appliances": {
+          "title": "Midziyo yemumba",
+          "text": "Firiji, chitofu, muchina wekuwacha nezvimwe, zvichienzaniswa pamutengo."
+        },
+        "finishes": {
+          "title": "Mavara, makaketeni nepasi",
+          "text": "Mavara ependi, makaketeni nemablinds, mataira nezvepasi."
+        },
+        "buy": {
+          "title": "Kutenga zvese",
+          "text": "Zvawabvumira chete, risiti yega yega ichinyorwa."
+        },
+        "furnish": {
+          "title": "Kuisa midziyo mumba",
+          "text": "Kusvitsa, kubatanidza nekugadzirira kamuri yega yega."
+        }
+      },
+      "howTitle": "Zvinofamba sei",
+      "steps": {
+        "s1": {
+          "title": "Bhuka runhare rwekuronga",
+          "text": "Runhare rwevhidhiyo kana rwefoni nezveimba yako, makamuri ako nemararamiro ako."
+        },
+        "s2": {
+          "title": "Tipe mapurani nemaitiro aunoda",
+          "text": "Tumira mapurani, mifananidzo yemakamuri, nemaitiro nezvinhu zvaunofarira."
+        },
+        "s3": {
+          "title": "Tinogadzira makamuri ako mu3D",
+          "text": "Tinoongorora magadzirirwo newe parunhare rwevhidhiyo toagadzirisa tiri pamwe chete."
+        },
+        "s4": {
+          "title": "Sarudzo chaidzo nemitengo",
+          "text": "Unowana sarudzo kubva muzvitoro chaizvo nemitengo, wosarudza zvaunoda."
+        },
+        "s5": {
+          "title": "Bvumira ubhadhare",
+          "text": "Hapana chinotengwa kusvika wabvumira kotesheni wabhadhara."
+        },
+        "s6": {
+          "title": "Tinotenga, tosvitsa toisa midziyo",
+          "text": "Tinotenga, tosvitsa togadzirira kamuri yega yega — nemifananidzo yeimwe neimwe."
+        }
+      },
+      "packagesTitle": "Mapakeji",
+      "packagesIntro": "Imba imwe neimwe yakasiyana, saka pakeji yega yega inopiwa kotesheni kana runhare rwapera.",
+      "quoted": "Kotesheni inopiwa runhare rwapera",
+      "packages": {
+        "consultation": {
+          "title": "Runhare rwekuronga",
+          "text": "Runhare nemugadziri wedu nezvemakamuri ako, maitiro aunoda nebhajeti.",
+          "p1": "Mazano ekamuri yega yega",
+          "p2": "Pfungwa dzemavara nekurongwa kwezvinhu",
+          "p3": "Pfupiso yakanyorwa runhare rwapera"
+        },
+        "design3d": {
+          "title": "Kugadzira mu3D",
+          "text": "Makamuri ako akagadzirwa mu3D, akagadziriswa newe parunhare rwevhidhiyo.",
+          "p1": "Magadzirirwo e3D emakamuri awasarudza",
+          "p2": "Shanduko tiri pamwe chete parunhare rwevhidhiyo",
+          "p3": "Rondedzero yezvinhu nemitengo yezvitoro"
+        },
+        "full": {
+          "title": "Kuronga + kuisa midziyo",
+          "text": "Tinoronga, totenga, tosvitsa toisa midziyo mumba mese pachinzvimbo chako.",
+          "p1": "Zvese zviri mukugadzira mu3D",
+          "p2": "Kutenga, kusvitsa nekugadzirira",
+          "p3": "Mifananidzo yekamuri yega yega yapera"
+        }
+      },
+      "galleryTitle": "Kare nezvino",
+      "galleryIntro": "Makamuri chaiwo eLBH, asati aiswa midziyo uye aiswa. Mifananidzo inoiswa pano mapurojekiti paanopera.",
+      "before": "Kare",
+      "after": "Zvino",
+      "beforeAlt": "Kamuri {n} isati yaiswa midziyo",
+      "afterAlt": "Kamuri {n} yaiswa midziyo",
+      "photoSoon": "Mufananidzo uchauya",
+      "bookTitle": "Bhuka runhare rwekuronga",
+      "bookIntro": "Tiudze nezveimba yako. Tichasimbisa nguva yerunhare ne email uye paWhatsApp, togadzira account yako yeLBH kuti utevere zvese.",
+      "bookIntroSignedIn": "Tiudze nezveimba yako. Purojekiti yako yemukati meimba inogadzirwa muaccount yako pakarepo, nemifananidzo nemapurani ako.",
+      "form": {
+        "location": "Imba iri kupi?",
+        "locationHint": "semuenzaniso Harare South, Stand 412",
+        "houseStatus": "Imba…",
+        "status": {
+          "finished": "Yapera",
+          "nearly_finished": "Yava kuda kupera"
+        },
+        "rooms": "Makamuri api?",
+        "room": {
+          "living": "Imba yekugara (lounge)",
+          "dining": "Imba yekudyira",
+          "kitchen": "Kicheni",
+          "main_bedroom": "Kamuri huru yekurara",
+          "bedrooms": "Mamwe makamuri ekurara",
+          "bathrooms": "Zvimbuzi nemabhavhu",
+          "outdoor": "Veranda / kunze",
+          "whole_house": "Imba yese"
+        },
+        "budget": "Bhajeti (USD)",
+        "budgets": {
+          "under_2k": "Pasi pe2,000",
+          "2k_5k": "2,000 – 5,000",
+          "5k_10k": "5,000 – 10,000",
+          "10k_20k": "10,000 – 20,000",
+          "over_20k": "Pamusoro pe20,000",
+          "not_sure": "Handisati ndaziva"
+        },
+        "timeline": "Unoda kuti zviitwe riini?",
+        "timelines": {
+          "asap": "Nekukurumidza sezvinobvira",
+          "1_3_months": "Mumwedzi 1–3",
+          "3_6_months": "Mumwedzi 3–6",
+          "later": "Gare gare"
+        },
+        "choose": "Sarudza…",
+        "styles": "Zvinhu nemaitiro aunofarira",
+        "stylesHint": "semuenzaniso huni dzinodziya, mavara akajeka, tafura huru yekudyira, malink emifananidzo yaunofarira",
+        "photos": "Mifananidzo kana mapurani eimba",
+        "photosHint": "Kusvika pamifananidzo 10 (JPG, PNG) kana mapurani ePDF.",
+        "photosAfter": "Kana wabhuka unogona kuisa mifananidzo nemapurani muaccount yako yeLBH.",
+        "slot": "Nguva yakanaka yerunhare",
+        "slots": {
+          "morning": "Mangwanani",
+          "afternoon": "Masikati",
+          "evening": "Manheru",
+          "weekend": "Kupera kwevhiki"
+        },
+        "callType": "Runhare kuburikidza ne",
+        "callTypes": {
+          "video": "Runhare rwevhidhiyo",
+          "phone": "Foni"
+        },
+        "submit": "Bhuka runhare rwekuronga",
+        "sending": "Kutumira…",
+        "uploading": "Kuisa mifananidzo…",
+        "noteVisitor": "Runhare rwemahara. Hapana kubhadhara parizvino — unobvumira kotesheni pasati patengwa chinhu.",
+        "noteSignedIn": "Purojekiti yako inooneka muaccount yako pakarepo.",
+        "thanksTitle": "Tatenda — runhare rwako rwabhukwa.",
+        "thanksText": "Tichasimbisa nguva ne email uye paWhatsApp. Tarisa email yako kuti ugadzire account yako yeLBH, paunogona kuisa mifananidzo nemapurani.",
+        "errors": {
+          "invalid": "Zadza nzvimbo dzinodiwa.",
+          "rooms": "Sarudza kamuri imwe chete zvishoma.",
+          "rate": "Zvikumbiro zvawandisa — edza zvakare gare gare.",
+          "toobig": "Rimwe faira rakakura zvakanyanya.",
+          "filetype": "Shandisa mafaira eJPG, PNG kana PDF.",
+          "upload": "Kuisa kwakundikana — edza zvakare.",
+          "network": "Hapana network — edza zvakare.",
+          "staff": "Maaccount evashandi haagoni kubhuka runhare urwu."
+        }
+      }
     }
   }
 }

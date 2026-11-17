@@ -556,7 +556,8 @@
     "requestType": {
       "land_verification": "Ukuhlola isitandi",
       "materials": "Impahla",
-      "build": "Ukwakha"
+      "build": "Ukwakha",
+      "interiors": "Ingaphakathi lefenitsha"
     },
     "jobStatus": {
       "assigned": "Wabelwe",
@@ -1040,6 +1041,41 @@
           "name": "Imibiko yenqubekelaphambili",
           "where": "Ikhasi lokuqala lekhasi leMisebenzi — isigaba semibiko yenqubekelaphambili.",
           "tip": "Indlu esakhiwe ingxenye, kumbe ukuhlola esayithini. Okungenani ububanzi obungu-{min}px."
+        },
+        "interiors": {
+          "name": "Ingaphakathi lefenitsha",
+          "where": "Ikhasi lokuqala (umhlathi we-Finish), ikhasi leMisebenzi lephezulu lekhasi le-Interiors.",
+          "tip": "Ikamelo eseliqediwe lifakwe ifenitsha. Okungenani ububanzi obungu-{min}px."
+        },
+        "interiors_before_1": {
+          "name": "Ingaphakathi — ngaphambili 1",
+          "where": "Ikhasi le-Interiors, igalari yangaphambili/emva, isibili 1 (ngaphambili).",
+          "tip": "Ikamelo elingelalutho lingakafakwa ifenitsha. Isithombe esimileyo singcono. Okungenani ububanzi obungu-{min}px."
+        },
+        "interiors_after_1": {
+          "name": "Ingaphakathi — emva 1",
+          "where": "Ikhasi le-Interiors, igalari yangaphambili/emva, isibili 1 (emva).",
+          "tip": "Lelo ikamelo emva kokuthi i-LBH ilifake ifenitsha, kusukela endaweni efanayo. Okungenani ububanzi obungu-{min}px."
+        },
+        "interiors_before_2": {
+          "name": "Ingaphakathi — ngaphambili 2",
+          "where": "Ikhasi le-Interiors, igalari yangaphambili/emva, isibili 2 (ngaphambili).",
+          "tip": "Ikamelo elingelalutho lingakafakwa ifenitsha. Isithombe esimileyo singcono. Okungenani ububanzi obungu-{min}px."
+        },
+        "interiors_after_2": {
+          "name": "Ingaphakathi — emva 2",
+          "where": "Ikhasi le-Interiors, igalari yangaphambili/emva, isibili 2 (emva).",
+          "tip": "Lelo ikamelo emva kokuthi i-LBH ilifake ifenitsha, kusukela endaweni efanayo. Okungenani ububanzi obungu-{min}px."
+        },
+        "interiors_before_3": {
+          "name": "Ingaphakathi — ngaphambili 3",
+          "where": "Ikhasi le-Interiors, igalari yangaphambili/emva, isibili 3 (ngaphambili).",
+          "tip": "Ikamelo elingelalutho lingakafakwa ifenitsha. Isithombe esimileyo singcono. Okungenani ububanzi obungu-{min}px."
+        },
+        "interiors_after_3": {
+          "name": "Ingaphakathi — emva 3",
+          "where": "Ikhasi le-Interiors, igalari yangaphambili/emva, isibili 3 (emva).",
+          "tip": "Lelo ikamelo emva kokuthi i-LBH ilifake ifenitsha, kusukela endaweni efanayo. Okungenani ububanzi obungu-{min}px."
         }
       },
       "kindQuestion": "Lesi yisithombe sani?",
@@ -1164,6 +1200,45 @@
         "error": "Kukhona okungahambanga kuhle — zama futhi.",
         "camera": "Kukhona okungahambanga kuhle — zama futhi.",
         "capturetime": "Kukhona okungahambanga kuhle — zama futhi."
+      }
+    },
+    "interiors": {
+      "itemsTitle": "Ingaphakathi — izinto lezithombe",
+      "itemsHint": "Faka okungakhethwa kwekamelo ngalinye lesitolo lentengo. Ikhasimende liyakhetha; ubusuphawula izinto ezithengiweyo (lesithombe serisidi) lezilethiweyo. Izinto ezithengiweyo zingena ku-Build Account yekhasimende.",
+      "room": "Ikamelo",
+      "chooseRoom": "Khetha ikamelo…",
+      "name": "Into",
+      "nameHint": "isib. isofa yabantu abathathu, indwangu empunga",
+      "shop": "Isitolo",
+      "qty": "Inani",
+      "price": "Intengo yinye ngayinye (USD)",
+      "link": "Ilinki (akusiko ukuthi kumele)",
+      "note": "Umlayezo wekhasimende (akusiko ukuthi kumele)",
+      "addItemTitle": "Faka okungakhethwa",
+      "addItem": "Faka okungakhethwa",
+      "itemAdded": "Okungakhethwa sekufakiwe.",
+      "remove": "Susa",
+      "bought": "Phawula ukuthi ithengiwe",
+      "boughtWithReceipt": "Ithengiwe + isithombe serisidi",
+      "delivered": "Phawula ukuthi ilethiwe",
+      "hasReceipt": "irisidi ilondoloziwe",
+      "chosenTotal": "Okukhethwe likhasimende: {total}",
+      "photosTitle": "Izithombe zamakamelo",
+      "caption": "Amazwi ngaphansi kwesithombe (akusiko ukuthi kumele)",
+      "addPhotos": "Faka izithombe",
+      "uploading": "Kuyalayishwa…",
+      "photosAdded": "Izithombe sezifakiwe.",
+      "removePhoto": "Susa",
+      "error": {
+        "invalid": "Sicela uhlole okugcwalisiweyo.",
+        "db": "Akulondolozwanga.",
+        "chosen": "Ikhasimende selikhethe le nto — ayingeke isuswe.",
+        "notChosen": "Kungathengwa kuphela izinto ezikhethiweyo.",
+        "notBought": "Qala uphawule ukuthi ithengiwe.",
+        "filetype": "Sebenzisa isithombe se-JPG, PNG kumbe WebP.",
+        "toobig": "Isithombe sikhulu kakhulu.",
+        "upload": "Ukulayisha kwehlulekile.",
+        "error": "Kukhona okungahambanga kahle — zama futhi."
       }
     }
   },
@@ -1350,7 +1425,8 @@
       "type": {
         "land_verification": "Ukuhlola isitandi",
         "materials": "Impahla",
-        "build": "Ukwakha"
+        "build": "Ukwakha",
+        "interiors": "Ingaphakathi lefenitsha"
       },
       "noUpdates": "Akukabi lalutho olutsha.",
       "ev": {
@@ -1480,6 +1556,33 @@
         "failed": "Kwehlulekile",
         "cancelled": "Kukhanselisiwe"
       }
+    },
+    "interiors": {
+      "created": "Ukubonisana kwakho ngengaphakathi sekubhukhiwe. Sizaqinisekisa isikhathi sokukhuluma nge-email lange-WhatsApp.",
+      "call": "Ukukhuluma kokubonisana",
+      "nextTitle": "Okulandelayo",
+      "nextText": "Emva kokubonisana sikuthumela ikhotheshini yakho lapha. Nxa uyivuma, sidweba amakamelo akho nge-3D sifake okungakhethwa okuqotho okuvela ezitolo lezintengo ukuze ukhethe.",
+      "itemsTitle": "Okungakhethwa kwamakamelo akho",
+      "itemsHint": "Khetha izinto ozifunayo. Akulalutho oluthengwayo ungakalukhethi — ungantshintsha umqondo size siyithenge.",
+      "choose": "Khetha",
+      "decline": "Hatshi le",
+      "undo": "Buyisela",
+      "failed": "Akulondolozwanga — sicela uzame futhi.",
+      "alreadyBought": "Isithengiwe — sithinte ukuze uyintshintshe.",
+      "qtyEach": "{qty} × {price}",
+      "viewItem": "Bona into",
+      "status": {
+        "option": "Okumele kukhethwe",
+        "chosen": "Ikhethiwe",
+        "declined": "Ayikhethwanga",
+        "bought": "Ithengiwe",
+        "delivered": "Ilethiwe"
+      },
+      "chosenTitle": "Izinto ozikhethileyo",
+      "total": "Isamba",
+      "chosenNote": "Izinto ezithengiweyo zivela ku-Build Account yakho lamarisidi azo.",
+      "receipt": "Irisidi",
+      "photosTitle": "Izithombe zekamelo ngalinye"
     }
   },
   "labels": {
@@ -1792,7 +1895,10 @@
       "budget": "Ibhajethi",
       "more": "Okunye"
     },
-    "chartTitle": "Imali ethunyelwe ngenyanga"
+    "chartTitle": "Imali ethunyelwe ngenyanga",
+    "furnishTitle": "Usulungele ukufaka ifenitsha emzini wakho?",
+    "furnishText": "Ukwakha kwakho sekufike esigabeni sokuqedisa. Singadweba amakamelo akho nge-3D, sidinge ifenitsha lezinto zikagesi lezintengo zazo, sifake ifenitsha endlini.",
+    "furnishCta": "Bhuka ukubonisana ngengaphakathi"
   },
   "site": {
     "mainNav": "Okukhulu",
@@ -1874,8 +1980,8 @@
       },
       "services": {
         "eyebrow": "Imisebenzi yethu",
-        "title": "Konke okudingwa yikwakha, kwenziwa lapha ekhaya.",
-        "intro": "Umsebenzi ngamunye uqala ngokubonisana kwamahala lekhotheshini ebhaliweyo. Nguwe onquma okulandelayo — i-LBH yenza umsebenzi lapha ekhaya ikutshengise ubufakazi.",
+        "title": "Kusukela esitandini kusiya kumqamelo wokucina.",
+        "intro": "Izigaba ezintathu, iqembu linye lapha ekhaya. Umsebenzi ngamunye uqala ngokubonisana kwamahala lekhotheshini ebhaliweyo — nguwe onquma okulandelayo.",
         "more": "Funda okunengi",
         "soonTag": "Kuyeza",
         "camera": "Ikhamera yesayithi ye-live, ukuze ubone ukwakha kwakho ulapho okhona.",
@@ -2007,7 +2113,7 @@
     "servicesPage": {
       "metaTitle": "Imisebenzi yethu",
       "metaDescription": "Ukuhlola isitandi, ukuthenga impahla, ukuphatha emsebenzini lemibiko yenqubekelaphambili yezindlu ezakhiwa eZimbabwe usemzini.",
-      "title": "Imisebenzi emine, iqembu linye lapha eZimbabwe.",
+      "title": "Isitandi, ukwakha lokuqedisa — iqembu linye lapha eZimbabwe.",
       "intro": "Umsebenzi ngamunye uqala ngokubonisana kwamahala lekhotheshini ebhaliweyo. Intengo incike esitandini sakho lekwakheni kwakho, ngakho kayiboniswa emphakathini — ikhotheshini yakho ngeyakho wedwa. Akulalutho oluthengwayo kumbe oluqalwayo ungavumanga.",
       "jump": "Imisebenzi ekhasini leli",
       "whatWeDo": "Esikwenzayo",
@@ -2051,7 +2157,17 @@
       "camera": {
         "title": "Ikhamera yesayithi ye-live",
         "text": "Ikhamera esayithini yakho, ukuze ubone ukwakha kwakho ulapho okhona. Tshiya i-email yakho, sizakwazisa nxa isitholakala."
-      }
+      },
+      "landBuying": {
+        "title": "Ukuthenga isitandi",
+        "text": "Udinga isitandi? Sitshele indawo, ubukhulu lebhajethi. Sidinga izitandi ezifaneleyo, sihlole ngasinye ungakazibophi, sikuncede ekuthengeni — nguwe onqumayo, njalo ubhadala umthengisi kuphela nxa ukuhlola kuhambe kuhle.",
+        "p1": "Izitandi ezifanele indawo yakho, ubukhulu lebhajethi",
+        "p2": "Isitandi ngasinye siyahlolwa ungakazibophi",
+        "p3": "Uncedo nge-agreement of sale lokudluliselwa kwesitandi",
+        "p4": "Akulalutho olubhadalwayo ungavumanga",
+        "receive": "uhlu olufitshane olobufakazi, losizo size isitandi sibe sebizweni lakho."
+      },
+      "interiorsTeaser": "Nxa indlu yakho isiqediwe kumbe isizaphela, sidweba amakamelo akho nge-3D ndawonye lawe, sidinge ifenitsha eqotho, izinto zikagesi lokuqedisa okuvela ezitolo lezintengo, sesisithenga, siletha, sifake ifenitsha — lezithombe zakho konke amakamelo."
     },
     "howPage": {
       "title": "Kusukela ocingweni lwakuqala kusiya embikweni ophelileyo — wena uphethe."
@@ -2113,6 +2229,206 @@
       "metaTitle": "Amaphrojekthi",
       "title": "Amaphrojekthi e-LBH, athathwe izithombe esayithini.",
       "intro": "Amaphrojekthi e-LBH aqotho alezithombe ezithathwe liqembu lethu. Imininingwane yamakhasimende igcinwa iyimfihlo."
+    },
+    "groups": {
+      "land": {
+        "title": "Isitandi",
+        "short": "Hlola uthenge isitandi esifaneleyo",
+        "text": "Ungakakhi: qiniseka ukuthi isitandi ngesiqotho, simsulwa ngokomthetho njalo sifanele wena.",
+        "more": "Imisebenzi yezitandi"
+      },
+      "build": {
+        "title": "Ukwakha",
+        "short": "Impahla, ukuphatha esayithini, imibiko",
+        "text": "Usakha: impahla ithengwa kuhle, umsebenzi uphathwa esayithini, lemibiko elosuku.",
+        "more": "Imisebenzi yokwakha"
+      },
+      "finish": {
+        "title": "Ukuqedisa",
+        "short": "Ingaphakathi lefenitsha",
+        "text": "Nxa indlu isilungile: dweba amakamelo ufake ifenitsha emzini wakho.",
+        "more": "Bona amaphakheji ubhuke"
+      },
+      "items": {
+        "land": "Ukuhlola isitandi",
+        "landBuying": "Ukuthenga isitandi",
+        "materials": "Ukuthenga impahla",
+        "onsite": "Ukuphatha emsebenzini",
+        "reporting": "Imibiko yenqubekelaphambili",
+        "interiors": "Ingaphakathi lefenitsha"
+      }
+    },
+    "interiors": {
+      "metaTitle": "Ingaphakathi lefenitsha",
+      "title": "Dweba ufake ifenitsha emzini wakho ekhaya, loba ukuphi.",
+      "intro": "Sidweba amakamelo akho ndawonye lawe, sidinge okudingayo ezitolo eziqotho, sikuthenge, sikulethe sifake ifenitsha endlini — njalo sikutshengise ikamelo ngalinye ngezithombe.",
+      "cta": "Bhuka ukubonisana ngomdwebo",
+      "whatTitle": "Esikwenzayo",
+      "whatIntro": "Konke okuguqula indlu eseqediwe ibe ngumuzi, kwenziwa lapha ekhaya.",
+      "what": {
+        "design": {
+          "title": "Umdwebo wangaphakathi",
+          "text": "Uhlelo lwekamelo ngalinye olufanele indlela ophila ngayo lebhajethi yakho."
+        },
+        "threeD": {
+          "title": "Imidwebo yamakamelo ye-3D",
+          "text": "Bona amakamelo akho kungakathengwa lutho, uwantshintshe ndawonye lathi."
+        },
+        "furniture": {
+          "title": "Ukukhetha ifenitsha",
+          "text": "Amasofa, imibheda, amatafula lokokugcina izinto okuvela ezitolo eziqotho eZimbabwe."
+        },
+        "appliances": {
+          "title": "Izinto zikagesi",
+          "text": "Ifiriji, isitofu, umtshina wokuwasha lokunye, kuqathaniswa ngentengo."
+        },
+        "finishes": {
+          "title": "Imibala, amakhethini lamaphansi",
+          "text": "Imibala yependi, amakhethini lama-blinds, amathayili lamaphansi."
+        },
+        "buy": {
+          "title": "Ukuthenga konke",
+          "text": "Kuphela lokho okuvumayo, lerisidi yinye ngayinye ibhaliwe."
+        },
+        "furnish": {
+          "title": "Ukufaka ifenitsha endlini",
+          "text": "Ukuletha, ukuhlanganisa lokulungisa ikamelo ngalinye."
+        }
+      },
+      "howTitle": "Kusebenza njani",
+      "steps": {
+        "s1": {
+          "title": "Bhuka ukubonisana ngomdwebo",
+          "text": "Ukukhuluma nge-video kumbe ngefoni mayelana lendlu yakho, amakamelo akho lendlela ophila ngayo."
+        },
+        "s2": {
+          "title": "Yabelana ngezinhlelo lesitayela sakho",
+          "text": "Thumela izinhlelo, izithombe zamakamelo, lezitayela lezinto ozithandayo."
+        },
+        "s3": {
+          "title": "Sidweba amakamelo akho nge-3D",
+          "text": "Sihlola imidwebo lawe ngokukhuluma nge-video siyilungise ndawonye."
+        },
+        "s4": {
+          "title": "Okungakhethwa okuqotho lezintengo",
+          "text": "Uthola okungakhethwa okuvela ezitolo eziqotho lezintengo, ukhethe okufunayo."
+        },
+        "s5": {
+          "title": "Vuma ubhadale",
+          "text": "Akulalutho oluthengwayo uze uvume ikhotheshini ubhadale."
+        },
+        "s6": {
+          "title": "Siyathenga, siyaletha sifake ifenitsha",
+          "text": "Siyathenga, siyaletha silungise ikamelo ngalinye — lezithombe zalo lonke."
+        }
+      },
+      "packagesTitle": "Amaphakheji",
+      "packagesIntro": "Umuzi ngamunye wehlukile, ngakho iphakheji ngayinye ilekhotheshini emva kokubonisana.",
+      "quoted": "Ikhotheshini emva kokubonisana",
+      "packages": {
+        "consultation": {
+          "title": "Ukubonisana ngomdwebo",
+          "text": "Ukukhuluma lomdwebi wethu mayelana lamakamelo akho, isitayela lebhajethi.",
+          "p1": "Iseluleko sekamelo ngalinye",
+          "p2": "Imibono ngemibala lokuhlelwa kwekamelo",
+          "p3": "Isifinyezo esibhaliweyo emva kokukhuluma"
+        },
+        "design3d": {
+          "title": "Umdwebo we-3D",
+          "text": "Amakamelo akho adwetshwe nge-3D, alungiswa lawe ngokukhuluma nge-video.",
+          "p1": "Imidwebo ye-3D yamakamelo owakhethileyo",
+          "p2": "Ukuntshintsha ndawonye ngokukhuluma nge-video",
+          "p3": "Uhlu lwezinto lezintengo zezitolo"
+        },
+        "full": {
+          "title": "Umdwebo + ifenitsha",
+          "text": "Sidweba, siyathenga, siyaletha sifake ifenitsha endlini yonke ngenxa yakho.",
+          "p1": "Konke okusemdwebeni we-3D",
+          "p2": "Ukuthenga, ukuletha lokulungisa",
+          "p3": "Izithombe zakho konke amakamelo aseqediwe"
+        }
+      },
+      "galleryTitle": "Ngaphambili langemva",
+      "galleryIntro": "Amakamelo aqotho e-LBH, ngaphambili langemva kokufakwa ifenitsha. Izithombe zifakwa lapha njengoba amaphrojekthi eqediwa.",
+      "before": "Ngaphambili",
+      "after": "Emva",
+      "beforeAlt": "Ikamelo {n} lingakafakwa ifenitsha",
+      "afterAlt": "Ikamelo {n} selifakwe ifenitsha",
+      "photoSoon": "Isithombe siyeza",
+      "bookTitle": "Bhuka ukubonisana ngomdwebo",
+      "bookIntro": "Sitshele ngendlu yakho. Sizaqinisekisa isikhathi sokukhuluma nge-email lange-WhatsApp, sikuvulele i-akhawunti ye-LBH ukuze ulandele konke.",
+      "bookIntroSignedIn": "Sitshele ngendlu yakho. Iphrojekthi yakho yengaphakathi yenziwa ku-akhawunti yakho khonokho, lezithombe lezinhlelo zakho.",
+      "form": {
+        "location": "Indlu ingaphi?",
+        "locationHint": "isib. Harare South, Stand 412",
+        "houseStatus": "Indlu…",
+        "status": {
+          "finished": "Isiqediwe",
+          "nearly_finished": "Isizaphela"
+        },
+        "rooms": "Ngawaphi amakamelo?",
+        "room": {
+          "living": "Ikamelo lokuhlala",
+          "dining": "Ikamelo lokudlela",
+          "kitchen": "Ikhitshi",
+          "main_bedroom": "Ikamelo lokulala elikhulu",
+          "bedrooms": "Amanye amakamelo okulala",
+          "bathrooms": "Amakamelo okugezela",
+          "outdoor": "Iphathiyo / ngaphandle",
+          "whole_house": "Indlu yonke"
+        },
+        "budget": "Ibhajethi (USD)",
+        "budgets": {
+          "under_2k": "Ngaphansi kuka-2,000",
+          "2k_5k": "2,000 – 5,000",
+          "5k_10k": "5,000 – 10,000",
+          "10k_20k": "10,000 – 20,000",
+          "over_20k": "Ngaphezu kuka-20,000",
+          "not_sure": "Angikaqiniseki"
+        },
+        "timeline": "Ufuna kuqedwe nini?",
+        "timelines": {
+          "asap": "Masinyane ngokusemandleni",
+          "1_3_months": "Ezinyangeni ezi-1–3",
+          "3_6_months": "Ezinyangeni ezi-3–6",
+          "later": "Muva"
+        },
+        "choose": "Khetha…",
+        "styles": "Izinto lezitayela ozithandayo",
+        "stylesHint": "isib. izigodo ezifudumeleyo, imibala ekhanyayo, itafula elikhulu lokudlela, amalinki emifanekiso oyithandayo",
+        "photos": "Izithombe kumbe izinhlelo zendlu",
+        "photosHint": "Izithombe ezifika ku-10 (JPG, PNG) kumbe izinhlelo ze-PDF.",
+        "photosAfter": "Emva kokubhuka ungafaka izithombe lezinhlelo ku-akhawunti yakho ye-LBH.",
+        "slot": "Isikhathi esingcono sokukhuluma",
+        "slots": {
+          "morning": "Ekuseni",
+          "afternoon": "Emini",
+          "evening": "Kusihlwa",
+          "weekend": "Ngempelaviki"
+        },
+        "callType": "Khuluma nge",
+        "callTypes": {
+          "video": "I-video call",
+          "phone": "Ifoni"
+        },
+        "submit": "Bhuka ukubonisana ngomdwebo",
+        "sending": "Kuyathunyelwa…",
+        "uploading": "Kulayishwa izithombe…",
+        "noteVisitor": "Ukubonisana kwamahala. Akulankokhelo khathesi — uvuma ikhotheshini kungakathengwa lutho.",
+        "noteSignedIn": "Iphrojekthi yakho ivela ku-akhawunti yakho khonokho.",
+        "thanksTitle": "Siyabonga — ukubonisana kwakho sekubhukhiwe.",
+        "thanksText": "Sizaqinisekisa isikhathi nge-email lange-WhatsApp. Hlola i-email yakho ukuze uvule i-akhawunti yakho ye-LBH, lapho ongafaka khona izithombe lezinhlelo.",
+        "errors": {
+          "invalid": "Sicela ugcwalise okudingekayo.",
+          "rooms": "Khetha okungenani ikamelo elilodwa.",
+          "rate": "Izicelo zinengi kakhulu — sicela uzame futhi muva.",
+          "toobig": "Ifayela elinye likhulu kakhulu.",
+          "filetype": "Sebenzisa amafayela e-JPG, PNG kumbe PDF.",
+          "upload": "Ukulayisha kwehlulekile — sicela uzame futhi.",
+          "network": "Akula-network — sicela uzame futhi.",
+          "staff": "Ama-akhawunti abasebenzi awangeke abhuke ukubonisana."
+        }
+      }
     }
   }
 }
