@@ -1555,13 +1555,15 @@ console.log("\nInteriors & furnishing");
   await step("Build Account: 'Ready to furnish' card at the Finishes stage", async () => {
     const { data: reqs } = await db.from("service_requests").select("id, status").eq("client_id", OWNER).eq("type", "interiors");
     await db.from("service_requests").update({ status: "cancelled" }).in("id", reqs.map((r) => r.id));
-    await db.from("build_stages").update({ status: "quoting" }).eq("request_id", IDS.build).ilike("name", "finish%");
+    // a build whose current stage is Finishes (the real stages can't be skipped)
+    const { data: tmp } = await db.from("service_requests").insert({ client_id: OWNER, type: "build", status: "on_site", title: "E2E finishes build", details: {} }).select("id").single();
+    await db.from("build_stages").insert({ request_id: tmp.id, position: 1, name: "Finishes", status: "quoting" });
     try {
       await c.goto(`${BASE}/en/account/build-account`);
       await c.getByTestId("ba-furnish").getByRole("link", { name: "Book an interiors consultation" }).waitFor();
       await shot(c, "interiors-ba-card-m");
     } finally {
-      await db.from("build_stages").update({ status: "locked" }).eq("request_id", IDS.build).ilike("name", "finish%");
+      await db.from("service_requests").delete().eq("id", tmp.id);
       for (const r of reqs) await db.from("service_requests").update({ status: r.status }).eq("id", r.id);
     }
     await c.goto(`${BASE}/en/account/build-account`);
