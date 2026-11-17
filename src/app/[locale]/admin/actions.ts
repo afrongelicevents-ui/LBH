@@ -6,6 +6,7 @@ import { requireAdminAction } from "@/lib/auth/admin-guard";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { confirmPaymentByReference } from "@/lib/payments";
 import { parseDollarsToCents } from "@/lib/money";
+import { brandedHtml, brandedText, inviteLink, type BrandedEmail } from "@/lib/emailLayout";
 import { sendEmail } from "@/lib/email";
 import { site } from "@/config/site";
 import { parseUploadRefs, storeQuoteFile, uploadErrorCode } from "@/lib/uploads";
@@ -620,16 +621,32 @@ export async function inviteStaff(
     });
     if (error) return { ok: false, error: "exists" };
 
+    // Supabase writes app_metadata after the auth user is inserted, so the
+    // profile made by the sign-up trigger starts as "client". Set the staff
+    // role on the profile here (migration 20261111000000 does the same in
+    // the database for any other way staff are created).
+    const { error: roleErr } = await admin
+      .from("profiles")
+      .update({ role: d.role === "lawyer" ? "field" : d.role, staff_kind: d.role === "lawyer" ? "lawyer" : d.role === "field" ? "field_agent" : null })
+      .eq("id", created.user.id);
+    if (roleErr) {
+      await admin.auth.admin.deleteUser(created.user.id);
+      return { ok: false, error: "auth" };
+    }
+
     const { data: link } = await admin.auth.admin.generateLink({
       type: "invite",
       email: d.email.toLowerCase(),
       options: { redirectTo: `${site.url}/account/password` },
     });
-    await sendEmail({
-      to: d.email,
-      subject: "LBH — your staff account",
-      text: `Hi ${d.full_name},\n\nAn LBH ${d.role} account was created for you. Set your password here:\n${link?.properties?.action_link ?? site.url}\n\nYou will be asked to set up two-factor authentication on first login.\n\nLBH`,
-    });
+    const mail: BrandedEmail = {
+      preheader: "Set your password to open your LBH staff account.",
+      title: "Your LBH staff account",
+      paragraphs: [`Hi ${d.full_name},`, `An LBH ${d.role} account was created for you. Choose your password to open it.`],
+      button: { label: "Set my password", href: inviteLink(link?.properties?.hashed_token) ?? `${site.url}/login` },
+      note: "On your first login you will be asked to set up two-factor authentication with an authenticator app.",
+    };
+    await sendEmail({ to: d.email, subject: "Your LBH staff account — Let's Build Home", text: brandedText(mail), html: brandedHtml(mail) });
 
     await supabase.rpc("admin_log_audit", {
       p_action: "staff.invited",

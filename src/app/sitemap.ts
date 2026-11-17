@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/config/site";
 import { routing } from "@/i18n/routing";
+import { INTERIORS_PATH, SERVICES } from "@/config/services";
 
 /** Public pages only (portals, admin and sign-in pages are not listed). */
-const PAGES = ["", "/services", "/services/interiors", "/how-it-works", "/build-account", "/about", "/faq", "/contact", "/book-a-call", "/terms", "/privacy"];
+const PAGES = ["", "/services", ...SERVICES.map((s) => `/services/${s.slug}`), INTERIORS_PATH, "/how-it-works", "/build-account", "/projects", "/about", "/faq", "/contact", "/book-a-call", "/terms", "/privacy"];
 
 const urlFor = (locale: string, path: string) =>
   `${site.url}${locale === routing.defaultLocale ? "" : `/${locale}`}${path}` || site.url;

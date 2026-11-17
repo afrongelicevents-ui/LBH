@@ -6,6 +6,7 @@ import { getUserProfile } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { rateLimited } from "@/lib/ratelimit";
 import { sendEmail } from "@/lib/email";
+import { brandedHtml, brandedText, type BrandedEmail } from "@/lib/emailLayout";
 import { site } from "@/config/site";
 import { countryFields, refineCountry, resolveCountry } from "@/lib/country";
 import { findOrCreateClient } from "@/lib/clientAccount";
@@ -89,7 +90,7 @@ export async function submitInteriors(_prev: InteriorsResult | null, fd: FormDat
     if (await rateLimited("interiors-booking", 5, 3600)) return { ok: false, error: "rate" };
     const admin = createAdminClient();
     const country = resolveCountry(c.data) ?? "other";
-    const { clientId, inviteNote, created } = await findOrCreateClient(admin, { email: c.data.email, name: c.data.name, whatsapp: c.data.whatsapp, country });
+    const { clientId, invite, created } = await findOrCreateClient(admin, { email: c.data.email, name: c.data.name, whatsapp: c.data.whatsapp, country });
     const summary = `Interiors: ${d.location} · ${d.house_status} · rooms: ${rooms.join(", ")} · budget ${d.budget} · ${d.timeline}${d.styles ? ` · likes: ${d.styles}` : ""}`;
     const { error: bErr } = await admin.from("call_bookings").insert({
       client_id: clientId, name: c.data.name, email: c.data.email.toLowerCase(), whatsapp: c.data.whatsapp, country,
@@ -102,14 +103,25 @@ export async function submitInteriors(_prev: InteriorsResult | null, fd: FormDat
     if (clientId && created) {
       await admin.from("service_requests").insert({ client_id: clientId, type: "interiors", status: "new", title: `Interiors — ${d.location}`, details: details(d, rooms) });
     }
+    const mail: BrandedEmail = {
+      preheader: "We received your request — we'll confirm the time soon.",
+      title: "Your interiors design consultation is booked",
+      paragraphs: [
+        `Hi ${c.data.name},`,
+        `Thank you — we received your request for an interiors design consultation (${d.slot}, ${d.callType}). We will confirm the exact time by email${site.whatsappNumber ? " and WhatsApp" : ""}.`,
+        invite
+          ? "Your LBH account is ready too: add photos and plans of your house, approve your quote and choose your items in one place."
+          : `Already have an LBH account? Log in to add photos and plans: ${site.url}/services/interiors#book`,
+        "Talk soon — the Let's Build Home team.",
+      ],
+      ...(invite ? { button: { label: "Set up my account", href: invite } } : {}),
+      note: "The consultation is free. Nothing is bought until you approve a quote.",
+    };
     await sendEmail({
       to: c.data.email,
-      subject: "LBH — your interiors design consultation is booked",
-      text:
-        `Hi ${c.data.name},\n\nThank you — we received your request for an interiors design consultation (${d.slot}, ${d.callType}). ` +
-        `We will confirm the exact time by email and WhatsApp.\n\n` +
-        (created ? `You can add photos or plans of your house in your LBH account.\n\n` : `Already have an LBH account? Log in to book with photos and plans: ${site.url}/services/interiors#book\n\n`) +
-        `LBH — Let's Build Home\nWhatsApp: https://wa.me/${site.whatsappNumber}` + inviteNote,
+      subject: "Your interiors consultation is booked — Let's Build Home",
+      text: brandedText(mail),
+      html: brandedHtml(mail),
     });
     return { ok: true, signedIn: false };
   } catch (e) {

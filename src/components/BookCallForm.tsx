@@ -37,15 +37,17 @@ export default function BookCallForm({ defaults = {} }: { defaults?: BookingDefa
         <CheckCircleIcon width={48} height={48} className="text-forest" />
         <h2 className="text-xl font-bold text-forest">{t("successTitle")}</h2>
         <p className="text-sm text-muted md:text-base">{t("successText")}</p>
-        <a
-          href={waLink()}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn-green mt-2"
-        >
-          <WhatsAppIcon width={18} height={18} />
-          {t("successWhatsapp")}
-        </a>
+        {waLink() && (
+          <a
+            href={waLink()!}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-green mt-2"
+          >
+            <WhatsAppIcon width={18} height={18} />
+            {t("successWhatsapp")}
+          </a>
+        )}
       </div>
     );
   }

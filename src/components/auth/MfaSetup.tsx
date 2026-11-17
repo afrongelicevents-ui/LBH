@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { ShieldCheckIcon } from "@/components/icons";
@@ -55,9 +55,14 @@ export default function MfaSetup() {
     setMode("enroll");
   }, [supabase, t]);
 
+  // Enrol once per visit. A second run would replace the factor (and its
+  // secret) while the first QR code is still on screen, so a code from it
+  // would be refused as "wrong or expired".
+  const started = useRef(false);
   useEffect(() => {
-    const initial = setTimeout(() => void init(), 0);
-    return () => clearTimeout(initial);
+    if (started.current) return;
+    started.current = true;
+    void init();
   }, [init]);
 
   async function verify(e: React.FormEvent) {

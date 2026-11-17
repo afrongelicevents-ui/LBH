@@ -55,7 +55,9 @@ export default function SignupForm() {
               : state.field === "terms"
                 ? t("errorTerms")
                 : t("errorRequired")
-      : state?.status === "rate"
+      : state?.status === "exists"
+        ? "exists"
+        : state?.status === "rate"
         ? t("errorRate")
         : state?.status === "error"
           ? t("errorGeneric")
@@ -73,11 +75,19 @@ export default function SignupForm() {
         </div>
       </div>
 
-      {error && (
+      {error === "exists" ? (
+        <div role="alert" className="mb-4 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-charcoal" data-testid="signup-exists">
+          <p className="font-semibold">{t("errorExists")}</p>
+          <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
+            <Link href="/login" className="font-semibold text-forest underline underline-offset-2">{t("existsLogin")}</Link>
+            <Link href="/login" className="font-semibold text-forest underline underline-offset-2">{t("existsReset")}</Link>
+          </p>
+        </div>
+      ) : error ? (
         <p role="alert" className="mb-4 rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm font-semibold text-red-800">
           {error}
         </p>
-      )}
+      ) : null}
 
       <input type="hidden" name="locale" value={locale} />
       <div aria-hidden className="hidden">

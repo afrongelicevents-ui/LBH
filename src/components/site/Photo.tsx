@@ -21,6 +21,7 @@ export default function Photo({
   className = "",
   creditClassName = "",
   stockLabel,
+  hideCredit = false,
 }: {
   photo: PhotoSource;
   sizes: string;
@@ -28,11 +29,13 @@ export default function Photo({
   className?: string;
   creditClassName?: string;
   stockLabel: string;
+  /** Leave the credit off the image; it must then be listed on About → Photo credits. */
+  hideCredit?: boolean;
 }) {
   return (
     <figure className={`relative overflow-hidden ${className}`}>
       <Image src={photo.src} alt={photo.alt} fill sizes={sizes} priority={priority} className="object-cover" style={photo.position ? { objectPosition: photo.position } : undefined} />
-      {photo.kind === "stock" && (
+      {photo.kind === "stock" && !hideCredit && (
         <figcaption
           className={`absolute right-0 bottom-0 max-w-[85%] truncate bg-charcoal/55 px-2 py-0.5 text-[10px] leading-4 text-white/90 ${creditClassName}`}
         >

@@ -4,9 +4,9 @@ import { bookingSchema } from "@/lib/booking";
 import { resolveCountry } from "@/lib/country";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { rateLimited } from "@/lib/ratelimit";
+import { brandedHtml, brandedText, inviteLink, type BrandedEmail } from "@/lib/emailLayout";
 import { sendEmail } from "@/lib/email";
 import { site } from "@/config/site";
-import { findOrCreateClient } from "@/lib/clientAccount";
 
 export type BookingResult =
   | { status: "ok" }
@@ -39,12 +39,48 @@ export async function submitBooking(
   const admin = createAdminClient();
 
   try {
-    const { clientId, inviteNote } = await findOrCreateClient(admin, {
-      email: d.email,
-      name: d.name,
-      whatsapp: d.whatsapp,
-      country: resolveCountry(d) ?? "other",
+    // Existing account? Matched on the verified auth email (auth.users),
+    // never on the user-editable profile row.
+    const { data: existingId } = await admin.rpc("find_user_id_by_email", {
+      p_email: d.email,
     });
+
+    let clientId: string | null = null;
+    let invite: string | null = null;
+
+    if (existingId) {
+      const { data: existingProfile } = await admin
+        .from("profiles")
+        .select("role")
+        .eq("id", existingId)
+        .single();
+      // Only attach bookings to client accounts, never to staff.
+      if (existingProfile?.role === "client") clientId = existingId as string;
+    } else {
+      const { data: created, error: createErr } =
+        await admin.auth.admin.createUser({
+          email: d.email.toLowerCase(),
+          email_confirm: false,
+          user_metadata: {
+            full_name: d.name,
+            whatsapp: d.whatsapp,
+            country: resolveCountry(d) ?? "other",
+          },
+        });
+      if (createErr) {
+        console.error(`[booking] createUser: ${createErr.message}`);
+      } else {
+        clientId = created.user.id;
+        const { data: link } = await admin.auth.admin.generateLink({
+          type: "invite",
+          email: d.email.toLowerCase(),
+          options: {
+            redirectTo: `${site.url}/account/password`,
+          },
+        });
+        invite = inviteLink(link?.properties?.hashed_token);
+      }
+    }
 
     const { error: insertErr } = await admin.from("call_bookings").insert({
       client_id: clientId,
@@ -60,16 +96,23 @@ export async function submitBooking(
     });
     if (insertErr) throw new Error(insertErr.message);
 
+    const mail: BrandedEmail = {
+      preheader: "We received your request — we'll confirm the time soon.",
+      title: "Your free first call is booked",
+      paragraphs: [
+        `Hi ${d.name},`,
+        `Thank you — we received your request for a free first call (${d.slot}, ${d.callType}). We will confirm the exact time by email${site.whatsappNumber ? " and WhatsApp" : ""}.`,
+        ...(invite ? ["Your LBH account is ready too: see quotes, approve costs and read reports in one place."] : []),
+        "Talk soon — the Let's Build Home team.",
+      ],
+      ...(invite ? { button: { label: "Set up my account", href: invite } } : {}),
+      note: "The call is free, with no obligation.",
+    };
     await sendEmail({
       to: d.email,
-      subject: "LBH — your free first call is booked",
-      text:
-        `Hi ${d.name},\n\n` +
-        `Thank you — we received your request for a free first call ` +
-        `(${d.slot}, ${d.callType}). We will confirm the exact time by email ` +
-        `and WhatsApp.\n\nTalk soon,\nLBH — Let's Build Home\n` +
-        `WhatsApp: https://wa.me/${site.whatsappNumber}` +
-        inviteNote,
+      subject: "Your free first call is booked — Let's Build Home",
+      text: brandedText(mail),
+      html: brandedHtml(mail),
     });
 
     return { status: "ok" };

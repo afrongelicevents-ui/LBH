@@ -2,6 +2,8 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import Photo, { type PhotoSource } from "@/components/site/Photo";
 import { formatCents } from "@/lib/money";
+import { SERVICE_GROUP_KEYS, servicesIn } from "@/config/services";
+import { SERVICE_GROUPS } from "@/config/siteNav";
 
 /** Illustration only — clearly labelled "Sample data" on the page. */
 const SAMPLE = { budget: 4200000, spent: 1845000 };
@@ -9,36 +11,37 @@ const SAMPLE = { budget: 4200000, spent: 1845000 };
 export type HomePhotos = Record<"hero" | "land" | "materials" | "onsite" | "reporting" | "interiors", PhotoSource>;
 
 /* ------------------------------------------------------------------ */
-/* Hero                                                                */
+/* Hero — text on ivory at left, photo on the right fading into it.   */
+/* Desktop: hero + trust row fill exactly one screen under the header. */
+/* Phone: a short photo (≤40% of the screen) that fades into ivory,    */
+/* with the headline and button sliding up over the faded part.        */
 /* ------------------------------------------------------------------ */
 export function HomeHero({ photo }: { photo: PhotoSource }) {
   const t = useTranslations("site.home.hero");
   const ts = useTranslations("site");
   return (
-    <section className="relative isolate" aria-labelledby="hero-title" data-testid="home-hero">
-      <div className="relative md:min-h-[620px] lg:min-h-[680px]">
-        {/* one photo for every screen: on top on phones, behind the text on larger screens */}
-        <div className="relative h-[46vh] min-h-[280px] md:absolute md:inset-0 md:h-auto md:min-h-0">
-          <Photo photo={photo} sizes="100vw" priority className="h-full w-full" stockLabel={ts("stockPhoto")} />
-          <div aria-hidden className="absolute inset-y-0 left-0 hidden w-[62%] bg-gradient-to-r from-charcoal/70 via-charcoal/40 to-transparent md:block" />
-        </div>
-        <div className="ds-wrap relative py-10 md:flex md:min-h-[620px] md:items-end md:py-20 lg:min-h-[680px]">
-          <div className="max-w-xl md:text-white">
-            <p className="ds-eyebrow md:text-[#e6e1d3]">{t("eyebrow")}</p>
-            <h1 id="hero-title" className="ds-display mt-4 text-charcoal md:text-white">
-              {t("title")}
-            </h1>
-            <p className="mt-4 font-serif text-2xl italic text-forest md:text-[#f1ede2]">{t("subtitle")}</p>
-            <p className="ds-lead mt-4 md:text-[#e6e1d3]">{t("text")}</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Link href="/book-a-call" className="ds-btn ds-btn-primary md:bg-paper md:text-charcoal md:hover:bg-white" data-testid="hero-cta">
-                {t("cta")}
-              </Link>
-              <Link href="/how-it-works" className="ds-btn ds-btn-outline md:border-white/70 md:text-white md:hover:bg-white md:hover:text-charcoal">
-                {t("secondary")}
-              </Link>
-            </div>
-          </div>
+    <section className="lbh-hero relative isolate overflow-hidden bg-ivory" aria-labelledby="hero-title" data-testid="home-hero">
+      {/* the photo sits on the right on every screen and fades into the ivory behind the text */}
+      <div className="lbh-hero-photo absolute inset-y-0 right-0 w-[64%] md:w-[62%]">
+        <Photo
+          photo={photo}
+          sizes="(min-width: 768px) 62vw, 64vw"
+          priority
+          className="h-full w-full"
+          hideCredit
+          stockLabel={ts("stockPhoto")}
+        />
+      </div>
+      <div className="ds-wrap relative py-6 md:flex md:h-full md:items-center md:py-12">
+        <div className="max-w-[60%] md:max-w-[52%] lg:max-w-[50%]">
+          <h1 id="hero-title" className="lbh-hero-title font-serif text-charcoal">
+            {t("title")}
+          </h1>
+          <p className="mt-3 font-serif text-[1.02rem] leading-snug text-forest italic md:mt-5 md:text-[1.6rem]">{t("subtitle")}</p>
+          <Link href="/book-a-call" className="ds-btn ds-btn-primary mt-5 min-h-[44px] px-4 py-2 text-[0.9rem] whitespace-nowrap md:mt-9 md:min-h-[48px] md:px-[1.4rem] md:py-3 md:text-[0.95rem]" data-testid="hero-cta">
+            {t("cta")}
+            <span aria-hidden>→</span>
+          </Link>
         </div>
       </div>
     </section>
@@ -46,28 +49,32 @@ export function HomeHero({ photo }: { photo: PhotoSource }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Trust indicators — a quiet row, not cards                          */
+/* Trust indicators — thin outline icons, hairline dividers           */
 /* ------------------------------------------------------------------ */
 const TRUST_ICONS: Record<string, React.ReactNode> = {
-  verified: <path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3zM8.8 12.2l2.2 2.2 4.4-4.6" />,
-  process: <path d="M5 5h14v14H5zM9 9h6M9 12h6M9 15h4" />,
-  photos: <path d="M4 8h3l1.5-2h7L17 8h3v11H4zM12 17a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" />,
-  support: <path d="M5 13v-1a7 7 0 0114 0v1M5 13h3v5H5zM16 13h3v5h-3M16 18c0 1.5-1.5 2.5-4 2.5" />,
+  // shield with a tick
+  verified: <path d="M12 3l7.5 2.8v5.7c0 4.6-3.1 8.3-7.5 9.9-4.4-1.6-7.5-5.3-7.5-9.9V5.8L12 3zM8.6 12.1l2.4 2.4 4.5-4.7" />,
+  // clipboard with lines (written quotes, nothing hidden)
+  process: <path d="M9 4.5h6M9 4.5a1.5 1.5 0 011.5-1.5h3A1.5 1.5 0 0115 4.5M9 4.5H6.5A1.5 1.5 0 005 6v13.5A1.5 1.5 0 006.5 21h11a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H15M8.5 10.5h7M8.5 14h7M8.5 17.5h4" />,
+  // camera
+  photos: <path d="M3.5 8.5A1.5 1.5 0 015 7h2.6l1.6-2.2h5.6L16.4 7H19a1.5 1.5 0 011.5 1.5v9A1.5 1.5 0 0119 19H5a1.5 1.5 0 01-1.5-1.5zM12 16.2a3.4 3.4 0 100-6.8 3.4 3.4 0 000 6.8z" />,
+  // headset
+  support: <path d="M4.5 13.5V12a7.5 7.5 0 0115 0v1.5M4.5 13.5h2.8v5H6a1.5 1.5 0 01-1.5-1.5zM19.5 13.5h-2.8v5H18a1.5 1.5 0 001.5-1.5zM16.7 18.5c0 1.4-1.6 2.3-3.7 2.3" />,
 };
 export function TrustRow() {
   const t = useTranslations("site.home.trust");
   const keys = ["verified", "process", "photos", "support"] as const;
   return (
-    <section aria-label={t("label")} className="border-b border-rule bg-paper">
-      <ul className="ds-wrap grid grid-cols-2 gap-x-6 gap-y-6 py-8 md:grid-cols-4 md:py-10">
+    <section aria-label={t("label")} className="lbh-trust border-y border-rule bg-[#ece5d7] md:bg-paper" data-testid="home-trust">
+      <ul className="ds-wrap grid grid-cols-4 px-2 md:px-8">
         {keys.map((k) => (
-          <li key={k} className="flex items-start gap-3">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="mt-0.5 shrink-0 text-forest">
+          <li key={k} className="lbh-trust-item flex flex-col items-center justify-center gap-1 py-3 text-center md:flex-row md:gap-4 md:py-0 md:text-left">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="h-6 w-6 shrink-0 text-forest md:h-10 md:w-10">
               {TRUST_ICONS[k]}
             </svg>
-            <span>
-              <span className="block text-[15px] font-semibold text-charcoal">{t(`${k}.title`)}</span>
-              <span className="mt-0.5 block text-sm leading-snug text-slate">{t(`${k}.text`)}</span>
+            <span className="lbh-trust-label font-serif text-[0.7rem] leading-[1.25] text-charcoal min-[400px]:text-[0.76rem] md:max-w-[9rem] md:text-[1.15rem] md:leading-snug">
+              {t(`${k}.title`)}
+              <span className="sr-only">: {t(`${k}.text`)}</span>
             </span>
           </li>
         ))}
@@ -77,210 +84,131 @@ export function TrustRow() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Services — three groups that follow a build: Land · Build · Finish  */
+/* Services — three groups the way a build happens: Land · Build ·     */
+/* Finish. Three tiles in a row (phone and desktop): photo, group      */
+/* title and the services in it.                                       */
 /* ------------------------------------------------------------------ */
-const GROUPS = [
-  { key: "land", href: "/services#land", items: [["land", "/services#land"], ["landBuying", "/services#land-buying"]] },
-  { key: "build", href: "/services#build", items: [["materials", "/services#materials"], ["onsite", "/services#onsite"], ["reporting", "/services#reporting"]] },
-  { key: "finish", href: "/services/interiors", items: [["interiors", "/services/interiors"]] },
-] as const;
+const GROUP_PHOTO = { land: "land", build: "onsite", finish: "interiors" } as const;
 
-export function ServicesGroups({ photos }: { photos: HomePhotos }) {
+export function ServiceTiles({ photos }: { photos: HomePhotos }) {
   const t = useTranslations("site.home.services");
-  const tg = useTranslations("site.groups");
   const ts = useTranslations("site");
-  const photoFor = { land: photos.land, build: photos.onsite, finish: photos.interiors };
+  const tg = useTranslations("site.groups");
   return (
-    <section aria-labelledby="services-title" className="py-16 md:py-24" data-testid="home-services">
+    <section aria-labelledby="services-title" className="py-7 md:py-14" data-testid="home-services">
       <div className="ds-wrap">
-        <div className="grid gap-6 md:grid-cols-12">
-          <div className="md:col-span-5">
-            <p className="ds-eyebrow">{t("eyebrow")}</p>
-            <h2 id="services-title" className="ds-h2 mt-3">{t("title")}</h2>
-          </div>
-          <p className="ds-lead md:col-span-6 md:col-start-7 md:pt-8">{t("intro")}</p>
-        </div>
+        <h2 id="services-title" className="ds-eyebrow flex items-center gap-4 text-[0.72rem] text-charcoal md:text-xs">
+          <span aria-hidden className="h-px flex-1 bg-stone md:hidden" />
+          {t("eyebrow")}
+          <span aria-hidden className="h-px flex-1 bg-stone" />
+        </h2>
+        <ul className="mt-4 grid grid-cols-3 gap-x-2.5 md:mt-7 md:gap-6" data-testid="service-tiles">
+          {SERVICE_GROUP_KEYS.map((g) => (
+            <li key={g}>
+              <GroupTile g={g} photo={photos[GROUP_PHOTO[g]]} title={tg(`${g}.title`)} items={g === "finish" ? [tg("items.interiors")] : servicesIn(g).map((s) => tg(`items.${s.key}`))} stockLabel={ts("stockPhoto")} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
 
-        <ol className="mt-12 grid gap-10 md:mt-14 md:grid-cols-3 md:gap-8">
-          {GROUPS.map((g, i) => (
-            <li key={g.key} id={`group-${g.key}`} data-testid={`group-${g.key}`} className="flex flex-col">
-              <Photo photo={photoFor[g.key]} sizes="(min-width: 768px) 33vw, 100vw" className="aspect-[4/3] w-full rounded-[3px]" stockLabel={ts("stockPhoto")} />
-              <p className="mt-5 font-serif text-lg text-stone-ink">{String(i + 1).padStart(2, "0")}</p>
-              <h3 className="ds-h3 text-[1.6rem]">{tg(`${g.key}.title`)}</h3>
-              <p className="ds-body mt-2">{tg(`${g.key}.text`)}</p>
-              <ul className="mt-4 border-t border-rule text-[15px]">
-                {g.items.map(([k, href]) => (
-                  <li key={k} className="border-b border-rule">
-                    <Link href={href} className="flex items-center justify-between py-2.5 text-charcoal hover:text-forest">
-                      {tg(`items.${k}`)}
-                      <span aria-hidden className="text-slate">→</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <Link href={g.href} className="ds-link mt-4 inline-block text-[15px]">
-                {tg(`${g.key}.more`)}
-              </Link>
+function GroupTile({ g, photo, title, items, stockLabel }: { g: (typeof SERVICE_GROUP_KEYS)[number]; photo: PhotoSource; title: string; items: string[]; stockLabel: string }) {
+  const href = SERVICE_GROUPS.find((x) => x.key === g)!.href;
+  return (
+    <Link href={href} className="group block" data-testid={`tile-${g}`}>
+      <Photo photo={photo} sizes="(min-width: 768px) 33vw, 33vw" className="aspect-[4/5] w-full rounded-[4px] md:aspect-[4/3]" hideCredit stockLabel={stockLabel} />
+      <span className="mt-2 flex items-start justify-between gap-1 font-serif text-[1rem] leading-tight text-charcoal group-hover:text-forest md:mt-3 md:text-[1.35rem]">
+        {title}
+        <span aria-hidden className="text-forest">→</span>
+      </span>
+      <span className="mt-1 block text-[0.72rem] leading-snug text-slate md:text-sm">{items.join(" · ")}</span>
+    </Link>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* How it works — one compact strip of 4 numbered steps                */
+/* ------------------------------------------------------------------ */
+export function Process() {
+  const t = useTranslations("site.home.process");
+  return (
+    <section aria-labelledby="process-title" className="border-y border-rule bg-paper py-6 md:py-11" data-testid="home-process">
+      <div className="ds-wrap">
+        <h2 id="process-title" className="ds-eyebrow flex items-center gap-4 text-[0.72rem] text-charcoal md:text-xs">
+          <span aria-hidden className="h-px flex-1 bg-stone md:hidden" />
+          {t("eyebrow")}
+          <span aria-hidden className="h-px flex-1 bg-stone" />
+        </h2>
+        <ol className="mt-4 grid grid-cols-4 gap-2 md:mt-7 md:gap-8">
+          {[1, 2, 3, 4].map((n) => (
+            <li key={n} className="border-t border-charcoal/70 pt-2.5 md:pt-4">
+              <span className="block font-serif text-[1.6rem] leading-none text-stone-ink md:text-3xl">{n}</span>
+              <span className="mt-1.5 block text-[0.78rem] leading-snug font-semibold text-charcoal min-[400px]:text-[0.84rem] md:text-[1rem]">{t(`s${n}.short`)}</span>
             </li>
           ))}
         </ol>
-
-        <p className="mt-12 border-t border-rule pt-5 text-sm text-slate" data-testid="camera-soon">
-          <span className="ds-tag mr-2">{t("soonTag")}</span>
-          {t("camera")}
-        </p>
       </div>
     </section>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/* Build Account — a real product preview with labelled sample data   */
+/* Build Account — a small preview (labelled sample data) + a link     */
 /* ------------------------------------------------------------------ */
-export function BuildAccountShowcase() {
+export function BuildAccountPreview({ showLink = true }: { showLink?: boolean }) {
   const t = useTranslations("site.home.ba");
-  const features = ["f1", "f2", "f3", "f4", "f5"] as const;
-  const stages = [
-    { name: t("demo.s1"), state: "done" },
-    { name: t("demo.s2"), state: "done" },
-    { name: t("demo.s3"), state: "now" },
-    { name: t("demo.s4"), state: "next" },
-    { name: t("demo.s5"), state: "next" },
-  ];
+  const STAGES = 6;
+  const NOW = 3;
   return (
-    <section aria-labelledby="ba-title" className="bg-forest py-16 text-[#e8e4d8] md:py-24" data-testid="home-ba">
-      <div className="ds-wrap grid gap-12 md:grid-cols-12 md:items-center">
+    <section aria-labelledby="ba-title" className="bg-forest py-7 text-[#e8e4d8] md:py-14" data-testid="home-ba">
+      <div className="ds-wrap grid gap-4 md:grid-cols-12 md:items-center md:gap-12">
         <div className="md:col-span-5">
-          <p className="ds-eyebrow text-[#c9bfa6]">{t("eyebrow")}</p>
-          <h2 id="ba-title" className="ds-h2 mt-3 text-white">{t("title")}</h2>
-          <p className="mt-4 text-[1.05rem] leading-relaxed text-[#d6d1c3]">{t("text")}</p>
-          <ul className="mt-6 space-y-3 text-[15px]">
-            {features.map((f) => (
-              <li key={f} className="flex gap-3 border-t border-white/15 pt-3">
-                <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#c9bfa6]" />
-                {t(f)}
-              </li>
-            ))}
-          </ul>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Link href="/build-account" className="ds-btn ds-btn-light">{t("cta")}</Link>
-            <Link href="/signup" className="ds-btn border border-white/50 text-white hover:bg-white hover:text-charcoal">{t("cta2")}</Link>
-          </div>
+          <p className="ds-eyebrow text-[0.7rem] text-[#c9bfa6] md:text-xs">{t("eyebrow")}</p>
+          <h2 id="ba-title" className="mt-2 font-serif text-[1.45rem] leading-[1.15] text-white md:text-[clamp(1.75rem,3.2vw,2.4rem)]">{t("title")}</h2>
+          <p className="mt-2 text-[0.92rem] leading-snug text-[#d6d1c3] md:mt-3 md:text-[1rem]">{t("short")}</p>
+          {showLink && (
+            <Link href="/build-account" className="mt-4 hidden items-center gap-2 font-semibold text-white underline decoration-1 underline-offset-4 hover:decoration-2 md:inline-flex" data-testid="ba-see-how">
+              {t("seeHow")} <span aria-hidden>→</span>
+            </Link>
+          )}
         </div>
 
-        {/* product preview (sample data) */}
         <div className="md:col-span-7" aria-label={t("demo.label")}>
-          <div className="overflow-hidden rounded-[6px] bg-paper text-charcoal shadow-[0_30px_60px_-20px_rgba(0,0,0,0.45)]">
-            <div className="flex items-center justify-between border-b border-rule px-5 py-3">
-              <span className="font-serif text-[1.05rem] text-forest">{t("demo.title")}</span>
+          <div className="overflow-hidden rounded-[6px] bg-paper text-charcoal shadow-[0_24px_48px_-24px_rgba(0,0,0,0.5)]">
+            <div className="flex items-center justify-between border-b border-rule px-4 py-2.5 md:px-5 md:py-3">
+              <span className="font-serif text-[0.98rem] text-forest md:text-[1.05rem]">{t("demo.title")}</span>
               <span className="ds-tag ds-tag-alert" data-testid="sample-tag">{t("demo.sample")}</span>
             </div>
             <div className="grid grid-cols-3 divide-x divide-rule border-b border-rule">
               {(["budget", "spent", "left"] as const).map((k) => (
-                <div key={k} className="px-4 py-4 sm:px-5">
-                  <p className="text-[11px] font-semibold tracking-wider text-slate uppercase">{t(`demo.${k}`)}</p>
-                  <p className="mt-1 font-serif text-xl sm:text-2xl">
+                <div key={k} className="px-3 py-2.5 md:px-5 md:py-3">
+                  <p className="text-[10px] font-semibold tracking-wider text-slate uppercase md:text-[11px]">{t(`demo.${k}`)}</p>
+                  <p className="mt-0.5 font-serif text-[1.05rem] md:text-xl">
                     {formatCents(k === "budget" ? SAMPLE.budget : k === "spent" ? SAMPLE.spent : SAMPLE.budget - SAMPLE.spent).replace(".00", "")}
                   </p>
                 </div>
               ))}
             </div>
-            <div className="px-5 py-4">
-              <div className="flex items-center justify-between text-sm">
-                <span className="font-semibold">{t("demo.progress")}</span>
-                <span className="text-slate">{t("demo.progressValue")}</span>
-              </div>
-              <ol className="mt-3 grid grid-cols-5 gap-1.5">
-                {stages.map((s) => (
-                  <li key={s.name}>
-                    <span className={`block h-1.5 rounded-full ${s.state === "done" ? "bg-forest" : s.state === "now" ? "bg-stone" : "bg-sand"}`} />
-                    <span className={`mt-1.5 truncate text-[11px] ${s.state === "now" ? "block font-semibold whitespace-nowrap text-charcoal" : "hidden text-slate sm:block"}`}>{s.name}</span>
-                  </li>
+            <div className="px-4 py-3 md:px-5 md:py-3.5">
+              <p className="text-[0.82rem] font-semibold md:text-sm">{t("demo.progress")}</p>
+              <ol className="mt-2 grid grid-cols-6 gap-1" aria-hidden>
+                {Array.from({ length: STAGES }, (_, i) => (
+                  <li key={i} className={`h-1.5 rounded-full ${i + 1 < NOW ? "bg-forest" : i + 1 === NOW ? "bg-stone" : "bg-sand"}`} />
                 ))}
               </ol>
-            </div>
-            <div className="grid border-t border-rule sm:grid-cols-2 sm:divide-x sm:divide-rule">
-              <div className="px-5 py-4">
-                <p className="text-[11px] font-semibold tracking-wider text-slate uppercase">{t("demo.receipts")}</p>
-                <ul className="mt-2 divide-y divide-rule text-sm">
-                  {[1, 2, 3].map((n) => (
-                    <li key={n} className="flex items-center justify-between py-2">
-                      <span className="min-w-0 truncate">{t(`demo.r${n}`)}</span>
-                      <span className="ds-tag ds-tag-green ml-3 shrink-0">{t("demo.receiptOk")} ✓</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="border-t border-rule px-5 py-4 sm:border-t-0">
-                <p className="text-[11px] font-semibold tracking-wider text-slate uppercase">{t("demo.updates")}</p>
-                <ul className="mt-2 space-y-2.5 text-sm">
-                  {[1, 2, 3].map((n) => (
-                    <li key={n} className="flex gap-2.5">
-                      <span aria-hidden className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${n === 1 ? "bg-[#b5541c]" : "bg-forest"}`} />
-                      <span>
-                        {t(`demo.u${n}`)}
-                        <span className="block text-xs text-slate">{t(`demo.u${n}When`)}</span>
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <p className="mt-2 text-[0.82rem] text-slate md:text-sm" data-testid="ba-stage">
+                {t("demo.stageOf", { n: NOW, total: STAGES })} · <span className="font-semibold text-charcoal">{t(`demo.s${NOW}`)}</span>
+              </p>
             </div>
           </div>
-          <p className="mt-3 text-xs text-[#c9c3b3]">{t("demo.note")}</p>
+          {showLink && (
+            <Link href="/build-account" className="mt-4 inline-flex items-center gap-2 text-[0.95rem] font-semibold text-white underline decoration-1 underline-offset-4 md:hidden" data-testid="ba-see-how-phone">
+              {t("seeHow")} <span aria-hidden>→</span>
+            </Link>
+          )}
         </div>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* How it works                                                        */
-/* ------------------------------------------------------------------ */
-export function Process() {
-  const t = useTranslations("site.home.process");
-  return (
-    <section aria-labelledby="process-title" className="border-b border-rule bg-paper py-16 md:py-24" data-testid="home-process">
-      <div className="ds-wrap">
-        <p className="ds-eyebrow">{t("eyebrow")}</p>
-        <h2 id="process-title" className="ds-h2 mt-3 max-w-2xl">{t("title")}</h2>
-        <ol className="mt-12 grid gap-10 md:grid-cols-4 md:gap-8">
-          {[1, 2, 3, 4].map((n) => (
-            <li key={n} className="border-t border-charcoal pt-5">
-              <span className="font-serif text-4xl text-stone-ink">{n}</span>
-              <h3 className="mt-3 text-lg font-semibold text-charcoal">{t(`s${n}.title`)}</h3>
-              <p className="ds-body mt-2">{t(`s${n}.text`)}</p>
-            </li>
-          ))}
-        </ol>
-        <Link href="/how-it-works" className="ds-link mt-10 inline-block">{t("more")}</Link>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Why LBH                                                             */
-/* ------------------------------------------------------------------ */
-export function WhyLbh() {
-  const t = useTranslations("site.home.why");
-  const keys = ["local", "oversight", "money", "photos", "contact", "account"] as const;
-  return (
-    <section aria-labelledby="why-title" className="py-16 md:py-24">
-      <div className="ds-wrap grid gap-10 md:grid-cols-12">
-        <div className="md:col-span-4">
-          <p className="ds-eyebrow">{t("eyebrow")}</p>
-          <h2 id="why-title" className="ds-h2 mt-3">{t("title")}</h2>
-          <p className="ds-lead mt-4">{t("text")}</p>
-        </div>
-        <dl className="grid gap-x-10 md:col-span-7 md:col-start-6 md:grid-cols-2">
-          {keys.map((k) => (
-            <div key={k} className="border-t border-rule py-5">
-              <dt className="font-serif text-[1.2rem] text-charcoal">{t(`${k}.title`)}</dt>
-              <dd className="ds-body mt-1.5">{t(`${k}.text`)}</dd>
-            </div>
-          ))}
-        </dl>
       </div>
     </section>
   );
@@ -291,15 +219,13 @@ export function WhyLbh() {
 /* ------------------------------------------------------------------ */
 export function FinalCta() {
   const t = useTranslations("site.home.cta");
+  const th = useTranslations("site.home.hero");
   return (
-    <section aria-labelledby="cta-title" className="bg-sand py-16 md:py-20">
-      <div className="ds-wrap flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-        <div className="max-w-2xl">
-          <h2 id="cta-title" className="ds-h2">{t("title")}</h2>
-          <p className="ds-lead mt-3">{t("text")}</p>
-        </div>
+    <section aria-labelledby="cta-title" className="bg-sand py-7 md:py-14">
+      <div className="ds-wrap flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
+        <h2 id="cta-title" className="ds-h2 max-w-xl">{t("title")}</h2>
         <Link href="/book-a-call" className="ds-btn ds-btn-primary shrink-0" data-testid="final-cta">
-          {t("button")}
+          {th("cta")} <span aria-hidden>→</span>
         </Link>
       </div>
     </section>

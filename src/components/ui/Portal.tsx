@@ -102,7 +102,7 @@ export function HelpBox({
   title: string;
   text: string;
   cta: string;
-  href: string;
+  href: string | null;
 }) {
   return (
     <section className="flex items-center gap-3 rounded-[22px] bg-forest p-4 text-white sm:p-5">
@@ -111,15 +111,17 @@ export function HelpBox({
         <p className="text-base font-extrabold">{title}</p>
         <p className="text-sm text-white/85">{text}</p>
       </div>
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-full border-2 border-white px-4 text-sm font-bold text-white hover:bg-white hover:text-forest"
-      >
-        {cta}
-        <ArrowRightIcon size={16} />
-      </a>
+      {href && (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-full border-2 border-white px-4 text-sm font-bold text-white hover:bg-white hover:text-forest"
+        >
+          {cta}
+          <ArrowRightIcon size={16} />
+        </a>
+      )}
     </section>
   );
 }

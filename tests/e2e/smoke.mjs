@@ -262,8 +262,7 @@ console.log("\nPublic website");
     await m.locator('header[data-auth="out"]').waitFor({ timeout: 15000 });
     await m.getByTestId("menu-button").click();
     const menu = m.getByTestId("site-menu");
-    for (const label of ["Our services", "How it works", "Build Account", "About LBH", "FAQ", "Contact"]) await menu.getByText(label, { exact: true }).waitFor();
-    assert((await menu.getByText("Projects", { exact: true }).count()) === 0, "Projects listed before real content exists");
+    for (const label of ["Home", "Our services", "How it works", "Build Account", "Projects", "About LBH", "Contact", "Log in", "Create account"]) await menu.getByText(label, { exact: true }).first().waitFor();
     await menu.getByTestId("menu-book-call").click();
     await m.waitForURL(/book-a-call/);
     await m.context().close();
@@ -272,11 +271,20 @@ console.log("\nPublic website");
   await step("homepage: new headline, trust row, sample data labelled, no prices in the copy", async () => {
     await page.goto(`${BASE}/en`);
     await page.getByRole("heading", { level: 1, name: "Build your home back home." }).waitFor();
-    await page.getByText("Independent land checks").waitFor();
-    await page.getByTestId("sample-tag").waitFor();
-    await page.locator("figcaption:visible", { hasText: "Stock photo" }).first().waitFor();
+    await page.getByText("Independent land checks").first().waitFor();
+    // short homepage: 3 group tiles (Land · Build · Finish); no credits on the images (listed on About)
+    assert((await page.getByTestId("service-tiles").locator('a[href*="/services"]').count()) === 3, "service tiles");
+    assert((await page.locator("main figcaption").count()) === 0, "photo credit text on the homepage");
+    assert((await page.locator('main a[href$="/book-a-call"]').count()) === 2, "booking buttons on the homepage");
+    // Build Account band: labelled sample, full stage name, one link to /build-account
+    const ba = page.getByTestId("home-ba");
+    await ba.getByTestId("sample-tag").waitFor();
+    assert((await ba.getByTestId("ba-stage").innerText()) === "Stage 3 of 6 · Window level", "stage label");
+    assert((await ba.locator('a[href$="/build-account"]').count()) >= 1, "See how the Build Account works link");
     const hero = await page.getByTestId("home-hero").innerText();
     assert(!/\$\s?\d/.test(hero), "a price appears in the hero");
+    await page.locator('footer a[href$="/about#photo-credits"]').click();
+    await page.locator("#photo-credits").getByText("Thatlowdownwoman").first().waitFor();
   });
 
   await step("language switcher → Shona → Ndebele", async () => {
@@ -318,10 +326,11 @@ console.log("\nPublic website");
     assert(data?.length === 1, "interest not stored");
   });
 
-  await step("Build Account section on the homepage → info page (plans, not a bank account)", async () => {
+  await step("Build Account page: labelled sample preview, plans, not a bank account", async () => {
     await page.goto(`${BASE}/en`);
-    await page.getByTestId("home-ba").getByRole("link", { name: "About the Build Account" }).click();
+    await page.locator('footer a[href$="/build-account"]').click();
     await page.waitForURL(/\/build-account$/);
+    await page.getByTestId("home-ba").getByTestId("sample-tag").waitFor();
     await page.getByTestId("ba-info").waitFor();
     await page.getByText("not a bank account", { exact: false }).first().waitFor();
     await page.getByTestId("ba-info-plans").getByText("Free", { exact: true }).waitFor();
@@ -361,8 +370,10 @@ console.log("\nPublic website");
     await page.getByText("confirm your email first").waitFor({ timeout: 10000 });
 
     const msg = await latestEmailTo(email);
-    // Supabase's standard confirmation email (as on the live free plan)
-    const link = /href="([^"]+\/auth\/v1\/verify[^"]+)"/.exec(msg.HTML)?.[1]?.replaceAll("&amp;", "&");
+    // the LBH-branded email links to the site's /api/auth/confirm (Supabase's
+    // standard email, with an /auth/v1/verify link, is accepted too)
+    assert(/Confirm your Let's Build Home account/.test(msg.Subject), `wrong email: ${msg.Subject}`);
+    const link = /href="([^"]+\/(?:api\/auth\/confirm|auth\/v1\/verify)[^"]+)"/.exec(msg.HTML)?.[1]?.replaceAll("&amp;", "&");
     assert(link, "confirmation link missing from email");
     await page.goto(link);
     await page.waitForURL(/\/account/, { timeout: 20000 });
@@ -841,6 +852,20 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
     await shot(page, "admin-needs-you");
   });
 
+  await step("invite staff from Settings → the new lawyer is a lawyer, not a client", async () => {
+    const email = `invited-lawyer-${Date.now()}@example.test`;
+    await page.goto(`${BASE}/en/admin/settings`);
+    const form = page.locator("form", { has: page.locator('select[name="role"]') });
+    await form.locator('input[name="full_name"]').fill("E2E Invited Lawyer");
+    await form.locator('input[name="email"]').fill(email);
+    await form.locator('select[name="role"]').selectOption("lawyer");
+    await form.locator('button[type="submit"]').click();
+    await page.getByText("Invite sent.").waitFor({ timeout: 15000 });
+    const { data: p } = await db.from("profiles").select("id, role, staff_kind").eq("email", email).single();
+    assert(p.role === "field" && p.staff_kind === "lawyer", `invited lawyer has profile ${p.role}/${p.staff_kind}`);
+    await db.auth.admin.deleteUser(p.id);
+  });
+
   await step("Website photos: replace the hero with a big phone photo → resized, live on the homepage", async () => {
     await page.goto(`${BASE}/en/admin/settings`);
     await page.getByTestId("website-photos-link").click();
@@ -919,7 +944,8 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
   await step("Projects: hidden until real content; admin adds a project + photo, publishes, shows it in the menu", async () => {
     const visitor = await (await newCtx()).newPage();
     const r0 = await visitor.goto(`${BASE}/en/projects`);
-    assert(r0.status() === 404, `Projects page public too early (${r0.status()})`);
+    assert(r0.status() === 200, `projects page ${r0.status()}`);
+    await visitor.getByTestId("projects-empty").waitFor(); // "coming soon" until real content
     await page.goto(`${BASE}/en/admin/settings/projects`);
     const form = page.getByTestId("project-new");
     await form.locator('input[name="title"]').fill("E2E Family home, Ruwa");
@@ -936,7 +962,9 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
     await card.getByTestId(`publish-${proj.id}`).click();
     await card.getByText("Published", { exact: true }).waitFor({ timeout: 20000 });
     // still hidden until the admin switches the menu on
-    assert((await visitor.goto(`${BASE}/en/projects`)).status() === 404, "visible before switched on");
+    await visitor.goto(`${BASE}/en/projects`);
+    await visitor.getByTestId("projects-empty").waitFor();
+    assert((await visitor.getByText("E2E Family home, Ruwa").count()) === 0, "visible before switched on");
     await page.getByTestId("projects-menu-toggle").getByRole("button", { name: "Show in menu" }).click();
     await page.getByTestId("projects-menu-toggle").getByText("Shown in the menu.").waitFor({ timeout: 20000 });
     const r1 = await visitor.goto(`${BASE}/en/projects`);
@@ -1444,9 +1472,16 @@ console.log("\nInteriors & furnishing");
   const vctx = await newCtx({ viewport: { width: 390, height: 844 } });
   const v = await vctx.newPage();
 
-  await step("homepage: Land · Build · Finish groups; menu lists Finish", async () => {
+  await step("homepage + services: Land · Build · Finish groups; menu lists Finish; land buying page", async () => {
+    await v.goto(`${BASE}/en/services`);
+    for (const g of ["land", "build", "finish"]) await v.getByTestId(`group-${g}`).waitFor();
+    await v.getByTestId("group-land").getByText("Land buying").first().waitFor();
+    await v.goto(`${BASE}/en/services/land-buying`);
+    await v.getByRole("heading", { level: 1, name: "Land buying" }).waitFor();
     await v.goto(`${BASE}/en`);
-    for (const g of ["Land", "Build", "Finish"]) await v.getByRole("heading", { name: g, exact: true }).first().waitFor();
+    await v.getByTestId("tile-finish").click();
+    await v.waitForURL(/\/services\/interiors/);
+    await v.goto(`${BASE}/en`);
     await v.getByTestId("menu-button").click();
     await v.getByTestId("menu-service-groups").getByText("Finish").waitFor();
     await v.keyboard.press("Escape");

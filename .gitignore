@@ -45,3 +45,5 @@ design-preview/
 
 # downloaded at build time (licensed stock photos)
 public/images/stock/
+/auth-email-shots
+/AGENTS.md

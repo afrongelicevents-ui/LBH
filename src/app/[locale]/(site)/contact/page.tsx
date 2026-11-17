@@ -35,22 +35,24 @@ function ContactContent() {
         </p>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2">
-          <a
-            href={waLink()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="card flex items-center gap-4 p-6 transition-shadow hover:shadow-(--shadow-card-hover)"
-          >
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-whatsapp text-white">
-              <WhatsAppIcon width={26} height={26} />
-            </span>
-            <span>
-              <span className="block text-sm font-bold text-forest">
-                {t("whatsappLabel")}
+          {waLink() && (
+            <a
+              href={waLink()!}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card flex items-center gap-4 p-6 transition-shadow hover:shadow-(--shadow-card-hover)"
+            >
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-whatsapp text-white">
+                <WhatsAppIcon width={26} height={26} />
               </span>
-              <span className="block text-sm text-muted">{tc("whatsapp")}</span>
-            </span>
-          </a>
+              <span>
+                <span className="block text-sm font-bold text-forest">
+                  {t("whatsappLabel")}
+                </span>
+                <span className="block text-sm text-muted">{tc("whatsapp")}</span>
+              </span>
+            </a>
+          )}
 
           <a
             href={`mailto:${site.email}`}
