@@ -89,14 +89,17 @@ export async function submitInteriors(_prev: InteriorsResult | null, fd: FormDat
     if (await rateLimited("interiors-booking", 5, 3600)) return { ok: false, error: "rate" };
     const admin = createAdminClient();
     const country = resolveCountry(c.data) ?? "other";
-    const { clientId, inviteNote } = await findOrCreateClient(admin, { email: c.data.email, name: c.data.name, whatsapp: c.data.whatsapp, country });
+    const { clientId, inviteNote, created } = await findOrCreateClient(admin, { email: c.data.email, name: c.data.name, whatsapp: c.data.whatsapp, country });
     const summary = `Interiors: ${d.location} · ${d.house_status} · rooms: ${rooms.join(", ")} · budget ${d.budget} · ${d.timeline}${d.styles ? ` · likes: ${d.styles}` : ""}`;
     const { error: bErr } = await admin.from("call_bookings").insert({
       client_id: clientId, name: c.data.name, email: c.data.email.toLowerCase(), whatsapp: c.data.whatsapp, country,
       service: "interiors", description: summary.slice(0, 2000), preferred_slot: d.slot, call_type: d.callType, status: "new",
     });
     if (bErr) throw new Error(bErr.message);
-    if (clientId) {
+    // Only a brand-new account gets the project straight away: someone typing another
+    // person's email must not add projects to that person's account. Existing customers
+    // are linked through the booking and LBH opens the project after the call.
+    if (clientId && created) {
       await admin.from("service_requests").insert({ client_id: clientId, type: "interiors", status: "new", title: `Interiors — ${d.location}`, details: details(d, rooms) });
     }
     await sendEmail({
@@ -104,7 +107,8 @@ export async function submitInteriors(_prev: InteriorsResult | null, fd: FormDat
       subject: "LBH — your interiors design consultation is booked",
       text:
         `Hi ${c.data.name},\n\nThank you — we received your request for an interiors design consultation (${d.slot}, ${d.callType}). ` +
-        `We will confirm the exact time by email and WhatsApp.\n\nYou can add photos or plans of your house in your LBH account.\n\n` +
+        `We will confirm the exact time by email and WhatsApp.\n\n` +
+        (created ? `You can add photos or plans of your house in your LBH account.\n\n` : `Already have an LBH account? Log in to book with photos and plans: ${site.url}/services/interiors#book\n\n`) +
         `LBH — Let's Build Home\nWhatsApp: https://wa.me/${site.whatsappNumber}` + inviteNote,
     });
     return { ok: true, signedIn: false };

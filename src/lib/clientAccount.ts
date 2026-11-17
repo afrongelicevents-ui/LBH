@@ -11,11 +11,11 @@ import { site } from "@/config/site";
 export async function findOrCreateClient(
   admin: SupabaseClient,
   d: { email: string; name: string; whatsapp: string; country: string }
-): Promise<{ clientId: string | null; inviteNote: string }> {
+): Promise<{ clientId: string | null; inviteNote: string; created: boolean }> {
   const { data: existingId } = await admin.rpc("find_user_id_by_email", { p_email: d.email });
   if (existingId) {
     const { data: p } = await admin.from("profiles").select("role").eq("id", existingId).single();
-    return { clientId: p?.role === "client" ? (existingId as string) : null, inviteNote: "" };
+    return { clientId: p?.role === "client" ? (existingId as string) : null, inviteNote: "", created: false };
   }
   const { data: created, error } = await admin.auth.admin.createUser({
     email: d.email.toLowerCase(),
@@ -24,7 +24,7 @@ export async function findOrCreateClient(
   });
   if (error) {
     console.error(`[client-account] createUser: ${error.message}`);
-    return { clientId: null, inviteNote: "" };
+    return { clientId: null, inviteNote: "", created: false };
   }
   const { data: link } = await admin.auth.admin.generateLink({
     type: "invite",
@@ -34,5 +34,5 @@ export async function findOrCreateClient(
   const inviteNote = link?.properties?.action_link
     ? `\n\nSet up your LBH account (view quotes, choose items, follow your project):\n${link.properties.action_link}`
     : "";
-  return { clientId: created.user.id, inviteNote };
+  return { clientId: created.user.id, inviteNote, created: true };
 }
