@@ -153,6 +153,17 @@ export default async function BuildAccountHome({
         </section>
       )}
 
+      {ctx.isOwner && data.finishesReady && (
+        <section className="rounded-[22px] border border-ok-line bg-ok-soft p-4" data-testid="ba-furnish">
+          <p className="text-base font-extrabold text-ink">{t("furnishTitle")}</p>
+          <p className="mt-1 text-sm text-muted">{t("furnishText")}</p>
+          <Link href="/services/interiors#book" className="btn btn-primary mt-3 min-h-10 px-4 text-sm">
+            {t("furnishCta")}
+            <ArrowRightIcon size={16} />
+          </Link>
+        </section>
+      )}
+
       <section className="card p-4" data-testid="ba-alerts">
         <h2 className="flex items-center gap-2 text-base font-extrabold text-ink">
           <BellIcon size={18} className="text-forest" />

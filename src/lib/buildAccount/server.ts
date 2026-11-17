@@ -140,6 +140,33 @@ export async function syncFromLbh(ownerId: string): Promise<void> {
     }
   }
 
+  // Interiors: furniture, appliances and finishes LBH bought for the client.
+  const interiorReqs = (requests ?? []).filter((r) => r.type === "interiors").map((r) => r.id);
+  if (interiorReqs.length) {
+    const { data: bought } = await admin
+      .from("interior_items")
+      .select("id, request_id, room, name, shop, qty, price_cents, receipt_media_id, bought_at")
+      .in("request_id", interiorReqs)
+      .in("status", ["bought", "delivered"]);
+    for (const it of bought ?? []) {
+      rows.push({
+        owner_id: ownerId,
+        account_id: lbh.id,
+        direction: "out",
+        amount_cents: it.qty * it.price_cents,
+        occurred_on: String(it.bought_at ?? new Date().toISOString()).slice(0, 10),
+        description: `Bought by LBH — ${it.name}${it.qty > 1 ? ` ×${it.qty}` : ""} (${it.room})`.slice(0, 300),
+        shop: it.shop || "",
+        stage_name: "Interiors",
+        items: [{ name: it.name, qty: it.qty, unit_cents: it.price_cents, total_cents: it.qty * it.price_cents }],
+        receipt_source: it.receipt_media_id ? "lbh" : null,
+        lbh_media_id: it.receipt_media_id,
+        source: "lbh_purchase",
+        source_ref: it.id,
+      });
+    }
+  }
+
   if (rows.length) {
     // A bulk upsert sends NULL (not the column default) for keys missing in a row: give every row every column.
     const base = {
@@ -151,6 +178,16 @@ export async function syncFromLbh(ownerId: string): Promise<void> {
       .from("ba_entries")
       .upsert(full, { onConflict: "owner_id,source,source_ref", ignoreDuplicates: true });
     if (error) console.error(`[build-account] sync: ${error.message}`);
+    // a receipt LBH attached after the purchase was first synced
+    for (const r of rows) {
+      if (r.source === "lbh_purchase" && r.stage_name === "Interiors" && r.lbh_media_id) {
+        await admin
+          .from("ba_entries")
+          .update({ lbh_media_id: r.lbh_media_id, receipt_source: "lbh" })
+          .eq("owner_id", ownerId).eq("source", "lbh_purchase").eq("source_ref", r.source_ref as string)
+          .is("lbh_media_id", null);
+      }
+    }
   }
 }
 
@@ -166,6 +203,8 @@ export interface BaData {
   ownerName: string;
   settings: { enabled: boolean; monthly_cents: number | null; yearly_cents: number | null };
   hasBuild: boolean;
+  /** A build has reached its Finishes stage and no interiors project exists yet. */
+  finishesReady: boolean;
 }
 
 /** Everything the Build Account screens need, read through the viewer's own access rules. */
@@ -196,9 +235,19 @@ export async function loadBa(supabase: SupabaseClient, ctx: BaContext): Promise<
   // Stages: the client's own build stages, else the standard six
   let stages: string[] = DEFAULT_STAGES.map((s) => s.name);
   const buildIds = (builds.data ?? []).map((b) => b.id);
+  let finishesReady = false;
   if (buildIds.length) {
-    const { data: bs } = await admin.from("build_stages").select("name, position").in("request_id", buildIds).order("position");
+    const { data: bs } = await admin.from("build_stages").select("name, position, status").in("request_id", buildIds).order("position");
     if (bs?.length) stages = Array.from(new Set(bs.map((s) => s.name)));
+    if ((bs ?? []).some((s) => /^finish/i.test(s.name) && s.status !== "locked")) {
+      const { count } = await admin
+        .from("service_requests")
+        .select("id", { count: "exact", head: true })
+        .eq("client_id", ctx.ownerId)
+        .eq("type", "interiors")
+        .neq("status", "cancelled");
+      finishesReady = !count;
+    }
   }
   const budgets = Object.fromEntries((bud.data ?? []).map((b) => [b.stage_name, b.budget_cents]));
   const entries = (ent.data ?? []) as BaEntry[];
@@ -222,6 +271,7 @@ export async function loadBa(supabase: SupabaseClient, ctx: BaContext): Promise<
       yearly_cents: settings.data?.build_account_yearly_cents ?? null,
     },
     hasBuild: buildIds.length > 0,
+    finishesReady,
   };
 }
 

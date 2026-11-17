@@ -21,6 +21,8 @@ import {
   RequestStatusButtons,
   SupplierQuoteForm,
 } from "@/components/admin/AdminActions";
+import { AddInteriorItemForm, InteriorItemActions, InteriorPhotoUpload, DeleteInteriorPhoto } from "@/components/admin/InteriorsAdmin";
+import { roomLabel, type InteriorItem } from "@/components/interiors/InteriorsProject";
 
 export default async function AdminRequestDetailPage({
   params,
@@ -90,6 +92,21 @@ export default async function AdminRequestDetailPage({
   );
 
   const details = (req.details ?? {}) as Record<string, unknown>;
+
+  // interiors: options per room + room photos
+  const isInteriors = req.type === "interiors";
+  const ti = await getTranslations("admin.interiors");
+  const tis = await getTranslations("account.interiors");
+  const label = await roomLabel();
+  const [{ data: interiorItems }, { data: interiorPhotoRows }] = isInteriors
+    ? await Promise.all([
+        supabase.from("interior_items").select("id, room, name, shop, qty, price_cents, link, note, status, receipt_media_id").eq("request_id", id).order("room").order("created_at"),
+        supabase.from("interior_photos").select("id, room, storage_path, caption, taken_on").eq("request_id", id).order("room").order("created_at"),
+      ])
+    : [{ data: [] }, { data: [] }];
+  const items = (interiorItems ?? []) as InteriorItem[];
+  const interiorPhotos = await Promise.all((interiorPhotoRows ?? []).map(async (p) => ({ ...p, url: await signedUrl("media", p.storage_path) })));
+  const chosenTotal = items.filter((i) => ["chosen", "bought", "delivered"].includes(i.status)).reduce((s, i) => s + i.qty * i.price_cents, 0);
 
   const supplierFiles = new Map(
     await Promise.all(
@@ -165,6 +182,54 @@ export default async function AdminRequestDetailPage({
           </ul>
         )}
       </section>
+
+      {isInteriors && (
+        <section className="card p-5" id="interiors" data-testid="admin-interiors">
+          <h2 className="text-base font-bold text-forest">{ti("itemsTitle")}</h2>
+          <p className="mt-1 text-xs text-muted">{ti("itemsHint")}</p>
+          {items.length > 0 && (
+            <ul className="mt-3 divide-y divide-line text-sm">
+              {items.map((it) => (
+                <li key={it.id} className="flex flex-wrap items-center justify-between gap-2 py-2.5" data-testid="admin-interior-item">
+                  <div>
+                    <p className="font-semibold text-ink">
+                      {it.name} <span className="text-xs font-normal text-muted">· {label(it.room)}{it.shop ? ` · ${it.shop}` : ""}{it.qty > 1 ? ` · ×${it.qty}` : ""}</span>
+                    </p>
+                    <p className="text-xs text-muted">
+                      {formatCents(it.qty * it.price_cents)} · {tis(`status.${it.status}`)}
+                      {it.receipt_media_id ? ` · ${ti("hasReceipt")}` : ""}
+                    </p>
+                  </div>
+                  <InteriorItemActions id={it.id} status={it.status} />
+                </li>
+              ))}
+            </ul>
+          )}
+          <p className="mt-2 text-xs font-semibold text-forest">{ti("chosenTotal", { total: formatCents(chosenTotal) })}</p>
+          <div className="mt-4 border-t border-line pt-4">
+            <h3 className="mb-2 text-sm font-bold text-forest">{ti("addItemTitle")}</h3>
+            <AddInteriorItemForm requestId={req.id} />
+          </div>
+          <div className="mt-5 border-t border-line pt-4">
+            <h3 className="mb-2 text-sm font-bold text-forest">{ti("photosTitle")}</h3>
+            {interiorPhotos.length > 0 && (
+              <ul className="mb-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                {interiorPhotos.map((p) =>
+                  p.url ? (
+                    <li key={p.id} className="text-xs">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={p.url} alt={p.caption || label(p.room)} className="aspect-[4/3] w-full rounded-lg object-cover" />
+                      <p className="mt-1 text-muted">{label(p.room)}{p.caption ? ` · ${p.caption}` : ""}</p>
+                      <DeleteInteriorPhoto id={p.id} />
+                    </li>
+                  ) : null
+                )}
+              </ul>
+            )}
+            <InteriorPhotoUpload requestId={req.id} />
+          </div>
+        </section>
+      )}
 
       {/* quotes */}
       <section className="card p-5" id="quote">

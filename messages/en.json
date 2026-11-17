@@ -1201,6 +1201,45 @@
         "camera": "Something went wrong — try again.",
         "capturetime": "Something went wrong — try again."
       }
+    },
+    "interiors": {
+      "itemsTitle": "Interiors — items and photos",
+      "itemsHint": "Add options per room with shop and price. The client chooses; then mark items bought (with a receipt photo) and delivered. Bought items go into the client's Build Account.",
+      "room": "Room",
+      "chooseRoom": "Choose a room…",
+      "name": "Item",
+      "nameHint": "e.g. 3-seater sofa, grey fabric",
+      "shop": "Shop",
+      "qty": "Qty",
+      "price": "Price each (USD)",
+      "link": "Link (optional)",
+      "note": "Note for the client (optional)",
+      "addItemTitle": "Add an option",
+      "addItem": "Add option",
+      "itemAdded": "Option added.",
+      "remove": "Remove",
+      "bought": "Mark bought",
+      "boughtWithReceipt": "Bought + receipt photo",
+      "delivered": "Mark delivered",
+      "hasReceipt": "receipt saved",
+      "chosenTotal": "Chosen by the client: {total}",
+      "photosTitle": "Room photos",
+      "caption": "Caption (optional)",
+      "addPhotos": "Add photos",
+      "uploading": "Uploading…",
+      "photosAdded": "Photos added.",
+      "removePhoto": "Remove",
+      "error": {
+        "invalid": "Please check the fields.",
+        "db": "Could not save.",
+        "chosen": "The client has chosen this item — it can't be removed.",
+        "notChosen": "Only chosen items can be bought.",
+        "notBought": "Mark it bought first.",
+        "filetype": "Use a JPG, PNG or WebP photo.",
+        "toobig": "The photo is too big.",
+        "upload": "Upload failed.",
+        "error": "Something went wrong — try again."
+      }
     }
   },
   "build": {
@@ -1517,6 +1556,33 @@
         "failed": "Failed",
         "cancelled": "Cancelled"
       }
+    },
+    "interiors": {
+      "created": "Your interiors consultation is booked. We will confirm the call time by email and WhatsApp.",
+      "call": "Consultation call",
+      "nextTitle": "What happens next",
+      "nextText": "After the consultation we send your quote here. When you approve it, we design your rooms in 3D and add real options from shops with prices for you to choose.",
+      "itemsTitle": "Options for your rooms",
+      "itemsHint": "Choose the items you want. Nothing is bought until you choose it — you can change your mind until we buy it.",
+      "choose": "Choose",
+      "decline": "Not this one",
+      "undo": "Undo",
+      "failed": "Could not save — please try again.",
+      "alreadyBought": "Already bought — contact us to change it.",
+      "qtyEach": "{qty} × {price}",
+      "viewItem": "See the item",
+      "status": {
+        "option": "To choose",
+        "chosen": "Chosen",
+        "declined": "Not chosen",
+        "bought": "Bought",
+        "delivered": "Delivered"
+      },
+      "chosenTitle": "Your chosen items",
+      "total": "Total",
+      "chosenNote": "Bought items appear in your Build Account with their receipts.",
+      "receipt": "Receipt",
+      "photosTitle": "Photos of each room"
     }
   },
   "labels": {
@@ -1829,7 +1895,10 @@
       "budget": "Budget",
       "more": "More"
     },
-    "chartTitle": "Money sent per month"
+    "chartTitle": "Money sent per month",
+    "furnishTitle": "Ready to furnish your home?",
+    "furnishText": "Your build has reached the finishes stage. We can design your rooms in 3D, find furniture and appliances with prices, and furnish the house.",
+    "furnishCta": "Book an interiors consultation"
   },
   "site": {
     "mainNav": "Main",

@@ -1436,6 +1436,141 @@ console.log("\nLBH Build Account");
   await actx.close();
 }
 
+console.log("\nInteriors & furnishing");
+{
+  const OWNER = "00000000-0000-4000-a000-000000000004";
+  const SAMPLE = "70000000-0000-4000-a000-000000000001";
+  const CURTAINS = "71000000-0000-4000-a000-000000000003";
+  const vctx = await newCtx({ viewport: { width: 390, height: 844 } });
+  const v = await vctx.newPage();
+
+  await step("homepage: Land · Build · Finish groups; menu lists Finish", async () => {
+    await v.goto(`${BASE}/en`);
+    for (const g of ["Land", "Build", "Finish"]) await v.getByRole("heading", { name: g, exact: true }).first().waitFor();
+    await v.getByTestId("menu-button").click();
+    await v.getByTestId("menu-service-groups").getByText("Finish").waitFor();
+    await v.keyboard.press("Escape");
+  });
+
+  await step("interiors page: steps, packages, honest placeholders, booking form", async () => {
+    await v.goto(`${BASE}/en/services/interiors`);
+    await v.getByRole("heading", { name: "Design and furnish your home back home, from anywhere." }).waitFor();
+    assert((await v.getByTestId("interiors-packages").getByText("Quoted after consultation").count()) === 3, "packages");
+    assert((await v.getByTestId("gallery-placeholder").count()) === 6, "gallery placeholders");
+    await v.getByTestId("interiors-form").waitFor();
+    await shot(v, "interiors-page-m");
+  });
+
+  await step("visitor books a consultation → booking + interiors request + account invite", async () => {
+    const email = `interiors-${Date.now()}@example.test`;
+    const f = v.getByTestId("interiors-form");
+    await f.locator('input[name="name"]').fill("E2E Interiors Visitor");
+    await f.locator('input[name="email"]').fill(email);
+    await f.locator('input[name="whatsapp"]').fill("+447700900321");
+    await f.locator('select[name="country"]').selectOption("UK");
+    await f.locator('input[name="location"]').fill("Borrowdale, Harare");
+    await f.locator('input[value="nearly_finished"]').check();
+    await f.locator('input[value="living"]').check();
+    await f.locator('select[name="budget"]').selectOption("10k_20k");
+    await f.locator('select[name="timeline"]').selectOption("3_6_months");
+    await f.locator('select[name="slot"]').selectOption("evening");
+    await v.getByTestId("interiors-submit").click();
+    await v.getByTestId("interiors-booked").waitFor({ timeout: 30000 });
+    const { data: prof } = await db.from("profiles").select("id").eq("email", email).single();
+    const { data: req } = await db.from("service_requests").select("type, details").eq("client_id", prof.id).single();
+    assert(req.type === "interiors" && req.details.rooms[0] === "living", "request");
+    const { count } = await db.from("call_bookings").select("id", { count: "exact", head: true }).eq("email", email).eq("service", "interiors");
+    assert(count === 1, "call booking");
+  });
+  await vctx.close();
+
+  const cctx = await newCtx({ viewport: { width: 390, height: 844 } });
+  const c = await cctx.newPage();
+  await step("client books with a photo → project in their account", async () => {
+    await login(c, "client@lbh.test");
+    await c.goto(`${BASE}/en/services/interiors#book`);
+    const f = c.getByTestId("interiors-form");
+    assert((await f.locator('input[name="email"]').count()) === 0, "contact fields for signed-in client");
+    await f.locator('input[name="location"]').fill("E2E Ruwa, Stand 77");
+    await f.locator('input[value="finished"]').check();
+    await f.locator('input[value="kitchen"]').check();
+    await f.locator('select[name="budget"]').selectOption("2k_5k");
+    await f.locator('select[name="timeline"]').selectOption("asap");
+    await f.locator('select[name="slot"]').selectOption("morning");
+    await c.getByTestId("interiors-files").setInputFiles(photoPath);
+    await c.getByTestId("interiors-submit").click();
+    await c.waitForURL(/\/account\/projects\/[0-9a-f-]{36}\?new=interiors/, { timeout: 60000 });
+    await c.getByTestId("interiors-created").waitFor();
+    await c.getByTestId("interiors-details").getByText("E2E Ruwa, Stand 77").waitFor();
+    const id = c.url().match(/projects\/([0-9a-f-]{36})/)[1];
+    const { count } = await db.from("documents").select("id", { count: "exact", head: true }).eq("request_id", id);
+    assert(count === 1, "photo not stored");
+  });
+
+  await step("client chooses an option; chosen list and total update", async () => {
+    await c.goto(`${BASE}/en/account/projects/${SAMPLE}`);
+    const item = c.getByTestId("interior-item").filter({ hasText: "Curtains, linen" });
+    await item.getByTestId("interior-choose").click();
+    await c.getByTestId("interiors-chosen").getByText("SAMPLE Curtains, linen, 2 pairs").waitFor();
+    const { data } = await db.from("interior_items").select("status").eq("id", CURTAINS).single();
+    assert(data.status === "chosen", data.status);
+    await shot(c, "interiors-client-m");
+  });
+
+  const actx = await newCtx();
+  const a = await actx.newPage();
+  await step("admin: add an option, mark bought with receipt, delivered, add a room photo", async () => {
+    await loginStaff(a, "admin@lbh.test");
+    await a.goto(`${BASE}/en/admin/requests/${SAMPLE}`);
+    const form = a.getByTestId("interior-item-form");
+    await form.locator('select[name="room"]').selectOption("dining");
+    await form.locator('input[name="name"]').fill("E2E Dining table, 6 seats");
+    await form.locator('input[name="shop"]').fill("E2E Furniture");
+    await form.locator('input[name="price"]').fill("450");
+    await a.getByTestId("interior-item-add").click();
+    await a.getByTestId("admin-interior-item").filter({ hasText: "E2E Dining table" }).waitFor();
+
+    const row = a.getByTestId("admin-interior-item").filter({ hasText: "Curtains, linen" });
+    await row.getByTestId("interior-receipt-input").setInputFiles(photoPath);
+    await row.getByText("receipt saved").waitFor({ timeout: 60000 });
+    await row.getByTestId("interior-delivered").click();
+    await a.getByTestId("admin-interior-item").filter({ hasText: "Curtains, linen" }).getByText("Delivered").waitFor();
+
+    const pf = a.getByTestId("interior-photo-form");
+    await pf.locator('select[name="room"]').selectOption("living");
+    await pf.locator('input[name="caption"]').fill("E2E Living room finished");
+    await pf.getByTestId("interior-photo-input").setInputFiles(photoPath);
+    await a.getByTestId("admin-interiors").getByText("E2E Living room finished").waitFor({ timeout: 60000 });
+  });
+  await actx.close();
+
+  await step("client: bought item in the Build Account with receipt; room photo visible", async () => {
+    const { data: e } = await db.from("ba_entries").select("amount_cents, stage_name, lbh_media_id").eq("owner_id", OWNER).eq("source", "lbh_purchase").eq("source_ref", CURTAINS).single();
+    assert(e.stage_name === "Interiors" && e.lbh_media_id && e.amount_cents === 19000, JSON.stringify(e));
+    await c.goto(`${BASE}/en/account/projects/${SAMPLE}`);
+    await c.getByTestId("interiors-photos").locator("img").first().waitFor();
+    await c.getByTestId("interiors-chosen").getByText("Receipt").first().waitFor();
+  });
+
+  await step("Build Account: 'Ready to furnish' card at the Finishes stage", async () => {
+    const { data: reqs } = await db.from("service_requests").select("id, status").eq("client_id", OWNER).eq("type", "interiors");
+    await db.from("service_requests").update({ status: "cancelled" }).in("id", reqs.map((r) => r.id));
+    await db.from("build_stages").update({ status: "quoting" }).eq("request_id", IDS.build).ilike("name", "finish%");
+    try {
+      await c.goto(`${BASE}/en/account/build-account`);
+      await c.getByTestId("ba-furnish").getByRole("link", { name: "Book an interiors consultation" }).waitFor();
+      await shot(c, "interiors-ba-card-m");
+    } finally {
+      await db.from("build_stages").update({ status: "locked" }).eq("request_id", IDS.build).ilike("name", "finish%");
+      for (const r of reqs) await db.from("service_requests").update({ status: r.status }).eq("id", r.id);
+    }
+    await c.goto(`${BASE}/en/account/build-account`);
+    await c.getByTestId("ba-balance").waitFor();
+    assert((await c.getByTestId("ba-furnish").count()) === 0, "card shown when not at finishes");
+  });
+  await cctx.close();
+}
+
 await browser.close();
 
 console.log(`\n${passed} passed, ${failures.length} failed`);

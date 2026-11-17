@@ -16,19 +16,21 @@ import {
   PayButton,
   ManualProofForm,
 } from "@/components/portal/RequestActions";
+import InteriorsProject, { InteriorsDetails } from "@/components/interiors/InteriorsProject";
 
 export default async function RequestDetailPage({
   params,
   searchParams,
 }: {
   params: Promise<{ locale: string; id: string }>;
-  searchParams: Promise<{ docs?: string }>;
+  searchParams: Promise<{ docs?: string; new?: string }>;
 }) {
   const { locale, id } = await params;
-  const { docs } = await searchParams;
+  const { docs, new: isNew } = await searchParams;
   setRequestLocale(locale);
   const { supabase } = await requireRole(locale, ["client"]);
   const t = await getTranslations("portal.request");
+  const ti = await getTranslations("account.interiors");
 
   const { data: req } = await supabase
     .from("service_requests")
@@ -107,6 +109,11 @@ export default async function RequestDetailPage({
           {t("docsFailed")}
         </p>
       )}
+      {isNew === "interiors" && req.type === "interiors" && (
+        <p role="status" className="rounded-2xl border border-ok-line bg-ok-soft/60 p-4 text-sm font-semibold text-ink" data-testid="interiors-created">
+          {ti("created")}
+        </p>
+      )}
       <div>
         <Link href="/account" className="text-xs font-semibold text-muted hover:text-forest">
           ← {t("back")}
@@ -139,6 +146,8 @@ export default async function RequestDetailPage({
               </div>
             )}
           </dl>
+        ) : req.type === "interiors" ? (
+          <InteriorsDetails details={details} />
         ) : (
           <div className="mt-3 text-sm">
             <p className="text-ink">
@@ -253,6 +262,8 @@ export default async function RequestDetailPage({
             </section>
           );
         })}
+
+      {req.type === "interiors" && <InteriorsProject supabase={supabase} requestId={req.id} />}
 
       {/* ---- payments ---- */}
       {(payments ?? []).length > 0 && (

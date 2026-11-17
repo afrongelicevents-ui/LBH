@@ -351,3 +351,17 @@ export async function submitManualProof(
     return { ok: false, error: uploadErrorCode(e) };
   }
 }
+
+// ---------- interiors: choose / decline an item option ----------
+export async function chooseInteriorItemAction(id: string, choose: boolean): Promise<ActionResult> {
+  try {
+    const { supabase } = await requireClient();
+    if (!z.string().uuid().safeParse(id).success) return { ok: false, error: "invalid" };
+    const { error } = await supabase.rpc("interior_choose", { p_item: id, p_choose: choose });
+    if (error) return { ok: false, error: error.message.includes("already bought") ? "bought" : "db" };
+    revalidatePath("/[locale]/account", "layout");
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "error" };
+  }
+}

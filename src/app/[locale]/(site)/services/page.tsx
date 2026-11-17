@@ -26,7 +26,8 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
   const ts = await getTranslations("site");
   const photos = await getPagePhotos();
   const photoOf: Partial<Record<ServiceKey, PhotoSource>> = { land: photos.land, materials: photos.materials, onsite: photos.onsite, reporting: photos.reporting };
-  let n = 0;
+  const total = GROUPS.reduce((sum, g) => sum + g.services.length, 0);
+  const offset = (gi: number) => GROUPS.slice(0, gi).reduce((sum, g) => sum + g.services.length, 0);
 
   return (
     <div data-testid="services-page">
@@ -47,7 +48,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         </div>
       </header>
 
-      {GROUPS.map((g) => (
+      {GROUPS.map((g, gi) => (
         <div key={g.key} id={`${g.key}-group`} className="scroll-mt-24">
           <div className="border-b border-rule bg-sand/60">
             <div className="ds-wrap flex flex-wrap items-baseline gap-x-4 gap-y-1 py-6" id={g.key === "build" ? "build" : undefined}>
@@ -55,8 +56,8 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
               <p className="ds-body">{tg(`${g.key}.text`)}</p>
             </div>
           </div>
-          {g.services.map((s) => {
-            n += 1;
+          {g.services.map((s, si) => {
+            const n = offset(gi) + si + 1;
             const photo = photoOf[s.key];
             const flip = n % 2 === 0;
             return (
@@ -107,7 +108,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
             <Photo photo={photos.interiors} sizes="(min-width: 768px) 50vw, 100vw" className="aspect-[4/3] w-full rounded-[3px]" stockLabel={ts("stockPhoto")} />
           </div>
           <div className="md:col-span-6">
-            <p className="font-serif text-lg text-stone-ink">{String(n + 1).padStart(2, "0")}</p>
+            <p className="font-serif text-lg text-stone-ink">{String(total + 1).padStart(2, "0")}</p>
             <h3 className="ds-h2 mt-1 text-[2rem]">{tg("items.interiors")}</h3>
             <p className="ds-body mt-4 text-base">{t("interiorsTeaser")}</p>
             <Link href="/services/interiors" className="ds-btn ds-btn-primary mt-7" data-testid="interiors-link">

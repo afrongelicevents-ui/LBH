@@ -27,7 +27,7 @@ create table if not exists public.interior_items (
   link text not null default '' check (char_length(link) <= 500 and (link = '' or link ~ '^https?://')),
   note text not null default '' check (char_length(note) <= 500),
   status text not null default 'option' check (status in ('option', 'chosen', 'declined', 'bought', 'delivered')),
-  receipt_path text check (receipt_path is null or receipt_path ~ ('^interiors/' || request_id::text || '/receipts/[0-9a-f-]{36}\.jpg$')),
+  receipt_media_id uuid references public.media(id) on delete set null,
   chosen_at timestamptz,
   bought_at timestamptz,
   delivered_at timestamptz,
