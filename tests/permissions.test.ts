@@ -10,7 +10,7 @@
  *
  * Skipped automatically when the local stack is not running.
  */
-import { beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { createHmac } from "node:crypto";
 
@@ -1082,6 +1082,63 @@ d("RLS & business rules (local Supabase)", () => {
     });
   });
   // ---------- Interiors & furnishing ----------
+  describe("Inbox: website chats, alerts and assignments are for the admin team only", () => {
+    let chatId = "";
+    beforeAll(async () => {
+      const { data } = await service
+        .from("visitor_chats")
+        .insert({ token_hash: "a".repeat(64), name: "TEST visitor", email: "visitor@example.test", waiting_since: new Date().toISOString() })
+        .select("id")
+        .single();
+      chatId = data!.id;
+      await service.from("visitor_chat_messages").insert({ chat_id: chatId, author: "visitor", body: "TEST hello" });
+    });
+    afterAll(async () => {
+      await service.from("visitor_chats").delete().eq("id", chatId);
+    });
+
+    it("visitors, clients and field staff can't read or write chats, alerts or assignments", async () => {
+      for (const c of [anon, client, agent]) {
+        expect((await c.from("visitor_chats").select("id")).data ?? []).toHaveLength(0);
+        expect((await c.from("visitor_chat_messages").select("id")).data ?? []).toHaveLength(0);
+        expect((await c.from("admin_alerts").select("id")).data ?? []).toHaveLength(0);
+        expect((await c.from("inbox_assignments").select("ref")).data ?? []).toHaveLength(0);
+        expect((await c.from("visitor_chat_messages").insert({ chat_id: chatId, author: "lbh", body: "fake reply" })).error).not.toBeNull();
+        expect((await c.from("admin_alerts").insert({ kind: "booking", ref: chatId, title: "fake" })).error).not.toBeNull();
+      }
+      expect((await client.rpc("admin_alerts_seen")).error).not.toBeNull();
+    });
+
+    it("admin reads the chat, replies, assigns and marks alerts seen", async () => {
+      expect((await admin.from("visitor_chat_messages").select("body").eq("chat_id", chatId)).data?.[0]?.body).toBe("TEST hello");
+      expect((await admin.from("visitor_chat_messages").insert({ chat_id: chatId, author: "lbh", sender_id: IDS.admin, body: "TEST reply" })).error).toBeNull();
+      expect((await admin.from("inbox_assignments").upsert({ kind: "visitor_chat", ref: chatId, assigned_to: IDS.admin })).error).toBeNull();
+      await service.from("inbox_assignments").delete().eq("ref", chatId);
+      expect((await admin.rpc("admin_alerts_seen")).error).toBeNull();
+    });
+
+    it("a new booking and a customer's chat message raise an alert automatically", async () => {
+      const { data: b } = await service
+        .from("call_bookings")
+        .insert({ name: "TEST alert", email: "a@example.test", whatsapp: "+447700900000", country: "uk", service: "land", preferred_slot: "morning", call_type: "phone" })
+        .select("id")
+        .single();
+      expect((await service.from("admin_alerts").select("kind").eq("ref", b!.id)).data?.[0]?.kind).toBe("booking");
+      await service.from("call_bookings").delete().eq("id", b!.id);
+      await service.from("admin_alerts").delete().eq("kind", "client_chat").eq("ref", IDS.client);
+      expect((await client.from("messages").insert({ client_id: IDS.client, sender_id: IDS.client, body: "TEST need help" })).error).toBeNull();
+      expect((await service.from("admin_alerts").select("id").eq("kind", "client_chat").eq("ref", IDS.client)).data).toHaveLength(1);
+      // a second message soon after doesn't raise another alert
+      await client.from("messages").insert({ client_id: IDS.client, sender_id: IDS.client, body: "TEST again" });
+      expect((await service.from("admin_alerts").select("id").eq("kind", "client_chat").eq("ref", IDS.client)).data).toHaveLength(1);
+    });
+
+    it("a chat needs an email or a phone", async () => {
+      const bad = await service.from("visitor_chats").insert({ token_hash: "b".repeat(64), name: "TEST no contact" });
+      expect(bad.error).not.toBeNull();
+    });
+  });
+
   describe("Interiors: clients see and choose only their own options; only LBH buys", () => {
     const REQ = "70000000-0000-4000-a000-000000000001";
     const OPTION = "71000000-0000-4000-a000-000000000003";

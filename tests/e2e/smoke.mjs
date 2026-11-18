@@ -1608,6 +1608,158 @@ console.log("\nInteriors & furnishing");
   await cctx.close();
 }
 
+console.log("\nLive chat, Inbox, alerts and office hours");
+{
+  async function hasEmail(to, subjectPart, timeout = 20000) {
+    const until = Date.now() + timeout;
+    while (Date.now() < until) {
+      const res = await fetch(`${MAILPIT}/api/v1/search?query=${encodeURIComponent(`to:"${to}" subject:"${subjectPart}"`)}`);
+      const list = res.ok ? await res.json() : { messages: [] };
+      if (list.messages?.length) return list.messages[0];
+      await new Promise((r) => setTimeout(r, 500));
+    }
+    throw new Error(`no email "${subjectPart}" to ${to}`);
+  }
+  const defaults = (await db.from("settings").select("reply_hours, office_hours, alert_emails").eq("id", 1).single()).data;
+  const visitorEmail = `chat-${Date.now()}@example.test`;
+  const vctx = await newCtx({ viewport: { width: 390, height: 844 } });
+  const v = await vctx.newPage();
+
+  await step("phone: chat tab on every public page, slim at the screen edge (covers no button)", async () => {
+    for (const path of ["/en", "/en/services", "/en/contact", "/en/book-a-call"]) {
+      await v.goto(`${BASE}${path}`);
+      const box = await v.getByTestId("chat-open").boundingBox();
+      assert(box && box.width <= 32 && box.x + box.width >= 389, `chat tab not at the edge on ${path}: ${JSON.stringify(box)}`);
+    }
+    await v.getByTestId("reply-promise").getByText(/within 24 hours/).waitFor();
+    await v.goto(`${BASE}/en/contact`);
+    await v.getByTestId("reply-promise").getByText(/within 24 hours/).waitFor();
+  });
+
+  let chatId;
+  await step("visitor chats without an account → instant reply on screen + email; team alerted by email and in the Inbox", async () => {
+    await v.getByTestId("contact-open-chat").click();
+    const f = v.getByTestId("chat-start");
+    await f.locator('input[name="name"]').fill("E2E Chiedza");
+    await f.locator('textarea[name="message"]').fill("E2E How much does land verification cost?");
+    await v.getByTestId("chat-send").click();
+    await f.getByRole("alert").waitFor(); // needs an email or phone
+    await f.locator('input[name="email"]').fill(visitorEmail);
+    await v.getByTestId("chat-send").click();
+    await v.getByTestId("chat-msg-auto").getByText("We'll get back to you within 24 hours").waitFor({ timeout: 30000 });
+    await shot(v, "chat-visitor-m");
+    await hasEmail(visitorEmail, "We got your message");
+    await hasEmail("admin@lbh.test", "New chat from E2E Chiedza");
+    const { data } = await db.from("visitor_chats").select("id, waiting_since").eq("email", visitorEmail).single();
+    assert(data.waiting_since, "not waiting");
+    chatId = data.id;
+    const { count } = await db.from("admin_alerts").select("id", { count: "exact", head: true }).eq("ref", chatId);
+    assert(count === 1, `alerts ${count}`);
+  });
+
+  await step("a booking alerts the team by email too", async () => {
+    await hasEmail("admin@lbh.test", "New booking from");
+  });
+
+  const actx = await newCtx();
+  const a = await actx.newPage();
+  await step("admin Inbox: badge, waiting time, red after 24 h, assign, reply → visitor sees it on screen and by email", async () => {
+    // an older chat that has waited 30 hours
+    const old = await db.from("visitor_chats").insert({ token_hash: "c".repeat(64), name: "E2E Overdue visitor", phone: "+263771234567", waiting_since: new Date(Date.now() - 30 * 3600e3).toISOString() }).select("id").single();
+    await db.from("visitor_chat_messages").insert({ chat_id: old.data.id, author: "visitor", body: "E2E still waiting" });
+    await loginStaff(a, "admin@lbh.test");
+    await a.goto(`${BASE}/en/admin/inbox`);
+    assert(Number(await a.getByTestId("nav-badge").first().innerText()) >= 1, "no badge");
+    const late = a.getByTestId("inbox-item").filter({ hasText: "E2E Overdue visitor" });
+    assert((await late.getAttribute("data-late")) === "1", "not red");
+    await late.getByText("Overdue").waitFor();
+    const mine = a.getByTestId("inbox-item").filter({ hasText: "E2E Chiedza" });
+    assert((await mine.getAttribute("data-late")) === "0", "new chat marked late");
+    await mine.getByTestId("inbox-waiting").getByText(/waiting \d+ min/).waitFor();
+    await shot(a, "inbox-d");
+    await mine.getByTestId("inbox-assign").selectOption({ index: 1 });
+    await eventually(async () => {
+      const { data } = await db.from("inbox_assignments").select("assigned_to").eq("kind", "visitor_chat").eq("ref", chatId).single();
+      assert(data.assigned_to === IDS.admin, "not assigned");
+    });
+    await a.goto(`${BASE}/en/admin/inbox/chat/${chatId}`);
+    await a.getByTestId("admin-msg-visitor").getByText("E2E How much").waitFor();
+    await a.getByTestId("inbox-reply").fill("E2E It starts at a fixed fee — we'll send a quote after a short call.");
+    await a.getByTestId("inbox-reply-send").click();
+    await a.getByTestId("admin-msg-lbh").getByText("E2E It starts").waitFor();
+    await shot(a, "inbox-chat-d");
+    // the visitor's open chat shows the reply without reloading
+    await v.getByTestId("chat-msg-lbh").getByText("E2E It starts").waitFor({ timeout: 20000 });
+    await shot(v, "chat-reply-m");
+    await hasEmail(visitorEmail, "LBH replied");
+    const { data } = await db.from("visitor_chats").select("waiting_since").eq("id", chatId).single();
+    assert(data.waiting_since === null, "still waiting after reply");
+    await db.from("visitor_chats").delete().eq("id", old.data.id);
+  });
+
+  await step("visitor writes again → waiting again; badge clears once the admin has looked", async () => {
+    await v.getByTestId("chat-input").fill("E2E Thanks! And for materials?");
+    await v.getByTestId("chat-reply-send").click();
+    await v.getByTestId("chat-msg-visitor").getByText("E2E Thanks!").waitFor();
+    const { data } = await db.from("visitor_chats").select("waiting_since").eq("id", chatId).single();
+    assert(data.waiting_since, "not waiting again");
+    await a.goto(`${BASE}/en/admin/inbox`);
+    await a.getByTestId("inbox-item").filter({ hasText: "E2E Chiedza" }).waitFor();
+    await eventually(async () => {
+      const { count } = await db.from("admin_alerts").select("id", { count: "exact", head: true }).not("seen_by", "cs", `{${IDS.admin}}`);
+      assert(count === 0, `${count} unseen`);
+    });
+  });
+
+  await step("office hours + reply time set in admin → 'Online now' / 'within N hours' on the website", async () => {
+    await a.goto(`${BASE}/en/admin/settings/replies`);
+    const f = a.getByTestId("reply-settings");
+    await f.locator('input[name="reply_hours"]').fill("12");
+    for (const d of ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]) await f.locator(`input[name="${d}_on"]`).uncheck();
+    await a.getByTestId("reply-settings-save").click();
+    await f.getByText("Saved").waitFor();
+    const p = await (await newCtx({ viewport: { width: 1366, height: 900 } })).newPage();
+    await p.goto(`${BASE}/en/book-a-call`);
+    await p.getByTestId("reply-promise").getByText("within 12 hours").waitFor();
+    assert((await p.getByTestId("status-online").count()) === 0, "online while closed");
+    await p.getByTestId("chat-open").click();
+    await p.getByTestId("chat-panel").getByTestId("status-offline").getByText("We'll reply within 12 hours").waitFor();
+    // open every day, all day → Online now
+    for (const d of ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]) {
+      await f.locator(`input[name="${d}_on"]`).check();
+      await f.locator(`input[name="${d}_open"]`).fill("00:00");
+      await f.locator(`input[name="${d}_close"]`).fill("23:59");
+    }
+    await a.getByTestId("reply-settings-save").click();
+    await f.getByText("Saved").waitFor();
+    await p.reload();
+    await p.getByTestId("chat-open").click();
+    await p.getByTestId("chat-panel").getByTestId("status-online").waitFor();
+    await shot(p, "chat-online-d");
+    await p.context().close();
+    await db.from("settings").update(defaults).eq("id", 1);
+  });
+  await actx.close();
+
+  await step("signed-in customers are sent to their account messages; staff see no chat button", async () => {
+    const c = await (await newCtx({ viewport: { width: 390, height: 844 } })).newPage();
+    await login(c, "client@lbh.test");
+    await c.goto(`${BASE}/en/contact`);
+    await c.getByTestId("chat-open").click();
+    await c.getByTestId("chat-account-link").click();
+    await c.waitForURL(/\/account\/support/);
+    await c.context().close();
+    const st = await (await newCtx()).newPage();
+    await loginStaff(st, "agent@lbh.test");
+    await st.goto(`${BASE}/en/contact`);
+    await st.getByTestId("reply-promise").waitFor();
+    await st.waitForTimeout(1500);
+    assert((await st.getByTestId("chat-open").count()) === 0, "chat shown to staff");
+    await st.context().close();
+  });
+  await vctx.close();
+}
+
 await browser.close();
 
 console.log(`\n${passed} passed, ${failures.length} failed`);

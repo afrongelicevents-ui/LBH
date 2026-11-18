@@ -10,6 +10,7 @@ import { brandedHtml, brandedText, type BrandedEmail } from "@/lib/emailLayout";
 import { site } from "@/config/site";
 import { countryFields, refineCountry, resolveCountry } from "@/lib/country";
 import { findOrCreateClient } from "@/lib/clientAccount";
+import { alertTeam, getReplySettings } from "@/lib/inbox";
 import { parseUploadRefs, storePrivate, takeIncoming } from "@/lib/uploads";
 import { BUDGETS, ROOMS, TIMELINES } from "@/lib/interiors";
 
@@ -79,6 +80,26 @@ export async function submitInteriors(_prev: InteriorsResult | null, fd: FormDat
         console.error(`[interiors docs] ${e instanceof Error ? e.message : e}`);
         warning = "docs";
       }
+      // the consultation call goes into the team's Inbox like any booking
+      const summary = `Interiors: ${d.location} · ${d.house_status} · rooms: ${rooms.join(", ")} · budget ${d.budget} · ${d.timeline}${d.styles ? ` · likes: ${d.styles}` : ""}`;
+      const { data: booking } = await createAdminClient()
+        .from("call_bookings")
+        .insert({
+          client_id: user.id, name: profile.full_name || profile.email, email: profile.email, whatsapp: profile.whatsapp ?? "",
+          country: profile.country ?? "other", service: "interiors", description: summary.slice(0, 2000),
+          preferred_slot: d.slot, call_type: d.callType, status: "new",
+        })
+        .select("id")
+        .single();
+      if (booking) {
+        await alertTeam({
+          kind: "booking",
+          ref: booking.id,
+          title: `New interiors booking from ${profile.full_name || profile.email}`,
+          lines: [`${profile.full_name} · ${profile.email}`, summary.slice(0, 600)],
+          path: `/admin/requests/${req.id}`,
+        });
+      }
       revalidatePath("/[locale]/account", "layout");
       return { ok: true, id: req.id, signedIn: true, warning };
     }
@@ -92,11 +113,12 @@ export async function submitInteriors(_prev: InteriorsResult | null, fd: FormDat
     const country = resolveCountry(c.data) ?? "other";
     const { clientId, invite, created } = await findOrCreateClient(admin, { email: c.data.email, name: c.data.name, whatsapp: c.data.whatsapp, country });
     const summary = `Interiors: ${d.location} · ${d.house_status} · rooms: ${rooms.join(", ")} · budget ${d.budget} · ${d.timeline}${d.styles ? ` · likes: ${d.styles}` : ""}`;
-    const { error: bErr } = await admin.from("call_bookings").insert({
+    const { data: booking, error: bErr } = await admin.from("call_bookings").insert({
       client_id: clientId, name: c.data.name, email: c.data.email.toLowerCase(), whatsapp: c.data.whatsapp, country,
       service: "interiors", description: summary.slice(0, 2000), preferred_slot: d.slot, call_type: d.callType, status: "new",
-    });
+    }).select("id").single();
     if (bErr) throw new Error(bErr.message);
+    const { replyHours } = await getReplySettings();
     // Only a brand-new account gets the project straight away: someone typing another
     // person's email must not add projects to that person's account. Existing customers
     // are linked through the booking and LBH opens the project after the call.
@@ -108,7 +130,7 @@ export async function submitInteriors(_prev: InteriorsResult | null, fd: FormDat
       title: "Your interiors design consultation is booked",
       paragraphs: [
         `Hi ${c.data.name},`,
-        `Thank you — we received your request for an interiors design consultation (${d.slot}, ${d.callType}). We will confirm the exact time by email${site.whatsappNumber ? " and WhatsApp" : ""}.`,
+        `Thank you — we received your request for an interiors design consultation (${d.slot}, ${d.callType}). We'll get back to you within ${replyHours} hours to confirm the exact time, by email${site.whatsappNumber ? " or WhatsApp" : ""}.`,
         invite
           ? "Your LBH account is ready too: add photos and plans of your house, approve your quote and choose your items in one place."
           : `Already have an LBH account? Log in to add photos and plans: ${site.url}/services/interiors#book`,
@@ -122,6 +144,13 @@ export async function submitInteriors(_prev: InteriorsResult | null, fd: FormDat
       subject: "Your interiors consultation is booked — Let's Build Home",
       text: brandedText(mail),
       html: brandedHtml(mail),
+    });
+    await alertTeam({
+      kind: "booking",
+      ref: booking.id,
+      title: `New interiors booking from ${c.data.name}`,
+      lines: [`${c.data.name} · ${c.data.email} · ${c.data.whatsapp}`, summary.slice(0, 600)],
+      path: "/admin/inbox",
     });
     return { ok: true, signedIn: false };
   } catch (e) {

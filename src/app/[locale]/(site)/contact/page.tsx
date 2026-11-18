@@ -1,3 +1,4 @@
+import ReplyPromise from "@/components/site/OfficeStatus";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { useTranslations } from "next-intl";
@@ -33,8 +34,15 @@ function ContactContent() {
         <p className="mt-6 text-center text-base text-muted md:text-lg">
           {t("intro")}
         </p>
+        <div className="mt-6">
+          <ReplyPromise />
+        </div>
+        <p className="mt-3 text-center text-sm text-muted">
+          {t("chatNote")}{" "}
+          <a href="#chat" className="font-semibold text-forest underline underline-offset-2" data-testid="contact-open-chat">{t("chatCta")}</a>
+        </p>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2">
+        <div className="mt-8 grid gap-5 sm:grid-cols-2">
           {waLink() && (
             <a
               href={waLink()!}

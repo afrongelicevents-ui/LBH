@@ -41,7 +41,14 @@ export default function PortalNav({ items, label }: { items: NavItem[]; label: s
                 isActive ? "bg-forest text-white shadow-(--shadow-card)" : "text-ink hover:bg-offwhite"
               }`}
             >
-              <Icon size={20} />
+              <span className="relative">
+                <Icon size={20} />
+                {item.badge ? (
+                  <span className="absolute -top-1.5 -right-2.5 min-w-[1.1rem] rounded-full bg-[#c8402c] px-1 text-center text-[10px] leading-[1.1rem] font-bold text-white" data-testid="nav-badge" aria-label={`${item.badge}`}>
+                    {item.badge > 99 ? "99+" : item.badge}
+                  </span>
+                ) : null}
+              </span>
               {item.label}
               {isActive && (
                 <span aria-hidden className="absolute -bottom-2 left-1/2 h-1 w-3/4 -translate-x-1/2 rounded-full bg-ok-line" />

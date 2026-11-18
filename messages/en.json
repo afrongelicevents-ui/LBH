@@ -146,7 +146,7 @@
   "contactPage": {
     "metaTitle": "Contact us",
     "title": "Contact us",
-    "intro": "The fastest way to reach us is WhatsApp — or book a free first call and we will call you.",
+    "intro": "Chat with us live, send us a message — or book a free first call and we will call you.",
     "emailLabel": "Email",
     "whatsappLabel": "WhatsApp",
     "formTitle": "Send us a message",
@@ -154,7 +154,9 @@
     "email": "Your email",
     "message": "Your message",
     "send": "Send message",
-    "orBook": "Prefer to talk? Book a free first call — 30–45 minutes, phone or video, no cost."
+    "orBook": "Prefer to talk? Book a free first call — 30–45 minutes, phone or video, no cost.",
+    "chatNote": "Prefer to write? Use the live chat —",
+    "chatCta": "open the chat"
   },
   "bookPage": {
     "metaTitle": "Book a free first call",
@@ -762,7 +764,8 @@
       "photos": "Website photos",
       "buildAccount": "Build Account",
       "priceList": "Price list",
-      "projects": "Projects"
+      "projects": "Projects",
+      "inbox": "Inbox"
     },
     "needsYou": {
       "title": "Needs you",
@@ -949,7 +952,9 @@
       "priceTitle": "Price list",
       "priceHint": "Usual prices used to check Build Account receipts",
       "projectsTitle": "Projects",
-      "projectsHint": "Genuine LBH project photos for the public Projects page"
+      "projectsHint": "Genuine LBH project photos for the public Projects page",
+      "repliesTitle": "Replies & office hours",
+      "repliesHint": "Reply promise, \"Online now\" hours and who gets alert emails"
     },
     "audit": {
       "title": "Audit log",
@@ -1241,6 +1246,73 @@
         "toobig": "The photo is too big.",
         "upload": "Upload failed.",
         "error": "Something went wrong — try again."
+      }
+    },
+    "inbox": {
+      "title": "Inbox",
+      "statusOnline": "● Online now (office hours)",
+      "statusOffline": "Outside office hours",
+      "promiseNote": "We promise a reply within {hours} hours",
+      "settingsLink": "Replies & office hours",
+      "newTitle": "{count, plural, one {# new since you last looked} other {# new since you last looked}}",
+      "ago": "ago",
+      "openTitle": "Waiting for an answer ({count})",
+      "overdueCount": "{count} overdue",
+      "empty": "Nothing waiting — all answered.",
+      "recentTitle": "Recently answered",
+      "overdue": "Overdue",
+      "waiting": "waiting {time}",
+      "openItem": "Open",
+      "handledBy": "Handled by {name}",
+      "assignedTo": "Assigned to",
+      "unassigned": "Not assigned",
+      "kind": {
+        "booking": "Booking",
+        "visitor_chat": "Website chat",
+        "client_chat": "Customer chat"
+      },
+      "language": "Language",
+      "startedOn": "started on",
+      "closed": "Closed",
+      "answered": "Answered",
+      "messages": "Messages",
+      "autoReply": "Automatic reply",
+      "reply": "Your reply",
+      "sendReply": "Send reply",
+      "sending": "Sending…",
+      "replyHint": "Shown in their chat and emailed to them.",
+      "sent": "Sent.",
+      "failed": "Could not send — try again.",
+      "close": "Close chat",
+      "reopen": "Reopen",
+      "noEmail": "No email given — they see the reply in the website chat. Phone: {phone}",
+      "backSettings": "Settings",
+      "settingsTitle": "Replies & office hours",
+      "settingsIntro": "The website promises a reply within this many hours, and shows \"Online now\" during office hours.",
+      "replyHours": "Reply within (hours)",
+      "replyHoursHint": "Shown on the booking and contact pages, in the chat and in confirmation emails. Items waiting longer turn red in the Inbox.",
+      "officeHours": "Office hours",
+      "officeHoursHint": "Times in Zimbabwe time ({tz}). Untick a day to close it.",
+      "opens": "opens",
+      "closes": "closes",
+      "days": {
+        "mon": "Monday",
+        "tue": "Tuesday",
+        "wed": "Wednesday",
+        "thu": "Thursday",
+        "fri": "Friday",
+        "sat": "Saturday",
+        "sun": "Sunday"
+      },
+      "alertEmails": "Send alert emails to",
+      "alertEmailsHint": "Separate addresses with commas. Leave empty to alert every admin account.",
+      "save": "Save",
+      "saved": "Saved — live on the website.",
+      "error": {
+        "hours": "Reply time must be 1–168 hours.",
+        "times": "Each open day needs an opening time before its closing time.",
+        "emails": "Check the email addresses.",
+        "error": "Could not save — try again."
       }
     }
   },
@@ -2478,6 +2550,48 @@
           "network": "No connection — please try again.",
           "staff": "Staff accounts can't book a consultation."
         }
+      }
+    },
+    "chat": {
+      "open": "Chat with us",
+      "title": "Chat with LBH",
+      "close": "Close chat",
+      "online": "Online now",
+      "replyWithin": "We'll reply within {hours} hours",
+      "promise": "Thanks — we'll get back to you within {hours} hours.",
+      "intro": "Ask us anything about building, land or materials. No account needed.",
+      "name": "Your name",
+      "email": "Email",
+      "phone": "Phone / WhatsApp",
+      "contactHint": "Give your email or phone so we can reply.",
+      "message": "Your message",
+      "messagePlaceholder": "e.g. How does land verification work?",
+      "replyPlaceholder": "Write a message…",
+      "send": "Send",
+      "sending": "Sending…",
+      "lbh": "LBH team",
+      "emailReplyNote": "We also email our replies if you gave your email.",
+      "newChat": "Start a new chat",
+      "whatsapp": "Message us on WhatsApp instead",
+      "signedInText": "You're signed in — message us from your account and we'll reply there.",
+      "signedInCta": "Open my messages",
+      "autoReply": "Thanks, {name} — we've got your message. We'll get back to you within {hours} hours.",
+      "emailThanksSubject": "We got your message — Let's Build Home",
+      "emailThanksTitle": "Thanks for your message",
+      "emailThanksPre": "We'll get back to you within {hours} hours.",
+      "emailHi": "Hi {name},",
+      "emailThanks": "Thanks for writing to Let's Build Home. We'll get back to you within {hours} hours — here and in the chat on our website.",
+      "emailNote": "You can keep chatting on letsbuildhome.co.zw from the same phone or computer.",
+      "replySubject": "LBH replied to your message",
+      "replyTitle": "A reply from the LBH team",
+      "replyIntro": "Hi {name}, here is our reply:",
+      "replyNote": "To answer, open the chat on letsbuildhome.co.zw from the same phone or computer, or reply to our contact email.",
+      "errors": {
+        "contact": "Please give an email or a phone number so we can reply.",
+        "rate": "Too many messages — please try again later.",
+        "network": "No connection — please try again.",
+        "invalid": "Please check your details.",
+        "error": "Something went wrong — please try again."
       }
     }
   }

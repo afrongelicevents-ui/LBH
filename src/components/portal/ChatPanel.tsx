@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { notifyClientMessage } from "@/app/actions/clientChat";
 import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { waLink } from "@/config/site";
@@ -102,6 +103,7 @@ export default function ChatPanel({
     } else {
       setBody("");
       void load();
+      if (meId === clientId) void notifyClientMessage().catch(() => undefined);
     }
   }
 

@@ -12,6 +12,8 @@ export interface NavItem {
   href: string;
   label: string;
   icon: IconName;
+  /** small red count (e.g. new Inbox alerts) */
+  badge?: number;
 }
 
 export type AreaKey = "client" | "field" | "lawyer" | "admin";

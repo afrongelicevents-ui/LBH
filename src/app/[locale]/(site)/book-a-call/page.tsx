@@ -1,3 +1,4 @@
+import ReplyPromise from "@/components/site/OfficeStatus";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { useTranslations } from "next-intl";
@@ -24,7 +25,10 @@ function BookContent({ defaults }: { defaults: BookingDefaults }) {
         <p className="mt-6 text-center text-base text-muted md:text-lg">
           {t("intro")}
         </p>
-        <div className="mt-10">
+        <div className="mt-6">
+          <ReplyPromise />
+        </div>
+        <div className="mt-8">
           <BookCallForm defaults={defaults} />
         </div>
       </div>

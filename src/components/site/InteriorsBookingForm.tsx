@@ -3,6 +3,7 @@
 import { useActionState, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
+import ReplyPromise from "@/components/site/OfficeStatus";
 import CountryField from "@/components/CountryField";
 import { useDirectUpload } from "@/lib/useDirectUpload";
 import { guardAction, useSubmitKeepingValues } from "@/lib/useSubmitKeepingValues";
@@ -46,6 +47,9 @@ export default function InteriorsBookingForm({ signedIn }: { signedIn: boolean }
       <div role="status" className="border-l-2 border-forest bg-paper p-6" data-testid="interiors-booked">
         <p className="font-serif text-2xl text-forest">{t("thanksTitle")}</p>
         <p className="ds-body mt-2 text-base">{t("thanksText")}</p>
+        <div className="mt-4">
+          <ReplyPromise />
+        </div>
       </div>
     );
   }

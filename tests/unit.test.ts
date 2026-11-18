@@ -198,3 +198,30 @@ describe("country of residence", () => {
     expect(bookingSchema.safeParse({ ...base, country: "other", country_other: "Canada" }).success).toBe(true);
   });
 });
+
+import { cleanOfficeHours, isOpenNow, hoursWaiting, waitingLabel } from "../src/lib/officeHours";
+
+describe("office hours", () => {
+  const hours = cleanOfficeHours({ mon: { open: "08:00", close: "17:00" }, sat: { open: "09:00", close: "13:00" }, sun: null, tue: { open: "18:00", close: "09:00" } });
+  it("keeps valid days only (open before close)", () => {
+    expect(hours.mon).toEqual({ open: "08:00", close: "17:00" });
+    expect(hours.tue).toBeNull();
+    expect(hours.wed).toBeNull();
+  });
+  it("uses Zimbabwe time (UTC+2)", () => {
+    // Monday 2026-11-16 06:30 UTC = 08:30 in Harare → open
+    expect(isOpenNow(hours, "Africa/Harare", new Date("2026-11-16T06:30:00Z"))).toBe(true);
+    // 05:30 UTC = 07:30 Harare → not yet
+    expect(isOpenNow(hours, "Africa/Harare", new Date("2026-11-16T05:30:00Z"))).toBe(false);
+    // closing time itself is closed
+    expect(isOpenNow(hours, "Africa/Harare", new Date("2026-11-16T15:00:00Z"))).toBe(false);
+    // Sunday closed
+    expect(isOpenNow(hours, "Africa/Harare", new Date("2026-11-22T08:00:00Z"))).toBe(false);
+  });
+  it("waiting time", () => {
+    const now = new Date("2026-11-18T12:00:00Z");
+    expect(hoursWaiting("2026-11-17T11:00:00Z", now)).toBe(25);
+    expect(waitingLabel("2026-11-18T11:20:00Z", now)).toBe("40 min");
+    expect(waitingLabel("2026-11-16T09:00:00Z", now)).toBe("2 d 3 h");
+  });
+});

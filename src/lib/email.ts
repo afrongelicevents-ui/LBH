@@ -16,6 +16,22 @@ export async function sendEmail(opts: {
   const from = process.env.EMAIL_FROM ?? "LBH <noreply@letsbuildhome.co.zw>";
 
   if (!apiKey) {
+    // Local development / tests only: deliver into the local Mailpit inbox so
+    // emails can be read and checked (never set in production).
+    const devInbox = process.env.DEV_MAILPIT_URL;
+    if (devInbox) {
+      await fetch(`${devInbox}/api/v1/send`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          From: { Email: "noreply@letsbuildhome.co.zw", Name: "LBH" },
+          To: [{ Email: opts.to }],
+          Subject: opts.subject,
+          Text: opts.text,
+          ...(opts.html ? { HTML: opts.html } : {}),
+        }),
+      }).catch(() => undefined);
+    }
     console.info(
       `[email:dev] to=${opts.to} subject="${opts.subject}"\n${opts.text}`
     );

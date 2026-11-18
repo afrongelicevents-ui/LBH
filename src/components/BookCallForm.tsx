@@ -25,6 +25,7 @@ export interface BookingDefaults {
 
 export default function BookCallForm({ defaults = {} }: { defaults?: BookingDefaults }) {
   const t = useTranslations("bookPage");
+  const tc = useTranslations("site.chat");
   const [state, formAction, pending] = useActionState<BookingResult | null, FormData>(
     submitBooking,
     null
@@ -37,6 +38,7 @@ export default function BookCallForm({ defaults = {} }: { defaults?: BookingDefa
         <CheckCircleIcon width={48} height={48} className="text-forest" />
         <h2 className="text-xl font-bold text-forest">{t("successTitle")}</h2>
         <p className="text-sm text-muted md:text-base">{t("successText")}</p>
+        <p className="text-base font-semibold text-charcoal" data-testid="booking-promise">{tc("promise", { hours: state.replyHours ?? 24 })}</p>
         {waLink() && (
           <a
             href={waLink()!}

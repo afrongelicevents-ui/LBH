@@ -22,11 +22,12 @@ const FIELD: PortalNavDef[] = [{ href: "/field", label: "portal.nav.myJobs", ico
 
 const ADMIN: PortalNavDef[] = [
   { href: "/admin", label: "admin.nav.needsYou", icon: "home" },
+  { href: "/admin/inbox", label: "admin.nav.inbox", icon: "chat" },
   { href: "/admin/requests", label: "admin.nav.requests", icon: "doc" },
   { href: "/admin/builds", label: "admin.nav.builds", icon: "hammer" },
   { href: "/admin/bookings", label: "admin.nav.bookings", icon: "calendar" },
   { href: "/admin/clients", label: "admin.nav.clients", icon: "users" },
-  { href: "/admin/chats", label: "admin.nav.chats", icon: "chat" },
+
   { href: "/admin/payments", label: "admin.nav.payments", icon: "card" },
   { href: "/admin/interest", label: "admin.nav.interest", icon: "bell" },
   { href: "/admin/settings", label: "admin.nav.settings", icon: "cog" },

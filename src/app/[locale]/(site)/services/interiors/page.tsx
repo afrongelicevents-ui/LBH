@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getUserProfile } from "@/lib/supabase/server";
 import { getInteriorGallery, getPagePhotos } from "@/lib/sitePhotos";
 import Photo from "@/components/site/Photo";
+import ReplyPromise from "@/components/site/OfficeStatus";
 import InteriorsBookingForm from "@/components/site/InteriorsBookingForm";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -145,6 +146,9 @@ export default async function InteriorsPage({ params }: { params: Promise<{ loca
           <div className="md:col-span-4">
             <h2 id="book-title" className="ds-h2">{t("bookTitle")}</h2>
             <p className="ds-body mt-3">{signedIn ? t("bookIntroSignedIn") : t("bookIntro")}</p>
+            <div className="mt-5">
+              <ReplyPromise />
+            </div>
           </div>
           <div className="md:col-span-8">
             <InteriorsBookingForm signedIn={signedIn} />

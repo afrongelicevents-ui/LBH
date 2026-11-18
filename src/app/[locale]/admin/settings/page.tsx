@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth/guard";
 import { Link } from "@/i18n/navigation";
-import { CameraIcon, CardIcon, ChevronRightIcon, ListIcon } from "@/components/ui/PortalIcons";
+import { CameraIcon, CardIcon, ChatIcon, ChevronRightIcon, ListIcon } from "@/components/ui/PortalIcons";
 import { SettingsForm, InviteStaffForm } from "@/components/admin/AdminActions";
 
 export default async function AdminSettingsPage({
@@ -19,6 +19,16 @@ export default async function AdminSettingsPage({
   return (
     <div className="space-y-6">
       <h1 className="section-title text-2xl">{t("title")}</h1>
+      <Link href="/admin/settings/replies" className="card flex items-center gap-3 p-4 hover:shadow-(--shadow-card-hover)" data-testid="replies-link">
+        <span className="icon-round icon-forest h-11 w-11">
+          <ChatIcon size={22} />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-extrabold text-ink">{t("repliesTitle")}</span>
+          <span className="block text-xs text-muted">{t("repliesHint")}</span>
+        </span>
+        <ChevronRightIcon size={18} className="text-muted" />
+      </Link>
       <Link href="/admin/settings/photos" className="card flex items-center gap-3 p-4 hover:shadow-(--shadow-card-hover)" data-testid="website-photos-link">
         <span className="icon-round icon-forest h-11 w-11">
           <CameraIcon size={22} />

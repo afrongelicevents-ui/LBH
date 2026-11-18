@@ -147,7 +147,7 @@
   "contactPage": {
     "metaTitle": "Sithinte",
     "title": "Sithinte",
-    "intro": "Indlela ephangisayo yokusithola yiWhatsApp — loba ubhuke ucingo lwakuqala lwamahala sizakufonela.",
+    "intro": "Xoxa lathi bukhoma, sithumele umlayezo — kumbe ubhuke ucingo lwakuqala lwamahala sizakufonela.",
     "emailLabel": "I-email",
     "whatsappLabel": "WhatsApp",
     "formTitle": "Sithumele umlayezo",
@@ -155,7 +155,9 @@
     "email": "I-email yakho",
     "message": "Umlayezo wakho",
     "send": "Thumela umlayezo",
-    "orBook": "Ufuna ukukhuluma? Bhuka ucingo lwakuqala lwamahala — imizuzu engu-30–45, ucingo loba ividiyo, akubhadalwa."
+    "orBook": "Ufuna ukukhuluma? Bhuka ucingo lwakuqala lwamahala — imizuzu engu-30–45, ucingo loba ividiyo, akubhadalwa.",
+    "chatNote": "Ukhetha ukubhala? Sebenzisa ingxoxo ebukhoma —",
+    "chatCta": "vula ingxoxo"
   },
   "bookPage": {
     "metaTitle": "Bhuka ucingo lwakuqala lwamahala",
@@ -763,7 +765,8 @@
       "photos": "Izithombe zewebhusayithi",
       "buildAccount": "Build Account",
       "priceList": "Uhlu lwamanani",
-      "projects": "Amaphrojekthi"
+      "projects": "Amaphrojekthi",
+      "inbox": "Ibhokisi lemilayezo"
     },
     "needsYou": {
       "title": "Kudinga wena",
@@ -950,7 +953,9 @@
       "priceTitle": "Uhlu lwamanani",
       "priceHint": "Amanani ajwayelekileyo okuhlola amarisidi e-Build Account",
       "projectsTitle": "Amaphrojekthi",
-      "projectsHint": "Izithombe eziqotho zamaphrojekthi e-LBH zekhasi lomphakathi lamaPhrojekthi"
+      "projectsHint": "Izithombe eziqotho zamaphrojekthi e-LBH zekhasi lomphakathi lamaPhrojekthi",
+      "repliesTitle": "Izimpendulo lamahola omsebenzi",
+      "repliesHint": "Isithembiso sokuphendula, amahola \"Sikhona khathesi\" lalabo abathola ama-email esexwayiso"
     },
     "audit": {
       "title": "I-audit log",
@@ -1242,6 +1247,73 @@
         "toobig": "Isithombe sikhulu kakhulu.",
         "upload": "Ukulayisha kwehlulekile.",
         "error": "Kukhona okungahambanga kahle — zama futhi."
+      }
+    },
+    "inbox": {
+      "title": "Ibhokisi lemilayezo",
+      "statusOnline": "● Sikhona khathesi (amahola omsebenzi)",
+      "statusOffline": "Ngaphandle kwamahola omsebenzi",
+      "promiseNote": "Sithembisa ukuphendula kungakapheli amahola angu-{hours}",
+      "settingsLink": "Izimpendulo lamahola omsebenzi",
+      "newTitle": "{count, plural, one {# okutsha selokhu wacina ukukhangela} other {# okutsha selokhu wacina ukukhangela}}",
+      "ago": "edlulileyo",
+      "openTitle": "Okulindele impendulo ({count})",
+      "overdueCount": "{count} okwedlulelwe yisikhathi",
+      "empty": "Akulalutho olulindileyo — konke kuphendulwe.",
+      "recentTitle": "Okuphendulwe muva nje",
+      "overdue": "Kwedlulelwe yisikhathi",
+      "waiting": "kulindile {time}",
+      "openItem": "Vula",
+      "handledBy": "Kunakekelwa ngu-{name}",
+      "assignedTo": "Kunikwe",
+      "unassigned": "Akunikwanga muntu",
+      "kind": {
+        "booking": "Ibhukingi",
+        "visitor_chat": "Ingxoxo yewebhusayithi",
+        "client_chat": "Ingxoxo yekhasimende"
+      },
+      "language": "Ulimi",
+      "startedOn": "kuqalwe ngo",
+      "closed": "Kuvaliwe",
+      "answered": "Kuphendulwe",
+      "messages": "Imilayezo",
+      "autoReply": "Impendulo ezenzakalelayo",
+      "reply": "Impendulo yakho",
+      "sendReply": "Thumela impendulo",
+      "sending": "Kuyathunyelwa…",
+      "replyHint": "Iyatshengiswa engxoxweni yabo njalo ithunyelwe ku-email yabo.",
+      "sent": "Kuthunyelwe.",
+      "failed": "Akuthunyelwanga — zama futhi.",
+      "close": "Vala ingxoxo",
+      "reopen": "Vula futhi",
+      "noEmail": "Akula-email enikiweyo — babona impendulo engxoxweni yewebhusayithi. Ifoni: {phone}",
+      "backSettings": "Izilungiselelo",
+      "settingsTitle": "Izimpendulo lamahola omsebenzi",
+      "settingsIntro": "Iwebhusayithi ithembisa ukuphendula kungakapheli amahola la, njalo itshengisa \"Sikhona khathesi\" ngamahola omsebenzi.",
+      "replyHours": "Phendula kungakapheli (amahola)",
+      "replyHoursHint": "Kuyatshengiswa emakhasini okubhuka lokusithinta, engxoxweni lakuma-email okuqinisekisa. Okulinda isikhathi eside kulokhu kuba bomvu kuBhokisi lemilayezo.",
+      "officeHours": "Amahola omsebenzi",
+      "officeHoursHint": "Izikhathi zeZimbabwe ({tz}). Susa uphawu elangeni ukuze ulivale.",
+      "opens": "kuvulwa",
+      "closes": "kuvalwa",
+      "days": {
+        "mon": "uMvulo",
+        "tue": "uLwesibili",
+        "wed": "uLwesithathu",
+        "thu": "uLwesine",
+        "fri": "uLwesihlanu",
+        "sat": "uMgqibelo",
+        "sun": "iSonto"
+      },
+      "alertEmails": "Thumela ama-email esexwayiso ku",
+      "alertEmailsHint": "Ahlukanisa amakheli ngamakhoma. Tshiya kungelalutho ukuze kwaziswe wonke ama-akhawunti e-admin.",
+      "save": "Gcina",
+      "saved": "Kugciniwe — sekukhona kuwebhusayithi.",
+      "error": {
+        "hours": "Isikhathi sokuphendula kumele sibe ngamahola angu-1–168.",
+        "times": "Ilanga ngalinye elivulekileyo lidinga isikhathi sokuvula esingaphambi kwesikhathi sokuvala.",
+        "emails": "Hlola amakheli e-email.",
+        "error": "Akugcinwanga — zama futhi."
       }
     }
   },
@@ -2479,6 +2551,48 @@
           "network": "Akula-network — sicela uzame futhi.",
           "staff": "Ama-akhawunti abasebenzi awangeke abhuke ukubonisana."
         }
+      }
+    },
+    "chat": {
+      "open": "Xoxa lathi",
+      "title": "Khuluma leLBH",
+      "close": "Vala ingxoxo",
+      "online": "Sikhona khathesi",
+      "replyWithin": "Sizaphendula kungakapheli amahola angu-{hours}",
+      "promise": "Siyabonga — sizakuphendula kungakapheli amahola angu-{hours}.",
+      "intro": "Sibuze loba yini mayelana lokwakha, umhlaba kumbe izinto zokwakha. Akudingeki i-akhawunti.",
+      "name": "Ibizo lakho",
+      "email": "I-email",
+      "phone": "Ifoni / WhatsApp",
+      "contactHint": "Nika i-email kumbe ifoni yakho ukuze sikuphendule.",
+      "message": "Umlayezo wakho",
+      "messagePlaceholder": "isib. Ukuhlolwa komhlaba kwenziwa njani?",
+      "replyPlaceholder": "Bhala umlayezo…",
+      "send": "Thumela",
+      "sending": "Kuyathunyelwa…",
+      "lbh": "Iqembu le-LBH",
+      "emailReplyNote": "Sithumela lezimpendulo zethu ku-email nxa uyinikile.",
+      "newChat": "Qala ingxoxo entsha",
+      "whatsapp": "Kumbe sithumele umlayezo ku-WhatsApp",
+      "signedInText": "Ungene — sithumele umlayezo usuka e-akhawuntini yakho sizakuphendula khona.",
+      "signedInCta": "Vula imilayezo yami",
+      "autoReply": "Siyabonga, {name} — umlayezo wakho usufikile. Sizakuphendula kungakapheli amahola angu-{hours}.",
+      "emailThanksSubject": "Umlayezo wakho usufikile — Let's Build Home",
+      "emailThanksTitle": "Siyabonga ngomlayezo wakho",
+      "emailThanksPre": "Sizakuphendula kungakapheli amahola angu-{hours}.",
+      "emailHi": "Sawubona {name},",
+      "emailThanks": "Siyabonga ngokubhalela i-Let's Build Home. Sizakuphendula kungakapheli amahola angu-{hours} — lapha lasengxoxweni ekuwebhusayithi yethu.",
+      "emailNote": "Ungaqhubeka uxoxa ku-letsbuildhome.co.zw usebenzisa ifoni kumbe ikhompyutha efanayo.",
+      "replySubject": "I-LBH iphendule umlayezo wakho",
+      "replyTitle": "Impendulo evela eqenjini le-LBH",
+      "replyIntro": "Sawubona {name}, nansi impendulo yethu:",
+      "replyNote": "Ukuze uphendule, vula ingxoxo ku-letsbuildhome.co.zw ngefoni kumbe ikhompyutha efanayo, kumbe uphendule i-email yethu yokusithinta.",
+      "errors": {
+        "contact": "Siza unike i-email kumbe inombolo yefoni ukuze sikuphendule.",
+        "rate": "Imilayezo minengi kakhulu — siza uzame futhi emuva kwesikhatshana.",
+        "network": "Akula-network — siza uzame futhi.",
+        "invalid": "Siza uhlole imininingwane yakho.",
+        "error": "Kukhona okungahambanga kahle — siza uzame futhi."
       }
     }
   }

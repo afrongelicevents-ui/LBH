@@ -7,9 +7,10 @@ import { rateLimited } from "@/lib/ratelimit";
 import { brandedHtml, brandedText, inviteLink, type BrandedEmail } from "@/lib/emailLayout";
 import { sendEmail } from "@/lib/email";
 import { site } from "@/config/site";
+import { alertTeam, getReplySettings } from "@/lib/inbox";
 
 export type BookingResult =
-  | { status: "ok" }
+  | { status: "ok"; replyHours?: number }
   | { status: "invalid"; field?: string }
   | { status: "rate" }
   | { status: "error" };
@@ -82,7 +83,7 @@ export async function submitBooking(
       }
     }
 
-    const { error: insertErr } = await admin.from("call_bookings").insert({
+    const { data: booking, error: insertErr } = await admin.from("call_bookings").insert({
       client_id: clientId,
       name: d.name,
       email: d.email.toLowerCase(),
@@ -93,15 +94,16 @@ export async function submitBooking(
       preferred_slot: d.slot,
       call_type: d.callType,
       status: "new",
-    });
+    }).select("id").single();
     if (insertErr) throw new Error(insertErr.message);
+    const { replyHours } = await getReplySettings();
 
     const mail: BrandedEmail = {
       preheader: "We received your request — we'll confirm the time soon.",
       title: "Your free first call is booked",
       paragraphs: [
         `Hi ${d.name},`,
-        `Thank you — we received your request for a free first call (${d.slot}, ${d.callType}). We will confirm the exact time by email${site.whatsappNumber ? " and WhatsApp" : ""}.`,
+        `Thank you — we received your request for a free first call (${d.slot}, ${d.callType}). We'll get back to you within ${replyHours} hours to confirm the exact time, by email${site.whatsappNumber ? " or WhatsApp" : ""}.`,
         ...(invite ? ["Your LBH account is ready too: see quotes, approve costs and read reports in one place."] : []),
         "Talk soon — the Let's Build Home team.",
       ],
@@ -115,7 +117,19 @@ export async function submitBooking(
       html: brandedHtml(mail),
     });
 
-    return { status: "ok" };
+    await alertTeam({
+      kind: "booking",
+      ref: booking.id,
+      title: `New booking from ${d.name}`,
+      lines: [
+        `${d.name} · ${d.email} · ${d.whatsapp}`,
+        `Service: ${d.service} · ${d.slot} · ${d.callType}`,
+        d.description ? `“${d.description.slice(0, 600)}”` : "",
+      ].filter(Boolean),
+      path: "/admin/inbox",
+    });
+
+    return { status: "ok", replyHours };
   } catch (e) {
     console.error(`[booking] ${e instanceof Error ? e.message : e}`);
     return { status: "error" };

@@ -147,7 +147,7 @@
   "contactPage": {
     "metaTitle": "Taura nesu",
     "title": "Taura nesu",
-    "intro": "Nzira inokurumidza kutisvikira ndeyeWhatsApp — kana kubhuka runhare rwekutanga rwemahara tokufonera.",
+    "intro": "Taura nesu pachat panguva iyoyo, titumire shoko — kana kubhuka runhare rwekutanga rwemahara tokufonera.",
     "emailLabel": "Email",
     "whatsappLabel": "WhatsApp",
     "formTitle": "Titumire shoko",
@@ -155,7 +155,9 @@
     "email": "Email yako",
     "message": "Shoko rako",
     "send": "Tumira shoko",
-    "orBook": "Unoda kutaura? Bhuka runhare rwekutanga rwemahara — maminitsi 30–45, runhare kana vhidhiyo, hazvibhadharwi."
+    "orBook": "Unoda kutaura? Bhuka runhare rwekutanga rwemahara — maminitsi 30–45, runhare kana vhidhiyo, hazvibhadharwi.",
+    "chatNote": "Unoda kunyora? Shandisa chat yepanguva iyoyo —",
+    "chatCta": "vhura chat"
   },
   "bookPage": {
     "metaTitle": "Bhuka runhare rwekutanga rwemahara",
@@ -763,7 +765,8 @@
       "photos": "Mifananidzo yewebhusaiti",
       "buildAccount": "Build Account",
       "priceList": "Mitengo",
-      "projects": "Mapurojekiti"
+      "projects": "Mapurojekiti",
+      "inbox": "Inbox"
     },
     "needsYou": {
       "title": "Zvinoda iwe",
@@ -950,7 +953,9 @@
       "priceTitle": "Mitengo",
       "priceHint": "Mitengo inowanzoshandiswa kuongorora marisiti eBuild Account",
       "projectsTitle": "Mapurojekiti",
-      "projectsHint": "Mifananidzo chaiyo yemapurojekiti eLBH yepeji yeveruzhinji yeMapurojekiti"
+      "projectsHint": "Mifananidzo chaiyo yemapurojekiti eLBH yepeji yeveruzhinji yeMapurojekiti",
+      "repliesTitle": "Mhinduro nenguva dzehofisi",
+      "repliesHint": "Vimbiso yemhinduro, nguva dze\"Tiripo izvozvi\" nevanotumirwa maemail ekuyambira"
     },
     "audit": {
       "title": "Audit log",
@@ -1242,6 +1247,73 @@
         "toobig": "Mufananidzo wakakura zvakanyanya.",
         "upload": "Kuisa kwakundikana.",
         "error": "Pane chakanganisika — edza zvakare."
+      }
+    },
+    "inbox": {
+      "title": "Inbox",
+      "statusOnline": "● Tiripo izvozvi (nguva dzehofisi)",
+      "statusOffline": "Kunze kwenguva dzehofisi",
+      "promiseNote": "Tinovimbisa kupindura mukati memaawa {hours}",
+      "settingsLink": "Mhinduro nenguva dzehofisi",
+      "newTitle": "{count, plural, one {# itsva kubva pawakapedzisira kutarisa} other {# itsva kubva pawakapedzisira kutarisa}}",
+      "ago": "yapfuura",
+      "openTitle": "Zvakamirira mhinduro ({count})",
+      "overdueCount": "{count} zvanonoka",
+      "empty": "Hapana chakamirira — zvese zvapindurwa.",
+      "recentTitle": "Zvichangopindurwa",
+      "overdue": "Zvanonoka",
+      "waiting": "kumirira {time}",
+      "openItem": "Vhura",
+      "handledBy": "Zvaitwa na{name}",
+      "assignedTo": "Zvapiwa ku",
+      "unassigned": "Hazvina kupiwa munhu",
+      "kind": {
+        "booking": "Bhukingi",
+        "visitor_chat": "Chat yewebhusaiti",
+        "client_chat": "Chat yemutengi"
+      },
+      "language": "Mutauro",
+      "startedOn": "yakatanga pa",
+      "closed": "Yakavharwa",
+      "answered": "Yapindurwa",
+      "messages": "Mashoko",
+      "autoReply": "Mhinduro yega",
+      "reply": "Mhinduro yako",
+      "sendReply": "Tumira mhinduro",
+      "sending": "Kutumira…",
+      "replyHint": "Inoratidzwa muchat yavo uye inotumirwa kwavari neemail.",
+      "sent": "Yatumirwa.",
+      "failed": "Haina kuenda — edza zvakare.",
+      "close": "Vhara chat",
+      "reopen": "Vhura zvakare",
+      "noEmail": "Hapana email yakapiwa — vanoona mhinduro muchat yewebhusaiti. Runhare: {phone}",
+      "backSettings": "Masettings",
+      "settingsTitle": "Mhinduro nenguva dzehofisi",
+      "settingsIntro": "Webhusaiti inovimbisa kupindura mukati memaawa aya, uye inoratidza \"Tiripo izvozvi\" panguva dzehofisi.",
+      "replyHours": "Pindura mukati me (maawa)",
+      "replyHoursHint": "Zvinoratidzwa pamapeji ekubhuka nekutaura nesu, muchat nemumaemail ekusimbisa. Zvakamirira kupfuura izvi zvinoita zvitsvuku muInbox.",
+      "officeHours": "Nguva dzehofisi",
+      "officeHoursHint": "Nguva dzeZimbabwe ({tz}). Bvisa chiratidzo pazuva kuti urivhare.",
+      "opens": "inovhura",
+      "closes": "inovhara",
+      "days": {
+        "mon": "Muvhuro",
+        "tue": "Chipiri",
+        "wed": "Chitatu",
+        "thu": "China",
+        "fri": "Chishanu",
+        "sat": "Mugovera",
+        "sun": "Svondo"
+      },
+      "alertEmails": "Tumira maemail ekuyambira ku",
+      "alertEmailsHint": "Paradzanisa maemail nekoma. Siya pasina chinhu kuti ma-admin ese ayambirwe.",
+      "save": "Chengeta",
+      "saved": "Zvachengetwa — zvave pawebhusaiti.",
+      "error": {
+        "hours": "Nguva yekupindura inofanira kuva maawa 1–168.",
+        "times": "Zuva rimwe nerimwe rakavhurika rinoda nguva yekuvhura isati yasvika nguva yekuvhara.",
+        "emails": "Tarisa maemail.",
+        "error": "Hazvina kuchengetwa — edza zvakare."
       }
     }
   },
@@ -2479,6 +2551,48 @@
           "network": "Hapana network — edza zvakare.",
           "staff": "Maaccount evashandi haagoni kubhuka runhare urwu."
         }
+      }
+    },
+    "chat": {
+      "open": "Taura nesu",
+      "title": "Taura neLBH",
+      "close": "Vhara chat",
+      "online": "Tiripo izvozvi",
+      "replyWithin": "Tichapindura mukati memaawa {hours}",
+      "promise": "Tatenda — tichadzokera kwauri mukati memaawa {hours}.",
+      "intro": "Tibvunze chero chinhu pamusoro pekuvaka, ivhu kana zvekuvakisa. Hapana account inodiwa.",
+      "name": "Zita rako",
+      "email": "Email",
+      "phone": "Runhare / WhatsApp",
+      "contactHint": "Isa email yako kana nhamba yerunhare kuti tikwanise kupindura.",
+      "message": "Shoko rako",
+      "messagePlaceholder": "semuenzaniso, Kuongororwa kwevhu kunoitwa sei?",
+      "replyPlaceholder": "Nyora shoko…",
+      "send": "Tumira",
+      "sending": "Kutumira…",
+      "lbh": "Timu yeLBH",
+      "emailReplyNote": "Tinotumirawo mhinduro dzedu neemail kana wakaisa email yako.",
+      "newChat": "Tanga chat itsva",
+      "whatsapp": "Kana kuti titumire shoko paWhatsApp",
+      "signedInText": "Wapinda muaccount yako — titumire shoko kubva muaccount yako tichapindura ipapo.",
+      "signedInCta": "Vhura mashoko angu",
+      "autoReply": "Tatenda, {name} — tagamuchira shoko rako. Tichadzokera kwauri mukati memaawa {hours}.",
+      "emailThanksSubject": "Tagamuchira shoko rako — Let's Build Home",
+      "emailThanksTitle": "Tatenda neshoko rako",
+      "emailThanksPre": "Tichadzokera kwauri mukati memaawa {hours}.",
+      "emailHi": "Mhoro {name},",
+      "emailThanks": "Tatenda nekunyorera Let's Build Home. Tichadzokera kwauri mukati memaawa {hours} — pano nemuchat iri pawebhusaiti yedu.",
+      "emailNote": "Unogona kuramba uchitaura nesu paletsbuildhome.co.zw uchishandisa runhare kana komputa imwe chete.",
+      "replySubject": "LBH yapindura shoko rako",
+      "replyTitle": "Mhinduro kubva kutimu yeLBH",
+      "replyIntro": "Mhoro {name}, hino mhinduro yedu:",
+      "replyNote": "Kuti upindure, vhura chat paletsbuildhome.co.zw uchishandisa runhare kana komputa imwe chete, kana kuti pindura email yedu yekubata.",
+      "errors": {
+        "contact": "Ndapota isa email kana nhamba yerunhare kuti tikwanise kupindura.",
+        "rate": "Mashoko akawandisa — ndapota edza zvakare gare gare.",
+        "network": "Hapana network — ndapota edza zvakare.",
+        "invalid": "Ndapota tarisa zvawaisa.",
+        "error": "Pane chakanganisika — ndapota edza zvakare."
       }
     }
   }

@@ -355,7 +355,8 @@ body {
 }
 
 /* the floating WhatsApp button steps aside while the site menu is open */
-html[data-menu="open"] .wa-float { display: none; }
+html[data-menu="open"] .wa-float,
+html[data-menu="open"] .chat-float { display: none; }
 
 /* =====================================================================
    Customer pages built before the redesign use these older classes.
