@@ -1672,7 +1672,7 @@ console.log("\nLive chat, Inbox, alerts and office hours");
     assert(Number(await a.getByTestId("nav-badge").first().innerText()) >= 1, "no badge");
     const late = a.getByTestId("inbox-item").filter({ hasText: "E2E Overdue visitor" });
     assert((await late.getAttribute("data-late")) === "1", "not red");
-    await late.getByText("Overdue").waitFor();
+    await late.getByTestId("inbox-waiting").getByText(/Overdue · waiting 1 d 6 h/).waitFor();
     const mine = a.getByTestId("inbox-item").filter({ hasText: "E2E Chiedza" });
     assert((await mine.getAttribute("data-late")) === "0", "new chat marked late");
     await mine.getByTestId("inbox-waiting").getByText(/waiting \d+ min/).waitFor();
