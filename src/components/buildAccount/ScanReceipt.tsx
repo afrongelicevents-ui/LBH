@@ -8,7 +8,7 @@ import { readReceipt, saveSpend, type BaResult } from "@/app/[locale]/account/(c
 import { useSubmitKeepingValues } from "@/lib/useSubmitKeepingValues";
 import { CameraIcon } from "@/components/ui/PortalIcons";
 
-const inputCls = "w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm text-ink focus:border-forest focus:outline-none";
+const inputCls = "w-full rounded-xl border border-line bg-paper px-3 py-2.5 text-sm text-ink focus:border-forest focus:outline-none";
 const labelCls = "mb-1 block text-xs font-semibold text-ink";
 
 interface Item {

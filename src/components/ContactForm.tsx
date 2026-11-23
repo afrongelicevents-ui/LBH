@@ -22,7 +22,7 @@ export default function ContactForm() {
   }
 
   const inputCls =
-    "w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink placeholder:text-muted/70 focus:border-forest focus:outline-none";
+    "w-full rounded-xl border border-line bg-paper px-4 py-3 text-sm text-ink placeholder:text-muted/70 focus:border-forest focus:outline-none";
 
   return (
     <form onSubmit={submit} className="card mt-8 p-6 md:p-7">

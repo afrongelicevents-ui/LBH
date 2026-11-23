@@ -4,7 +4,7 @@ import { useActionState, useTransition, useState } from "react";
 import { useTranslations } from "next-intl";
 import { inviteMember, updateMember, addAccount, type BaResult } from "@/app/[locale]/account/(customer)/build-account/actions";
 
-const inputCls = "w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm text-ink focus:border-forest focus:outline-none";
+const inputCls = "w-full rounded-xl border border-line bg-paper px-3 py-2.5 text-sm text-ink focus:border-forest focus:outline-none";
 const labelCls = "mb-1 block text-xs font-semibold text-ink";
 
 export function InviteForm() {
@@ -39,18 +39,18 @@ export function InviteForm() {
       <fieldset>
         <legend className={labelCls}>{t("canDo")}</legend>
         <div className="flex flex-wrap gap-2">
-          <label className="chip cursor-pointer has-checked:border-forest has-checked:bg-forest has-checked:text-white">
+          <label className="chip cursor-pointer has-checked:border-forest has-checked:bg-forest has-checked:text-[var(--ws-on-accent)]">
             <input type="radio" name="role" value="view" defaultChecked className="sr-only" />
             {t("role.view")}
           </label>
-          <label className="chip cursor-pointer has-checked:border-forest has-checked:bg-forest has-checked:text-white">
+          <label className="chip cursor-pointer has-checked:border-forest has-checked:bg-forest has-checked:text-[var(--ws-on-accent)]">
             <input type="radio" name="role" value="add" className="sr-only" />
             {t("role.add")}
           </label>
         </div>
       </fieldset>
       <label className="flex items-center gap-2 text-sm text-ink">
-        <input type="checkbox" name="holds_money" className="h-5 w-5 accent-[#163a2b]" />
+        <input type="checkbox" name="holds_money" className="h-5 w-5 accent-forest" />
         {t("holdsMoney")}
       </label>
       <button type="submit" disabled={pending} className="btn btn-green w-full disabled:opacity-60">
@@ -83,7 +83,7 @@ export function MemberControls({ memberId, role }: { memberId: string; role: str
         defaultValue={role}
         disabled={pending}
         onChange={(e) => start(async () => void (await updateMember(memberId, { role: e.target.value as "view" | "add" }).catch(() => null)))}
-        className="rounded-lg border border-line bg-white px-2 py-1"
+        className="rounded-lg border border-line bg-paper px-2 py-1"
       >
         <option value="view">{t("role.view")}</option>
         <option value="add">{t("role.add")}</option>

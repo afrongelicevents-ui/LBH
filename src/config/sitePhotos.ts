@@ -19,19 +19,19 @@ export interface SitePhotoDef {
 }
 
 export const SITE_PHOTOS: SitePhotoDef[] = [
-  { slot: "hero", defaultSrc: "/images/hero.jpg", maxWidth: 2400, minWidth: 2000, preview: "hero" },
-  { slot: "land", defaultSrc: "/images/land.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
-  { slot: "materials", defaultSrc: "/images/materials.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
-  { slot: "onsite", defaultSrc: "/images/monitoring.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
-  { slot: "reporting", defaultSrc: "/images/hero.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
-  { slot: "interiors", defaultSrc: "/images/stock/interiors.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
+  { slot: "hero", defaultSrc: "/images/site/hero.jpg", maxWidth: 2400, minWidth: 2000, preview: "hero" },
+  { slot: "land", defaultSrc: "/images/site/land.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
+  { slot: "materials", defaultSrc: "/images/site/materials.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
+  { slot: "onsite", defaultSrc: "/images/site/onsite.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
+  { slot: "reporting", defaultSrc: "/images/site/reporting.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
+  { slot: "interiors", defaultSrc: "/images/site/interiors.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
   { slot: "interiors_before_1", defaultSrc: "/images/hero.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
   { slot: "interiors_after_1", defaultSrc: "/images/hero.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
   { slot: "interiors_before_2", defaultSrc: "/images/hero.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
   { slot: "interiors_after_2", defaultSrc: "/images/hero.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
   { slot: "interiors_before_3", defaultSrc: "/images/hero.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
   { slot: "interiors_after_3", defaultSrc: "/images/hero.jpg", maxWidth: 1600, minWidth: 900, preview: "card" },
-  { slot: "logo", defaultSrc: "/images/logo.jpg", maxWidth: 800, minWidth: 300, preview: "logo" },
+  { slot: "logo", defaultSrc: "/images/brand/logo-on-light.png", maxWidth: 800, minWidth: 300, preview: "logo" },
 ];
 
 /** Older slots the redesigned site no longer shows (kept so old rows stay valid). */

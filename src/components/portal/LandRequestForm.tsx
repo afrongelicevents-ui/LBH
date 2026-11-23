@@ -16,7 +16,7 @@ import { ArrowRightIcon } from "@/components/icons";
 const MapPicker = dynamic(() => import("./MapPicker"), { ssr: false });
 
 const inputCls =
-  "w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink focus:border-forest focus:outline-none";
+  "w-full rounded-xl border border-line bg-paper px-4 py-3 text-sm text-ink focus:border-forest focus:outline-none";
 const labelCls = "mb-1.5 block text-sm font-semibold text-ink";
 
 export default function LandRequestForm() {

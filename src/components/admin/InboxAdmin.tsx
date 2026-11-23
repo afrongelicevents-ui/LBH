@@ -14,7 +14,7 @@ import {
   type InboxResult,
 } from "@/app/[locale]/admin/inboxActions";
 
-const inputCls = "w-full rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink";
+const inputCls = "w-full rounded-lg border border-line bg-paper px-3 py-2 text-sm text-ink";
 const OFFLINE: InboxResult = { ok: false, error: "error" };
 
 /** Who owns this booking / chat. Saves on change. */
@@ -38,7 +38,7 @@ export function AssignSelect({ kind, refId, value, admins }: { kind: string; ref
             else setFailed(true);
           })
         }
-        className="max-w-[11rem] rounded-lg border border-line bg-white px-2 py-1.5 text-xs text-ink disabled:opacity-60"
+        className="max-w-[11rem] rounded-lg border border-line bg-paper px-2 py-1.5 text-xs text-ink disabled:opacity-60"
         data-testid="inbox-assign"
       >
         <option value="">{t("unassigned")}</option>

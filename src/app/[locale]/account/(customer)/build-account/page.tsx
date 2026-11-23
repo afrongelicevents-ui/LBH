@@ -57,7 +57,7 @@ export default async function BuildAccountHome({
       )}
 
       {ctx.isOwner && activeMembers.length > 0 && (
-        <p className="inline-flex flex-wrap items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-ink shadow-sm" data-testid="ba-shared-with">
+        <p className="inline-flex flex-wrap items-center gap-1.5 rounded-full bg-paper px-3 py-1.5 text-xs font-semibold text-ink shadow-sm" data-testid="ba-shared-with">
           <UsersIcon size={14} className="text-forest" />
           {t("sharedWith", { names: activeMembers.map((m) => `${m.name.replace(/^SAMPLE\s+/, "")} – ${t(`role.${m.role}` as never)}`).join(", ") })}
         </p>
@@ -73,28 +73,27 @@ export default async function BuildAccountHome({
       </nav>
 
       {/* balance */}
-      <section className="relative overflow-hidden rounded-[26px] bg-forest p-5 text-white shadow-(--shadow-card)" data-testid="ba-balance">
-        <div aria-hidden className="absolute -top-16 -right-10 h-48 w-48 rounded-full bg-white/5" />
-        <Link href={`/account/build-account/statement${qs(selected)}`} aria-label={t("seeStatement")} className="absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 hover:bg-white/20">
+      <section className="ws-money relative overflow-hidden" data-testid="ba-balance">
+        <Link href={`/account/build-account/statement${qs(selected)}`} aria-label={t("seeStatement")} className="absolute top-4 right-4 flex h-11 w-11 items-center justify-center rounded-full bg-sand hover:bg-ivory">
           <ChevronRightIcon size={18} />
         </Link>
-        <p className="text-sm font-medium text-white/80">{t("available")}</p>
-        <p className="mt-1 text-4xl font-extrabold tracking-tight" data-testid="ba-balance-amount">
+        <p className="ds-eyebrow">{t("available")}</p>
+        <p className="ws-big num mt-2 text-[3.25rem]" data-testid="ba-balance-amount">
           {formatCents(M.balance(view))}
         </p>
-        <p className="mt-1 text-xs text-white/80">
+        <p className="mt-1.5 text-sm text-slate">
           {selected === "all" ? t("allAccounts") : accountName(data, selected)}
           {M.onItsWay(view) > 0 && ` · ${t("onItsWayAmount", { amount: formatCents(M.onItsWay(view)) })}`}
         </p>
         <div className="mt-4 grid grid-cols-2 gap-2">
           {canScan && (
-            <Link href={`/account/build-account/scan${ownerQs}`} className="btn btn-white min-h-11 text-sm" data-testid="ba-scan-btn">
+            <Link href={`/account/build-account/scan${ownerQs}`} className="btn btn-primary min-h-12 text-sm" data-testid="ba-scan-btn">
               <CameraIcon size={18} />
               {t("scanReceipt")}
             </Link>
           )}
           {ctx.isOwner && page.writable && (
-            <Link href="/account/build-account/add" className="btn btn-outline-white min-h-11 text-sm" data-testid="ba-add-btn">
+            <Link href="/account/build-account/add" className="btn btn-outline-green min-h-12 text-sm" data-testid="ba-add-btn">
               <PlusIcon size={18} />
               {t("addMoney")}
             </Link>

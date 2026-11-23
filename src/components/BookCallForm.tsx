@@ -10,22 +10,27 @@ import {
   submitBooking,
   type BookingResult,
 } from "@/app/[locale]/(site)/book-a-call/actions";
-import { ArrowRightIcon, CheckCircleIcon, WhatsAppIcon } from "./icons";
+import { CheckCircleIcon, WhatsAppIcon } from "./icons";
+import { Link } from "@/i18n/navigation";
 
-const inputCls =
-  "w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink placeholder:text-muted/70 focus:border-forest focus:outline-none";
-const labelCls = "mb-1.5 block text-sm font-semibold text-ink";
+const inputCls = "ws-input";
+const labelCls = "mb-2 block text-sm font-bold text-ink";
+const SERVICES = ["land", "materials", "monitoring", "camera", "not-sure"] as const;
+const SLOTS = ["morning", "afternoon", "evening", "weekend"] as const;
 
 export interface BookingDefaults {
   name?: string;
   email?: string;
   whatsapp?: string;
   country?: string;
+  /** preselected service (from ?service=) */
+  service?: string;
 }
 
 export default function BookCallForm({ defaults = {} }: { defaults?: BookingDefaults }) {
   const t = useTranslations("bookPage");
   const tc = useTranslations("site.chat");
+  const tw = useTranslations("site.ws");
   const [state, formAction, pending] = useActionState<BookingResult | null, FormData>(
     submitBooking,
     null
@@ -34,10 +39,12 @@ export default function BookCallForm({ defaults = {} }: { defaults?: BookingDefa
 
   if (state?.status === "ok") {
     return (
-      <div className="card flex flex-col items-center gap-4 p-8 text-center">
-        <CheckCircleIcon width={48} height={48} className="text-forest" />
-        <h2 className="text-xl font-bold text-forest">{t("successTitle")}</h2>
-        <p className="text-sm text-muted md:text-base">{t("successText")}</p>
+      <div className="flex flex-col items-center gap-4 py-8 text-center" data-testid="book-done">
+        <span className="ws-tick">
+          <CheckCircleIcon width={44} height={44} />
+        </span>
+        <h2 className="text-[2rem] leading-tight font-extrabold tracking-[-0.03em]">{t("successTitle")}</h2>
+        <p className="max-w-[40ch] text-slate md:text-base">{t("successText")}</p>
         <p className="text-base font-semibold text-charcoal" data-testid="booking-promise">{tc("promise", { hours: state.replyHours ?? 24 })}</p>
         {waLink() && (
           <a
@@ -50,12 +57,16 @@ export default function BookCallForm({ defaults = {} }: { defaults?: BookingDefa
             {t("successWhatsapp")}
           </a>
         )}
+        {!defaults.email && (
+          <Link href="/signup" className="ds-btn ds-btn-primary mt-2">{tw("doneSignup")}</Link>
+        )}
+        <Link href="/" className="ds-btn ds-btn-outline">{tw("backHome")}</Link>
       </div>
     );
   }
 
   return (
-    <form onSubmit={submitKeepingValues} className="card p-6 md:p-8">
+    <form onSubmit={submitKeepingValues} className="flex flex-col gap-5" data-testid="book-form">
       {state && (
         <p
           role="alert"
@@ -74,6 +85,21 @@ export default function BookCallForm({ defaults = {} }: { defaults?: BookingDefa
               : t("errorGeneric")}
         </p>
       )}
+
+      <fieldset>
+        <legend className={labelCls}>{tw("whatNeed")} *</legend>
+        <div className="flex flex-wrap gap-2" data-testid="service-chips">
+          {SERVICES.map((v) => (
+            <label key={v} className="chip cursor-pointer has-[input:focus-visible]:outline-3 has-[input:focus-visible]:outline-forest">
+              <input type="radio" name="service" value={v} required defaultChecked={defaults.service === v} className="sr-only" />
+              {tw(`chips.${v}`)}
+            </label>
+          ))}
+        </div>
+        <p className="mt-2 text-[13px] text-slate">
+          {tw("finishHint")} <Link href="/services/interiors#book" className="ds-link">{tw("finishLink")}</Link>
+        </p>
+      </fieldset>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <label className="block sm:col-span-2">
@@ -110,20 +136,6 @@ export default function BookCallForm({ defaults = {} }: { defaults?: BookingDefa
           <CountryField label={t("country")} defaultValue={defaults.country} inputCls={inputCls} labelCls={labelCls} />
         </div>
 
-        <label className="block">
-          <span className={labelCls}>{t("service")} *</span>
-          <select name="service" required defaultValue="" className={inputCls}>
-            <option value="" disabled>
-              {t("servicePlaceholder")}
-            </option>
-            <option value="land">{t("serviceLand")}</option>
-            <option value="materials">{t("serviceMaterials")}</option>
-            <option value="monitoring">{t("serviceMonitoring")}</option>
-            <option value="camera">{t("serviceCamera")}</option>
-            <option value="not-sure">{t("serviceNotSure")}</option>
-          </select>
-        </label>
-
         <label className="block sm:col-span-2">
           <span className={labelCls}>{t("description")}</span>
           <textarea
@@ -134,41 +146,29 @@ export default function BookCallForm({ defaults = {} }: { defaults?: BookingDefa
           />
         </label>
 
-        <label className="block">
-          <span className={labelCls}>{t("slot")} *</span>
-          <select name="slot" required defaultValue="" className={inputCls}>
-            <option value="" disabled>
-              {t("slotPlaceholder")}
-            </option>
-            <option value="morning">{t("slotMorning")}</option>
-            <option value="afternoon">{t("slotAfternoon")}</option>
-            <option value="evening">{t("slotEvening")}</option>
-            <option value="weekend">{t("slotWeekend")}</option>
-          </select>
-          <span className="mt-1.5 block text-xs text-muted">{t("slotHint")}</span>
-        </label>
+        <fieldset className="sm:col-span-2">
+          <legend className={labelCls}>{tw("pickTime")} *</legend>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4" data-testid="slot-buttons">
+            {SLOTS.map((v) => (
+              <label key={v} className="ws-slot">
+                <input type="radio" name="slot" value={v} required className="sr-only" />
+                {tw(`slots.${v}`)}
+                <small>{tw(`slots.${v}Hint`)}</small>
+              </label>
+            ))}
+          </div>
+          <span className="mt-2 block text-xs text-muted">{t("slotHint")}</span>
+        </fieldset>
 
-        <fieldset>
+        <fieldset className="sm:col-span-2">
           <legend className={labelCls}>{t("callType")} *</legend>
-          <div className="flex gap-4 pt-1.5">
-            <label className="flex min-h-11 items-center gap-2 text-sm text-ink">
-              <input
-                type="radio"
-                name="callType"
-                value="phone"
-                required
-                defaultChecked
-                className="h-4 w-4 accent-[#163a2b]"
-              />
+          <div className="flex flex-wrap gap-2">
+            <label className="chip cursor-pointer">
+              <input type="radio" name="callType" value="phone" required defaultChecked className="sr-only" />
               {t("callPhone")}
             </label>
-            <label className="flex min-h-11 items-center gap-2 text-sm text-ink">
-              <input
-                type="radio"
-                name="callType"
-                value="video"
-                className="h-4 w-4 accent-[#163a2b]"
-              />
+            <label className="chip cursor-pointer">
+              <input type="radio" name="callType" value="video" className="sr-only" />
               {t("callVideo")}
             </label>
           </div>
@@ -186,10 +186,9 @@ export default function BookCallForm({ defaults = {} }: { defaults?: BookingDefa
       <button
         type="submit"
         disabled={pending}
-        className="btn btn-primary mt-7 w-full px-7 disabled:opacity-60 sm:w-auto"
+        className="ds-btn ds-btn-primary w-full px-7 disabled:opacity-60 sm:w-auto"
       >
-        {t("submit")}
-        <ArrowRightIcon width={20} height={20} />
+        {tw("requestCall")}
       </button>
     </form>
   );

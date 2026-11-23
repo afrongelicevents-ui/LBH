@@ -49,7 +49,7 @@ export default async function AdminVisitorChatPage({ params }: { params: Promise
           const who = m.author === "visitor" ? chat.name : m.author === "auto" ? t("autoReply") : ((m.profiles as unknown as { full_name: string } | null)?.full_name ?? "LBH");
           return (
             <div key={m.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
-              <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm whitespace-pre-wrap ${m.author === "visitor" ? "bg-offwhite text-ink" : m.author === "auto" ? "border border-line bg-white text-muted italic" : "bg-forest text-white"}`} data-testid={`admin-msg-${m.author}`}>
+              <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm whitespace-pre-wrap ${m.author === "visitor" ? "bg-offwhite text-ink" : m.author === "auto" ? "border border-line bg-paper text-muted italic" : "bg-forest text-white"}`} data-testid={`admin-msg-${m.author}`}>
                 <span className="mb-0.5 block text-[11px] font-bold opacity-80">{who}</span>
                 {m.body}
                 <span className="mt-1 block text-[10px] opacity-70">{new Date(m.created_at).toLocaleString(locale, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</span>

@@ -30,7 +30,7 @@ function Preview({ def, src }: { def: SitePhotoDef; src: string }) {
         <div className="relative flex h-full max-w-[55%] flex-col justify-center p-4 text-white">
           <p className="headline text-base sm:text-2xl">{t("site.home.hero.title")}</p>
           <p className="mt-1 text-[10px] text-white/85 sm:text-xs">{t("site.home.hero.subtitle")}</p>
-          <span className="mt-2 w-fit rounded-[3px] bg-white px-3 py-1 text-[10px] font-bold text-ink">{t("site.home.hero.cta")}</span>
+          <span className="mt-2 w-fit rounded-[3px] bg-paper px-3 py-1 text-[10px] font-bold text-ink">{t("site.home.hero.cta")}</span>
         </div>
       </div>
     );
@@ -48,7 +48,7 @@ function Preview({ def, src }: { def: SitePhotoDef; src: string }) {
           }}
         />
         <div className="relative flex h-full items-center gap-3 p-3">
-          <div className="w-1/4 shrink-0 rounded-md border-2 border-ink/80 bg-ink/80">
+          <div className="w-1/4 shrink-0 rounded-md border-2 border-[#2a1e16]/80 bg-[#2a1e16]/80">
             <div className="relative aspect-video overflow-hidden rounded">
               <img src={src} alt="" className="absolute inset-0 h-full w-full object-cover" />
               <span className="absolute top-0.5 left-0.5 rounded bg-red-600 px-1 text-[7px] font-extrabold text-white">
@@ -63,7 +63,7 @@ function Preview({ def, src }: { def: SitePhotoDef; src: string }) {
   }
   if (def.preview === "logo") {
     return (
-      <div className="flex items-center gap-3 rounded-xl border border-line bg-white p-3" data-testid="photo-preview">
+      <div className="flex items-center gap-3 rounded-xl border border-line bg-paper p-3" data-testid="photo-preview">
         <img src={src} alt="" className="h-12 w-auto" />
         <span aria-hidden className="h-9 w-px bg-line" />
         <span className="text-sm font-extrabold tracking-wide text-forest uppercase">{t("common.brandUpper")}</span>
@@ -237,7 +237,7 @@ export default function SitePhotoSlotCard({
               maxLength={200}
               placeholder={t("creditPlaceholder")}
               aria-label={t("creditLabel")}
-              className="mt-2 w-full rounded-lg border border-line bg-white px-3 py-2 text-sm"
+              className="mt-2 w-full rounded-lg border border-line bg-paper px-3 py-2 text-sm"
               data-testid="photo-credit"
             />
           )}

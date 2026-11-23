@@ -180,7 +180,7 @@ function OutboxStatus({
 
   if (waiting === 0) {
     return (
-      <div role="status" data-testid="outbox-status" className="mb-3 flex items-center justify-between gap-2 rounded-xl bg-white px-3 py-2 text-xs font-bold text-forest shadow-sm">
+      <div role="status" data-testid="outbox-status" className="mb-3 flex items-center justify-between gap-2 rounded-xl bg-paper px-3 py-2 text-xs font-bold text-forest shadow-sm">
         <span>{t("allUploaded")}</span>
         {!online && <span className="text-muted">{t("offline")}</span>}
       </div>

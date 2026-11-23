@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter_Tight, Source_Serif_4 } from "next/font/google";
+import { DM_Sans, Playfair_Display } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -7,19 +7,23 @@ import { routing } from "@/i18n/routing";
 import { site } from "@/config/site";
 import "../globals.css";
 
-const interTight = Inter_Tight({
-  variable: "--font-inter-tight",
+/** Warm Sand type: DM Sans for text, Playfair Display for headings. */
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
 });
-
-/** Editorial serif for headings only (body text stays Inter Tight). */
-const serif = Source_Serif_4({
-  variable: "--font-source-serif",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
+  weight: ["600", "700", "800"],
 });
+
+/**
+ * Light / dark before the first paint (no flash): the saved choice from the
+ * theme toggle, otherwise the phone's setting.
+ */
+const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem("lbh-theme");var d=t==="dark"||(t!=="light"&&window.matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.dataset.theme=d?"dark":"light";}catch(e){}})();`;
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -46,19 +50,22 @@ export async function generateMetadata({
       title: `${site.shortName} — ${t("brand")}`,
       description: t("tagline"),
       locale: locale === "en" ? "en_GB" : locale === "sn" ? "sn_ZW" : "nd_ZW",
-      images: [{ url: "/images/hero.jpg", alt: site.name }],
+      images: [{ url: "/images/site/share.jpg", width: 1200, height: 630, alt: site.name }],
     },
     twitter: { card: "summary_large_image" },
     manifest: "/manifest.webmanifest",
     icons: {
-      icon: [{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }],
-      apple: [{ url: "/icons/icon-192.png" }],
+      icon: [{ url: "/icons/ws-icon-192.png", sizes: "192x192", type: "image/png" }],
+      apple: [{ url: "/icons/ws-icon-192.png" }],
     },
   };
 }
 
 export const viewport: Viewport = {
-  themeColor: "#163A2B",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#F1ECE5" },
+    { media: "(prefers-color-scheme: dark)", color: "#17120E" },
+  ],
   width: "device-width",
   initialScale: 1,
 };
@@ -77,7 +84,10 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   return (
-    <html lang={locale} className={`${interTight.variable} ${serif.variable}`}>
+    <html lang={locale} className={`${dmSans.variable} ${playfair.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body className="flex min-h-screen flex-col antialiased">
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>

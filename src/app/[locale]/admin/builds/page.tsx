@@ -72,12 +72,12 @@ export default async function AdminBuildsPage({
                             ? "bg-forest text-white"
                             : current?.position === st.position
                               ? "bg-forest text-white ring-2 ring-ok-soft"
-                              : "bg-[#eef1ef] text-muted"
+                              : "bg-sand text-muted"
                         }`}
                       >
                         {st.status === "approved" ? <CheckIcon size={13} /> : i + 1}
                       </span>
-                      {i < own.length - 1 && <span aria-hidden className={`h-[3px] flex-1 rounded ${st.status === "approved" ? "bg-forest" : "bg-[#dfe3e1]"}`} />}
+                      {i < own.length - 1 && <span aria-hidden className={`h-[3px] flex-1 rounded ${st.status === "approved" ? "bg-forest" : "bg-line"}`} />}
                     </li>
                   ))}
                 </ol>

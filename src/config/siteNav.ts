@@ -51,7 +51,7 @@ export const ACCOUNT_NAV: SiteNavItem[] = [
 
 /** Services, grouped the way a build happens. Labels: site.groups.<key>.title */
 export const SERVICE_GROUPS: { key: "land" | "build" | "finish"; href: string }[] = [
-  { key: "land", href: "/services#land-group" },
-  { key: "build", href: "/services#build-group" },
+  { key: "land", href: "/services/land" },
+  { key: "build", href: "/services/build" },
   { key: "finish", href: "/services/interiors" },
 ];

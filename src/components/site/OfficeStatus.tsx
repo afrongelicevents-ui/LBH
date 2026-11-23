@@ -28,7 +28,7 @@ export function StatusPill({ s, className = "" }: { s: Status | null; className?
   if (!s) return <span className={`inline-block h-5 ${className}`} aria-hidden />;
   return s.online ? (
     <span className={`inline-flex items-center gap-1.5 text-sm font-semibold text-forest ${className}`} data-testid="status-online">
-      <span aria-hidden className="h-2 w-2 rounded-full bg-[#2f9e5b]" />
+      <span aria-hidden className="h-2 w-2 rounded-full bg-ok-line" />
       {t("online")}
     </span>
   ) : (

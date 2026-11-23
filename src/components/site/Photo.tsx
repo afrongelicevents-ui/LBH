@@ -28,19 +28,19 @@ export default function Photo({
   priority?: boolean;
   className?: string;
   creditClassName?: string;
-  stockLabel: string;
+  /** "Stock photo" (translated); needed unless hideCredit */
+  stockLabel?: string;
   /** Leave the credit off the image; it must then be listed on About → Photo credits. */
   hideCredit?: boolean;
 }) {
   return (
-    <figure className={`relative overflow-hidden ${className}`}>
+    <figure className={`${/(^|\s)(absolute|fixed)(\s|$)/.test(className) ? "" : "relative"} overflow-hidden ${className}`}>
       <Image src={photo.src} alt={photo.alt} fill sizes={sizes} priority={priority} className="object-cover" style={photo.position ? { objectPosition: photo.position } : undefined} />
       {photo.kind === "stock" && !hideCredit && (
         <figcaption
-          className={`absolute right-0 bottom-0 max-w-[85%] truncate bg-charcoal/55 px-2 py-0.5 text-[10px] leading-4 text-white/90 ${creditClassName}`}
+          className={`absolute right-0 bottom-0 max-w-[85%] truncate bg-[rgba(23,18,14,0.55)] px-2 py-0.5 text-[10px] leading-4 text-white/90 ${creditClassName}`}
         >
-          {stockLabel}
-          {photo.credit ? ` · ${photo.credit}` : ""}
+          {[stockLabel, photo.credit].filter(Boolean).join(" · ")}
         </figcaption>
       )}
     </figure>

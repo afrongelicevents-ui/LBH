@@ -10,15 +10,14 @@ import {
   type SignupResult,
 } from "@/app/[locale]/(site)/signup/actions";
 import CountryField from "@/components/CountryField";
-import { ArrowRightIcon, CheckCircleIcon, LockIcon } from "@/components/icons";
 
-const inputCls =
-  "w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink focus:border-forest focus:outline-none";
-const labelCls = "mb-1.5 block text-sm font-semibold text-ink";
+const inputCls = "ws-input";
+const labelCls = "mb-2 block text-sm font-bold text-ink";
 
 /** Client "Create account" form. Staff accounts are invite-only. */
 export default function SignupForm() {
   const t = useTranslations("auth.signup");
+  const tw = useTranslations("site.ws");
   const tb = useTranslations("bookPage");
   const locale = useLocale();
   const [state, formAction, pending] = useActionState<SignupResult | null, FormData>(
@@ -29,10 +28,12 @@ export default function SignupForm() {
 
   if (state?.status === "ok") {
     return (
-      <div className="card flex flex-col items-center gap-4 p-8 text-center">
-        <CheckCircleIcon width={48} height={48} className="text-forest" />
-        <h1 className="text-xl font-bold text-forest">{t("checkEmailTitle")}</h1>
-        <p className="text-sm text-muted">{t("checkEmailText")}</p>
+      <div className="flex flex-col items-center gap-4 py-10 text-center" data-testid="check-email">
+        <span className="ws-tick">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></svg>
+        </span>
+        <h1 className="text-[2.1rem] leading-tight font-extrabold tracking-[-0.03em]">{t("checkEmailTitle")}</h1>
+        <p className="max-w-[36ch] text-slate">{t("checkEmailText")}</p>
         <Link href="/login" className="btn btn-outline-green mt-2 text-sm">
           {t("backToLogin")}
         </Link>
@@ -64,19 +65,14 @@ export default function SignupForm() {
           : null;
 
   return (
-    <form onSubmit={submitKeepingValues} className="card p-6 md:p-8">
-      <div className="mb-5 flex items-center gap-3">
-        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-forest text-white">
-          <LockIcon width={22} height={22} />
-        </span>
-        <div>
-          <h1 className="text-xl font-bold text-forest">{t("title")}</h1>
-          <p className="text-xs text-muted">{t("subtitle")}</p>
-        </div>
+    <form onSubmit={submitKeepingValues}>
+      <div className="mb-6">
+        <h1 className="font-serif text-[2.25rem] leading-[0.95] font-extrabold tracking-[-0.035em] md:text-[2.75rem]">{tw("signupTitle")}</h1>
+        <p className="ws-lede mt-3">{tw("signupIntro")}</p>
       </div>
 
       {error === "exists" ? (
-        <div role="alert" className="mb-4 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-charcoal" data-testid="signup-exists">
+        <div role="alert" className="mb-4 rounded-[16px] border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-charcoal" data-testid="signup-exists">
           <p className="font-semibold">{t("errorExists")}</p>
           <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
             <Link href="/login" className="font-semibold text-forest underline underline-offset-2">{t("existsLogin")}</Link>
@@ -84,7 +80,7 @@ export default function SignupForm() {
           </p>
         </div>
       ) : error ? (
-        <p role="alert" className="mb-4 rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm font-semibold text-red-800">
+        <p role="alert" className="mb-4 rounded-[16px] border border-red-300 bg-red-50 px-4 py-3 text-sm font-semibold text-red-800">
           {error}
         </p>
       ) : null}
@@ -140,7 +136,7 @@ export default function SignupForm() {
           />
         </label>
         <label className="flex items-start gap-2.5 text-sm text-ink">
-          <input type="checkbox" name="terms" required className="mt-0.5 h-5 w-5 rounded accent-[#163a2b]" />
+          <input type="checkbox" name="terms" required className="mt-0.5 h-[22px] w-[22px] shrink-0 rounded accent-forest" />
           <span>
             {t.rich("terms", {
               terms: (c) => (
@@ -158,17 +154,14 @@ export default function SignupForm() {
         </label>
       </div>
 
-      <button type="submit" disabled={pending} className="btn btn-primary mt-6 w-full disabled:opacity-60">
+      <button type="submit" disabled={pending} className="ds-btn ds-btn-primary mt-6 w-full disabled:opacity-60">
         {t("submit")}
-        <ArrowRightIcon width={18} height={18} />
       </button>
-      <p className="mt-4 text-center text-xs text-muted">{t("verifyNote")}</p>
-      <p className="mt-4 border-t border-line pt-4 text-center text-sm text-muted">
-        {t("haveAccount")}{" "}
-        <Link href="/login" className="font-semibold text-forest underline underline-offset-2">
-          {t("logIn")}
-        </Link>
-      </p>
+      <p className="mt-3 text-center text-xs text-muted">{t("verifyNote")}</p>
+      <div className="ws-split mt-7 mb-3"><span>{tw("haveAccount")}</span></div>
+      <Link href="/login" className="ds-btn ds-btn-outline w-full">
+        {t("logIn")}
+      </Link>
     </form>
   );
 }

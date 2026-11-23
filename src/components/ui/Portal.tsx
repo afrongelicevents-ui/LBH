@@ -20,7 +20,7 @@ export function StatusBadge({
 }
 
 /**
- * Dark green welcome banner with a photo on the right.
+ * Welcome banner: a photo with a dark fade and cream text (reads the same in light and dark).
  * `compact` keeps it short (field portal: jobs show straight away).
  */
 export function WelcomeBanner({
@@ -38,23 +38,20 @@ export function WelcomeBanner({
 }) {
   return (
     <section
-      className={`relative overflow-hidden rounded-[26px] bg-forest text-white shadow-(--shadow-card) ${
-        compact ? "min-h-[92px] sm:min-h-[120px]" : "min-h-[132px] sm:min-h-[170px]"
+      className={`relative overflow-hidden rounded-[28px] bg-[#2b2a25] text-[#f3ede4] ${
+        compact ? "min-h-[104px] sm:min-h-[128px]" : "min-h-[150px] sm:min-h-[190px]"
       }`}
     >
-      <div className="absolute inset-y-0 right-0 w-[52%]">
-        <Image src={image} alt="" fill priority sizes="(min-width: 768px) 40vw, 55vw" className="object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-forest via-forest/40 to-transparent" />
-      </div>
-      <div className={`relative max-w-[62%] px-5 ${compact ? "py-4" : "py-6 sm:py-8"}`}>
-        <p className={`${compact ? "text-base" : "text-lg sm:text-xl"} leading-tight font-medium`}>{greeting}</p>
+      <Image src={image} alt="" fill priority sizes="(min-width: 1280px) 1200px, 100vw" className="object-cover" />
+      <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[rgba(10,9,7,0.85)] via-[rgba(10,9,7,0.55)] to-[rgba(10,9,7,0.1)]" />
+      <div className={`relative max-w-[78%] px-5 sm:px-7 ${compact ? "py-4 sm:py-5" : "py-6 sm:py-9"}`}>
+        <p className={`${compact ? "text-sm" : "text-base sm:text-lg"} leading-tight font-medium text-[#e8e1d6]`}>{greeting}</p>
         <p
-          className={`${compact ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl"} leading-tight font-extrabold tracking-tight break-words`}
+          className={`${compact ? "text-[1.6rem] sm:text-[2rem]" : "text-[2rem] sm:text-[2.6rem]"} mt-1 font-serif leading-[0.98] font-extrabold tracking-[-0.03em] break-words`}
         >
           {name}
         </p>
-        {tagline && <p className="mt-1 text-xs font-medium text-white/85 sm:text-sm">{tagline}</p>}
-        <span aria-hidden className="mt-2 block h-1 w-14 rounded-full bg-ok-line" />
+        {tagline && <p className="mt-2 text-xs font-medium text-[#e8e1d6] sm:text-sm">{tagline}</p>}
       </div>
     </section>
   );
@@ -105,18 +102,18 @@ export function HelpBox({
   href: string | null;
 }) {
   return (
-    <section className="flex items-center gap-3 rounded-[22px] bg-forest p-4 text-white sm:p-5">
-      <ShieldCheckIcon size={40} className="shrink-0" />
+    <section className="flex items-center gap-3 rounded-[22px] bg-sand p-4 text-charcoal sm:p-5">
+      <ShieldCheckIcon size={40} className="shrink-0 text-forest" />
       <div className="min-w-0 flex-1">
         <p className="text-base font-extrabold">{title}</p>
-        <p className="text-sm text-white/85">{text}</p>
+        <p className="text-sm text-slate">{text}</p>
       </div>
       {href && (
         <a
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-full border-2 border-white px-4 text-sm font-bold text-white hover:bg-white hover:text-forest"
+          className="btn btn-primary min-h-11 shrink-0 px-4 text-sm"
         >
           {cta}
           <ArrowRightIcon size={16} />

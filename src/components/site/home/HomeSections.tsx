@@ -1,213 +1,134 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import Photo, { type PhotoSource } from "@/components/site/Photo";
+import Photo from "@/components/site/Photo";
 import { formatCents } from "@/lib/money";
-import { SERVICE_GROUP_KEYS, servicesIn } from "@/config/services";
+import { PHOTOS } from "@/config/photos";
 import { SERVICE_GROUPS } from "@/config/siteNav";
+import { HarareClock } from "@/components/ws/HarareClock";
 
-/** Illustration only — clearly labelled "Sample data" on the page. */
-const SAMPLE = { budget: 4200000, spent: 1845000 };
+/** Illustration only — clearly labelled "Sample" on the page. */
+export const SAMPLE = { budget: 4200000, spent: 1845000, stages: 6, now: 3 };
 
-export type HomePhotos = Record<"hero" | "land" | "materials" | "onsite" | "reporting" | "interiors", PhotoSource>;
+const ArrowGo = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden>
+    <path d="M5 12h14M13 6l6 6-6 6" />
+  </svg>
+);
+const Chevron = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
+    <path d="m9 18 6-6-6-6" />
+  </svg>
+);
 
 /* ------------------------------------------------------------------ */
-/* Hero — text on ivory at left, photo on the right fading into it.   */
-/* Desktop: hero + trust row fill exactly one screen under the header. */
-/* Phone: a short photo (≤40% of the screen) that fades into ivory,    */
-/* with the headline and button sliding up over the faded part.        */
+/* Hero: the house photo, full bleed, headline at the bottom           */
 /* ------------------------------------------------------------------ */
-export function HomeHero({ photo }: { photo: PhotoSource }) {
-  const t = useTranslations("site.home.hero");
-  const ts = useTranslations("site");
+export function HomeHero() {
+  const t = useTranslations("site.ws");
   return (
-    <section className="lbh-hero relative isolate overflow-hidden bg-ivory" aria-labelledby="hero-title" data-testid="home-hero">
-      {/* the photo sits on the right on every screen and fades into the ivory behind the text */}
-      <div className="lbh-hero-photo absolute inset-y-0 right-0 w-[64%] md:w-[62%]">
-        <Photo
-          photo={photo}
-          sizes="(min-width: 768px) 62vw, 64vw"
-          priority
-          className="h-full w-full"
-          hideCredit
-          stockLabel={ts("stockPhoto")}
-        />
-      </div>
-      <div className="ds-wrap relative py-6 md:flex md:h-full md:items-center md:py-12">
-        <div className="max-w-[60%] md:max-w-[52%] lg:max-w-[50%]">
-          <h1 id="hero-title" className="lbh-hero-title font-serif text-charcoal">
-            {t("title")}
+    <section className="ws-hero h-[min(92svh,780px)] min-h-[580px]" data-testid="home-hero">
+      <Photo photo={PHOTOS.hero} sizes="100vw" priority hideCredit className="ws-hero-img absolute inset-0" />
+      <Link href="/sample/live" className="ws-live-chip absolute top-[84px] left-5 z-[3] md:top-[96px] md:left-8 lg:left-[max(2rem,calc((100vw-1200px)/2+2rem))]" data-testid="hero-live-chip">
+        <span className="ws-dot" aria-hidden />
+        <HarareClock template={t.raw("liveChip") as string} />
+      </Link>
+      <div className="absolute inset-x-0 bottom-0 z-[2]">
+        <div className="ds-wrap flex flex-col gap-4 pb-8 md:pb-16">
+          <h1 className="ws-hero-title max-w-[12ch]">
+            {t("heroTitleA")} <span>{t("heroTitleB")}</span>
           </h1>
-          <p className="mt-3 font-serif text-[1.02rem] leading-snug text-forest italic md:mt-5 md:text-[1.6rem]">{t("subtitle")}</p>
-          <Link href="/book-a-call" className="ds-btn ds-btn-primary mt-5 min-h-[44px] px-4 py-2 text-[0.9rem] whitespace-nowrap md:mt-9 md:min-h-[48px] md:px-[1.4rem] md:py-3 md:text-[0.95rem]" data-testid="hero-cta">
-            {t("cta")}
-            <span aria-hidden>→</span>
-          </Link>
+          <p className="max-w-[34ch] text-[1rem] leading-[1.5] text-[#e8e4db] md:text-[1.15rem]">{t("heroText")}</p>
+          <div className="flex gap-2.5 sm:max-w-md">
+            <Link href="/book-a-call" className="ds-btn ds-btn-primary flex-1">{t("heroBook")}</Link>
+            <Link href="/how-it-works" className="ds-btn ds-btn-ghost flex-1">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden><path d="M8 5v14l11-7Z" /></svg>
+              {t("heroWatch")}
+            </Link>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/* Trust indicators — thin outline icons, hairline dividers           */
-/* ------------------------------------------------------------------ */
-const TRUST_ICONS: Record<string, React.ReactNode> = {
-  // shield with a tick
-  verified: <path d="M12 3l7.5 2.8v5.7c0 4.6-3.1 8.3-7.5 9.9-4.4-1.6-7.5-5.3-7.5-9.9V5.8L12 3zM8.6 12.1l2.4 2.4 4.5-4.7" />,
-  // clipboard with lines (written quotes, nothing hidden)
-  process: <path d="M9 4.5h6M9 4.5a1.5 1.5 0 011.5-1.5h3A1.5 1.5 0 0115 4.5M9 4.5H6.5A1.5 1.5 0 005 6v13.5A1.5 1.5 0 006.5 21h11a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H15M8.5 10.5h7M8.5 14h7M8.5 17.5h4" />,
-  // camera
-  photos: <path d="M3.5 8.5A1.5 1.5 0 015 7h2.6l1.6-2.2h5.6L16.4 7H19a1.5 1.5 0 011.5 1.5v9A1.5 1.5 0 0119 19H5a1.5 1.5 0 01-1.5-1.5zM12 16.2a3.4 3.4 0 100-6.8 3.4 3.4 0 000 6.8z" />,
-  // headset
-  support: <path d="M4.5 13.5V12a7.5 7.5 0 0115 0v1.5M4.5 13.5h2.8v5H6a1.5 1.5 0 01-1.5-1.5zM19.5 13.5h-2.8v5H18a1.5 1.5 0 001.5-1.5zM16.7 18.5c0 1.4-1.6 2.3-3.7 2.3" />,
-};
-export function TrustRow() {
-  const t = useTranslations("site.home.trust");
-  const keys = ["verified", "process", "photos", "support"] as const;
-  return (
-    <section aria-label={t("label")} className="lbh-trust border-y border-rule bg-[#ece5d7] md:bg-paper" data-testid="home-trust">
-      <ul className="ds-wrap grid grid-cols-4 px-2 md:px-8">
-        {keys.map((k) => (
-          <li key={k} className="lbh-trust-item flex flex-col items-center justify-center gap-1 py-3 text-center md:flex-row md:gap-4 md:py-0 md:text-left">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="h-6 w-6 shrink-0 text-forest md:h-10 md:w-10">
-              {TRUST_ICONS[k]}
-            </svg>
-            <span className="lbh-trust-label font-serif text-[0.7rem] leading-[1.25] text-charcoal min-[400px]:text-[0.76rem] md:max-w-[9rem] md:text-[1.15rem] md:leading-snug">
-              {t(`${k}.title`)}
-              <span className="sr-only">: {t(`${k}.text`)}</span>
-            </span>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Services — three groups the way a build happens: Land · Build ·     */
-/* Finish. Three tiles in a row (phone and desktop): photo, group      */
-/* title and the services in it.                                       */
-/* ------------------------------------------------------------------ */
-const GROUP_PHOTO = { land: "land", build: "onsite", finish: "interiors" } as const;
-
-export function ServiceTiles({ photos }: { photos: HomePhotos }) {
-  const t = useTranslations("site.home.services");
-  const ts = useTranslations("site");
+/** Land · Build · Finish — under the hero. */
+export function Pillars() {
+  const t = useTranslations("site.ws.pillars");
   const tg = useTranslations("site.groups");
   return (
-    <section aria-labelledby="services-title" className="py-7 md:py-14" data-testid="home-services">
-      <div className="ds-wrap">
-        <h2 id="services-title" className="ds-eyebrow flex items-center gap-4 text-[0.72rem] text-charcoal md:text-xs">
-          <span aria-hidden className="h-px flex-1 bg-stone md:hidden" />
-          {t("eyebrow")}
-          <span aria-hidden className="h-px flex-1 bg-stone" />
-        </h2>
-        <ul className="mt-4 grid grid-cols-3 gap-x-2.5 md:mt-7 md:gap-6" data-testid="service-tiles">
-          {SERVICE_GROUP_KEYS.map((g) => (
-            <li key={g}>
-              <GroupTile g={g} photo={photos[GROUP_PHOTO[g]]} title={tg(`${g}.title`)} items={g === "finish" ? [tg("items.interiors")] : servicesIn(g).map((s) => tg(`items.${s.key}`))} stockLabel={ts("stockPhoto")} />
-            </li>
-          ))}
-        </ul>
+    <nav className="border-b border-rule bg-ivory" aria-label={tg("land.title") + " · " + tg("build.title") + " · " + tg("finish.title")}>
+      <div className="ws-pillars ds-wrap !border-0 !px-0 md:!px-8">
+        {SERVICE_GROUPS.map((g) => (
+          <Link key={g.key} href={g.href} className="hover:bg-paper">
+            <b>{tg(`${g.key}.title`)}</b>
+            <span>{t(g.key)}</span>
+          </Link>
+        ))}
       </div>
-    </section>
+    </nav>
   );
 }
 
-function GroupTile({ g, photo, title, items, stockLabel }: { g: (typeof SERVICE_GROUP_KEYS)[number]; photo: PhotoSource; title: string; items: string[]; stockLabel: string }) {
-  const href = SERVICE_GROUPS.find((x) => x.key === g)!.href;
+/* ------------------------------------------------------------------ */
+/* "Your whole build, in your pocket" + the SAMPLE Build Account card   */
+/* ------------------------------------------------------------------ */
+export function SampleBuildCard({ href = "/sample/build-account" }: { href?: string }) {
+  const t = useTranslations("site.ws");
+  const th = useTranslations("site.home.ba");
+  const left = SAMPLE.budget - SAMPLE.spent;
   return (
-    <Link href={href} className="group block" data-testid={`tile-${g}`}>
-      <Photo photo={photo} sizes="(min-width: 768px) 33vw, 33vw" className="aspect-[4/5] w-full rounded-[4px] md:aspect-[4/3]" hideCredit stockLabel={stockLabel} />
-      <span className="mt-2 flex items-start justify-between gap-1 font-serif text-[1rem] leading-tight text-charcoal group-hover:text-forest md:mt-3 md:text-[1.35rem]">
-        {title}
-        <span aria-hidden className="text-forest">→</span>
-      </span>
-      <span className="mt-1 block text-[0.72rem] leading-snug text-slate md:text-sm">{items.join(" · ")}</span>
+    <Link href={href} className="ws-float-card block" data-testid="home-ba-card">
+      <div className="flex items-center justify-between gap-2">
+        <div>
+          <small className="text-[11px] font-extrabold tracking-[0.1em] text-slate">
+            {t("sampleCardLabel")} · <span className="ws-tag" data-testid="sample-tag">{t("sample")}</span>
+          </small>
+          <b className="mt-0.5 block text-base">{t("sampleProject")}</b>
+        </div>
+        <Chevron />
+      </div>
+      <div className="mt-3.5 mb-2.5 flex items-end justify-between">
+        <div>
+          <span className="text-xs text-slate">{t("leftToSpend")}</span>
+          <div className="ws-big num text-[2.1rem]">{formatCents(left).replace(".00", "")}</div>
+        </div>
+        <span className="num text-xs text-slate">{t("ofBudget", { budget: formatCents(SAMPLE.budget).replace(".00", "") })}</span>
+      </div>
+      <div className="ws-track" aria-hidden>
+        {Array.from({ length: SAMPLE.stages }, (_, i) => (
+          <i key={i} className={i + 1 < SAMPLE.now ? "done" : i + 1 === SAMPLE.now ? "now" : ""} />
+        ))}
+      </div>
+      <div className="mt-2.5 flex justify-between gap-2 text-[13px] text-slate">
+        <span data-testid="ba-stage">
+          {th("demo.stageOf", { n: SAMPLE.now, total: SAMPLE.stages })} · <b className="text-charcoal">{th(`demo.s${SAMPLE.now}`)}</b>
+        </span>
+        <span className="font-bold text-forest">{t("needsOk")}</span>
+      </div>
     </Link>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/* How it works — one compact strip of 4 numbered steps                */
-/* ------------------------------------------------------------------ */
-export function Process() {
-  const t = useTranslations("site.home.process");
+export function StoryPocket() {
+  const t = useTranslations("site.ws");
   return (
-    <section aria-labelledby="process-title" className="border-y border-rule bg-paper py-6 md:py-11" data-testid="home-process">
-      <div className="ds-wrap">
-        <h2 id="process-title" className="ds-eyebrow flex items-center gap-4 text-[0.72rem] text-charcoal md:text-xs">
-          <span aria-hidden className="h-px flex-1 bg-stone md:hidden" />
-          {t("eyebrow")}
-          <span aria-hidden className="h-px flex-1 bg-stone" />
-        </h2>
-        <ol className="mt-4 grid grid-cols-4 gap-2 md:mt-7 md:gap-8">
-          {[1, 2, 3, 4].map((n) => (
-            <li key={n} className="border-t border-charcoal/70 pt-2.5 md:pt-4">
-              <span className="block font-serif text-[1.6rem] leading-none text-stone-ink md:text-3xl">{n}</span>
-              <span className="mt-1.5 block text-[0.78rem] leading-snug font-semibold text-charcoal min-[400px]:text-[0.84rem] md:text-[1rem]">{t(`s${n}.short`)}</span>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Build Account — a small preview (labelled sample data) + a link     */
-/* ------------------------------------------------------------------ */
-export function BuildAccountPreview({ showLink = true }: { showLink?: boolean }) {
-  const t = useTranslations("site.home.ba");
-  const STAGES = 6;
-  const NOW = 3;
-  return (
-    <section aria-labelledby="ba-title" className="bg-forest py-7 text-[#e8e4d8] md:py-14" data-testid="home-ba">
-      <div className="ds-wrap grid gap-4 md:grid-cols-12 md:items-center md:gap-12">
+    <section className="ds-wrap pt-10 md:pt-20" aria-labelledby="story-title" data-testid="home-ba">
+      <div className="grid gap-6 md:grid-cols-12 md:items-center md:gap-12">
         <div className="md:col-span-5">
-          <p className="ds-eyebrow text-[0.7rem] text-[#c9bfa6] md:text-xs">{t("eyebrow")}</p>
-          <h2 id="ba-title" className="mt-2 font-serif text-[1.45rem] leading-[1.15] text-white md:text-[clamp(1.75rem,3.2vw,2.4rem)]">{t("title")}</h2>
-          <p className="mt-2 text-[0.92rem] leading-snug text-[#d6d1c3] md:mt-3 md:text-[1rem]">{t("short")}</p>
-          {showLink && (
-            <Link href="/build-account" className="mt-4 hidden items-center gap-2 font-semibold text-white underline decoration-1 underline-offset-4 hover:decoration-2 md:inline-flex" data-testid="ba-see-how">
-              {t("seeHow")} <span aria-hidden>→</span>
-            </Link>
-          )}
+          <span className="ws-kicker">{t("storyKicker")}</span>
+          <h2 id="story-title" className="ws-h-sec mt-2.5">{t("storyTitle")}</h2>
+          <p className="ws-lede mt-3">{t("storyText")}</p>
+          <Link href="/build-account" className="ds-link mt-5 hidden md:inline-block" data-testid="ba-see-how">
+            {useTranslations("site.home.ba")("seeHow")} →
+          </Link>
         </div>
-
-        <div className="md:col-span-7" aria-label={t("demo.label")}>
-          <div className="overflow-hidden rounded-[6px] bg-paper text-charcoal shadow-[0_24px_48px_-24px_rgba(0,0,0,0.5)]">
-            <div className="flex items-center justify-between border-b border-rule px-4 py-2.5 md:px-5 md:py-3">
-              <span className="font-serif text-[0.98rem] text-forest md:text-[1.05rem]">{t("demo.title")}</span>
-              <span className="ds-tag ds-tag-alert" data-testid="sample-tag">{t("demo.sample")}</span>
-            </div>
-            <div className="grid grid-cols-3 divide-x divide-rule border-b border-rule">
-              {(["budget", "spent", "left"] as const).map((k) => (
-                <div key={k} className="px-3 py-2.5 md:px-5 md:py-3">
-                  <p className="text-[10px] font-semibold tracking-wider text-slate uppercase md:text-[11px]">{t(`demo.${k}`)}</p>
-                  <p className="mt-0.5 font-serif text-[1.05rem] md:text-xl">
-                    {formatCents(k === "budget" ? SAMPLE.budget : k === "spent" ? SAMPLE.spent : SAMPLE.budget - SAMPLE.spent).replace(".00", "")}
-                  </p>
-                </div>
-              ))}
-            </div>
-            <div className="px-4 py-3 md:px-5 md:py-3.5">
-              <p className="text-[0.82rem] font-semibold md:text-sm">{t("demo.progress")}</p>
-              <ol className="mt-2 grid grid-cols-6 gap-1" aria-hidden>
-                {Array.from({ length: STAGES }, (_, i) => (
-                  <li key={i} className={`h-1.5 rounded-full ${i + 1 < NOW ? "bg-forest" : i + 1 === NOW ? "bg-stone" : "bg-sand"}`} />
-                ))}
-              </ol>
-              <p className="mt-2 text-[0.82rem] text-slate md:text-sm" data-testid="ba-stage">
-                {t("demo.stageOf", { n: NOW, total: STAGES })} · <span className="font-semibold text-charcoal">{t(`demo.s${NOW}`)}</span>
-              </p>
+        <div className="md:col-span-7">
+          <div className="relative aspect-[4/4.4] overflow-hidden rounded-[28px] bg-sand md:aspect-[4/3.2]">
+            <Photo photo={PHOTOS.homeAbroad} sizes="(min-width: 768px) 55vw, 100vw" hideCredit className="absolute inset-0" />
+            <div className="absolute inset-x-3.5 bottom-3.5 md:right-auto md:bottom-6 md:left-6 md:w-[360px]">
+              <SampleBuildCard />
             </div>
           </div>
-          {showLink && (
-            <Link href="/build-account" className="mt-4 inline-flex items-center gap-2 text-[0.95rem] font-semibold text-white underline decoration-1 underline-offset-4 md:hidden" data-testid="ba-see-how-phone">
-              {t("seeHow")} <span aria-hidden>→</span>
-            </Link>
-          )}
         </div>
       </div>
     </section>
@@ -215,18 +136,136 @@ export function BuildAccountPreview({ showLink = true }: { showLink?: boolean })
 }
 
 /* ------------------------------------------------------------------ */
-/* Final call to action                                                */
+/* Services: three big photo tiles                                     */
 /* ------------------------------------------------------------------ */
-export function FinalCta() {
-  const t = useTranslations("site.home.cta");
-  const th = useTranslations("site.home.hero");
+const TILE_PHOTO = { land: PHOTOS.serviceLand, build: PHOTOS.serviceBuild, finish: PHOTOS.serviceFinish } as const;
+
+export function ServiceTiles({ short = false, tall = false }: { short?: boolean; tall?: boolean }) {
+  const t = useTranslations("site.ws");
+  const tg = useTranslations("site.groups");
   return (
-    <section aria-labelledby="cta-title" className="bg-sand py-7 md:py-14">
-      <div className="ds-wrap flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
-        <h2 id="cta-title" className="ds-h2 max-w-xl">{t("title")}</h2>
-        <Link href="/book-a-call" className="ds-btn ds-btn-primary shrink-0" data-testid="final-cta">
-          {th("cta")} <span aria-hidden>→</span>
+    <div className="mt-6 grid gap-3.5 md:grid-cols-3 md:gap-5" data-testid="service-tiles">
+      {SERVICE_GROUPS.map((g, i) => (
+        <Link key={g.key} href={g.href} className={`ws-svc ${tall ? "h-[250px] md:h-[440px]" : "h-[250px] md:h-[380px]"}`} data-testid={`tile-${g.key}`}>
+          <Photo photo={TILE_PHOTO[g.key]} sizes="(min-width: 768px) 33vw, 100vw" hideCredit className="ws-svc-img" />
+          <span className="ws-svc-n">{String(i + 1).padStart(2, "0")}</span>
+          <div className="ws-svc-t">
+            <div>
+              <h3>{tg(`${g.key}.title`)}</h3>
+              <p>{short ? t(`tileShort.${g.key}`) : t(`tile.${g.key}`)}</p>
+            </div>
+            <span className="ws-go">
+              <ArrowGo />
+            </span>
+          </div>
         </Link>
+      ))}
+    </div>
+  );
+}
+
+export function WhatWeDo() {
+  const t = useTranslations("site.ws");
+  return (
+    <section className="ds-wrap pt-12 md:pt-24" aria-labelledby="what-title">
+      <span className="ws-kicker">{t("whatKicker")}</span>
+      <h2 id="what-title" className="ws-h-sec mt-2.5">{t("whatTitle")}</h2>
+      <ServiceTiles />
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* How your money stays safe: 4 numbered steps                          */
+/* ------------------------------------------------------------------ */
+export function MoneySafe() {
+  const t = useTranslations("site.ws");
+  return (
+    <section className="ds-wrap pt-12 md:pt-24" aria-labelledby="safe-title">
+      <div className="grid gap-6 md:grid-cols-12 md:gap-12">
+        <div className="md:col-span-4">
+          <span className="ws-kicker">{t("safeKicker")}</span>
+          <h2 id="safe-title" className="ws-h-sec mt-2.5">{t("safeTitle")}</h2>
+        </div>
+        <div className="md:col-span-8">
+          <ol className="ws-how">
+            {[1, 2, 3, 4].map((n) => (
+              <li key={n}>
+                <span className="n">{n}</span>
+                <div>
+                  <b>{t(`safe.s${n}t`)}</b>
+                  <span className="d">{t(`safe.s${n}`)}</span>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <Link href="/how-it-works" className="ds-btn ds-btn-outline mt-5 w-full md:w-auto">{t("fullProcess")}</Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Live camera band (SAMPLE — the camera service is coming soon)        */
+/* ------------------------------------------------------------------ */
+export function LiveBand() {
+  const t = useTranslations("site.ws");
+  return (
+    <section className="mt-12 bg-paper py-10 md:mt-24 md:py-20" aria-labelledby="live-title">
+      <div className="ds-wrap grid gap-6 md:grid-cols-12 md:items-center md:gap-12">
+        <div className="md:col-span-5">
+          <span className="ws-kicker">{t("liveKicker")}</span>
+          <h2 id="live-title" className="ws-h-sec mt-2.5">{t("liveTitle")}</h2>
+          <p className="ws-lede mt-3">{t("liveText")}</p>
+          <Link href="/sample/live" className="ds-btn ds-btn-light mt-6 hidden md:inline-flex">{t("liveOpen")}</Link>
+        </div>
+        <div className="md:col-span-7">
+          <Link href="/sample/live" className="relative block aspect-[16/10] overflow-hidden rounded-[24px] bg-sand" aria-label={t("liveOpen")}>
+            <Photo photo={PHOTOS.liveBand} sizes="(min-width: 768px) 55vw, 100vw" hideCredit className="absolute inset-0" />
+            <div className="ws-hud !flex-row !items-start !justify-between">
+              <span className="ws-rec"><span className="ws-dot" />REC</span>
+              <span className="flex items-center gap-2">
+                <span className="ws-tag !bg-[rgba(0,0,0,0.5)] !text-[#f3ede4]">{t("sample")}</span>
+                <HarareClock template="{date} · {seconds} CAT" />
+              </span>
+            </div>
+          </Link>
+          <Link href="/sample/live" className="ds-btn ds-btn-light mt-5 w-full md:hidden">{t("liveOpen")}</Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Closing photo: "Your keys. Your home."                               */
+/* ------------------------------------------------------------------ */
+export function Closing() {
+  const t = useTranslations("site.ws");
+  return (
+    <section className="ws-hero relative flex min-h-[460px] items-end md:min-h-[560px]" aria-labelledby="closing-title">
+      <Photo photo={PHOTOS.closing} sizes="100vw" hideCredit className="absolute inset-0" />
+      <div className="ds-wrap relative z-[2] flex flex-col items-start gap-3.5 pt-7 pb-9 md:pb-16">
+        <h2 id="closing-title" className="font-serif text-[2.75rem] leading-[0.95] font-extrabold tracking-[-0.04em] md:text-[4rem]">{t("closingTitle")}</h2>
+        <p className="text-base text-[#e8e4db] md:text-lg">{t("closingText")}</p>
+        <Link href="/book-a-call" className="ds-btn ds-btn-primary" data-testid="final-cta">{t("heroBook")}</Link>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Build Account info page: the sample card on its own                 */
+/* ------------------------------------------------------------------ */
+export function BuildAccountPreview() {
+  const t = useTranslations("site.ws");
+  return (
+    <section className="ds-wrap py-8 md:py-12" data-testid="home-ba" aria-label={t("sampleCardLabel")}>
+      <div className="relative overflow-hidden rounded-[28px] bg-sand p-4 md:p-8">
+        <div className="md:max-w-[420px]">
+          <SampleBuildCard />
+        </div>
       </div>
     </section>
   );

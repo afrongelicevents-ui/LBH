@@ -2,8 +2,10 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getUserProfile } from "@/lib/supabase/server";
-import { getInteriorGallery, getPagePhotos } from "@/lib/sitePhotos";
+import { getInteriorGallery } from "@/lib/sitePhotos";
+import DetailHero from "@/components/ws/DetailHero";
 import Photo from "@/components/site/Photo";
+import { PHOTOS } from "@/config/photos";
 import ReplyPromise from "@/components/site/OfficeStatus";
 import InteriorsBookingForm from "@/components/site/InteriorsBookingForm";
 
@@ -22,31 +24,21 @@ export default async function InteriorsPage({ params }: { params: Promise<{ loca
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("site.interiors");
-  const tg = await getTranslations("site.groups");
   const ts = await getTranslations("site");
-  const [{ profile }, photos, gallery] = await Promise.all([getUserProfile(), getPagePhotos(), getInteriorGallery()]);
+  const tw = await getTranslations("site.ws");
+  const [{ profile }, gallery] = await Promise.all([getUserProfile(), getInteriorGallery()]);
   const signedIn = profile?.role === "client";
 
   return (
     <div data-testid="interiors-page">
-      {/* intro */}
-      <header className="border-b border-rule">
-        <div className="ds-wrap grid gap-10 py-14 md:grid-cols-12 md:items-end md:py-20">
-          <div className="md:col-span-6">
-            <p className="ds-eyebrow">
-              {ts("nav.services")} · {tg("finish.title")}
-            </p>
-            <h1 className="ds-h2 mt-3 md:text-[3rem]">{t("title")}</h1>
-            <p className="ds-lead mt-5">{t("intro")}</p>
-            <a href="#book" className="ds-btn ds-btn-primary mt-8" data-testid="interiors-book-top">
-              {t("cta")}
-            </a>
-          </div>
-          <div className="md:col-span-6">
-            <Photo photo={photos.interiors} sizes="(min-width: 768px) 50vw, 100vw" priority className="aspect-[4/3] w-full rounded-[3px]" stockLabel={ts("stockPhoto")} />
-          </div>
-        </div>
-      </header>
+      <DetailHero photo={PHOTOS.finish} kicker={tw("finish.kicker")} title={tw("finish.title")} backHref="/services" backLabel={tw("back")} stockLabel={ts("stockPhoto")} />
+      <div className="ds-wrap pt-6 md:pt-12">
+        <p className="ws-dlead max-w-3xl">{t("intro")}</p>
+        <h2 className="mt-4 font-serif text-[1.35rem] font-bold text-slate">{t("title")}</h2>
+        <a href="#book" className="ds-btn ds-btn-primary mt-6 w-full md:w-auto" data-testid="interiors-book-top">
+          {t("cta")}
+        </a>
+      </div>
 
       {/* what we do */}
       <section aria-labelledby="what" className="py-14 md:py-20">
@@ -65,6 +57,12 @@ export default async function InteriorsPage({ params }: { params: Promise<{ loca
           </ul>
         </div>
       </section>
+
+      <div className="ds-wrap">
+        <div className="relative aspect-[16/9] overflow-hidden rounded-[24px] md:aspect-[21/9]">
+          <Photo photo={PHOTOS.finishPhoto} sizes="(min-width: 1200px) 1200px, 100vw" className="absolute inset-0" stockLabel={ts("stockPhoto")} />
+        </div>
+      </div>
 
       {/* how it works */}
       <section aria-labelledby="how" className="border-y border-rule bg-paper py-14 md:py-20">
@@ -89,21 +87,21 @@ export default async function InteriorsPage({ params }: { params: Promise<{ loca
             <h2 id="packages" className="ds-h2">{t("packagesTitle")}</h2>
             <p className="ds-body mt-3">{t("packagesIntro")}</p>
           </div>
-          <div className="mt-10 grid gap-px border border-rule bg-rule md:grid-cols-3" data-testid="interiors-packages">
+          <div className="mt-8 grid gap-3.5 md:grid-cols-3 md:gap-5" data-testid="interiors-packages">
             {PACKAGES.map((p, i) => (
-              <div key={p} className={`flex flex-col p-6 md:p-8 ${i === 2 ? "bg-forest text-[#e8e4d8]" : "bg-paper"}`}>
-                <h3 className={`font-serif text-2xl ${i === 2 ? "text-white" : "text-charcoal"}`}>{t(`packages.${p}.title`)}</h3>
-                <p className={`mt-1 text-sm font-semibold ${i === 2 ? "text-[#c9bfa6]" : "text-stone-ink"}`}>{t("quoted")}</p>
-                <p className={`mt-4 text-[15px] leading-relaxed ${i === 2 ? "text-[#d6d1c3]" : "text-slate"}`}>{t(`packages.${p}.text`)}</p>
+              <div key={p} className={`flex flex-col rounded-[28px] border p-6 md:p-8 ${i === 2 ? "border-forest bg-paper" : "border-rule bg-paper"}`}>
+                <h3 className="text-[1.6rem] font-extrabold">{t(`packages.${p}.title`)}</h3>
+                <p className="mt-1 text-sm font-bold text-forest">{t("quoted")}</p>
+                <p className="mt-4 text-[15px] leading-relaxed text-slate">{t(`packages.${p}.text`)}</p>
                 <ul className="mt-5 mb-8 space-y-2 text-[15px]">
                   {[1, 2, 3].map((n) => (
                     <li key={n} className="flex gap-2.5">
-                      <span aria-hidden className={`mt-[0.7rem] h-px w-3 shrink-0 ${i === 2 ? "bg-[#c9bfa6]" : "bg-forest"}`} />
+                      <span aria-hidden className="mt-[0.7rem] h-px w-3 shrink-0 bg-forest" />
                       {t(`packages.${p}.p${n}`)}
                     </li>
                   ))}
                 </ul>
-                <a href="#book" className={`ds-btn mt-auto ${i === 2 ? "ds-btn-light" : "ds-btn-outline"}`}>{t("cta")}</a>
+                <a href="#book" className={`ds-btn mt-auto ${i === 2 ? "ds-btn-primary" : "ds-btn-outline"}`}>{t("cta")}</a>
               </div>
             ))}
           </div>

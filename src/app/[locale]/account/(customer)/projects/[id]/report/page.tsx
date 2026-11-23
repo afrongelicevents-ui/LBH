@@ -156,7 +156,7 @@ export default async function ReportPage({
         </section>
       )}
 
-      <p className="rounded-xl border border-line bg-white p-4 text-xs text-muted italic">
+      <p className="rounded-xl border border-line bg-paper p-4 text-xs text-muted italic">
         {t("disclaimer")}
       </p>
     </div>

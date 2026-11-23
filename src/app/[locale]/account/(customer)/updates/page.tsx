@@ -21,7 +21,7 @@ export default async function UpdatesPage({ params }: { params: Promise<{ locale
       <ol className="mt-8 max-w-3xl border-l border-rule">
         {d.updates.slice(0, 80).map((u, i) => (
           <li key={i} className="relative pb-6 pl-6 last:pb-0" data-kind={u.kind}>
-            <span aria-hidden className={`absolute top-1.5 -left-[4px] h-2 w-2 rounded-full ${u.kind === "action" ? "bg-[#a0461a]" : "bg-forest"}`} />
+            <span aria-hidden className={`absolute top-1.5 -left-[4px] h-2 w-2 rounded-full ${u.kind === "action" ? "bg-red-600" : "bg-forest"}`} />
             <Link href={u.href} className="text-[15px] text-charcoal hover:text-forest">
               {t(`ev.${u.text}` as "ev.payment", { ...u.params, amount: u.params.amount_cents ? formatCents(Number(u.params.amount_cents)) : "" } as never)}
             </Link>

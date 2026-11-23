@@ -107,7 +107,7 @@ export default async function StatementPage({
       </div>
 
       <section className="card overflow-hidden" data-testid="ba-statement">
-        <div className="grid grid-cols-[1fr_auto_auto] gap-3 border-b border-[#eef0ef] px-4 py-2 text-[11px] font-bold tracking-wide text-muted uppercase sm:grid-cols-[6rem_1fr_6rem_6rem_6rem]">
+        <div className="grid grid-cols-[1fr_auto_auto] gap-3 border-b border-rule px-4 py-2 text-[11px] font-bold tracking-wide text-muted uppercase sm:grid-cols-[6rem_1fr_6rem_6rem_6rem]">
           <span className="hidden sm:block">{t("col.date")}</span>
           <span>{t("col.description")}</span>
           <span className="hidden text-right sm:block">{t("col.in")}</span>

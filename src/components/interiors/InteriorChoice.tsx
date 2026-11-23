@@ -32,7 +32,7 @@ export default function InteriorChoice({ id, status }: { id: string; status: "op
         </button>
       )}
       {failed && (
-        <span role="alert" className="text-xs font-semibold text-[#a0461a]">
+        <span role="alert" className="text-xs font-semibold text-red-700">
           {failed === "bought" ? t("alreadyBought") : t("failed")}
         </span>
       )}

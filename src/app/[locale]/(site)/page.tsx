@@ -1,20 +1,19 @@
 import { setRequestLocale } from "next-intl/server";
-import { getPagePhotos } from "@/lib/sitePhotos";
-import { HomeHero, TrustRow, ServiceTiles, BuildAccountPreview, Process, FinalCta } from "@/components/site/home/HomeSections";
+import { HomeHero, Pillars, StoryPocket, WhatWeDo, MoneySafe, LiveBand, Closing } from "@/components/site/home/HomeSections";
 
-/** Homepage, about 2.5 phone screens: hero + trust row, services, Build Account, how it works, one call to action. */
+/** Home (Warm Sand): photo hero, Land · Build · Finish, sample Build Account, services, how money stays safe, sample live camera, closing call to action. */
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const photos = await getPagePhotos();
   return (
     <>
-      <HomeHero photo={photos.hero} />
-      <TrustRow />
-      <ServiceTiles photos={photos} />
-      <BuildAccountPreview />
-      <Process />
-      <FinalCta />
+      <HomeHero />
+      <Pillars />
+      <StoryPocket />
+      <WhatWeDo />
+      <MoneySafe />
+      <LiveBand />
+      <Closing />
     </>
   );
 }

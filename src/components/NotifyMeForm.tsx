@@ -38,7 +38,7 @@ export default function NotifyMeForm({ service }: { service: "monitoring" | "cam
         name="email"
         required
         placeholder={t("emailPlaceholder")}
-        className="w-full flex-1 rounded-full border border-line bg-white px-4 py-2.5 text-sm text-ink focus:border-forest focus:outline-none"
+        className="w-full flex-1 rounded-full border border-line bg-paper px-4 py-2.5 text-sm text-ink focus:border-forest focus:outline-none"
         aria-label={t("emailPlaceholder")}
       />
       <button

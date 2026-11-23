@@ -20,7 +20,12 @@
     "closeMenu": "Close menu",
     "language": "Language",
     "learnMore": "Learn more",
-    "createAccount": "Create account"
+    "createAccount": "Create account",
+    "lightMode": "Switch to light mode",
+    "darkMode": "Switch to dark mode",
+    "themeRow": "Light / dark mode",
+    "light": "Light",
+    "dark": "Dark"
   },
   "nav": {
     "services": "Services",
@@ -355,7 +360,9 @@
       "signOut": "Sign out",
       "menu": "Open menu",
       "closeMenu": "Close menu",
-      "website": "LBH website"
+      "website": "LBH website",
+      "settings": "Settings",
+      "menuTab": "Menu"
     },
     "nav": {
       "dashboard": "My dashboard",
@@ -2593,6 +2600,276 @@
         "invalid": "Please check your details.",
         "error": "Something went wrong — please try again."
       }
+    },
+    "tabs": {
+      "label": "Main",
+      "home": "Home",
+      "services": "Services",
+      "book": "Book a free call",
+      "how": "How it works",
+      "signIn": "Sign in",
+      "live": "Live",
+      "myBuild": "My build",
+      "myArea": "My area"
+    },
+    "language": "Language",
+    "sampleBuildAccount": "See a sample Build Account",
+    "sampleLive": "See a sample live camera",
+    "ws": {
+      "liveChip": "SAMPLE LIVE VIEW · {time} CAT",
+      "heroTitleA": "Build your home",
+      "heroTitleB": "back home.",
+      "heroText": "Land checked. Materials counted. Every stage photographed. You approve, from wherever you live.",
+      "heroBook": "Book a free call",
+      "heroWatch": "How it works",
+      "pillars": {
+        "land": "Verify & buy",
+        "build": "Managed on site",
+        "finish": "Design & furnish"
+      },
+      "storyKicker": "FROM LONDON, JOBURG OR DALLAS",
+      "storyTitle": "Your whole build, in your pocket.",
+      "storyText": "Budget, receipts, photos and the next stage waiting for your OK. One account, always up to date.",
+      "sampleCardLabel": "BUILD ACCOUNT",
+      "sample": "SAMPLE",
+      "sampleProject": "Family home · Ruwa",
+      "leftToSpend": "Left to spend",
+      "ofBudget": "of {budget}",
+      "needsOk": "Needs your OK",
+      "whatKicker": "WHAT WE DO",
+      "whatTitle": "From the land to the keys.",
+      "tile": {
+        "land": "Title deed checked before you pay a cent.",
+        "build": "A vetted team, a supervisor, every bag counted.",
+        "finish": "See every room in 3D, then we furnish it."
+      },
+      "tileShort": {
+        "land": "Verification and safe buying",
+        "build": "Materials, team and reporting",
+        "finish": "3D design and furnishing"
+      },
+      "safeKicker": "HOW YOUR MONEY STAYS SAFE",
+      "safeTitle": "You approve. Then we pay.",
+      "safe": {
+        "s1t": "Free call",
+        "s1": "We agree the plan, the budget and the stages.",
+        "s2t": "We check and manage",
+        "s2": "Our team is on site. Materials are counted on arrival.",
+        "s3t": "You see the proof",
+        "s3": "Dated photos and every receipt in your account.",
+        "s4t": "You approve each stage",
+        "s4": "Builders are paid only after you say OK."
+      },
+      "fullProcess": "See the full process",
+      "liveKicker": "LIVE CAMERA · COMING SOON",
+      "liveTitle": "Watch your site any time of day.",
+      "liveText": "A live site camera is coming to LBH builds. No more waiting for a cousin to send photos. Here is a sample of how it will look.",
+      "liveOpen": "See a sample live view",
+      "closingTitle": "Your keys. Your home.",
+      "closingText": "Start with a free call — phone or video, 30–45 minutes.",
+      "photoNote": "Photos are placeholders until the LBH photo shoot.",
+      "servicesTitle": "Services",
+      "servicesIntro": "Pick one, or let us carry you from the land to the keys.",
+      "back": "Back",
+      "land": {
+        "kicker": "01 · LAND",
+        "title": "Know it's real before you pay.",
+        "lead": "Too many people abroad are sold stands that don't exist, or that aren't the seller's to sell. We check first.",
+        "i1t": "Title deed check",
+        "i1": "Searched at the Deeds Office in the seller's name.",
+        "i2t": "Site visit",
+        "i2": "We find the pegs and photograph the stand with date and GPS.",
+        "i3t": "A clear answer",
+        "i3": "Safe to buy, or why not, in plain words.",
+        "cta": "Request a land check"
+      },
+      "build": {
+        "kicker": "02 · BUILD",
+        "title": "No shortcuts. No missing bags.",
+        "lead": "A vetted team builds. Our supervisor checks the work, counts the materials and reports to you.",
+        "i1t": "Materials bought for you",
+        "i1": "Best price, delivered, counted on arrival.",
+        "i2t": "Site supervisor",
+        "i2": "Right mix, right steel, right amount of cement.",
+        "i3t": "Dated photos and stage approval",
+        "i3": "See every stage in photos; approve each one before it is paid.",
+        "cta": "Plan my build"
+      },
+      "finish": {
+        "kicker": "03 · FINISH",
+        "title": "See every room before you buy."
+      },
+      "inThisGroup": "In this service",
+      "howTitle": "How it works",
+      "howIntro": "Six steps, the same for every client. Nothing moves until you say yes.",
+      "how": {
+        "s1t": "Free call",
+        "s1": "30–45 minutes, phone or video. Tell us about your land, your plans and your budget.",
+        "s2t": "Your written quote",
+        "s2": "Every job is different, so you get a written quote in your account. No surprises.",
+        "s3t": "Accept and pay the deposit",
+        "s3": "Pay by card, EcoCash or bank transfer from abroad. You get a receipt every time.",
+        "s4t": "Our team goes on site",
+        "s4": "Vetted people with photos that carry the date and GPS. Extra costs need your OK first.",
+        "s5t": "You see the proof",
+        "s5": "A clear report or stage update with photos, receipts and plain-word findings.",
+        "s6t": "You approve, then we pay",
+        "s6": "The balance or the next stage only moves after you approve."
+      },
+      "payTitle": "Ways to pay",
+      "pay": {
+        "cardT": "Card",
+        "card": "Visa and Mastercard, including foreign cards",
+        "mobileT": "Mobile money",
+        "mobile": "EcoCash, OneMoney, InnBucks",
+        "abroadT": "From abroad",
+        "abroad": "Remitly, WorldRemit or bank transfer, with your reference and proof"
+      },
+      "faqTitle": "Questions",
+      "faq": {
+        "q1": "Why don't you show prices?",
+        "a1": "Every stand and every build is different: distance, size and materials change the cost. After the free call you get a written quote with every line explained.",
+        "q2": "How do I know my money is safe?",
+        "a2": "You pay in stages. Builders are paid only after you approve each stage, and every purchase comes with a receipt photo in your account.",
+        "q3": "Who goes to my site?",
+        "a3": "Vetted LBH team members and contractors. Every visit is recorded with dated, GPS-stamped photos, and nobody signs off their own work.",
+        "q4": "Do I need to be in Zimbabwe?",
+        "a4": "No. Most of our clients live abroad. Everything happens in your account, by chat and by email."
+      },
+      "moreFaq": "More questions and answers",
+      "aboutKicker": "ABOUT LBH",
+      "aboutTitle": "Why we exist.",
+      "aboutLead": "Too many Zimbabweans abroad have sent money home for a house that was never built, or bought a stand that wasn't real. LBH is the honest pair of eyes on the ground.",
+      "rulesTitle": "Our rules",
+      "rules": {
+        "r1t": "Proof for everything",
+        "r1": "Dated photos and receipts for every visit and purchase.",
+        "r2t": "You approve first",
+        "r2": "No extra cost and no stage payment without your OK.",
+        "r3t": "Nobody checks their own work",
+        "r3": "The person who buys materials never signs them off."
+      },
+      "talkTitle": "Talk to us",
+      "talkChat": "Live chat",
+      "talkChatText": "Tap the chat button on any page.",
+      "sampleBarTitle": "This is a sample",
+      "sampleLiveText": "Live cameras are coming to LBH builds. You'll see yours after your build starts.",
+      "sampleBaText": "This is how your Build Account will look: budget, stages, receipts and approvals.",
+      "createFree": "Create free account",
+      "liveTitlePage": "Live site",
+      "cams": {
+        "c1": "Site",
+        "c2": "Walls",
+        "c3": "Store"
+      },
+      "camName": "CAM {n} · {name}",
+      "camPlace": "Ruwa · Stand 4521",
+      "todayOnSite": "Today on site",
+      "feed": {
+        "f1t": "Team checked in",
+        "f1": "6 builders, 1 supervisor",
+        "f2t": "Cement delivered",
+        "f2": "40 bags counted and photographed",
+        "f3t": "Window level checked",
+        "f3": "Supervisor signed off the brickwork",
+        "f4t": "Daily report sent",
+        "f4": "12 photos added to your account"
+      },
+      "myBuildTitle": "My build",
+      "leftToSpendCaps": "FAMILY HOME · RUWA · LEFT TO SPEND",
+      "ofABudget": "of a {budget} budget",
+      "spentAmount": "Spent {amount}",
+      "stagesTitle": "Stages",
+      "stagesCount": "{n} of 6",
+      "stages": {
+        "foundation": "Foundation",
+        "slab": "Slab",
+        "window": "Window level",
+        "wallplate": "Wall plate",
+        "roof": "Roof",
+        "finishes": "Finishes"
+      },
+      "stageNotes": {
+        "paid1": "Paid · 18 photos",
+        "paid2": "Paid · 22 photos",
+        "now": "Supervisor signed off",
+        "next": "Next",
+        "roof": "Trusses and sheets",
+        "finishes": "Plaster, tiles, paint"
+      },
+      "state": {
+        "done": "DONE",
+        "soon": "SOON",
+        "later": "LATER"
+      },
+      "review": "Review",
+      "receiptsTitle": "Latest receipts",
+      "receipts": {
+        "r1t": "Cement · 40 bags",
+        "r1": "Delivered and counted",
+        "r2t": "Bricks · 14,000",
+        "r2": "On site · 16,000 to go",
+        "r3t": "Labour · Slab",
+        "r3": "Paid after your OK"
+      },
+      "approveTitle": "Approve Window level?",
+      "approveChecks": {
+        "c1": "12 dated photos uploaded",
+        "c2": "Supervisor signed off the brickwork",
+        "c3": "Materials used match the receipts"
+      },
+      "approveNote": "In your own Build Account, approving releases the stage payment to the builders. This sample changes nothing.",
+      "notYet": "Not yet",
+      "approveStage": "Approve stage",
+      "approvedToast": "Sample only: in your account this would approve the stage.",
+      "signinTitle": "Welcome back",
+      "newToLbh": "New to LBH?",
+      "createFreeAccount": "Create a free account",
+      "signupTitle": "Create your account",
+      "signupIntro": "Free. Your quotes, payments, reports and build updates all live here.",
+      "haveAccount": "Already have an account?",
+      "welcome": "Welcome, {name}!",
+      "welcomeNoName": "Welcome!",
+      "welcomeIntro": "Your account is ready. What would you like to start with?",
+      "pick": {
+        "landT": "Check or buy land",
+        "land": "Title deed check and site visit",
+        "buildT": "Build my home",
+        "build": "Materials, team and stage updates",
+        "finishT": "Finish and furnish",
+        "finish": "3D rooms and furniture"
+      },
+      "yourAccount": "Your account",
+      "noProjectsTitle": "No projects yet",
+      "noProjectsText": "After your free call, your quote appears here. Then your Build Account fills up with stages, receipts and photos.",
+      "seeSampleBa": "See a sample Build Account →",
+      "bookTitle": "Book a free call",
+      "bookNote": "30–45 minutes, phone or video. No payment needed.",
+      "whatNeed": "What do you need?",
+      "pickTime": "Pick a time (Zimbabwe time)",
+      "slots": {
+        "morning": "Morning",
+        "morningHint": "8am – 12pm",
+        "afternoon": "Afternoon",
+        "afternoonHint": "12pm – 5pm",
+        "evening": "Evening",
+        "eveningHint": "5pm – 8pm",
+        "weekend": "Weekend",
+        "weekendHint": "Sat or Sun"
+      },
+      "callBy": "Call by",
+      "requestCall": "Request my call",
+      "doneSignup": "Create your free account",
+      "backHome": "Back to home",
+      "chips": {
+        "land": "Land",
+        "materials": "Materials",
+        "monitoring": "Site visits",
+        "camera": "Live camera (soon)",
+        "not-sure": "Not sure yet"
+      },
+      "finishHint": "Finishing and furnishing your home?",
+      "finishLink": "Book an interiors consultation"
     }
   }
 }
