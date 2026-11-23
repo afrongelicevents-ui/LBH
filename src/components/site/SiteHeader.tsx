@@ -257,7 +257,7 @@ export default function SiteHeader({
                           }`}
                           aria-current={isActive(pathname, l.href) ? "page" : undefined}
                         >
-                          {t(`account.${l.key}`)}
+                          <span>{t(`account.${l.key}`)}</span>
                           <span aria-hidden className={isActive(pathname, l.href) ? "text-forest" : "text-slate"}>→</span>
                         </Link>
                       </li>
@@ -288,7 +288,7 @@ export default function SiteHeader({
                         className={isActive(pathname, l.href) ? "text-forest" : "hover:text-forest"}
                         aria-current={isActive(pathname, l.href) ? "page" : undefined}
                       >
-                        {t(`nav.${l.key}`)}
+                        <span>{t(`nav.${l.key}`)}</span>
                         <span aria-hidden className="text-slate">→</span>
                       </Link>
                       {l.key === "services" && (
@@ -310,13 +310,13 @@ export default function SiteHeader({
                     <>
                       <li>
                         <Link href="/sample/build-account" className="hover:text-forest" data-testid="menu-sample-ba">
-                          {t("sampleBuildAccount")}
+                          <span>{t("sampleBuildAccount")}</span>
                           <span aria-hidden className="text-slate">→</span>
                         </Link>
                       </li>
                       <li>
                         <Link href="/sample/live" className="hover:text-forest" data-testid="menu-sample-live">
-                          {t("sampleLive")}
+                          <span>{t("sampleLive")}</span>
                           <span aria-hidden className="text-slate">→</span>
                         </Link>
                       </li>
