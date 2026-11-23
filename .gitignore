@@ -56,3 +56,4 @@ public/images/stock/
 /.wrangler/
 .dev.vars*
 !.dev.vars.example
+wrangler.test.jsonc
