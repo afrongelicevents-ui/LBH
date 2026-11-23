@@ -18,19 +18,15 @@ function Preview({ def, src }: { def: SitePhotoDef; src: string }) {
   if (def.preview === "hero") {
     return (
       <div className="relative aspect-[16/7] w-full overflow-hidden rounded-xl" data-testid="photo-preview">
-        <img src={src} alt="" className="absolute inset-0 h-full w-full object-cover object-[70%_40%]" />
+        <img src={src} alt="" className="absolute inset-0 h-full w-full object-cover object-[40%_50%]" />
         <div
           aria-hidden
           className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(to right, rgba(22,58,43,0.95) 0%, rgba(22,58,43,0.85) 30%, rgba(22,58,43,0.4) 50%, rgba(22,58,43,0) 65%)",
-          }}
+          style={{ background: "linear-gradient(180deg, rgba(10,9,7,0.45) 0%, rgba(10,9,7,0) 30%, rgba(10,9,7,0.85) 100%)" }}
         />
-        <div className="relative flex h-full max-w-[55%] flex-col justify-center p-4 text-white">
+        <div className="relative flex h-full flex-col justify-end p-4 text-[#f3ede4]">
           <p className="headline text-base sm:text-2xl">{t("site.home.hero.title")}</p>
-          <p className="mt-1 text-[10px] text-white/85 sm:text-xs">{t("site.home.hero.subtitle")}</p>
-          <span className="mt-2 w-fit rounded-[3px] bg-paper px-3 py-1 text-[10px] font-bold text-ink">{t("site.home.hero.cta")}</span>
+          <span className="mt-2 w-fit rounded-full bg-[#b5552f] px-3 py-1 text-[10px] font-bold text-white">{t("site.ws.heroBook")}</span>
         </div>
       </div>
     );
@@ -44,7 +40,7 @@ function Preview({ def, src }: { def: SitePhotoDef; src: string }) {
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to right, rgba(22,58,43,0.15) 0%, rgba(22,58,43,0.55) 35%, rgba(22,58,43,0.93) 62%, rgba(22,58,43,0.95) 100%)",
+              "linear-gradient(to right, rgba(10,9,7,0.15) 0%, rgba(10,9,7,0.55) 35%, rgba(10,9,7,0.9) 62%, rgba(10,9,7,0.95) 100%)",
           }}
         />
         <div className="relative flex h-full items-center gap-3 p-3">
@@ -86,9 +82,12 @@ export default function SitePhotoSlotCard({
   def,
   currentUrl,
   custom,
+  paused = false,
 }: {
   def: SitePhotoDef;
   currentUrl: string;
+  /** the website shows src/config/photos.ts for this spot (admin photos switched off) */
+  paused?: boolean;
   custom: { width: number | null; height: number | null; updatedAt: string; kind: "lbh" | "stock" | null; credit: string } | null;
 }) {
   const t = useTranslations("admin.photos");
@@ -289,7 +288,7 @@ export default function SitePhotoSlotCard({
       </div>
       {result?.ok && (
         <p role="status" className="mt-2 text-sm font-bold text-forest">
-          {t("savedLive")}
+          {paused ? t("savedPaused") : t("savedLive")}
         </p>
       )}
       {result && !result.ok && (

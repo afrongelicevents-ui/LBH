@@ -1099,7 +1099,9 @@
       "kindStockHint": "licensed from elsewhere — shown with \"Stock photo\" and its credit.",
       "kindNone": "Uploaded before labels — not shown on the new pages",
       "creditLabel": "Credit",
-      "creditPlaceholder": "e.g. Zambia · Thatlowdownwoman, CC BY-SA 4.0, Wikimedia Commons"
+      "creditPlaceholder": "e.g. Zambia · Thatlowdownwoman, CC BY-SA 4.0, Wikimedia Commons",
+      "savedPaused": "Saved. Not shown on the website yet — see the note at the top.",
+      "pausedNote": "The website currently shows the Warm Sand design photos for the main spots (home, land, materials, on-site, reporting, interiors). Photos you save here are kept and appear again when admin photos are switched on (USE_ADMIN_UPLOADED_PHOTOS in src/config/photos.ts). The interiors before/after gallery and the logo always use the photos saved here."
     },
     "ba": {
       "backToSettings": "Settings",
