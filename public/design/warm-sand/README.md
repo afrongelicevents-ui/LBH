@@ -24,4 +24,7 @@ Fonts: Playfair Display (headings), DM Sans (body).
 ## Photos
 Placeholders from Pexels (free licence) until the LBH photo shoot. Home-screen house: `images/houses/h2.jpg`. Other photos: `images/b/` (set B). Keep file names when swapping in real photos.
 
+## Visitor journey (before sign-up)
+The prototype shows what a new client sees: Home, Services (Land / Build / Finish), How it works (6 steps, ways to pay, FAQ), About, sample Build Account and sample live camera (marked SAMPLE with a sign-up button), Sign in, Create account, Check your email, Welcome screen (pick a service), and Book a free call with real time slots. No prices on public pages. Visitor bottom tabs: Home, Services, Book (+), How it works, Sign in.
+
 The palette button and Customise panel in the prototype are for design review only; do not build them into the real site.

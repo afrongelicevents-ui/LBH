@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LBH App Prototype – Warm Sand</title>
+<title>LBH Visitor Journey</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -325,6 +325,39 @@ h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;font-weight:800;l
 .house[aria-pressed="true"]{border-color:var(--gold)}
 
 
+
+.sample-bar{margin:14px 20px 0;padding:14px 16px;border-radius:20px;background:var(--surface);border:1px solid var(--line);display:flex;gap:12px;align-items:center;justify-content:space-between}
+.sample-bar b{display:block;font-size:14px}
+.sample-bar span{display:block;font-size:13px;color:var(--muted);line-height:1.4}
+.sample-bar .btn{flex:none;min-height:44px;padding:0 14px;font-size:13px}
+.slots{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.slot{min-height:56px;border-radius:14px;border:1.5px solid color-mix(in srgb, var(--ink) 14%, transparent);background:var(--surface);color:var(--ink);font-weight:700;font-size:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.2}
+.slot small{font-weight:500;color:var(--muted);font-size:12px}
+.slot[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--on-accent)}
+.slot[aria-pressed="true"] small{color:var(--on-accent)}
+.paylist > div{display:flex;flex-direction:column;gap:2px;padding:14px 0;border-bottom:1px solid var(--line)}
+.paylist > div:last-child{border-bottom:0}
+.paylist b{font-size:16px}.paylist span{font-size:14px;color:var(--muted)}
+.faq{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;min-height:56px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:700;font-size:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:22px;color:var(--muted)}
+.faq[open] summary::after{content:"–"}
+.faq p{margin:0 0 16px;color:var(--muted);line-height:1.55;font-size:15px}
+.incl .ic{font-family:var(--display);font-weight:800}
+.check{display:flex;gap:10px;align-items:center;font-size:14px;min-height:44px}
+.check input{width:22px;height:22px;accent-color:var(--gold)}
+.link-btn{background:none;border:0;color:var(--muted);font-weight:600;font-size:14px;min-height:44px;text-decoration:underline}
+.split{display:flex;align-items:center;gap:12px;margin:26px 20px 12px;color:var(--muted);font-size:13px}
+.split::before,.split::after{content:"";flex:1;height:1px;background:var(--line)}
+.pick{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+.pick-card{display:grid;grid-template-columns:88px 1fr;gap:14px;align-items:center;padding:10px;border-radius:20px;background:var(--surface);border:1px solid var(--line);text-decoration:none}
+.pick-card img{width:88px;height:72px;border-radius:14px;object-fit:cover}
+.pick-card b{display:block;font-size:16px}.pick-card span{font-size:13px;color:var(--muted)}
+.empty{padding:20px;border-radius:20px;border:1.5px dashed color-mix(in srgb, var(--ink) 18%, transparent);display:flex;flex-direction:column;gap:6px}
+.empty b{font-size:16px}.empty span{font-size:14px;color:var(--muted);line-height:1.5}
+.empty .link{color:var(--gold);font-weight:700;text-decoration:none;margin-top:6px;font-size:14px}
+
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -372,7 +405,7 @@ h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;font-weight:800;l
           <div class="story-media">
             <img src="images/abroad.jpg" alt="A woman relaxing on a sofa and checking her phone">
             <a class="float-card" href="#mybuild">
-              <div class="fc-top"><div><small>BUILD ACCOUNT · <span class="tag-ex">EXAMPLE</span></small><b>Family home · Ruwa</b></div>
+              <div class="fc-top"><div><small>BUILD ACCOUNT · <span class="tag-ex">SAMPLE</span></small><b>Family home · Ruwa</b></div>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></div>
               <div class="fc-figs"><div><span>Left to spend</span><div class="big num">$23,550</div></div><span class="num">of $42,000</span></div>
               <div class="track" aria-hidden="true"><i class="done"></i><i class="done"></i><i class="now"></i><i></i><i></i><i></i></div>
@@ -400,6 +433,7 @@ h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;font-weight:800;l
             <li><span class="n">3</span><div><b>You see the proof</b><span>Dated photos, live camera and every receipt in your account.</span></div></li>
             <li><span class="n">4</span><div><b>You approve each stage</b><span>Builders are paid only after you say OK.</span></div></li>
           </ol></div>
+          <a class="btn btn-line btn-block" href="#how" style="margin-top:18px">See the full process</a>
         </div>
 
         <section class="band" aria-label="Live camera">
@@ -426,7 +460,8 @@ h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;font-weight:800;l
 
       <!-- LIVE -->
       <section class="screen" id="s-live" aria-label="Live site">
-        <div class="phead"><h1>Live site</h1><span class="tag-ex">EXAMPLE</span></div>
+        <div class="phead"><h1>Live site</h1><span class="tag-ex">SAMPLE</span></div>
+        <div class="sample-bar"><div><b>This is a sample</b><span>Every LBH build gets its own camera. You'll see yours after your build starts.</span></div><a class="btn btn-gold" href="#signup">Create free account</a></div>
         <div class="cam">
           <img id="camImg" src="images/site-team.jpg" alt="Live camera view of the build site">
           <div class="scan" aria-hidden="true"></div>
@@ -451,7 +486,8 @@ h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;font-weight:800;l
 
       <!-- MY BUILD -->
       <section class="screen" id="s-mybuild" aria-label="My build">
-        <div class="phead"><h1>My build</h1><span class="tag-ex">EXAMPLE</span></div>
+        <div class="phead"><h1>My build</h1><span class="tag-ex">SAMPLE</span></div>
+        <div class="sample-bar"><div><b>This is a sample</b><span>This is how your Build Account will look: budget, stages, receipts and approvals.</span></div><a class="btn btn-gold" href="#signup">Create free account</a></div>
         <div class="money">
           <small>FAMILY HOME · RUWA · LEFT TO SPEND</small>
           <div class="big num">$23,550</div>
@@ -552,17 +588,134 @@ h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;font-weight:800;l
             </div>
           </div>
           <div class="field"><label for="fName">Your name</label><input id="fName" autocomplete="name" placeholder="e.g. Tendai Moyo"></div>
+          <div class="field"><label for="fEmail">Email</label><input id="fEmail" type="email" autocomplete="email" placeholder="you@example.com"><p class="err" id="emailErr" hidden>Add an email with an @ so we can send your confirmation.</p></div>
           <div class="field"><label for="fCountry">Where do you live?</label><select id="fCountry"><option>United Kingdom</option><option>South Africa</option><option>United States</option><option>Netherlands</option><option>Australia</option><option>Canada</option><option>Zimbabwe</option><option>Other</option></select></div>
           <div class="field"><label for="fPhone">WhatsApp number</label><input id="fPhone" type="tel" autocomplete="tel" placeholder="+44 7…"><p class="err" id="phoneErr" hidden>Add your WhatsApp number so we can call you.</p></div>
-          <div class="field"><label for="fTime">Best time for a call</label><select id="fTime"><option>Weekday evening</option><option>Weekday daytime</option><option>Weekend</option></select></div>
+          <div class="field"><span class="lbl" id="slotLbl">Pick a time (your local time)</span><div class="slots" id="slots" role="group" aria-labelledby="slotLbl"></div><p class="err" id="slotErr" hidden>Pick a time for your call.</p></div>
           <button class="btn btn-gold btn-block" type="submit">Request my call</button>
           <p class="hint">Prototype: nothing is sent.</p>
         </form>
         <div class="done-box" id="bookDone" hidden>
           <div class="tick"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" style="stroke:var(--ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg></div>
           <h1 id="doneTitle">Request ready</h1>
-          <p>In the live app, LBH would message you on WhatsApp to set the time. This prototype didn't send anything.</p>
+          <p id="doneText">We'll call you on WhatsApp at the time you picked, and send a confirmation to your email. This prototype didn't send anything.</p>
+          <a class="btn btn-gold" href="#signup" id="doneSignup">Create your free account</a>
           <a class="btn btn-ink" href="#home">Back to home</a>
+        </div>
+      </section>
+
+
+      <!-- HOW IT WORKS -->
+      <section class="screen" id="s-how" aria-label="How it works">
+        <div class="phead"><h1>How it works</h1></div>
+        <p class="lede wrap" style="margin-top:8px">Six steps, the same for every client. Nothing moves until you say yes.</p>
+        <div class="wrap"><div class="how"><ol>
+          <li><span class="n">1</span><div><b>Free call</b><span>20 minutes on WhatsApp. Tell us about your land, your plans and your budget.</span></div></li>
+          <li><span class="n">2</span><div><b>Your written quote</b><span>Every job is different, so you get a written quote in your account. No surprises.</span></div></li>
+          <li><span class="n">3</span><div><b>Accept and pay the deposit</b><span>Pay by card, EcoCash or bank transfer from abroad. You get a receipt every time.</span></div></li>
+          <li><span class="n">4</span><div><b>Our team goes on site</b><span>Vetted people with photos that carry the date and GPS. Extra costs need your OK first.</span></div></li>
+          <li><span class="n">5</span><div><b>You see the proof</b><span>A clear report or stage update with photos, receipts and plain-word findings.</span></div></li>
+          <li><span class="n">6</span><div><b>You approve, then we pay</b><span>The balance or the next stage only moves after you approve.</span></div></li>
+        </ol></div></div>
+        <div class="block">
+          <div class="block-head"><h2>Ways to pay</h2></div>
+          <div class="paylist">
+            <div><b>Card</b><span>Visa and Mastercard, including foreign cards</span></div>
+            <div><b>Mobile money</b><span>EcoCash, OneMoney, InnBucks</span></div>
+            <div><b>From abroad</b><span>Remitly, WorldRemit or bank transfer, with your reference and proof</span></div>
+          </div>
+        </div>
+        <div class="block">
+          <div class="block-head"><h2>Questions</h2></div>
+          <details class="faq"><summary>Why don't you show prices?</summary><p>Every stand and every build is different: distance, size and materials change the cost. After the free call you get a written quote with every line explained.</p></details>
+          <details class="faq"><summary>How do I know my money is safe?</summary><p>You pay in stages. Builders are paid only after you approve each stage, and every purchase comes with a receipt photo in your account.</p></details>
+          <details class="faq"><summary>Who goes to my site?</summary><p>Vetted LBH team members and contractors. Every visit is recorded with dated, GPS-stamped photos, and nobody signs off their own work.</p></details>
+          <details class="faq"><summary>Do I need to be in Zimbabwe?</summary><p>No. Most of our clients live abroad. Everything happens in your account, on WhatsApp and by email.</p></details>
+        </div>
+        <div class="dcta"><a class="btn btn-gold btn-block" href="#book">Book a free call</a></div>
+      </section>
+
+      <!-- ABOUT -->
+      <section class="screen" id="s-about" aria-label="About LBH">
+        <div class="dhero" style="height:320px">
+          <img src="images/keys.jpg" alt="A couple holding the keys to their new home">
+          <a class="icon-btn back" href="#more" aria-label="Back"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></a>
+          <div class="txt"><span class="kicker light">ABOUT LBH</span><h1>Why we exist.</h1></div>
+        </div>
+        <p class="dlead">Too many Zimbabweans abroad have sent money home for a house that was never built, or bought a stand that wasn't real. LBH is the honest pair of eyes on the ground.</p>
+        <div class="block">
+          <div class="block-head"><h2>Our rules</h2></div>
+          <div class="incl" style="margin:0"><ul>
+            <li><div class="ic">1</div><div><b>Proof for everything</b><span>Dated photos and receipts for every visit and purchase.</span></div></li>
+            <li><div class="ic">2</div><div><b>You approve first</b><span>No extra cost and no stage payment without your OK.</span></div></li>
+            <li><div class="ic">3</div><div><b>Nobody checks their own work</b><span>The person who buys materials never signs them off.</span></div></li>
+          </ul></div>
+        </div>
+        <div class="block">
+          <div class="block-head"><h2>Talk to us</h2></div>
+          <div class="paylist">
+            <div><b>WhatsApp</b><span>[LBH WhatsApp number]</span></div>
+            <div><b>Email</b><span>info@letsbuildhome.co.zw</span></div>
+          </div>
+        </div>
+        <div class="dcta"><a class="btn btn-gold btn-block" href="#book">Book a free call</a></div>
+      </section>
+
+      <!-- SIGN IN -->
+      <section class="screen" id="s-signin" aria-label="Sign in">
+        <div class="phead"><h1>Welcome back</h1></div>
+        <form class="form" id="signinForm" novalidate>
+          <div class="field"><label for="siEmail">Email</label><input id="siEmail" type="email" autocomplete="email" placeholder="you@example.com"></div>
+          <div class="field"><label for="siPass">Password</label><input id="siPass" type="password" autocomplete="current-password"></div>
+          <button class="btn btn-gold btn-block" type="submit">Sign in</button>
+          <button class="link-btn" type="button" data-toast="A reset link would be emailed to you.">Forgot password?</button>
+        </form>
+        <div class="split"><span>New to LBH?</span></div>
+        <div class="wrap"><a class="btn btn-line btn-block" href="#signup">Create a free account</a></div>
+        <p class="foot">Prototype: no real sign-in.</p>
+      </section>
+
+      <!-- SIGN UP -->
+      <section class="screen" id="s-signup" aria-label="Create account">
+        <div class="phead"><h1>Create your account</h1></div>
+        <p class="lede wrap" style="margin-top:8px">Free. Your quotes, payments, reports and build updates all live here.</p>
+        <form class="form" id="signupForm" novalidate>
+          <div class="field"><label for="suName">Full name</label><input id="suName" autocomplete="name" placeholder="e.g. Tendai Moyo"></div>
+          <div class="field"><label for="suEmail">Email</label><input id="suEmail" type="email" autocomplete="email" placeholder="you@example.com"><p class="err" id="suEmailErr" hidden>Enter a valid email.</p></div>
+          <div class="field"><label for="suCountry">Where do you live?</label><select id="suCountry"><option>United Kingdom</option><option>South Africa</option><option>United States</option><option>Netherlands</option><option>Australia</option><option>Canada</option><option>Zimbabwe</option><option>Other</option></select></div>
+          <div class="field"><label for="suPhone">WhatsApp number</label><input id="suPhone" type="tel" autocomplete="tel" placeholder="+44 7…"></div>
+          <div class="field"><label for="suPass">Password</label><input id="suPass" type="password" autocomplete="new-password" placeholder="At least 8 characters"><p class="err" id="suPassErr" hidden>Use at least 8 characters.</p></div>
+          <label class="check"><input type="checkbox" id="suTerms"> <span>I agree to the Terms and Privacy Policy</span></label>
+          <p class="err" id="suTermsErr" hidden>Please agree to the terms to continue.</p>
+          <button class="btn btn-gold btn-block" type="submit">Create account</button>
+        </form>
+        <div class="split"><span>Already have an account?</span></div>
+        <div class="wrap"><a class="btn btn-line btn-block" href="#signin">Sign in</a></div>
+      </section>
+
+      <!-- VERIFY EMAIL -->
+      <section class="screen" id="s-verify" aria-label="Check your email">
+        <div class="done-box">
+          <div class="tick"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" style="stroke:var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div>
+          <h1>Check your email</h1>
+          <p>We sent a confirmation link to <b id="verifyEmail">your email</b>. Tap it to open your account.</p>
+          <a class="btn btn-gold" href="#welcome">I've confirmed my email</a>
+          <button class="link-btn" type="button" data-toast="A new link would be sent.">Send the link again</button>
+        </div>
+      </section>
+
+      <!-- WELCOME (first time in account) -->
+      <section class="screen" id="s-welcome" aria-label="Welcome">
+        <div class="phead"><h1 id="welcomeTitle">Welcome!</h1></div>
+        <p class="lede wrap" style="margin-top:8px">Your account is ready. What would you like to start with?</p>
+        <div class="wrap pick" role="group" aria-label="Choose a service">
+          <a class="pick-card" href="#book" data-service="Land"><img src="images/b/land.jpg" alt=""><div><b>Check or buy land</b><span>Title deed check and site visit</span></div></a>
+          <a class="pick-card" href="#book" data-service="Build"><img src="images/site-team.jpg" alt=""><div><b>Build my home</b><span>Materials, team and live updates</span></div></a>
+          <a class="pick-card" href="#book" data-service="Finish"><img src="images/b/living.jpg" alt=""><div><b>Finish and furnish</b><span>3D rooms, furniture, cleaning</span></div></a>
+        </div>
+        <div class="block">
+          <div class="block-head"><h2>Your account</h2></div>
+          <div class="empty"><b>No projects yet</b><span>After your free call, your quote appears here. Then your Build Account fills up with stages, receipts and photos.</span><a class="link" href="#mybuild">See a sample Build Account →</a></div>
         </div>
       </section>
 
@@ -570,24 +723,28 @@ h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;font-weight:800;l
       <section class="screen" id="s-more" aria-label="Menu">
         <div class="phead"><h1>Menu</h1><img class="logo-adapt" src="images/logo-lbh.png" alt="LBH logo" style="width:56px"></div>
         <div class="menu">
-          <a href="#mybuild">My Build Account <span aria-hidden="true">→</span></a>
-          <a href="#live">Live site camera <span aria-hidden="true">→</span></a>
-          <a href="#services">All services <span aria-hidden="true">→</span></a>
+          <a href="#how">How it works <span aria-hidden="true">→</span></a>
+          <a href="#services">Services <span aria-hidden="true">→</span></a>
+          <a href="#about">About LBH <span aria-hidden="true">→</span></a>
+          <a href="#mybuild">See a sample Build Account <span aria-hidden="true">→</span></a>
+          <a href="#live">See a sample live camera <span aria-hidden="true">→</span></a>
           <a href="#book">Book a free call <span aria-hidden="true">→</span></a>
+          <a href="#signin">Sign in <span aria-hidden="true">→</span></a>
+          <a href="#signup">Create a free account <span aria-hidden="true">→</span></a>
           <button type="button" class="mode-row" onclick="document.querySelector('.mode-btn').click()">Light / dark mode <span aria-hidden="true">◐</span></button>
-          <button type="button" data-toast="Sign-in opens here in the live app.">Sign in <span aria-hidden="true">→</span></button>
-          <button type="button" data-toast="About LBH opens here in the live app.">About LBH <span aria-hidden="true">→</span></button>
         </div>
+        <div class="wrap" style="margin-top:18px"><span class="lbl" style="font-size:13px;color:var(--muted);font-weight:700;letter-spacing:.1em">LANGUAGE</span>
+          <div class="chips" style="margin-top:10px"><button type="button" class="chip" aria-pressed="true">English</button><button type="button" class="chip" aria-pressed="false" data-toast="Shona version (draft translation) opens here.">Shona</button><button type="button" class="chip" aria-pressed="false" data-toast="Ndebele version (draft translation) opens here.">Ndebele</button></div></div>
         <p class="foot">Design prototype. Photos are placeholders until the LBH photo shoot. Figures marked "Example" are sample data.</p>
       </section>
     </div>
 
     <nav class="tabs" aria-label="Main">
       <a class="tab" href="#home" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg>Home</a>
-      <a class="tab" href="#live" data-tab="live"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 8-6 4 6 4V8Z"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>Live</a>
-      <a class="tab-book" href="#book" aria-label="Book a free call"><svg viewBox="0 0 24 24" fill="none" stroke="#EEF1F6" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></a>
-      <a class="tab" href="#mybuild" data-tab="mybuild"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg>My build</a>
       <a class="tab" href="#services" data-tab="services"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Services</a>
+      <a class="tab-book" href="#book" aria-label="Book a free call"><svg viewBox="0 0 24 24" fill="none" stroke="#EEF1F6" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></a>
+      <a class="tab" href="#how" data-tab="how"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6M12 17h.01"/></svg>How it works</a>
+      <a class="tab" href="#signin" data-tab="account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Sign in</a>
     </nav>
 
     <div class="scrim" id="scrim" hidden></div>
@@ -652,8 +809,8 @@ h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;font-weight:800;l
 
 <script>
 (function(){
-  var screens=["home","live","mybuild","services","land","construct","finish","book","more"];
-  var tabFor={home:"home",live:"live",mybuild:"mybuild",services:"services",land:"services",construct:"services",finish:"services",book:"",more:""};
+  var screens=["home","live","mybuild","services","land","construct","finish","book","more","how","about","signin","signup","verify","welcome"];
+  var tabFor={home:"home",live:"home",mybuild:"home",services:"services",land:"services",construct:"services",finish:"services",book:"",more:"",how:"how",about:"how",signin:"account",signup:"account",verify:"account",welcome:"account"};
   var chosen="";
   function show(name){
     if(screens.indexOf(name)<0) name="home";
@@ -712,6 +869,36 @@ h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;font-weight:800;l
     toast("Stage approved. Builders are paid for Window level.");
   });
 
+
+  // time slots (next 4 days, 2 times each)
+  var pickedSlot="";
+  (function(){
+    var box=document.getElementById("slots"); if(!box) return;
+    var d=new Date(); var made=0; var times=["10:00","18:30"];
+    for(var k=1;made<6&&k<10;k++){
+      let day=new Date(d.getTime()+k*864e5); if(day.getDay()===0) continue;
+      let label=day.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"});
+      times.forEach(function(t){ if(made>=6) return; made++;
+        var b=document.createElement("button"); b.type="button"; b.className="slot"; b.setAttribute("aria-pressed","false");
+        b.innerHTML=t+"<small>"+label+"</small>";
+        b.addEventListener("click",function(){ pickedSlot=label+" at "+t; box.querySelectorAll(".slot").forEach(function(x){x.setAttribute("aria-pressed",x===b?"true":"false");}); document.getElementById("slotErr").hidden=true; });
+        box.appendChild(b); });
+    }
+  })();
+  // sign up -> verify -> welcome
+  var suName="";
+  document.getElementById("signupForm").addEventListener("submit",function(e){
+    e.preventDefault();
+    var em=document.getElementById("suEmail"),pw=document.getElementById("suPass"),tm=document.getElementById("suTerms");
+    var e1=document.getElementById("suEmailErr"),e2=document.getElementById("suPassErr"),e3=document.getElementById("suTermsErr");
+    e1.hidden=em.value.indexOf("@")>0; e2.hidden=pw.value.length>=8; e3.hidden=tm.checked;
+    if(!e1.hidden){em.focus();return;} if(!e2.hidden){pw.focus();return;} if(!e3.hidden){tm.focus();return;}
+    suName=document.getElementById("suName").value.trim();
+    document.getElementById("verifyEmail").textContent=em.value.trim();
+    document.getElementById("welcomeTitle").textContent=suName?"Welcome, "+suName.split(" ")[0]+"!":"Welcome!";
+    location.hash="verify";
+  });
+  document.getElementById("signinForm").addEventListener("submit",function(e){ e.preventDefault(); toast("Prototype: in the live app this opens your account."); });
   var form=document.getElementById("bookForm"),done=document.getElementById("bookDone");
   function setChip(v){ document.querySelectorAll("[data-chip]").forEach(function(c){ c.setAttribute("aria-pressed",c.getAttribute("data-chip")===v?"true":"false"); }); }
   document.querySelectorAll("[data-chip]").forEach(function(c){ c.addEventListener("click",function(){ chosen=c.getAttribute("data-chip"); setChip(chosen); }); });
@@ -719,10 +906,16 @@ h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;font-weight:800;l
   form.addEventListener("submit",function(e){
     e.preventDefault();
     var phone=document.getElementById("fPhone"),err=document.getElementById("phoneErr");
-    if(!phone.value.trim()){ err.hidden=false; phone.focus(); return; }
-    err.hidden=true;
+    var em=document.getElementById("fEmail"),eErr=document.getElementById("emailErr"),sErr=document.getElementById("slotErr");
+    var bad=false;
+    eErr.hidden=em.value.indexOf("@")>0; if(!eErr.hidden){ bad=true; }
+    err.hidden=!!phone.value.trim(); if(!err.hidden){ bad=true; }
+    sErr.hidden=!!pickedSlot; if(!sErr.hidden){ bad=true; }
+    if(bad){ (em.value.indexOf("@")>0?(phone.value.trim()?document.getElementById("slots"):phone):em).focus(); return; }
+    document.getElementById("doneText").textContent="We'll call you on WhatsApp on "+pickedSlot+" (your time), and send a confirmation to "+em.value.trim()+". This prototype didn't send anything.";
     var name=document.getElementById("fName").value.trim();
     document.getElementById("doneTitle").textContent=name?"Thanks, "+name.split(" ")[0]+"!":"Request ready";
+    var ds=document.getElementById("doneSignup"); if(ds) ds.hidden=!!suName;
     form.hidden=true; done.hidden=false; document.getElementById("s-book").scrollTop=0;
   });
   route();
