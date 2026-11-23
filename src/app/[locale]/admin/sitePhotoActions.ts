@@ -1,6 +1,6 @@
 "use server";
 
-import sharp from "sharp";
+import { toJpeg } from "@/lib/imageOps";
 import { revalidatePath } from "next/cache";
 import { requireAdminAction } from "@/lib/auth/admin-guard";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -45,11 +45,8 @@ export async function saveSitePhoto(
 
     const f = await takeIncoming(user.id, ref, "site-photo");
     if (!f.isImage) return { ok: false, error: "filetype" };
-    const { data: jpeg, info } = await sharp(f.buffer)
-      .rotate()
-      .resize({ width: def.maxWidth, height: def.maxWidth, fit: "inside", withoutEnlargement: true })
-      .jpeg({ quality: 82, mozjpeg: true, progressive: true })
-      .toBuffer({ resolveWithObject: true });
+    const { data: jpeg, width: infoW, height: infoH } = await toJpeg(f.buffer, { maxSize: def.maxWidth, quality: 82 });
+    const info = { width: infoW, height: infoH };
 
     const admin = createAdminClient();
     const path = `${slot}/${crypto.randomUUID()}.jpg`;

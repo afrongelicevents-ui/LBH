@@ -17,6 +17,40 @@ interface Item {
   unit: string;
   total: string;
 }
+/**
+ * Read the receipt on the phone itself (free, no server work). The OCR files
+ * are served from /ocr (copied there at build time). Never blocks: on failure
+ * or after 40 s it gives up and the person types the details.
+ */
+async function readTextOnDevice(file: File): Promise<string> {
+  let worker: { recognize(f: File): Promise<{ data: { text: string } }>; terminate(): Promise<unknown> } | null = null;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    const { createWorker } = await import("tesseract.js");
+    const work = (async () => {
+      worker = await createWorker("eng", 1, {
+        workerPath: "/ocr/worker.min.js",
+        corePath: "/ocr",
+        langPath: "/ocr",
+        workerBlobURL: false,
+        gzip: true,
+        cacheMethod: "none",
+      });
+      return (await worker.recognize(file)).data.text;
+    })();
+    const tooSlow = new Promise<string>((resolve) => {
+      timer = setTimeout(() => resolve(""), 40_000);
+    });
+    return await Promise.race([work, tooSlow]);
+  } catch {
+    return "";
+  } finally {
+    clearTimeout(timer);
+    const w = worker as { terminate(): Promise<unknown> } | null;
+    if (w) w.terminate().catch(() => undefined);
+  }
+}
+
 const dollars = (c: number | null | undefined) => (typeof c === "number" ? (c / 100).toFixed(2) : "");
 const toCents = (s: string) => {
   const n = Number(String(s).replace(/[^0-9.]/g, ""));
@@ -62,10 +96,14 @@ export default function ScanReceipt({
     setReadErr(null);
     startReading(async () => {
       try {
-        const up = await upload("ba-receipt", [f]);
+        const [up, text] = await Promise.all([
+          upload("ba-receipt", [f]),
+          f.type.startsWith("image/") ? readTextOnDevice(f) : Promise.resolve(""),
+        ]);
         if (!up.ok || !up.refs.length) return setReadErr(up.ok ? "upload" : up.error === "size" ? "toobig" : up.error === "type" ? "filetype" : "upload");
         const fd = new FormData();
         fd.set("uploads_json", JSON.stringify(up.refs));
+        fd.set("ocr_text", text.slice(0, 20000));
         const r = await readReceipt(ownerId, fd);
         if (!r.ok) return setReadErr(r.error);
         setPath(r.path);

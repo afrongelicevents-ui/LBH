@@ -13,8 +13,7 @@ import { sendEmail } from "@/lib/email";
 import { site } from "@/config/site";
 import { initiatePaynowPayment } from "@/lib/paynow";
 import { baContext, type BaContext } from "@/lib/buildAccount/server";
-import { receiptReader } from "@/lib/buildAccount/receiptReader";
-import type { ParsedReceipt } from "@/lib/buildAccount/parseReceipt";
+import { parseReceiptText, type ParsedReceipt } from "@/lib/buildAccount/parseReceipt";
 
 export type BaResult<T = object> = ({ ok: true } & T) | { ok: false; error: string };
 
@@ -62,24 +61,16 @@ export async function readReceipt(
     const f = await takeIncoming(user.id, ref, "ba-receipt");
     const path = await storePrivate("documents", `ba/${ctx.ownerId}`, f.buffer, f.contentType, f.ext);
     let parsed: ParsedReceipt = { shop: "", date: null, items: [], total_cents: null };
-    const reader = receiptReader();
-    if (f.isImage) {
+    // The phone reads the receipt text (see ScanReceipt); the server only parses it.
+    const text = String(formData.get("ocr_text") ?? "").slice(0, 20000);
+    if (f.isImage && text.trim()) {
       try {
-        // never keep the person waiting: if reading is slow they type the details themselves
-        let timer: ReturnType<typeof setTimeout> | undefined;
-        const tooSlow = new Promise<never>((_, reject) => {
-          timer = setTimeout(() => reject(new Error("reading took too long")), 40_000);
-        });
-        try {
-          parsed = (await Promise.race([reader.read(f.buffer), tooSlow])).parsed;
-        } finally {
-          clearTimeout(timer);
-        }
+        parsed = parseReceiptText(text);
       } catch (e) {
-        console.error(`[build-account] receipt reading failed: ${e instanceof Error ? e.message : e}`);
+        console.error(`[build-account] receipt parsing failed: ${e instanceof Error ? e.message : e}`);
       }
     }
-    return { ok: true, path, parsed, reader: reader.name };
+    return { ok: true, path, parsed, reader: "device" };
   } catch (e) {
     console.error(`[build-account] readReceipt: ${e instanceof Error ? e.message : e}`);
     return fail(e, "upload");

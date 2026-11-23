@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "lbh",
+  "main": "worker.ts",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "lbh" }],
+  // Photo re-encoding (replaces sharp): Cloudflare Images
+  "images": { "binding": "IMAGES" },
+  // Daily: Build Account renewal reminders + receipt clean-up (was Vercel Cron)
+  "triggers": { "crons": ["17 7 * * *"] },
+  "observability": { "enabled": true },
+  // Paid plan: allow slow pages (PDFs, photos) up to 60 s of CPU
+  "limits": { "cpu_ms": 60000 }
+}

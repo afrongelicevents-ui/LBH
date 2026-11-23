@@ -22,7 +22,8 @@ const isDev = process.env.NODE_ENV !== "production";
  */
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
+  // 'wasm-unsafe-eval': receipts are read on the phone with a WebAssembly OCR engine
+  `script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   `img-src 'self' data: blob: ${supabaseOrigin} https://tile.openstreetmap.org`,
   `media-src 'self' blob: ${supabaseOrigin}`,
@@ -66,31 +67,8 @@ const nextConfig: NextConfig = {
         ]
       : [],
   },
-  serverExternalPackages: ["pdfkit", "sharp", "tesseract.js"],
-  // Receipt reading: OCR language data is shipped with the server function
-  outputFileTracingIncludes: {
-    // tesseract.js starts its worker from a path built at run time, which file
-    // tracing can't follow: ship the worker and everything it loads explicitly.
-    // "[locale]" would be read as a glob character class: use a wildcard segment.
-    // The Build Account lives in /[locale]/account/(customer)/build-account —
-    // the route group is a path segment too. (It moved from /portal and the
-    // files stopped shipping: every receipt scan failed on the live site.)
-    "/*/account/*/build-account/**": [
-      "./node_modules/@tesseract.js-data/eng/4.0.0/**",
-      "./node_modules/tesseract.js/**",
-      "./node_modules/tesseract.js-core/**",
-      "./node_modules/bmp-js/**",
-      "./node_modules/idb-keyval/**",
-      "./node_modules/is-url/**",
-      "./node_modules/node-fetch/**",
-      "./node_modules/regenerator-runtime/**",
-      "./node_modules/wasm-feature-detect/**",
-      "./node_modules/zlibjs/**",
-      "./node_modules/whatwg-url/**",
-      "./node_modules/tr46/**",
-      "./node_modules/webidl-conversions/**",
-    ],
-  },
+  // Cloudflare builds (CF_BUILD=1) bundle pdfkit's self-contained build instead
+  serverExternalPackages: process.env.CF_BUILD ? ["sharp"] : ["pdfkit", "sharp"],
   experimental: {
     serverActions: {
       // Files never pass through server actions: the browser uploads them
@@ -101,6 +79,9 @@ const nextConfig: NextConfig = {
     proxyClientMaxBodySize: "2mb",
   },
   turbopack: {
+    resolveAlias: process.env.CF_BUILD
+      ? { pdfkit: "./node_modules/pdfkit/js/pdfkit.browser.mjs" }
+      : {},
     rules: {
       "*.css": {
         loaders: ["@tailwindcss/turbopack"],

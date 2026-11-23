@@ -1,6 +1,6 @@
 import "server-only";
-import sharp from "sharp";
-import exifReader from "exif-reader";
+import exifr from "exifr";
+import { toJpeg } from "@/lib/imageOps";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 /**
@@ -30,35 +30,21 @@ export interface ImageExif {
   gpsLng: number | null;
 }
 
-function gpsToDecimal(
-  coord: number[] | undefined,
-  ref: string | undefined
-): number | null {
-  if (!coord || coord.length < 3) return null;
-  const dec = coord[0] + coord[1] / 60 + coord[2] / 3600;
-  return ref === "S" || ref === "W" ? -dec : dec;
-}
-
 /** Read capture time + GPS from EXIF before it is stripped. */
 export async function readImageExif(buffer: Buffer): Promise<ImageExif> {
   const out: ImageExif = { takenAt: null, gpsLat: null, gpsLng: null };
   try {
-    const meta = await sharp(buffer).metadata();
-    if (!meta.exif) return out;
-    const exif = exifReader(meta.exif);
-    const dt =
-      exif.Photo?.DateTimeOriginal ??
-      exif.Photo?.DateTimeDigitized ??
-      exif.Image?.DateTime;
+    const exif = await exifr.parse(buffer, {
+      gps: true,
+      pick: ["DateTimeOriginal", "CreateDate", "ModifyDate", "GPSLatitude", "GPSLatitudeRef", "GPSLongitude", "GPSLongitudeRef"],
+    });
+    if (!exif) return out;
+    const dt = exif.DateTimeOriginal ?? exif.CreateDate ?? exif.ModifyDate;
     if (dt instanceof Date && !Number.isNaN(dt.getTime())) out.takenAt = dt;
-    out.gpsLat = gpsToDecimal(
-      exif.GPSInfo?.GPSLatitude as number[] | undefined,
-      exif.GPSInfo?.GPSLatitudeRef as string | undefined
-    );
-    out.gpsLng = gpsToDecimal(
-      exif.GPSInfo?.GPSLongitude as number[] | undefined,
-      exif.GPSInfo?.GPSLongitudeRef as string | undefined
-    );
+    if (typeof exif.latitude === "number" && typeof exif.longitude === "number") {
+      out.gpsLat = exif.latitude;
+      out.gpsLng = exif.longitude;
+    }
   } catch {
     // Unreadable EXIF is not an error — provenance fields stay null.
   }
@@ -67,10 +53,7 @@ export async function readImageExif(buffer: Buffer): Promise<ImageExif> {
 
 /** Re-encode an image (strips all metadata incl. EXIF) as JPEG. */
 export async function reencodeImage(buffer: Buffer): Promise<Buffer> {
-  return sharp(buffer, { failOn: "error" })
-    .rotate() // apply EXIF orientation before metadata is dropped
-    .jpeg({ quality: 85 })
-    .toBuffer();
+  return (await toJpeg(buffer, { quality: 85 })).data;
 }
 
 function randomName(ext: string): string {

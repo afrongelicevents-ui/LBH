@@ -11,13 +11,18 @@
     "test:e2e": "node tests/e2e/smoke.mjs",
     "db:start": "supabase start",
     "db:reset": "supabase db reset",
-    "prebuild": "node scripts/fetch-stock-photos.mjs"
+    "prebuild": "node scripts/fetch-stock-photos.mjs && node scripts/copy-ocr-assets.mjs",
+    "cf:build": "npm run prebuild && CF_BUILD=1 opennextjs-cloudflare build",
+    "cf:preview": "npm run cf:build && opennextjs-cloudflare preview",
+    "cf:deploy": "npm run cf:build && opennextjs-cloudflare deploy",
+    "cf:typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.119.0",
     "@tesseract.js-data/eng": "^1.0.0",
     "exif-reader": "^2.0.3",
+    "exifr": "^7.1.3",
     "leaflet": "^1.9.4",
     "next": "16.4.5",
     "next-intl": "^4.14.9",
@@ -28,6 +33,7 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "^1.20.18",
     "@tailwindcss/turbopack": "^4",
     "@types/leaflet": "^1.9.22",
     "@types/node": "^22.20.5",
@@ -40,6 +46,12 @@
     "supabase": "^3.0.0",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "^5.1.0"
+    "vitest": "^5.1.0",
+    "wrangler": "^4.167.0"
+  },
+  "overrides": {
+    "@opennextjs/aws": {
+      "cookie": "0.7.2"
+    }
   }
 }

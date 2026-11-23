@@ -1,5 +1,16 @@
 import "server-only";
-import PDFDocument from "pdfkit";
+import * as pdfkit from "pdfkit";
+import Helvetica from "pdfkit/standard-fonts/Helvetica";
+import HelveticaBold from "pdfkit/standard-fonts/HelveticaBold";
+import HelveticaOblique from "pdfkit/standard-fonts/HelveticaOblique";
+
+const PDFDocument = pdfkit.default;
+
+// On Cloudflare the self-contained (browser) build of pdfkit is used — it has no
+// file system, so the three fonts we use are registered from bundled data.
+// The Node build reads them from disk itself and has no registerStdFonts.
+const registerStdFonts = (pdfkit as unknown as { registerStdFonts?: (...f: unknown[]) => void }).registerStdFonts;
+registerStdFonts?.(Helvetica, HelveticaBold, HelveticaOblique);
 
 export const COMPANY_LINE = "[LBH ZIMBABWE ENTITY NAME · REG NUMBER]";
 

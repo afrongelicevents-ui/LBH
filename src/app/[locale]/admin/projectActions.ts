@@ -1,6 +1,6 @@
 "use server";
 
-import sharp from "sharp";
+import { toJpeg } from "@/lib/imageOps";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { requireAdminAction } from "@/lib/auth/admin-guard";
@@ -87,11 +87,8 @@ export async function addProjectPhoto(projectId: string, _prev: ProjectResult | 
     const takenOn = /^\d{4}-\d{2}-\d{2}$/.test(taken) ? taken : null;
     const f = await takeIncoming(user.id, ref, "site-photo");
     if (!f.isImage) return { ok: false, error: "filetype" };
-    const { data: jpeg, info } = await sharp(f.buffer)
-      .rotate()
-      .resize({ width: 2000, height: 2000, fit: "inside", withoutEnlargement: true })
-      .jpeg({ quality: 82, mozjpeg: true, progressive: true })
-      .toBuffer({ resolveWithObject: true });
+    const { data: jpeg, width: infoW, height: infoH } = await toJpeg(f.buffer, { maxSize: 2000, quality: 82 });
+    const info = { width: infoW, height: infoH };
     const admin = createAdminClient();
     const path = `projects/${crypto.randomUUID()}.jpg`;
     const { error: upErr } = await admin.storage.from(SITE_PHOTO_BUCKET).upload(path, jpeg, { contentType: "image/jpeg", cacheControl: "31536000", upsert: false });

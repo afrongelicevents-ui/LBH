@@ -1,5 +1,6 @@
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
+import en from "../../../../../messages/en.json";
+import sn from "../../../../../messages/sn.json";
+import nd from "../../../../../messages/nd.json";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth/guard";
 import { TranslationReviewToggle } from "@/components/admin/AdminActions";
@@ -34,11 +35,10 @@ export default async function AdminTranslationsPage({
   const t = await getTranslations("admin.translations");
 
   const target = lang === "nd" ? "nd" : "sn";
-  const dir = join(process.cwd(), "messages");
-  const targetMessages = JSON.parse(
-    readFileSync(join(dir, `${target}.json`), "utf8")
-  ) as Messages;
-  const enMessages = JSON.parse(readFileSync(join(dir, "en.json"), "utf8")) as Messages;
+  // Bundled at build time (no file system on Cloudflare Workers)
+  const all: Record<string, Messages> = { en, sn, nd };
+  const targetMessages = all[target] ?? {};
+  const enMessages = all.en;
 
   const needsReview = Boolean(
     (targetMessages._meta as { needs_review?: boolean } | undefined)?.needs_review
