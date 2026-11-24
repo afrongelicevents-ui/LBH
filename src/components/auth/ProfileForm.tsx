@@ -8,7 +8,7 @@ import CountryField from "@/components/CountryField";
 import { updateMyProfile, type ProfileResult } from "@/app/[locale]/account/(settings)/settings/actions";
 
 const inputCls =
-  "w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink focus:border-forest focus:outline-none";
+  "w-full rounded-xl border border-line bg-paper px-4 py-3 text-sm text-ink focus:border-forest focus:outline-none";
 const labelCls = "mb-1.5 block text-sm font-semibold text-ink";
 
 export default function ProfileForm({

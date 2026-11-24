@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import Photo from "@/components/site/Photo";
-import { getPagePhotos } from "@/lib/sitePhotos";
+import DetailHero from "@/components/ws/DetailHero";
+import { INCL_ICONS } from "@/components/ws/GroupPage";
+import { PHOTOS } from "@/config/photos";
 import { routing } from "@/i18n/routing";
-import { INTERIORS_PATH, SERVICES, photoKeyFor, serviceBySlug, servicePath } from "@/config/services";
+import { INTERIORS_PATH, SERVICES, serviceBySlug, servicePath } from "@/config/services";
 
 type Params = { params: Promise<{ locale: string; slug: string }> };
 
@@ -29,87 +30,88 @@ export default async function ServiceDetailPage({ params }: Params) {
   setRequestLocale(locale);
   const t = await getTranslations("site.servicesPage");
   const ts = await getTranslations("site");
-  const photos = await getPagePhotos();
+  const tg = await getTranslations("site.groups");
   const k = s.key;
   const others = SERVICES.filter((o) => o.key !== k);
 
+  const group = s.group;
+  const photo = { land: PHOTOS.land, landBuying: PHOTOS.landBuying, materials: PHOTOS.materials, onsite: PHOTOS.onsite, reporting: PHOTOS.reporting }[k];
+  const n = SERVICES.findIndex((o) => o.key === k) + 1;
+
   return (
     <article data-testid="service-page" data-service={k}>
-      <header className="border-b border-rule">
-        <div className="ds-wrap grid gap-6 py-8 md:grid-cols-12 md:items-center md:gap-12 md:py-14">
-          <div className="md:col-span-6">
-            <nav aria-label={t("breadcrumb")} className="text-sm">
-              <Link href="/services" className="ds-link font-medium">{t("backAll")}</Link>
-            </nav>
-            <h1 className="ds-h2 mt-4 md:text-[3rem]">{t(`${k}.title`)}</h1>
-            <p className="ds-lead mt-4">{t(`${k}.text`)}</p>
-          </div>
-          <div className="md:col-span-6">
-            <Photo
-              photo={photos[photoKeyFor(k)]}
-              sizes="(min-width: 768px) 50vw, 100vw"
-              priority
-              className="h-[34svh] max-h-[40svh] w-full rounded-[3px] md:aspect-[4/3] md:h-auto md:max-h-none"
-              stockLabel={ts("stockPhoto")}
-            />
-          </div>
-        </div>
-      </header>
+      <DetailHero
+        photo={photo}
+        kicker={`${String(n).padStart(2, "0")} · ${tg(`${group}.title`).toUpperCase()}`}
+        title={t(`${k}.title`)}
+        backHref={`/services/${group}`}
+        backLabel={t("backAll")}
+        stockLabel={ts("stockPhoto")}
+        tall={false}
+      />
 
-      <div className="ds-wrap grid gap-10 py-10 md:grid-cols-12 md:gap-12 md:py-14">
+      <div className="ds-wrap pt-6 md:pt-12">
+        <p className="ws-dlead max-w-3xl">{t(`${k}.text`)}</p>
+      </div>
+
+      <div className="ds-wrap grid gap-10 py-8 md:grid-cols-12 md:gap-14 md:py-12">
         <section aria-labelledby="included" className="md:col-span-6">
-          <h2 id="included" className="ds-h3">{t("included")}</h2>
-          <ul className="mt-4 border-t border-rule text-[15px]">
-            {[1, 2, 3, 4].map((n) => (
-              <li key={n} className="flex gap-3 border-b border-rule py-3 text-charcoal">
-                <svg aria-hidden width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="mt-0.5 shrink-0 text-forest">
-                  <path d="M5 12.5l4.2 4.2L19 7" />
-                </svg>
-                {t(`${k}.p${n}`)}
+          <h2 id="included" className="text-[1.5rem] font-extrabold">{t("included")}</h2>
+          <ul className="ws-incl mt-4">
+            {[1, 2, 3, 4].map((i) => (
+              <li key={i}>
+                <div className="ic">{INCL_ICONS.check}</div>
+                <div className="self-center">
+                  <b>{t(`${k}.p${i}`)}</b>
+                </div>
               </li>
             ))}
           </ul>
-          <p className="mt-4 text-[15px] text-charcoal">
-            <span className="font-semibold">{t("youReceive")}</span> {t(`${k}.receive`)}
+          <p className="mt-4 text-[15px]">
+            <span className="font-bold">{t("youReceive")}</span> <span className="text-slate">{t(`${k}.receive`)}</span>
           </p>
         </section>
 
         <section aria-labelledby="how" className="md:col-span-6">
-          <h2 id="how" className="ds-h3">{t("howTitle")}</h2>
-          <ol className="mt-4 border-t border-rule">
-            {[1, 2, 3, 4].map((n) => (
-              <li key={n} className="flex gap-4 border-b border-rule py-3">
-                <span className="w-5 shrink-0 font-serif text-xl leading-6 text-stone-ink">{n}</span>
-                <span className="ds-body text-[15px] text-charcoal">{t(`${k}.how${n}`)}</span>
+          <h2 id="how" className="text-[1.5rem] font-extrabold">{t("howTitle")}</h2>
+          <ol className="ws-how mt-4">
+            {[1, 2, 3, 4].map((i) => (
+              <li key={i}>
+                <span className="n">{i}</span>
+                <span className="d !mt-0 self-center !text-[15px] !text-charcoal">{t(`${k}.how${i}`)}</span>
               </li>
             ))}
           </ol>
         </section>
       </div>
 
-      <section aria-labelledby="price" className="border-y border-rule bg-paper">
-        <div className="ds-wrap flex flex-col gap-5 py-8 md:flex-row md:items-center md:justify-between md:py-10">
+      <section aria-labelledby="price" className="ds-wrap">
+        <div className="flex flex-col gap-5 rounded-[28px] bg-paper p-6 md:flex-row md:items-center md:justify-between md:p-10">
           <div className="max-w-2xl">
-            <h2 id="price" className="ds-eyebrow">{t("priceLabel")}</h2>
-            <p className="mt-2 font-serif text-[1.5rem] text-charcoal" data-testid="price-note">{t("priceValue")}</p>
+            <h2 id="price" className="ws-kicker">{t("priceLabel")}</h2>
+            <p className="mt-2 font-serif text-[1.6rem] font-extrabold tracking-[-0.02em]" data-testid="price-note">{t("priceValue")}</p>
             <p className="ds-body mt-1.5">{t("priceText")}</p>
           </div>
-          <Link href="/book-a-call" className="ds-btn ds-btn-primary shrink-0" data-testid="service-book">
+          <Link href={`/book-a-call?service=${k === "landBuying" ? "land" : k === "materials" ? "materials" : k === "land" ? "land" : "not-sure"}`} className="ds-btn ds-btn-primary shrink-0" data-testid="service-book">
             {ts("bookConsultation")} <span aria-hidden>→</span>
           </Link>
         </div>
       </section>
 
-      <nav aria-labelledby="others" className="ds-wrap py-10 md:py-12">
-        <h2 id="others" className="ds-eyebrow">{t("others")}</h2>
-        <ul className="mt-4 grid gap-x-8 gap-y-2 sm:grid-cols-3">
+      <nav aria-labelledby="others" className="ds-wrap py-10 md:py-14">
+        <h2 id="others" className="ws-kicker">{t("others")}</h2>
+        <ul className="mt-3 grid gap-x-8 border-t border-rule sm:grid-cols-3">
           {others.map((o) => (
             <li key={o.key}>
-              <Link href={servicePath(o.key)} className="ds-link text-[15px]">{t(`${o.key}.title`)}</Link>
+              <Link href={servicePath(o.key)} className="flex min-h-12 items-center justify-between border-b border-rule font-semibold hover:text-forest">
+                {t(`${o.key}.title`)} <span aria-hidden className="text-slate">→</span>
+              </Link>
             </li>
           ))}
           <li>
-            <Link href={INTERIORS_PATH} className="ds-link text-[15px]">{ts("groups.items.interiors")}</Link>
+            <Link href={INTERIORS_PATH} className="flex min-h-12 items-center justify-between border-b border-rule font-semibold hover:text-forest">
+              {ts("groups.items.interiors")} <span aria-hidden className="text-slate">→</span>
+            </Link>
           </li>
         </ul>
       </nav>

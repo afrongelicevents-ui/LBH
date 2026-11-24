@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { requireRole } from "@/lib/auth/guard";
-import { getSitePhotos } from "@/lib/sitePhotos";
+import { getCustomLogo } from "@/lib/sitePhotos";
+import { SiteTabBar } from "@/components/ws/TabBar";
 import SiteHeader from "@/components/site/SiteHeader";
 import SiteFooter from "@/components/site/SiteFooter";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -23,11 +24,11 @@ export default async function AccountLayout({
   setRequestLocale(locale);
   const { profile, supabase } = await requireRole(locale, ["client"]);
   const hidden = emptySections(await loadAccount(supabase));
-  const [photos, showProjects] = await Promise.all([getSitePhotos(), showProjectsInNav()]);
+  const [logo, showProjects] = await Promise.all([getCustomLogo(), showProjectsInNav()]);
   return (
     <div className="ds-page flex min-h-screen flex-1 flex-col">
       <SiteHeader
-        logo={photos.logo}
+        logo={logo}
         showProjects={showProjects}
         hiddenAccountKeys={hidden}
         initialProfile={{ id: profile.id, role: profile.role, full_name: profile.full_name, email: profile.email, staff_kind: profile.staff_kind }}
@@ -35,7 +36,8 @@ export default async function AccountLayout({
       <main className="flex-1 pb-16">
         <div className="ds-wrap pt-6 md:pt-10">{children}</div>
       </main>
-      <SiteFooter logo={photos.logo} />
+      <SiteFooter logo={logo} />
+      <SiteTabBar initialProfile={{ id: profile.id, role: profile.role, full_name: profile.full_name, email: profile.email, staff_kind: profile.staff_kind }} />
       <WhatsAppButton />
     </div>
   );

@@ -1,5 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import Photo from "@/components/site/Photo";
+import { PHOTOS } from "@/config/photos";
 import { requireRole } from "@/lib/auth/guard";
 import { REQUEST_TIMELINE, timelineIndex, type RequestStatus } from "@/lib/status";
 import { formatCents } from "@/lib/money";
@@ -22,6 +24,7 @@ export default async function AccountDashboard({
   setRequestLocale(locale);
   const { supabase, user, profile } = await requireRole(locale, ["client"]);
   const t = await getTranslations("account.dashboard");
+  const tw = await getTranslations("site.ws");
   const ts = await getTranslations("portal.status");
   const tn = await getTranslations("site.account");
 
@@ -90,7 +93,7 @@ export default async function AccountDashboard({
         </div>
         <div className="px-3 py-6 md:px-6 md:py-8">
           <dt className="text-xs font-semibold tracking-wider text-slate uppercase">{t("waiting")}</dt>
-          <dd className={`mt-1 font-serif text-3xl md:text-4xl ${approvals?.length ? "text-[#a0461a]" : ""}`} data-testid="sum-waiting">{approvals?.length ?? 0}</dd>
+          <dd className={`mt-1 font-serif text-3xl md:text-4xl ${approvals?.length ? "text-red-700" : ""}`} data-testid="sum-waiting">{approvals?.length ?? 0}</dd>
         </div>
         <div className="pl-3 py-6 md:pl-6 md:py-8">
           <dt className="text-xs font-semibold tracking-wider text-slate uppercase">{t("balance")}</dt>
@@ -102,8 +105,8 @@ export default async function AccountDashboard({
         <div className="space-y-12 lg:col-span-8">
           {/* attention */}
           {(approvals?.length ?? 0) > 0 && (
-            <section aria-labelledby="attention" className="border-l-2 border-[#a0461a] bg-paper px-5 py-4" data-testid="attention">
-              <h2 id="attention" className="text-sm font-semibold text-[#a0461a]">{t("attention", { count: approvals!.length })}</h2>
+            <section aria-labelledby="attention" className="border-l-2 border-red-600 bg-paper px-5 py-4" data-testid="attention">
+              <h2 id="attention" className="text-sm font-semibold text-red-700">{t("attention", { count: approvals!.length })}</h2>
               <ul className="mt-2 space-y-1.5">
                 {approvals!.map((a) => (
                   <li key={a.id} className="flex flex-wrap items-baseline justify-between gap-2 text-[15px]">
@@ -122,7 +125,34 @@ export default async function AccountDashboard({
               <span className="text-sm text-slate">{t("count", { count: all.length })}</span>
             </div>
             {all.length === 0 ? (
-              <p className="ds-body mt-4">{t("noProjects")}</p>
+              <div className="mt-4 space-y-6" data-testid="welcome-pick">
+                <div>
+                  <h3 className="text-[1.75rem] font-extrabold">{name ? tw("welcome", { name }) : tw("welcomeNoName")}</h3>
+                  <p className="ws-lede mt-1">{tw("welcomeIntro")}</p>
+                </div>
+                <div className="grid gap-2.5">
+                  {([
+                    ["land", "/account/projects/new-land", PHOTOS.welcomeLand],
+                    ["build", "/book-a-call?service=materials", PHOTOS.welcomeBuild],
+                    ["finish", "/services/interiors#book", PHOTOS.welcomeFinish],
+                  ] as const).map(([k, href, photo]) => (
+                    <Link key={k} href={href} className="ws-pick">
+                      <span className="relative block h-[72px] w-[88px] overflow-hidden rounded-[14px]">
+                        <Photo photo={photo} sizes="88px" hideCredit className="absolute inset-0" />
+                      </span>
+                      <span>
+                        <b className="block text-base">{tw(`pick.${k}T`)}</b>
+                        <span className="text-[13px] text-slate">{tw(`pick.${k}`)}</span>
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+                <div className="ws-empty">
+                  <b className="text-base">{tw("noProjectsTitle")}</b>
+                  <span className="text-sm leading-relaxed text-slate">{t("noProjects")} {tw("noProjectsText")}</span>
+                  <Link href="/sample/build-account" className="mt-1.5 text-sm font-bold text-forest">{tw("seeSampleBa")}</Link>
+                </div>
+              </div>
             ) : (
               <ul className="mt-4 border-t border-rule" data-testid="project-list">
                 {all.map((r) => {
@@ -165,7 +195,7 @@ export default async function AccountDashboard({
               <ol className="mt-4 border-l border-rule" data-testid="updates">
                 {events.map((e, i) => (
                   <li key={i} className="relative pb-5 pl-6 last:pb-0">
-                    <span aria-hidden className={`absolute top-1.5 -left-[4px] h-2 w-2 rounded-full ${e.tone === "action" ? "bg-[#a0461a]" : "bg-forest"}`} />
+                    <span aria-hidden className={`absolute top-1.5 -left-[4px] h-2 w-2 rounded-full ${e.tone === "action" ? "bg-red-600" : "bg-forest"}`} />
                     <Link href={e.href} className="text-[15px] text-charcoal hover:text-forest">{e.text}</Link>
                     <p className="text-xs text-slate">{fmtDate(e.at)}</p>
                   </li>
@@ -177,22 +207,22 @@ export default async function AccountDashboard({
 
         {/* side column */}
         <aside className="space-y-10 lg:col-span-4">
-          <section aria-labelledby="ba" className="bg-forest p-6 text-[#e8e4d8]">
-            <h2 id="ba" className="ds-eyebrow text-[#c9bfa6]">{tn("buildAccount")}</h2>
-            <p className="mt-3 text-sm text-[#c9c3b3]">{t("baBalance")}</p>
-            <p className="font-serif text-4xl text-white">{formatCents(M.balance(ba))}</p>
-            <dl className="mt-5 grid grid-cols-2 gap-4 border-t border-white/15 pt-4 text-sm">
+          <section aria-labelledby="ba" className="ws-money">
+            <h2 id="ba" className="ds-eyebrow">{tn("buildAccount")}</h2>
+            <p className="mt-3 text-sm text-slate">{t("baBalance")}</p>
+            <p className="ws-big num mt-1 text-[2.75rem]">{formatCents(M.balance(ba))}</p>
+            <dl className="mt-5 grid grid-cols-2 gap-4 border-t border-rule pt-4 text-sm">
               <div>
-                <dt className="text-[#c9c3b3]">{t("baIn")}</dt>
-                <dd className="mt-0.5 font-medium text-white">{formatCents(M.moneyIn(ba))}</dd>
+                <dt className="text-slate">{t("baIn")}</dt>
+                <dd className="num mt-0.5 font-bold">{formatCents(M.moneyIn(ba))}</dd>
               </div>
               <div>
-                <dt className="text-[#c9c3b3]">{t("baSpent")}</dt>
-                <dd className="mt-0.5 font-medium text-white">{formatCents(M.spent(ba))}</dd>
+                <dt className="text-slate">{t("baSpent")}</dt>
+                <dd className="num mt-0.5 font-bold">{formatCents(M.spent(ba))}</dd>
               </div>
             </dl>
-            {M.onItsWay(ba) > 0 && <p className="mt-3 text-xs text-[#c9c3b3]">{t("baOnWay", { amount: formatCents(M.onItsWay(ba)) })}</p>}
-            <Link href="/account/build-account" className="ds-btn ds-btn-light mt-6 w-full text-sm">{t("baOpen")}</Link>
+            {M.onItsWay(ba) > 0 && <p className="mt-3 text-xs text-slate">{t("baOnWay", { amount: formatCents(M.onItsWay(ba)) })}</p>}
+            <Link href="/account/build-account" className="ds-btn ds-btn-primary mt-6 w-full text-sm">{t("baOpen")}</Link>
           </section>
 
           <section aria-labelledby="shortcuts">

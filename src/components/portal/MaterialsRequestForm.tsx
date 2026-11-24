@@ -13,7 +13,7 @@ import { useDirectUpload } from "@/lib/useDirectUpload";
 import { ArrowRightIcon, CloseIcon } from "@/components/icons";
 
 const inputCls =
-  "w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm text-ink focus:border-forest focus:outline-none";
+  "w-full rounded-xl border border-line bg-paper px-3 py-2.5 text-sm text-ink focus:border-forest focus:outline-none";
 const labelCls = "mb-1.5 block text-sm font-semibold text-ink";
 
 interface Item {

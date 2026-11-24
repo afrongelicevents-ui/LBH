@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { ShieldCheckIcon } from "@/components/icons";
 
 const inputCls =
-  "w-full rounded-xl border border-line bg-white px-4 py-3 text-center text-lg tracking-[0.3em] text-ink focus:border-forest focus:outline-none";
+  "w-full rounded-xl border border-line bg-paper px-4 py-3 text-center text-lg tracking-[0.3em] text-ink focus:border-forest focus:outline-none";
 
 /**
  * 2FA for staff (brief §11): enroll a TOTP factor on first login,

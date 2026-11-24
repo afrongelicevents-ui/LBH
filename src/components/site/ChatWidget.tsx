@@ -13,7 +13,7 @@ import ChatAssistant from "./ChatAssistant";
 
 const KEY = "lbh-chat";
 const SEEN = "lbh-chat-seen";
-const inputCls = "w-full rounded-[4px] border border-rule bg-white px-3 py-2 text-[15px] text-charcoal focus:border-forest focus:outline-none";
+const inputCls = "w-full rounded-[4px] border border-rule bg-paper px-3 py-2 text-[15px] text-charcoal focus:border-forest focus:outline-none";
 type Saved = { chatId: string; token: string };
 
 function readSaved(): Saved | null {
@@ -112,11 +112,11 @@ export default function ChatWidget() {
           onClick={openChat}
           aria-label={t("open")}
           data-testid="chat-open"
-          className="chat-float fixed right-0 bottom-24 z-50 flex h-11 w-[30px] items-center justify-center rounded-l-full bg-forest text-white shadow-lg sm:right-6 sm:bottom-6 sm:h-12 sm:w-auto sm:gap-2 sm:rounded-full sm:px-5 sm:text-[15px] sm:font-semibold sm:hover:bg-[#123227]"
+          className="chat-float fixed right-0 bottom-24 z-50 flex h-11 w-[30px] items-center justify-center rounded-l-full bg-forest text-white shadow-lg sm:right-6 sm:bottom-6 sm:h-12 sm:w-auto sm:gap-2 sm:rounded-full sm:px-5 sm:text-[15px] sm:font-semibold sm:hover:bg-forest-dark"
         >
           <ChatBubbleIcon className="h-[18px] w-[18px] sm:h-5 sm:w-5" />
           <span className="hidden sm:inline">{t("open")}</span>
-          {unread && <span className="absolute top-1 left-1 h-2.5 w-2.5 rounded-full bg-[#d4553b] ring-2 ring-white sm:top-0 sm:right-1 sm:left-auto" data-testid="chat-unread" />}
+          {unread && <span className="absolute top-1 left-1 h-2.5 w-2.5 rounded-full bg-red-600 ring-2 ring-white sm:top-0 sm:right-1 sm:left-auto" data-testid="chat-unread" />}
         </button>
       )}
 
@@ -191,7 +191,7 @@ export default function ChatWidget() {
 function WhatsAppOption({ href }: { href: string }) {
   const t = useTranslations("site.chat");
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-[4px] border border-rule bg-white px-4 py-2.5 text-sm font-semibold text-charcoal hover:border-[#25d366]" data-testid="chat-whatsapp">
+    <a href={href} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-[4px] border border-rule bg-paper px-4 py-2.5 text-sm font-semibold text-charcoal hover:border-[#25d366]" data-testid="chat-whatsapp">
       <WhatsAppIcon width={18} height={18} className="text-[#25d366]" />
       {t("whatsapp")}
     </a>
@@ -238,7 +238,7 @@ function StartForm({ onStarted, wa, defaultMessage = "" }: { onStarted: (r: Extr
       <input type="hidden" name="page" value={pathname} />
       <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
       {err && (
-        <p role="alert" className="text-sm font-semibold text-[#a0461a]">
+        <p role="alert" className="text-sm font-semibold text-red-700">
           {t(`errors.${["contact", "rate", "network", "invalid"].includes(err) ? err : "error"}` as never)}
         </p>
       )}
@@ -307,7 +307,7 @@ function Thread({
           <div key={m.id} className={`flex ${m.author === "visitor" ? "justify-end" : "justify-start"}`}>
             <div
               className={`max-w-[85%] rounded-[8px] px-3.5 py-2.5 text-[15px] leading-snug whitespace-pre-wrap ${
-                m.author === "visitor" ? "bg-forest text-white" : m.author === "auto" ? "border border-rule bg-paper text-charcoal" : "border border-rule bg-white text-charcoal"
+                m.author === "visitor" ? "bg-forest text-white" : m.author === "auto" ? "border border-rule bg-paper text-charcoal" : "border border-rule bg-paper text-charcoal"
               }`}
               data-testid={`chat-msg-${m.author}`}
             >
@@ -338,7 +338,7 @@ function Thread({
             {t("send")}
           </button>
         </div>
-        {failed && <p role="alert" className="mt-1.5 text-xs font-semibold text-[#a0461a]">{t("errors.network")}</p>}
+        {failed && <p role="alert" className="mt-1.5 text-xs font-semibold text-red-700">{t("errors.network")}</p>}
         <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-xs text-slate">
           <span>{t("emailReplyNote")}</span>
           <button type="button" onClick={onReset} className="underline hover:text-charcoal" data-testid="chat-new">{t("newChat")}</button>

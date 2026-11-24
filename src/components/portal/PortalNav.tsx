@@ -37,22 +37,19 @@ export default function PortalNav({ items, label }: { items: NavItem[]; label: s
               href={item.href}
               ref={isActive ? activeRef : undefined}
               aria-current={isActive ? "page" : undefined}
-              className={`relative flex min-w-[76px] shrink-0 flex-col items-center gap-1 rounded-2xl px-3 py-2 text-[12px] font-semibold whitespace-nowrap sm:min-w-[92px] sm:text-[13px] ${
-                isActive ? "bg-forest text-white shadow-(--shadow-card)" : "text-ink hover:bg-offwhite"
+              className={`relative flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-[13px] font-semibold whitespace-nowrap ${
+                isActive ? "bg-charcoal text-ivory" : "text-muted hover:bg-sand hover:text-ink"
               }`}
             >
               <span className="relative">
-                <Icon size={20} />
+                <Icon size={18} />
                 {item.badge ? (
-                  <span className="absolute -top-1.5 -right-2.5 min-w-[1.1rem] rounded-full bg-[#c8402c] px-1 text-center text-[10px] leading-[1.1rem] font-bold text-white" data-testid="nav-badge" aria-label={`${item.badge}`}>
+                  <span className="absolute -top-1.5 -right-2.5 min-w-[1.1rem] rounded-full bg-red-600 px-1 text-center text-[10px] leading-[1.1rem] font-bold text-white" data-testid="nav-badge" aria-label={`${item.badge}`}>
                     {item.badge > 99 ? "99+" : item.badge}
                   </span>
                 ) : null}
               </span>
               {item.label}
-              {isActive && (
-                <span aria-hidden className="absolute -bottom-2 left-1/2 h-1 w-3/4 -translate-x-1/2 rounded-full bg-ok-line" />
-              )}
             </Link>
           );
         })}
@@ -60,7 +57,7 @@ export default function PortalNav({ items, label }: { items: NavItem[]; label: s
       </nav>
       <span
         aria-hidden
-        className="pointer-events-none absolute top-0 right-0 bottom-2 w-8 bg-gradient-to-l from-white to-transparent sm:hidden"
+        className="pointer-events-none absolute top-0 right-0 bottom-2 w-8 bg-gradient-to-l from-ivory to-transparent sm:hidden"
       />
     </div>
   );

@@ -21,7 +21,12 @@
     "closeMenu": "Vhara menyu",
     "language": "Mutauro",
     "learnMore": "Dzidza zvakawanda",
-    "createAccount": "Vhura akaundi"
+    "createAccount": "Vhura akaundi",
+    "lightMode": "Shandura kuchiedza",
+    "darkMode": "Shandura kurima",
+    "themeRow": "Chiedza / rima",
+    "light": "Chiedza",
+    "dark": "Rima"
   },
   "nav": {
     "services": "Mabasa edu",
@@ -356,7 +361,9 @@
       "signOut": "Buda",
       "menu": "Vhura menyu",
       "closeMenu": "Vhara menyu",
-      "website": "Webhusaiti yeLBH"
+      "website": "Webhusaiti yeLBH",
+      "settings": "Zvirongwa",
+      "menuTab": "Menyu"
     },
     "nav": {
       "dashboard": "Zvikumbiro zvangu",
@@ -1093,7 +1100,9 @@
       "kindStockHint": "une rezinesi kubva kumwe — unoratidzwa ne\"Stock photo\" necredit yawo.",
       "kindNone": "Wakaiswa zvinyorwa zvisati zvavapo — hauratidzwi pamapeji matsva",
       "creditLabel": "Credit",
-      "creditPlaceholder": "semuenzaniso Zambia · Thatlowdownwoman, CC BY-SA 4.0, Wikimedia Commons"
+      "creditPlaceholder": "semuenzaniso Zambia · Thatlowdownwoman, CC BY-SA 4.0, Wikimedia Commons",
+      "savedPaused": "Saved. Not shown on the website yet — see the note at the top.",
+      "pausedNote": "The website currently shows the Warm Sand design photos for the main spots (home, land, materials, on-site, reporting, interiors). Photos you save here are kept and appear again when admin photos are switched on (USE_ADMIN_UPLOADED_PHOTOS in src/config/photos.ts). The interiors before/after gallery and the logo always use the photos saved here."
     },
     "ba": {
       "backToSettings": "Zvirongwa",
@@ -2614,6 +2623,276 @@
           "error": "Handina kukwanisa kupindura izvozvi — edza zvakare, kana taura nemunhu."
         }
       }
+    },
+    "tabs": {
+      "label": "Menyu huru",
+      "home": "Kumba",
+      "services": "Mabasa",
+      "book": "Bhuka runhare rwemahara",
+      "how": "Zvinofamba sei",
+      "signIn": "Pinda",
+      "live": "Live",
+      "myBuild": "Kuvaka kwangu",
+      "myArea": "Account yangu"
+    },
+    "language": "Mutauro",
+    "sampleBuildAccount": "Ona muenzaniso weBuild Account",
+    "sampleLive": "Ona muenzaniso wekamera live",
+    "ws": {
+      "liveChip": "MUENZANISO WEKAMERA LIVE · {time} CAT",
+      "heroTitleA": "Vaka imba yako",
+      "heroTitleB": "kumusha.",
+      "heroText": "Stendi inoongororwa. Zvivakwa zvinoverengwa. Nhanho yega yega inotorwa mifananidzo. Iwe unobvumira, chero kwaunogara.",
+      "heroBook": "Bhuka runhare rwemahara",
+      "heroWatch": "Zvinofamba sei",
+      "pillars": {
+        "land": "Ongorora utenge",
+        "build": "Kutarisira pasaiti",
+        "finish": "Dhizaini nemidziyo"
+      },
+      "storyKicker": "KUBVA KU LONDON, JOBURG KANA DALLAS",
+      "storyTitle": "Kuvaka kwako kwese, muhomwe mako.",
+      "storyText": "Bhajeti, marisiti, mifananidzo nenhanho inotevera yakamirira mvumo yako. Account imwe, nguva dzose iine zvitsva.",
+      "sampleCardLabel": "BUILD ACCOUNT",
+      "sample": "MUENZANISO",
+      "sampleProject": "Imba yemhuri · Ruwa",
+      "leftToSpend": "Mari yasara",
+      "ofBudget": "pa{budget}",
+      "needsOk": "Inoda mvumo yako",
+      "whatKicker": "ZVATINOITA",
+      "whatTitle": "Kubva pastendi kusvika pakiyi.",
+      "tile": {
+        "land": "Title deed inoongororwa usati wabhadhara kana sendi.",
+        "build": "Timu yakaongororwa, mutariri, saga rega rega rinoverengwa.",
+        "finish": "Ona kamuri yega yega mu3D, tozoisa midziyo."
+      },
+      "tileShort": {
+        "land": "Kuongorora nekutenga wakachengeteka",
+        "build": "Zvivakwa, timu nemagwaro",
+        "finish": "Dhizaini ye3D nemidziyo"
+      },
+      "safeKicker": "MARI YAKO INOCHENGETEKA SEI",
+      "safeTitle": "Iwe unobvumira. Tozobhadhara.",
+      "safe": {
+        "s1t": "Runhare rwemahara",
+        "s1": "Tinobvumirana purani, bhajeti nenhanho.",
+        "s2t": "Tinoongorora totarisira",
+        "s2": "Timu yedu iri pasaiti. Zvivakwa zvinoverengwa kana zvasvika.",
+        "s3t": "Unoona umbowo",
+        "s3": "Mifananidzo ine zuva nerisiti yega yega muaccount yako.",
+        "s4t": "Unobvumira nhanho yega yega",
+        "s4": "Vavaki vanobhadharwa chete kana wati hongu."
+      },
+      "fullProcess": "Ona nzira yese",
+      "liveKicker": "KAMERA LIVE · ICHAUYA",
+      "liveTitle": "Tarisa saiti yako chero nguva.",
+      "liveText": "Kamera live yepasaiti iri kuuya kumapurojekiti eLBH. Hapachina kumirira hama kuti itumire mifananidzo. Hezvino muenzaniso wekuti ichaita sei.",
+      "liveOpen": "Ona muenzaniso wekamera live",
+      "closingTitle": "Kiyi dzako. Imba yako.",
+      "closingText": "Tanga nerunhare rwemahara — runhare kana vhidhiyo, maminitsi 30–45.",
+      "photoNote": "Mifananidzo iyi ndeyekuchengetedza nzvimbo kusvika LBH yatora mifananidzo yayo.",
+      "servicesTitle": "Mabasa edu",
+      "servicesIntro": "Sarudza rimwe, kana kuti tikutakure kubva pastendi kusvika pakiyi.",
+      "back": "Dzokera",
+      "land": {
+        "kicker": "01 · STENDI",
+        "title": "Ziva kuti ndeyechokwadi usati wabhadhara.",
+        "lead": "Vanhu vazhinji vari kunze kwenyika vanotengeswa stendi dzisipo, kana dzisiri dzemutengesi. Isu tinotanga taongorora.",
+        "i1t": "Kuongorora title deed",
+        "i1": "Inotsvakwa kuDeeds Office muzita remutengesi.",
+        "i2t": "Kushanyira stendi",
+        "i2": "Tinowana zvipandi totora mifananidzo yestendi ine zuva neGPS.",
+        "i3t": "Mhinduro yakajeka",
+        "i3": "Yakachengeteka kutenga, kana kuti sei isina, nemashoko ari nyore.",
+        "cta": "Kumbira kuongororwa kwestendi"
+      },
+      "build": {
+        "kicker": "02 · KUVAKA",
+        "title": "Hapana kupfupikisa. Hapana masaga anoshaikwa.",
+        "lead": "Timu yakaongororwa ndiyo inovaka. Mutariri wedu anoongorora basa, anoverenga zvivakwa uye anokuzivisa.",
+        "i1t": "Zvivakwa zvinotengwa nesu",
+        "i1": "Mutengo wakanaka, zvinosvitswa, zvinoverengwa kana zvasvika.",
+        "i2t": "Mutariri wepasaiti",
+        "i2": "Musanganiswa wakakodzera, simbi yakakodzera, cement yakakwana.",
+        "i3t": "Mifananidzo ine zuva nemvumo yenhanho",
+        "i3": "Ona nhanho yega yega mumifananidzo; bvumira imwe neimwe isati yabhadharwa.",
+        "cta": "Ronga kuvaka kwangu"
+      },
+      "finish": {
+        "kicker": "03 · KUPEDZISA",
+        "title": "Ona kamuri yega yega usati watenga."
+      },
+      "inThisGroup": "Mubasa iri",
+      "howTitle": "Zvinofamba sei",
+      "howIntro": "Nhanho nhanhatu, dzakafanana kumutengi wese. Hapana chinofamba kusvika wati hongu.",
+      "how": {
+        "s1t": "Runhare rwemahara",
+        "s1": "Maminitsi 30–45, runhare kana vhidhiyo. Tiudze nezvestendi yako, zvirongwa zvako nebhajeti yako.",
+        "s2t": "Kotesheni yako yakanyorwa",
+        "s2": "Basa rega rega rakasiyana, saka unowana kotesheni yakanyorwa muaccount yako. Hapana zvinokushamisa.",
+        "s3t": "Bvuma ubhadhare dhipoziti",
+        "s3": "Bhadhara nekadhi, EcoCash kana bank transfer kubva kunze kwenyika. Unowana risiti nguva dzose.",
+        "s4t": "Timu yedu inoenda pasaiti",
+        "s4": "Vanhu vakaongororwa vane mifananidzo ine zuva neGPS. Mari yekuwedzera inotanga yada mvumo yako.",
+        "s5t": "Unoona umbowo",
+        "s5": "Gwaro rakajeka kana nyaya itsva yenhanho ine mifananidzo, marisiti nezvakawanikwa nemashoko ari nyore.",
+        "s6t": "Iwe unobvumira, tozobhadhara",
+        "s6": "Mari yasara kana nhanho inotevera zvinofamba chete kana wabvumira."
+      },
+      "payTitle": "Nzira dzekubhadhara",
+      "pay": {
+        "cardT": "Kadhi",
+        "card": "Visa neMastercard, kusanganisira makadhi ekunze",
+        "mobileT": "Mobile money",
+        "mobile": "EcoCash, OneMoney, InnBucks",
+        "abroadT": "Kubva kunze kwenyika",
+        "abroad": "Remitly, WorldRemit kana bank transfer, ine reference yako neumbowo"
+      },
+      "faqTitle": "Mibvunzo",
+      "faq": {
+        "q1": "Sei musingaratidzi mitengo?",
+        "a1": "Stendi yega yega nekuvaka kwega kwega zvakasiyana: chinhambwe, saizi nezvivakwa zvinoshandura mutengo. Mushure merunhare rwemahara unowana kotesheni yakanyorwa ine mutsara wega wega wakatsanangurwa.",
+        "q2": "Ndinoziva sei kuti mari yangu yakachengeteka?",
+        "a2": "Unobhadhara nenhanho. Vavaki vanobhadharwa chete kana wabvumira nhanho yega yega, uye kutenga kwese kune mufananidzo werisiti muaccount yako.",
+        "q3": "Ndiani anoenda pasaiti yangu?",
+        "a3": "Nhengo dzetimu yeLBH nemakontrakta vakaongororwa. Kushanya kwese kunonyorwa nemifananidzo ine zuva neGPS, uye hapana anosaina basa rake pachake.",
+        "q4": "Ndinofanira kunge ndiri muZimbabwe here?",
+        "a4": "Kwete. Vazhinji vevatengi vedu vanogara kunze kwenyika. Zvese zvinoitika muaccount yako, muchat uye neemail."
+      },
+      "moreFaq": "Mimwe mibvunzo nemhinduro",
+      "aboutKicker": "NEZVE LBH",
+      "aboutTitle": "Sei tiripo.",
+      "aboutLead": "VaZimbabwe vazhinji vari kunze kwenyika vakatumira mari kumusha yeimba isina kuzombovakwa, kana kutenga stendi isiri yechokwadi. LBH ndiyo meso akatendeka ari pasi ikoko.",
+      "rulesTitle": "Mitemo yedu",
+      "rules": {
+        "r1t": "Umbowo hwezvose",
+        "r1": "Mifananidzo ine zuva nemarisiti pakushanya kwese nekutenga kwese.",
+        "r2t": "Iwe unotanga wabvumira",
+        "r2": "Hapana mari yekuwedzera kana mubhadharo wenhanho usina mvumo yako.",
+        "r3t": "Hapana anoongorora basa rake",
+        "r3": "Anotenga zvivakwa haambozvisaini."
+      },
+      "talkTitle": "Taura nesu",
+      "talkChat": "Chat live",
+      "talkChatText": "Baya bhatani rechat papeji ipi neipi.",
+      "sampleBarTitle": "Uyu muenzaniso",
+      "sampleLiveText": "Makamera live ari kuuya kumapurojekiti eLBH. Uchaona rako kana kuvaka kwako kwatanga.",
+      "sampleBaText": "Izvi ndizvo zvichaita Build Account yako: bhajeti, nhanho, marisiti nemvumo.",
+      "createFree": "Vhura account yemahara",
+      "liveTitlePage": "Saiti live",
+      "cams": {
+        "c1": "Saiti",
+        "c2": "Madziro",
+        "c3": "Sitoro"
+      },
+      "camName": "KAMERA {n} · {name}",
+      "camPlace": "Ruwa · Stand 4521",
+      "todayOnSite": "Nhasi pasaiti",
+      "feed": {
+        "f1t": "Timu yasvika",
+        "f1": "Vavaki 6, mutariri 1",
+        "f2t": "Cement yasvitswa",
+        "f2": "Masaga 40 averengwa nekutorwa mifananidzo",
+        "f3t": "Window level yaongororwa",
+        "f3": "Mutariri asaina zvidhinha",
+        "f4t": "Gwaro rezuva ratumirwa",
+        "f4": "Mifananidzo 12 yaiswa muaccount yako"
+      },
+      "myBuildTitle": "Kuvaka kwangu",
+      "leftToSpendCaps": "IMBA YEMHURI · RUWA · MARI YASARA",
+      "ofABudget": "pabhajeti ye{budget}",
+      "spentAmount": "Zvashandiswa {amount}",
+      "stagesTitle": "Nhanho",
+      "stagesCount": "{n} pa6",
+      "stages": {
+        "foundation": "Faundesheni",
+        "slab": "Slab",
+        "window": "Window level",
+        "wallplate": "Wall plate",
+        "roof": "Denga",
+        "finishes": "Kupedzisa"
+      },
+      "stageNotes": {
+        "paid1": "Yabhadharwa · mifananidzo 18",
+        "paid2": "Yabhadharwa · mifananidzo 22",
+        "now": "Mutariri asaina",
+        "next": "Inotevera",
+        "roof": "Matanda nemashizha",
+        "finishes": "Purasita, mataira, pendi"
+      },
+      "state": {
+        "done": "YAPERA",
+        "soon": "YAVA PEDYO",
+        "later": "GARE GARE"
+      },
+      "review": "Ongorora",
+      "receiptsTitle": "Marisiti achangopfuura",
+      "receipts": {
+        "r1t": "Cement · masaga 40",
+        "r1": "Yasvitswa ikaverengwa",
+        "r2t": "Zvidhinha · 14,000",
+        "r2": "Zviri pasaiti · zvasara 16,000",
+        "r3t": "Basa · Slab",
+        "r3": "Rakabhadharwa mushure memvumo yako"
+      },
+      "approveTitle": "Bvumira Window level?",
+      "approveChecks": {
+        "c1": "Mifananidzo 12 ine zuva yaiswa",
+        "c2": "Mutariri asaina zvidhinha",
+        "c3": "Zvivakwa zvashandiswa zvinoenderana nemarisiti"
+      },
+      "approveNote": "MuBuild Account yako chaiyo, kubvumira kunoburitsa mubhadharo wenhanho kuvavaki. Muenzaniso uyu haushanduri chinhu.",
+      "notYet": "Kwete parizvino",
+      "approveStage": "Bvumira nhanho",
+      "approvedToast": "Muenzaniso chete: muaccount yako, izvi zvaibvumira nhanho iyi.",
+      "signinTitle": "Mauya zvakare",
+      "newToLbh": "Uri mutsva kuLBH?",
+      "createFreeAccount": "Vhura account yemahara",
+      "signupTitle": "Vhura account yako",
+      "signupIntro": "Mahara. Makotesheni ako, mibhadharo, magwaro nenyaya itsva dzekuvaka zvese zviri pano.",
+      "haveAccount": "Watova neaccount here?",
+      "welcome": "Titambire, {name}!",
+      "welcomeNoName": "Titambire!",
+      "welcomeIntro": "Account yako yagadzirira. Unoda kutanga nei?",
+      "pick": {
+        "landT": "Ongorora kana kutenga stendi",
+        "land": "Kuongorora title deed nekushanyira stendi",
+        "buildT": "Vaka imba yangu",
+        "build": "Zvivakwa, timu nenyaya itsva dzenhanho",
+        "finishT": "Pedzisa uise midziyo",
+        "finish": "Makamuri e3D nemidziyo"
+      },
+      "yourAccount": "Account yako",
+      "noProjectsTitle": "Hapana mapurojekiti parizvino",
+      "noProjectsText": "Mushure merunhare rwemahara, kotesheni yako inouya pano. Ipapo Build Account yako inozadzwa nenhanho, marisiti nemifananidzo.",
+      "seeSampleBa": "Ona muenzaniso weBuild Account →",
+      "bookTitle": "Bhuka runhare rwemahara",
+      "bookNote": "Maminitsi 30–45, runhare kana vhidhiyo. Hapana kubhadhara kunodiwa.",
+      "whatNeed": "Unoda chii?",
+      "pickTime": "Sarudza nguva (nguva yeZimbabwe)",
+      "slots": {
+        "morning": "Mangwanani",
+        "morningHint": "8am – 12pm",
+        "afternoon": "Masikati",
+        "afternoonHint": "12pm – 5pm",
+        "evening": "Manheru",
+        "eveningHint": "5pm – 8pm",
+        "weekend": "Weekend",
+        "weekendHint": "Mugovera kana Svondo"
+      },
+      "callBy": "Rudzi rwerunhare",
+      "requestCall": "Kumbira runhare rwangu",
+      "doneSignup": "Vhura account yako yemahara",
+      "backHome": "Dzokera kumba",
+      "chips": {
+        "land": "Stendi",
+        "materials": "Zvivakwa",
+        "monitoring": "Kushanyira saiti",
+        "camera": "Kamera live (ichauya)",
+        "not-sure": "Handisati ndaziva"
+      },
+      "finishHint": "Uri kupedzisa nekuisa midziyo mumba mako?",
+      "finishLink": "Bhuka kubvunzana nezvemukati meimba"
     }
   }
 }

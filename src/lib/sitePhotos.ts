@@ -3,6 +3,7 @@ import { cache } from "react";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { DEFAULT_PHOTOS, sitePhotoUrl, type SitePhotoSlot, type SitePhotoUrls } from "@/config/sitePhotos";
 import { STOCK_PHOTOS, type PagePhotoKey } from "@/config/stockPhotos";
+import { USE_ADMIN_UPLOADED_PHOTOS } from "@/config/photos";
 import type { PhotoSource } from "@/components/site/Photo";
 
 export interface StoredSitePhoto {
@@ -33,7 +34,10 @@ export const loadStoredSitePhotos = cache(async (): Promise<StoredSitePhoto[]> =
 /** URL for every slot: the admin's photo if set, else the built-in one. */
 export const getSitePhotos = cache(async (): Promise<SitePhotoUrls> => {
   const urls: SitePhotoUrls = { ...DEFAULT_PHOTOS };
+  const pageSlots = ["hero", "land", "materials", "onsite", "reporting", "interiors"];
   for (const p of await loadStoredSitePhotos()) {
+    // page photos follow src/config/photos.ts unless admin uploads are switched on there
+    if (!USE_ADMIN_UPLOADED_PHOTOS && pageSlots.includes(p.slot)) continue;
     if (p.slot in urls) urls[p.slot] = sitePhotoUrl(p.storage_path);
   }
   return urls;
@@ -46,6 +50,7 @@ export const getSitePhotos = cache(async (): Promise<SitePhotoUrls> => {
  */
 export const getPagePhotos = cache(async (): Promise<Record<PagePhotoKey, PhotoSource>> => {
   const out = { ...STOCK_PHOTOS };
+  if (!USE_ADMIN_UPLOADED_PHOTOS) return out;
   for (const p of await loadStoredSitePhotos()) {
     if (!(p.slot in out) || !p.kind) continue;
     const key = p.slot as keyof typeof out;
@@ -62,4 +67,10 @@ export const getInteriorGallery = cache(async () => {
     return p ? sitePhotoUrl(p.storage_path) : null;
   };
   return [1, 2, 3].map((n) => ({ n, before: url(`interiors_before_${n}`), after: url(`interiors_after_${n}`) }));
+});
+
+/** A logo the admin uploaded in Website photos, or null = the Warm Sand logo. */
+export const getCustomLogo = cache(async (): Promise<string | null> => {
+  const p = (await loadStoredSitePhotos()).find((x) => x.slot === "logo");
+  return p ? sitePhotoUrl(p.storage_path) : null;
 });

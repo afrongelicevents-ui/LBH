@@ -21,7 +21,12 @@
     "closeMenu": "Vala imenyu",
     "language": "Ulimi",
     "learnMore": "Funda okunengi",
-    "createAccount": "Vula i-akhawunti"
+    "createAccount": "Vula i-akhawunti",
+    "lightMode": "Guqulela ekukhanyeni",
+    "darkMode": "Guqulela ebumnyameni",
+    "themeRow": "Ukukhanya / ubumnyama",
+    "light": "Ukukhanya",
+    "dark": "Ubumnyama"
   },
   "nav": {
     "services": "Imisebenzi yethu",
@@ -356,7 +361,9 @@
       "signOut": "Phuma",
       "menu": "Vula imenyu",
       "closeMenu": "Vala imenyu",
-      "website": "Iwebhusayithi ye-LBH"
+      "website": "Iwebhusayithi ye-LBH",
+      "settings": "Izilungiselelo",
+      "menuTab": "Imenyu"
     },
     "nav": {
       "dashboard": "Izicelo zami",
@@ -1093,7 +1100,9 @@
       "kindStockHint": "silayisensi esivela kwenye indawo — siboniswa lo-\"Isithombe se-stock\" lokuhambelana laso.",
       "kindNone": "Silayishwe izimpawu zingakabi khona — kasiboniswa emakhasini amatsha",
       "creditLabel": "Okuhambelana lesithombe",
-      "creditPlaceholder": "isib. Zambia · Thatlowdownwoman, CC BY-SA 4.0, Wikimedia Commons"
+      "creditPlaceholder": "isib. Zambia · Thatlowdownwoman, CC BY-SA 4.0, Wikimedia Commons",
+      "savedPaused": "Saved. Not shown on the website yet — see the note at the top.",
+      "pausedNote": "The website currently shows the Warm Sand design photos for the main spots (home, land, materials, on-site, reporting, interiors). Photos you save here are kept and appear again when admin photos are switched on (USE_ADMIN_UPLOADED_PHOTOS in src/config/photos.ts). The interiors before/after gallery and the logo always use the photos saved here."
     },
     "ba": {
       "backToSettings": "Izilungiselelo",
@@ -2614,6 +2623,276 @@
           "error": "Angikwazanga ukuphendula khathesi — zama futhi, kumbe ukhulume lomuntu."
         }
       }
+    },
+    "tabs": {
+      "label": "Okukhulu",
+      "home": "Ekhaya",
+      "services": "Imisebenzi",
+      "book": "Bhuka ucingo",
+      "how": "Kusebenza njani",
+      "signIn": "Ngena",
+      "live": "Live",
+      "myBuild": "Ukwakha kwami",
+      "myArea": "Okwami"
+    },
+    "language": "Ulimi",
+    "sampleBuildAccount": "Bona i-Build Account yesibonelo",
+    "sampleLive": "Bona ikhamera ye-live yesibonelo",
+    "ws": {
+      "liveChip": "ISIBONELO SE-LIVE · {time} CAT",
+      "heroTitleA": "Yakha umuzi wakho",
+      "heroTitleB": "ekhaya.",
+      "heroText": "Isitandi siyahlolwa. Impahla iyabalwa. Isigaba ngasinye sithathwa izithombe. Wena uyavuma, loba uhlala ngaphi.",
+      "heroBook": "Bhuka ucingo lwamahala",
+      "heroWatch": "Kusebenza njani",
+      "pillars": {
+        "land": "Hlola uthenge",
+        "build": "Kuphathwa esayithini",
+        "finish": "Dweba ufake ifenitsha"
+      },
+      "storyKicker": "USE-LONDON, E-JOBURG KUMBE E-DALLAS",
+      "storyTitle": "Ukwakha kwakho konke, ephaketheni lakho.",
+      "storyText": "Ibhajethi, amarisidi, izithombe lesigaba esilandelayo silindele imvumo yakho. I-akhawunti yinye, ihlala isikhathi sonke ilokutsha.",
+      "sampleCardLabel": "BUILD ACCOUNT",
+      "sample": "ISIBONELO",
+      "sampleProject": "Umuzi wemuli · Ruwa",
+      "leftToSpend": "Eseleyo",
+      "ofBudget": "ku-{budget}",
+      "needsOk": "Kudinga imvumo yakho",
+      "whatKicker": "ESIKWENZAYO",
+      "whatTitle": "Kusukela esitandini kusiya kumqamelo wokucina.",
+      "tile": {
+        "land": "I-title deed iyahlolwa ungakabhadali lesenti.",
+        "build": "Iqembu elihloliweyo, umqondisi, isaka ngalinye liyabalwa.",
+        "finish": "Bona ikamelo ngalinye ku-3D, besesifaka ifenitsha."
+      },
+      "tileShort": {
+        "land": "Ukuhlola lokuthenga okuphephileyo",
+        "build": "Impahla, iqembu lemibiko",
+        "finish": "Umdwebo we-3D lefenitsha"
+      },
+      "safeKicker": "UKUTHI IMALI YAKHO IPHEPHA NJANI",
+      "safeTitle": "Wena uyavuma. Besesibhadala.",
+      "safe": {
+        "s1t": "Ucingo lwamahala",
+        "s1": "Sivumelana ngepulani, ibhajethi lezigaba.",
+        "s2t": "Siyahlola siphathe",
+        "s2": "Iqembu lethu likhona esayithini. Impahla iyabalwa nxa ifika.",
+        "s3t": "Ubona ubufakazi",
+        "s3": "Izithombe ezilosuku lerisidi ngayinye ku-akhawunti yakho.",
+        "s4t": "Uvuma isigaba ngasinye",
+        "s4": "Abakhi babhadalwa kuphela usuvumile."
+      },
+      "fullProcess": "Bona inqubo yonke",
+      "liveKicker": "IKHAMERA YE-LIVE · KUYEZA",
+      "liveTitle": "Bona isayithi yakho loba nini emini.",
+      "liveText": "Ikhamera ye-live yesayithi iyeza ekwakheni kwe-LBH. Akusalindelwa umzawa ukuthi athumele izithombe. Nansi isibonelo sokuthi izakubukeka njani.",
+      "liveOpen": "Bona isibonelo se-live",
+      "closingTitle": "Izikhiye zakho. Umuzi wakho.",
+      "closingText": "Qala ngocingo lwamahala — ifoni kumbe ividiyo, imizuzu engu-30–45.",
+      "photoNote": "Izithombe lezi ngezesikhashana kuze kube yikuthathwa kwezithombe ze-LBH.",
+      "servicesTitle": "Imisebenzi",
+      "servicesIntro": "Khetha owodwa, kumbe sikuthwale kusukela esitandini kusiya ezikhiyeni.",
+      "back": "Emuva",
+      "land": {
+        "kicker": "01 · ISITANDI",
+        "title": "Yazi ukuthi ngesiqotho ungakabhadali.",
+        "lead": "Abantu abanengi abasemzini bathengiswa izitandi ezingekho, kumbe ezingasizo ezomthengisi. Thina sihlola kuqala.",
+        "i1t": "Ukuhlola i-title deed",
+        "i1": "Kuyadingwa e-Deeds Office ngebizo lomthengisi.",
+        "i2t": "Ukuvakatshela isitandi",
+        "i2": "Sithola izikhonkwane sithathe izithombe zesitandi ezilosuku le-GPS.",
+        "i3t": "Impendulo ecacileyo",
+        "i3": "Kuphephile ukuthenga, kumbe kungani kungaphephanga, ngamazwi alula.",
+        "cta": "Cela ukuhlolwa kwesitandi"
+      },
+      "build": {
+        "kicker": "02 · UKWAKHA",
+        "title": "Akulandlela ezimfitshane. Akulasaka elilahlekayo.",
+        "lead": "Iqembu elihloliweyo liyakha. Umqondisi wethu uhlola umsebenzi, abale impahla, akubikele.",
+        "i1t": "Impahla ithengwa wena",
+        "i1": "Intengo engcono, iyalethwa, ibalwe nxa ifika.",
+        "i2t": "Umqondisi wesayithi",
+        "i2": "Ingxube eqondileyo, insimbi eqondileyo, usimende olinganayo.",
+        "i3t": "Izithombe ezilosuku lemvumo yesigaba",
+        "i3": "Bona isigaba ngasinye ngezithombe; vuma ngasinye singakabhadalwa.",
+        "cta": "Hlela ukwakha kwami"
+      },
+      "finish": {
+        "kicker": "03 · UKUQEDISA",
+        "title": "Bona ikamelo ngalinye ungakathengi."
+      },
+      "inThisGroup": "Kulo msebenzi",
+      "howTitle": "Kusebenza njani",
+      "howIntro": "Izinyathelo eziyisithupha, ezifanayo kuwo wonke umkhasimende. Akulalutho oluqhubekayo uze uvume.",
+      "how": {
+        "s1t": "Ucingo lwamahala",
+        "s1": "Imizuzu engu-30–45, ifoni kumbe ividiyo. Sitshele ngesitandi sakho, amacebo akho lebhajethi yakho.",
+        "s2t": "Ikhotheshini yakho ebhaliweyo",
+        "s2": "Umsebenzi ngamunye wehlukile, ngakho uthola ikhotheshini ebhaliweyo ku-akhawunti yakho. Akulakumangala.",
+        "s3t": "Vuma ubhadale idiphozithi",
+        "s3": "Bhadala ngekhadi, nge-EcoCash kumbe nge-bank transfer usemzini. Uthola irisidi ngaso sonke isikhathi.",
+        "s4t": "Iqembu lethu liya esayithini",
+        "s4": "Abantu abahloliweyo, lezithombe ezilosuku le-GPS. Izindleko ezengeziweyo zidinga imvumo yakho kuqala.",
+        "s5t": "Ubona ubufakazi",
+        "s5": "Umbiko ocacileyo kumbe okutsha kwesigaba lezithombe, amarisidi lokutholakeleyo ngamazwi alula.",
+        "s6t": "Wena uyavuma, besesibhadala",
+        "s6": "Imali eseleyo kumbe isigaba esilandelayo kuqhubeka kuphela usuvumile."
+      },
+      "payTitle": "Indlela zokubhadala",
+      "pay": {
+        "cardT": "Ikhadi",
+        "card": "Visa le-Mastercard, lamakhadi angaphandle",
+        "mobileT": "Imali yefoni",
+        "mobile": "EcoCash, OneMoney, InnBucks",
+        "abroadT": "Usemzini",
+        "abroad": "Remitly, WorldRemit kumbe i-bank transfer, lenombolo yakho yereferensi lobufakazi"
+      },
+      "faqTitle": "Imibuzo",
+      "faq": {
+        "q1": "Kungani lingatshengisi intengo?",
+        "a1": "Isitandi ngasinye lokwakha ngakunye kwehlukile: ibanga, ubukhulu lempahla kuguqula intengo. Ngemva kocingo lwamahala uthola ikhotheshini ebhaliweyo, umugqa ngamunye uchaziwe.",
+        "q2": "Ngingazi njani ukuthi imali yami iphephile?",
+        "a2": "Ubhadala ngezigaba. Abakhi babhadalwa kuphela usuvume isigaba ngasinye, njalo konke okuthengwayo kuza lesithombe serisidi ku-akhawunti yakho.",
+        "q3": "Ngubani oya esayithini yami?",
+        "a3": "Amalungu eqembu le-LBH lamakhontrakta ahloliweyo. Ukuvakasha ngakunye kubhalwa ngezithombe ezilosuku le-GPS, njalo kakho ovuma umsebenzi wakhe.",
+        "q4": "Kumele ngibe seZimbabwe yini?",
+        "a4": "Hatshi. Amakhasimende ethu amanengi ahlala emzini. Konke kwenzakala ku-akhawunti yakho, ngengxoxo lange-email."
+      },
+      "moreFaq": "Eminye imibuzo lezimpendulo",
+      "aboutKicker": "NGE-LBH",
+      "aboutTitle": "Kungani sikhona.",
+      "aboutLead": "AmaZimbabwe amanengi asemzini athumele imali ekhaya yendlu engazange yakhiwe, kumbe athenga isitandi esasingesiso esiqotho. I-LBH ingamehlo athembekileyo lapha emhlabathini.",
+      "rulesTitle": "Imithetho yethu",
+      "rules": {
+        "r1t": "Ubufakazi bakho konke",
+        "r1": "Izithombe ezilosuku lamarisidi kukho konke ukuvakasha lokuthenga.",
+        "r2t": "Wena uvuma kuqala",
+        "r2": "Akulandleko eyengeziweyo kumbe inkokhelo yesigaba ungavumanga.",
+        "r3t": "Kakho ohlola umsebenzi wakhe",
+        "r3": "Othenga impahla kayivumi yena ngokwakhe."
+      },
+      "talkTitle": "Khuluma lathi",
+      "talkChat": "Ingxoxo ye-live",
+      "talkChatText": "Thinta inkinobho yengxoxo kulo lonke ikhasi.",
+      "sampleBarTitle": "Lesi yisibonelo",
+      "sampleLiveText": "Amakhamera e-live ayeza ekwakheni kwe-LBH. Uzabona eyakho ukwakha kwakho sekuqalile.",
+      "sampleBaText": "Le yindlela i-Build Account yakho ezabukeka ngayo: ibhajethi, izigaba, amarisidi lezimvumo.",
+      "createFree": "Vula i-akhawunti yamahala",
+      "liveTitlePage": "Isayithi ye-live",
+      "cams": {
+        "c1": "Isayithi",
+        "c2": "Imiduli",
+        "c3": "Isitolo"
+      },
+      "camName": "CAM {n} · {name}",
+      "camPlace": "Ruwa · Stand 4521",
+      "todayOnSite": "Lamuhla esayithini",
+      "feed": {
+        "f1t": "Iqembu lifikile",
+        "f1": "Abakhi abangu-6, umqondisi o-1",
+        "f2t": "Usimende ulethiwe",
+        "f2": "Amasaka angu-40 abalwe athathwa izithombe",
+        "f3t": "Izinga lamawindi lihloliwe",
+        "f3": "Umqondisi uvume umsebenzi wezitina",
+        "f4t": "Umbiko welanga uthunyelwe",
+        "f4": "Izithombe ezingu-12 zifakwe ku-akhawunti yakho"
+      },
+      "myBuildTitle": "Ukwakha kwami",
+      "leftToSpendCaps": "UMUZI WEMULI · RUWA · ESELEYO",
+      "ofABudget": "kubhajethi ka-{budget}",
+      "spentAmount": "Kusetshenziswe {amount}",
+      "stagesTitle": "Izigaba",
+      "stagesCount": "{n} ku-6",
+      "stages": {
+        "foundation": "Isisekelo",
+        "slab": "I-slab",
+        "window": "Izinga lamawindi",
+        "wallplate": "I-wall plate",
+        "roof": "Uphahla",
+        "finishes": "Ukuqedisa"
+      },
+      "stageNotes": {
+        "paid1": "Kubhadaliwe · izithombe ezingu-18",
+        "paid2": "Kubhadaliwe · izithombe ezingu-22",
+        "now": "Umqondisi usevumile",
+        "next": "Okulandelayo",
+        "roof": "Ama-truss lamathini",
+        "finishes": "Udaka, ama-tile, ipende"
+      },
+      "state": {
+        "done": "KUPHELILE",
+        "soon": "MASINYANE",
+        "later": "NGEMVA"
+      },
+      "review": "Hlola",
+      "receiptsTitle": "Amarisidi akamuva",
+      "receipts": {
+        "r1t": "Usimende · amasaka angu-40",
+        "r1": "Ulethiwe wabalwa",
+        "r2t": "Izitina · 14,000",
+        "r2": "Zisesayithini · kusele ezingu-16,000",
+        "r3t": "Abasebenzi · I-slab",
+        "r3": "Kubhadalwe usuvumile"
+      },
+      "approveTitle": "Uyavuma izinga lamawindi?",
+      "approveChecks": {
+        "c1": "Izithombe ezilosuku ezingu-12 zifakiwe",
+        "c2": "Umqondisi uvume umsebenzi wezitina",
+        "c3": "Impahla esetshenzisiweyo iyafanana lamarisidi"
+      },
+      "approveNote": "Ku-Build Account yakho uqobo, ukuvuma kukhupha inkokhelo yesigaba iye kubakhi. Lesi sibonelo kasiguquli lutho.",
+      "notYet": "Hatshi okwamanje",
+      "approveStage": "Vuma isigaba",
+      "approvedToast": "Yisibonelo kuphela: ku-akhawunti yakho lokhu bekuzavuma isigaba.",
+      "signinTitle": "Siyakwamukela futhi",
+      "newToLbh": "Umutsha ku-LBH?",
+      "createFreeAccount": "Vula i-akhawunti yamahala",
+      "signupTitle": "Vula i-akhawunti yakho",
+      "signupIntro": "Mahala. Amakhotheshini akho, izinkokhelo, imibiko lokutsha kokwakha konke kulapha.",
+      "haveAccount": "Usulayo i-akhawunti?",
+      "welcome": "Siyakwamukela, {name}!",
+      "welcomeNoName": "Siyakwamukela!",
+      "welcomeIntro": "I-akhawunti yakho isilungile. Ungathanda ukuqala ngani?",
+      "pick": {
+        "landT": "Hlola kumbe uthenge isitandi",
+        "land": "Ukuhlola i-title deed lokuvakatshela isitandi",
+        "buildT": "Yakha umuzi wami",
+        "build": "Impahla, iqembu lokutsha kwezigaba",
+        "finishT": "Qedisa ufake ifenitsha",
+        "finish": "Amakamelo e-3D lefenitsha"
+      },
+      "yourAccount": "I-akhawunti yakho",
+      "noProjectsTitle": "Akulaphrojekthi okwamanje",
+      "noProjectsText": "Ngemva kocingo lwakho lwamahala, ikhotheshini yakho izavela lapha. Besekusiba i-Build Account yakho igcwala izigaba, amarisidi lezithombe.",
+      "seeSampleBa": "Bona i-Build Account yesibonelo →",
+      "bookTitle": "Bhuka ucingo lwamahala",
+      "bookNote": "Imizuzu engu-30–45, ifoni kumbe ividiyo. Akudingeki ukubhadala.",
+      "whatNeed": "Udingani?",
+      "pickTime": "Khetha isikhathi (isikhathi seZimbabwe)",
+      "slots": {
+        "morning": "Ekuseni",
+        "morningHint": "8am – 12pm",
+        "afternoon": "Emini",
+        "afternoonHint": "12pm – 5pm",
+        "evening": "Kusihlwa",
+        "eveningHint": "5pm – 8pm",
+        "weekend": "Ngempelaviki",
+        "weekendHint": "NgoMgqibelo kumbe NgeSonto"
+      },
+      "callBy": "Fona nge",
+      "requestCall": "Cela ucingo lwami",
+      "doneSignup": "Vula i-akhawunti yakho yamahala",
+      "backHome": "Buyela ekhaya",
+      "chips": {
+        "land": "Isitandi",
+        "materials": "Impahla",
+        "monitoring": "Ukuvakatshela isayithi",
+        "camera": "Ikhamera ye-live (kuyeza)",
+        "not-sure": "Angikazi okwamanje"
+      },
+      "finishHint": "Uqedisa ufaka ifenitsha emzini wakho?",
+      "finishLink": "Bhuka ukubonisana kwengaphakathi"
     }
   }
 }

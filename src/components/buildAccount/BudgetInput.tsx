@@ -26,7 +26,7 @@ export default function BudgetInput({ stage, cents }: { stage: string; cents: nu
     >
       <label className="sr-only" htmlFor={`b-${stage}`}>{t("budgetFor", { stage })}</label>
       <span className="text-sm text-muted">$</span>
-      <input id={`b-${stage}`} value={value} onChange={(e) => setValue(e.target.value)} inputMode="decimal" placeholder="0.00" className="w-28 rounded-xl border border-line bg-white px-2 py-1.5 text-sm" data-testid={`budget-${stage}`} />
+      <input id={`b-${stage}`} value={value} onChange={(e) => setValue(e.target.value)} inputMode="decimal" placeholder="0.00" className="w-28 rounded-xl border border-line bg-paper px-2 py-1.5 text-sm" data-testid={`budget-${stage}`} />
       <button type="submit" disabled={pending} className="text-xs font-bold text-forest underline">
         {t("save")}
       </button>

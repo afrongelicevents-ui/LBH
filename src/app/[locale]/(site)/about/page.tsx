@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { PHOTO_CREDITS, HAVE_LICENSED_FILES } from "@/config/stockPhotos";
+import { PHOTOS, PHOTO_CREDITS_NOTE } from "@/config/photos";
+import DetailHero from "@/components/ws/DetailHero";
+import { site, waLink } from "@/config/site";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -15,59 +18,72 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   setRequestLocale(locale);
   const t = await getTranslations("aboutPage");
   const ts = await getTranslations("site");
+  const tw = await getTranslations("site.ws");
   return (
     <div data-testid="about-page">
-      <header className="border-b border-rule">
-        <div className="ds-wrap py-14 md:py-20">
-          <p className="ds-eyebrow">{t("title")}</p>
-          <h1 className="ds-h2 mt-3 max-w-3xl md:text-[3.2rem]">{ts("about.title")}</h1>
-          <p className="ds-lead mt-5 max-w-2xl">{t("intro")}</p>
-        </div>
-      </header>
-
-      <div className="ds-wrap grid gap-12 py-14 md:grid-cols-12 md:py-20">
-        <section className="md:col-span-5" aria-labelledby="who">
-          <h2 id="who" className="ds-h3 text-[1.6rem]">{t("whoTitle")}</h2>
-          <p className="ds-body mt-3 text-base">{t("whoText")}</p>
-        </section>
-        <section className="md:col-span-6 md:col-start-7" aria-labelledby="why">
-          <h2 id="why" className="ds-h3 text-[1.6rem]">{t("whyTitle")}</h2>
-          <p className="ds-body mt-3 text-base">{t("whyText")}</p>
-        </section>
+      <DetailHero photo={PHOTOS.about} kicker={tw("aboutKicker")} title={tw("aboutTitle")} stockLabel={ts("stockPhoto")} tall={false} />
+      <div className="ds-wrap pt-6 md:pt-12">
+        <p className="ws-dlead max-w-3xl">{tw("aboutLead")}</p>
       </div>
 
-      <section aria-labelledby="values" className="border-y border-rule bg-paper py-14 md:py-20">
-        <div className="ds-wrap grid gap-8 md:grid-cols-12">
-          <h2 id="values" className="ds-h2 md:col-span-4">{t("valuesTitle")}</h2>
-          <ol className="md:col-span-7 md:col-start-6">
-            {(["value1", "value2", "value3", "value4"] as const).map((k, i) => (
-              <li key={k} className="flex gap-5 border-b border-rule py-5 first:border-t">
-                <span className="font-serif text-2xl text-stone-ink">{i + 1}</span>
-                <span className="font-serif text-[1.25rem] leading-snug text-charcoal">{t(k)}</span>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      <div className="ds-wrap grid gap-12 py-14 md:grid-cols-12 md:py-20">
-        <section className="md:col-span-6" aria-labelledby="team">
-          <h2 id="team" className="ds-h3 text-[1.6rem]">{t("teamTitle")}</h2>
-          <p className="ds-body mt-3 text-base">{t("teamText")}</p>
-          <Link href="/book-a-call" className="ds-btn ds-btn-primary mt-7">{ts("bookConsultation")}</Link>
-        </section>
-        {HAVE_LICENSED_FILES && <section className="md:col-span-5 md:col-start-8" aria-labelledby="credits" id="photo-credits">
-          <h2 id="credits" className="text-sm font-semibold tracking-wider text-charcoal uppercase">{ts("about.creditsTitle")}</h2>
-          <p className="ds-body mt-2 text-sm">{ts("about.creditsText")}</p>
-          <ul className="mt-3 space-y-1.5 text-sm text-slate">
-            {PHOTO_CREDITS.map((c) => (
-              <li key={c.url}>
-                <a href={c.url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-forest">{c.title}</a>
-                {" "}— {c.author}, {c.licence}
+      <div className="ds-wrap grid gap-12 py-10 md:grid-cols-12 md:gap-14 md:py-14">
+        <section className="md:col-span-7" aria-labelledby="rules">
+          <h2 id="rules" className="text-[1.5rem] font-extrabold">{tw("rulesTitle")}</h2>
+          <ul className="ws-incl mt-3">
+            {[1, 2, 3].map((n) => (
+              <li key={n}>
+                <div className="ic">{n}</div>
+                <div>
+                  <b>{tw(`rules.r${n}t`)}</b>
+                  <span className="d">{tw(`rules.r${n}`)}</span>
+                </div>
               </li>
             ))}
           </ul>
-        </section>}
+
+          <h2 id="who" className="mt-10 text-[1.5rem] font-extrabold">{t("whoTitle")}</h2>
+          <p className="ds-body mt-2 text-base">{t("whoText")}</p>
+          <h2 id="team" className="mt-8 text-[1.5rem] font-extrabold">{t("teamTitle")}</h2>
+          <p className="ds-body mt-2 text-base">{t("teamText")}</p>
+        </section>
+
+        <aside className="space-y-10 md:col-span-5">
+          <section aria-labelledby="talk">
+            <h2 id="talk" className="text-[1.5rem] font-extrabold">{tw("talkTitle")}</h2>
+            <dl className="mt-3 border-t border-rule">
+              {waLink() && (
+                <div className="border-b border-rule py-3.5">
+                  <dt className="font-bold">WhatsApp</dt>
+                  <dd><a href={waLink()!} target="_blank" rel="noopener noreferrer" className="ds-link text-sm">+{site.whatsappNumber}</a></dd>
+                </div>
+              )}
+              <div className="border-b border-rule py-3.5">
+                <dt className="font-bold">Email</dt>
+                <dd><a href={`mailto:${site.email}`} className="ds-link text-sm">{site.email}</a></dd>
+              </div>
+              <div className="border-b border-rule py-3.5">
+                <dt className="font-bold">{tw("talkChat")}</dt>
+                <dd className="text-sm text-slate">{tw("talkChatText")}</dd>
+              </div>
+            </dl>
+            <Link href="/book-a-call" className="ds-btn ds-btn-primary mt-6 w-full">{ts("bookConsultation")}</Link>
+          </section>
+
+          {HAVE_LICENSED_FILES && (
+            <section aria-labelledby="credits" id="photo-credits" className="rounded-[24px] bg-paper p-6">
+              <h2 id="credits" className="ws-kicker">{ts("about.creditsTitle")}</h2>
+              <p className="ds-body mt-2 text-sm">{PHOTO_CREDITS_NOTE}</p>
+              <ul className="mt-3 space-y-1.5 text-sm text-slate">
+                {PHOTO_CREDITS.map((c) => (
+                  <li key={c.url}>
+                    <a href={c.url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-forest">{c.title}</a>
+                    {" "}— {c.author}, {c.licence}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+        </aside>
       </div>
     </div>
   );

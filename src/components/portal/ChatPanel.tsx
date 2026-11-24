@@ -151,7 +151,7 @@ export default function ChatPanel({
           onChange={(e) => setBody(e.target.value)}
           maxLength={4000}
           placeholder={t("placeholder")}
-          className="min-h-11 flex-1 rounded-full border border-line bg-white px-4 text-sm text-ink focus:border-forest focus:outline-none"
+          className="min-h-11 flex-1 rounded-full border border-line bg-paper px-4 text-sm text-ink focus:border-forest focus:outline-none"
         />
         <button
           type="submit"

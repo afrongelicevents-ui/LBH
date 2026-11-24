@@ -9,7 +9,7 @@ import { useOutbox } from "./OutboxProvider";
 import { useOfflineForm } from "./useOfflineForm";
 
 const inputCls =
-  "w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm text-ink focus:border-forest focus:outline-none";
+  "w-full rounded-xl border border-line bg-paper px-3 py-2.5 text-sm text-ink focus:border-forest focus:outline-none";
 const labelCls = "mb-1 block text-xs font-semibold text-ink";
 
 function Feedback({ state }: { state: ActionResult | null }) {
@@ -76,7 +76,7 @@ export function VisitForm({
               type="checkbox"
               name={name}
               defaultChecked={checked}
-              className="h-5 w-5 rounded accent-[#163a2b]"
+              className="h-5 w-5 rounded accent-forest"
             />
             {t(`visit.${name}` as never)}
           </label>
@@ -160,7 +160,7 @@ export function LegalChecklistForm({
                     name={`${item}_status`}
                     value={st}
                     defaultChecked={(current?.status ?? "pending") === st}
-                    className="h-4 w-4 accent-[#163a2b]"
+                    className="h-4 w-4 accent-forest"
                   />
                   {t(`status.${st}`)}
                 </label>

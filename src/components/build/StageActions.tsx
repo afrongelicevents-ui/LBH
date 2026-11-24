@@ -27,7 +27,7 @@ import {
 } from "@/app/actions/stages";
 
 const inputCls =
-  "w-full rounded-xl border border-line bg-white px-3 py-2 text-sm text-ink focus:border-forest focus:outline-none";
+  "w-full rounded-xl border border-line bg-paper px-3 py-2 text-sm text-ink focus:border-forest focus:outline-none";
 const labelCls = "mb-1 block text-xs font-semibold text-ink";
 const fileCls =
   "block w-full text-xs text-muted file:mr-3 file:rounded-full file:border-0 file:bg-forest file:px-3 file:py-2 file:text-xs file:font-semibold file:text-white";
@@ -411,7 +411,7 @@ export function InspectionForm({
 // ======================== admin ========================
 
 const iconInputCls =
-  "w-full rounded-full border border-[#dfe3e1] bg-white py-2.5 pr-4 pl-12 text-sm text-ink focus:border-forest focus:outline-none";
+  "w-full rounded-full border border-rule bg-paper py-2.5 pr-4 pl-12 text-sm text-ink focus:border-forest focus:outline-none";
 
 function IconField({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
   return (
@@ -433,7 +433,7 @@ export function AddQuoteForm({ stageId }: { stageId: string }) {
     "quote-file"
   );
   return (
-    <form action={formAction} className="space-y-2.5 rounded-2xl border border-[#e6e9e7] bg-portal p-3 sm:p-4">
+    <form action={formAction} className="space-y-2.5 rounded-2xl border border-rule bg-portal p-3 sm:p-4">
       <p className="flex items-center gap-2 text-base font-extrabold text-ink">
         <span className="icon-round icon-forest h-8 w-8">
           <PlusIcon size={18} />

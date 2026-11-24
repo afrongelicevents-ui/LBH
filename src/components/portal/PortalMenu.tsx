@@ -31,6 +31,13 @@ export default function PortalMenu({
     if (open) setOpen(false);
   }
 
+  // the "Menu" tab in the bottom tab bar opens this menu
+  useEffect(() => {
+    const openMenu = () => setOpen(true);
+    window.addEventListener("lbh:open-portal-menu", openMenu);
+    return () => window.removeEventListener("lbh:open-portal-menu", openMenu);
+  }, []);
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
@@ -45,7 +52,7 @@ export default function PortalMenu({
         onClick={() => setOpen(!open)}
         aria-expanded={open}
         aria-label={open ? labels.close : labels.menu}
-        className="flex h-11 w-11 items-center justify-center rounded-xl bg-offwhite text-ink hover:bg-info"
+        className="flex h-11 w-11 items-center justify-center rounded-full border border-rule bg-paper text-ink hover:border-line"
       >
         {open ? <CloseIcon size={22} /> : <MenuIcon size={22} />}
       </button>
@@ -56,23 +63,23 @@ export default function PortalMenu({
             aria-hidden
             tabIndex={-1}
             onClick={() => setOpen(false)}
-            className="fixed inset-0 z-40 cursor-default bg-black/20"
+            className="fixed inset-0 z-40 cursor-default bg-[rgba(10,9,7,0.45)]"
           />
           <div
             role="menu"
-            className="absolute top-full right-0 z-50 mt-2 w-72 overflow-hidden rounded-2xl border border-[#e6e9e7] bg-white shadow-(--shadow-card-hover)"
+            className="fixed inset-x-3 bottom-3 z-50 max-h-[80svh] overflow-hidden rounded-[28px] border border-rule bg-paper shadow-(--shadow-card-hover) sm:absolute sm:inset-x-auto sm:top-full sm:right-0 sm:bottom-auto sm:mt-2 sm:w-80 sm:rounded-[22px]"
           >
-            <div className="border-b border-[#eef0ef] px-4 py-3">
+            <div className="border-b border-rule px-4 py-3">
               <p className="truncate text-sm font-bold text-ink">{name}</p>
               <p className="truncate text-xs text-muted">{email}</p>
               <p className="mt-0.5 text-xs font-semibold text-forest">{portalName}</p>
             </div>
-            <ul className="max-h-[60vh] overflow-y-auto py-1">
+            <ul className="max-h-[56svh] overflow-y-auto py-1 sm:max-h-[60vh]">
               {items.map((item) => {
                 const Icon = ICONS[item.icon];
                 return (
                   <li key={item.href}>
-                    <Link href={item.href} role="menuitem" className="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-ink hover:bg-offwhite">
+                    <Link href={item.href} role="menuitem" className="flex min-h-12 items-center gap-3 px-4 py-2.5 text-[15px] font-semibold text-ink hover:bg-sand">
                       <Icon size={18} className="text-forest" />
                       {item.label}
                     </Link>
@@ -80,13 +87,13 @@ export default function PortalMenu({
                 );
               })}
               <li>
-                <Link href="/" role="menuitem" className="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-ink hover:bg-offwhite">
+                <Link href="/" role="menuitem" className="flex min-h-12 items-center gap-3 px-4 py-2.5 text-[15px] font-semibold text-ink hover:bg-sand">
                   <HomeIcon size={18} className="text-forest" />
                   {labels.website}
                 </Link>
               </li>
             </ul>
-            <div className="flex items-center gap-2 border-t border-[#eef0ef] px-4 py-3">
+            <div className="flex items-center gap-2 border-t border-rule px-4 py-3">
               <LogOutIcon size={18} className="text-muted" />
               <SignOutButton action={signOutAction} label={labels.signOut} />
             </div>

@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { LockIcon } from "@/components/icons";
 
 const inputCls =
-  "w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink focus:border-forest focus:outline-none";
+  "w-full rounded-xl border border-line bg-paper px-4 py-3 text-sm text-ink focus:border-forest focus:outline-none";
 
 /** Set a new password after an invite / recovery link. */
 export default function PasswordForm() {

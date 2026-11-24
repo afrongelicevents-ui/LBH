@@ -13,7 +13,7 @@ import {
   type BaAdminResult,
 } from "@/app/[locale]/admin/settings/build-account/actions";
 
-const inputCls = "w-full rounded-xl border border-line bg-white px-3 py-2 text-sm text-ink focus:border-forest focus:outline-none";
+const inputCls = "w-full rounded-xl border border-line bg-paper px-3 py-2 text-sm text-ink focus:border-forest focus:outline-none";
 const labelCls = "mb-1 block text-xs font-semibold text-ink";
 const OFFLINE: BaAdminResult = { ok: false, error: "error" };
 
@@ -68,7 +68,7 @@ export function OverrideControl({ ownerId, current, until }: { ownerId: string; 
   const [r, setR] = useState<BaAdminResult | null>(null);
   return (
     <div className="flex flex-wrap items-center gap-2" data-testid={`override-${ownerId}`}>
-      <select value={mode} onChange={(e) => setMode(e.target.value)} className="rounded-lg border border-line bg-white px-2 py-1.5 text-sm" aria-label={t("override")}>
+      <select value={mode} onChange={(e) => setMode(e.target.value)} className="rounded-lg border border-line bg-paper px-2 py-1.5 text-sm" aria-label={t("override")}>
         {["auto", "free", "paid", "expired"].map((m) => (
           <option key={m} value={m}>
             {t(`ov.${m}`)}
@@ -76,7 +76,7 @@ export function OverrideControl({ ownerId, current, until }: { ownerId: string; 
         ))}
       </select>
       {mode === "paid" && (
-        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} aria-label={t("until")} className="rounded-lg border border-line bg-white px-2 py-1.5 text-sm" />
+        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} aria-label={t("until")} className="rounded-lg border border-line bg-paper px-2 py-1.5 text-sm" />
       )}
       <button
         type="button"
@@ -116,7 +116,7 @@ export function LbhTransferButtons({ entryId }: { entryId: string }) {
       <button type="button" disabled={pending} onClick={() => go(true)} className="rounded-lg bg-forest px-3 py-1.5 text-xs font-bold text-white disabled:opacity-60" data-testid="lbh-received">
         {t("received")}
       </button>
-      <button type="button" disabled={pending} onClick={() => go(false)} className="rounded-lg bg-white px-3 py-1.5 text-xs font-bold text-red-700 shadow-sm disabled:opacity-60">
+      <button type="button" disabled={pending} onClick={() => go(false)} className="rounded-lg bg-paper px-3 py-1.5 text-xs font-bold text-red-700 shadow-sm disabled:opacity-60">
         {t("notReceived")}
       </button>
       <Msg r={r} />

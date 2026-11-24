@@ -60,9 +60,9 @@ export default async function FinancePage({ params }: { params: Promise<{ locale
           ))}
         </ul>
       </section>
-      <section className="mt-10 bg-forest p-6 text-[#e8e4d8] md:flex md:items-center md:justify-between" aria-label={tn("buildAccount")}>
+      <section className="mt-10 rounded-[24px] bg-sand p-6 text-charcoal md:flex md:items-center md:justify-between" aria-label={tn("buildAccount")}>
         <p className="max-w-xl text-sm">{t("baText")}</p>
-        <Link href="/account/build-account/statement" className="ds-btn ds-btn-light mt-4 text-sm md:mt-0">{t("baOpen")}</Link>
+        <Link href="/account/build-account/statement" className="ds-btn ds-btn-primary mt-4 text-sm md:mt-0">{t("baOpen")}</Link>
       </section>
     </div>
   );

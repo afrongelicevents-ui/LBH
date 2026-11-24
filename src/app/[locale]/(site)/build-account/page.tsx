@@ -43,7 +43,7 @@ export default async function BuildAccountInfo({ params }: { params: Promise<{ l
 
         {/* what it looks like (labelled sample data) */}
         <div className="mt-8 overflow-hidden rounded-[6px]">
-          <BuildAccountPreview showLink={false} />
+          <BuildAccountPreview />
         </div>
 
         <section className="card mt-8 p-5 md:p-6">

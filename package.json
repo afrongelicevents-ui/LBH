@@ -11,7 +11,7 @@
     "test:e2e": "node tests/e2e/smoke.mjs",
     "db:start": "supabase start",
     "db:reset": "supabase db reset",
-    "prebuild": "node scripts/fetch-stock-photos.mjs && node scripts/copy-ocr-assets.mjs",
+    "prebuild": "node scripts/copy-ocr-assets.mjs",
     "cf:build": "npm run prebuild && CF_BUILD=1 opennextjs-cloudflare build",
     "cf:preview": "npm run cf:build && opennextjs-cloudflare preview",
     "cf:deploy": "npm run cf:build && opennextjs-cloudflare deploy",

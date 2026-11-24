@@ -15,7 +15,7 @@ import {
   type InteriorAdminResult,
 } from "@/app/[locale]/admin/interiorActions";
 
-const inputCls = "w-full rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink";
+const inputCls = "w-full rounded-lg border border-line bg-paper px-3 py-2 text-sm text-ink";
 const OFFLINE: InteriorAdminResult = { ok: false, error: "error" };
 
 function Msg({ r, ok }: { r: InteriorAdminResult | null; ok?: string }) {

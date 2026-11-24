@@ -227,7 +227,7 @@ export function ManualProofForm({ paymentId }: { paymentId: string }) {
           name="reference"
           required
           maxLength={200}
-          className="w-full rounded-xl border border-line bg-white px-3 py-2 text-sm"
+          className="w-full rounded-xl border border-line bg-paper px-3 py-2 text-sm"
         />
       </label>
       <label className="mt-3 block">

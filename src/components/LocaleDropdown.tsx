@@ -45,7 +45,7 @@ export default function LocaleDropdown() {
       {open && (
         <ul
           role="listbox"
-          className="absolute right-0 z-50 mt-1 w-32 overflow-hidden rounded-xl border border-line bg-white py-1 shadow-lg"
+          className="absolute right-0 z-50 mt-1 w-32 overflow-hidden rounded-xl border border-line bg-paper py-1 shadow-lg"
         >
           {routing.locales.map((l) => (
             <li key={l}>

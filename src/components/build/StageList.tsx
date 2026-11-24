@@ -73,7 +73,7 @@ async function QuoteCards({ stage, role }: { stage: StageView; role: Role }) {
           <li
             key={q.id}
             data-testid="quote-card"
-            className={`rounded-2xl border bg-white p-3 shadow-sm ${q.status === "approved" ? "border-ok-line" : "border-[#e6e9e7]"} ${
+            className={`rounded-2xl border bg-paper p-3 shadow-sm ${q.status === "approved" ? "border-ok-line" : "border-rule"} ${
               q.status === "rejected" ? "opacity-80" : ""
             }`}
           >
@@ -158,7 +158,7 @@ export async function BuildTracker({ build }: { build: BuildView }) {
                 <span
                   aria-hidden
                   className={`absolute top-[17px] right-1/2 h-[3px] w-full -translate-y-1/2 ${
-                    done || isCurrent ? "bg-forest" : "bg-[#dfe3e1]"
+                    done || isCurrent ? "bg-forest" : "bg-line"
                   }`}
                 />
               )}
@@ -170,7 +170,7 @@ export async function BuildTracker({ build }: { build: BuildView }) {
                     ? "bg-forest text-white"
                     : isCurrent
                       ? "bg-forest text-white ring-4 ring-ok-soft"
-                      : "border-2 border-[#d5dad7] bg-[#eef1ef] text-muted"
+                      : "border-2 border-rule bg-sand text-muted"
                 }`}
               >
                 {done ? <CheckIcon width={16} height={16} /> : i + 1}

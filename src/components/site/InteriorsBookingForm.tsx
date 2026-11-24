@@ -10,7 +10,7 @@ import { guardAction, useSubmitKeepingValues } from "@/lib/useSubmitKeepingValue
 import { submitInteriors, type InteriorsResult } from "@/app/[locale]/(site)/services/interiors/actions";
 import { BUDGETS, ROOMS, TIMELINES } from "@/lib/interiors";
 
-const inputCls = "w-full rounded-[4px] border border-rule bg-white px-3 py-2.5 text-[15px] text-charcoal focus:border-forest focus:outline-none";
+const inputCls = "w-full rounded-[4px] border border-rule bg-paper px-3 py-2.5 text-[15px] text-charcoal focus:border-forest focus:outline-none";
 const labelCls = "mb-1.5 block text-sm font-semibold text-charcoal";
 const OFFLINE: InteriorsResult = { ok: false, error: "network" };
 
@@ -182,7 +182,7 @@ export default function InteriorsBookingForm({ signedIn }: { signedIn: boolean }
 
       <div className="md:col-span-2">
         {err && (
-          <p role="alert" className="mb-3 text-sm font-semibold text-[#a0461a]">
+          <p role="alert" className="mb-3 text-sm font-semibold text-red-700">
             {err.field === "rooms" ? t("errors.rooms") : t(`errors.${["rate", "toobig", "filetype", "upload", "network", "staff"].includes(err.error) ? err.error : "invalid"}`)}
           </p>
         )}

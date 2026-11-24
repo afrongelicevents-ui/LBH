@@ -7,8 +7,7 @@ import { Link } from "@/i18n/navigation";
 import { resendConfirmation, requestPasswordReset } from "@/app/[locale]/(site)/signup/actions";
 import { LockIcon, ArrowRightIcon } from "@/components/icons";
 
-const inputCls =
-  "w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink focus:border-forest focus:outline-none";
+const inputCls = "ws-input";
 
 export default function LoginForm({
   confirmFailed = false,
@@ -18,6 +17,7 @@ export default function LoginForm({
   next?: string | null;
 }) {
   const t = useTranslations("auth");
+  const tw = useTranslations("site.ws");
   const locale = useLocale();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -83,19 +83,16 @@ export default function LoginForm({
 
 
   return (
-    <form onSubmit={signIn} className="card p-6 md:p-8">
-      <div className="mb-5 flex items-center gap-3">
-        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-forest text-white">
-          <LockIcon width={22} height={22} />
-        </span>
+    <form onSubmit={signIn}>
+      <div className="mb-6">
         <div>
-          <h1 className="text-xl font-bold text-forest">{t("loginTitle")}</h1>
-          <p className="text-xs text-muted">{t("loginSubtitle")}</p>
+          <h1 className="font-serif text-[2.25rem] leading-[0.95] font-extrabold tracking-[-0.035em] md:text-[2.75rem]">{tw("signinTitle")}</h1>
+          <p className="ws-lede mt-3">{t("loginSubtitle")}</p>
         </div>
       </div>
 
       {error && (
-        <p role="alert" className="mb-4 rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm font-semibold text-red-800">
+        <p role="alert" className="mb-4 rounded-[16px] border border-red-300 bg-red-50 px-4 py-3 text-sm font-semibold text-red-800">
           {error}
           {unconfirmed && (
             <button
@@ -110,13 +107,13 @@ export default function LoginForm({
         </p>
       )}
       {notice && (
-        <p className="mb-4 rounded-xl bg-info px-4 py-3 text-sm font-semibold text-ink">
+        <p className="mb-4 rounded-[16px] bg-info px-4 py-3 text-sm font-semibold text-ink">
           {notice}
         </p>
       )}
 
       <label className="block">
-        <span className="mb-1.5 block text-sm font-semibold text-ink">{t("email")}</span>
+        <span className="mb-2 block text-sm font-bold text-ink">{t("email")}</span>
         <input
           type="email"
           required
@@ -127,7 +124,7 @@ export default function LoginForm({
         />
       </label>
       <label className="mt-4 block">
-        <span className="mb-1.5 block text-sm font-semibold text-ink">{t("password")}</span>
+        <span className="mb-2 block text-sm font-bold text-ink">{t("password")}</span>
         <input
           type="password"
           required
@@ -138,7 +135,7 @@ export default function LoginForm({
         />
       </label>
 
-      <button type="submit" disabled={busy} className="btn btn-primary mt-6 w-full disabled:opacity-60">
+      <button type="submit" disabled={busy} className="ds-btn ds-btn-primary mt-6 w-full disabled:opacity-60">
         {t("signIn")}
         <ArrowRightIcon width={18} height={18} />
       </button>
@@ -150,9 +147,9 @@ export default function LoginForm({
       >
         {t("forgot")}
       </button>
-      <div className="mt-5 border-t border-line pt-4 text-center">
-        <p className="text-sm text-muted">{t("noAccount")}</p>
-        <Link href="/signup" className="btn btn-outline-green mt-3 w-full text-sm">
+      <div className="mt-7 text-center">
+        <div className="ws-split mb-3"><span>{tw("newToLbh")}</span></div>
+        <Link href="/signup" className="ds-btn ds-btn-outline w-full">
           {t("createAccount")}
         </Link>
         <p className="mt-3 text-xs text-muted">{t("staffInviteOnly")}</p>

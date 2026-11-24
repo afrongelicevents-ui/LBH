@@ -271,7 +271,7 @@ console.log("\nPublic website");
   await step("homepage: new headline, trust row, sample data labelled, no prices in the copy", async () => {
     await page.goto(`${BASE}/en`);
     await page.getByRole("heading", { level: 1, name: "Build your home back home." }).waitFor();
-    await page.getByText("Independent land checks").first().waitFor();
+    await page.getByText("Verify & buy").first().waitFor(); // Land · Build · Finish under the hero
     // short homepage: 3 group tiles (Land · Build · Finish); no credits on the images (listed on About)
     assert((await page.getByTestId("service-tiles").locator('a[href*="/services"]').count()) === 3, "service tiles");
     assert((await page.locator("main figcaption").count()) === 0, "photo credit text on the homepage");
@@ -284,7 +284,7 @@ console.log("\nPublic website");
     const hero = await page.getByTestId("home-hero").innerText();
     assert(!/\$\s?\d/.test(hero), "a price appears in the hero");
     await page.locator('footer a[href$="/about#photo-credits"]').click();
-    await page.locator("#photo-credits").getByText("Thatlowdownwoman").first().waitFor();
+    await page.locator("#photo-credits").getByText("Pexels", { exact: false }).first().waitFor();
   });
 
   await step("language switcher → Shona → Ndebele", async () => {
@@ -305,8 +305,8 @@ console.log("\nPublic website");
     // "Other" asks for the real country
     await page.selectOption('select[name="country"]', "other");
     await page.getByTestId("country-other").fill("botswana");
-    await page.selectOption('select[name="service"]', "land");
-    await page.selectOption('select[name="slot"]', "evening");
+    await page.locator('label:has(input[name="service"][value="land"])').click();
+    await page.locator('label:has(input[name="slot"][value="evening"])').click();
     await page.fill('textarea[name="description"]', "E2E booking test");
     await page.click('button[type="submit"]');
     await page.getByText("your call request is in").waitFor({ timeout: 15000 });
@@ -882,7 +882,7 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
     await hero.getByText("real LBH photo or a stock photo", { exact: false }).waitFor(); // a label is required
     await hero.getByTestId("photo-kind").getByLabel("Real LBH photo", { exact: false }).check();
     await hero.getByTestId("photo-save").click();
-    await hero.getByText("live on the website now").waitFor({ timeout: 60000 });
+    await hero.getByText("Not shown on the website yet").waitFor({ timeout: 60000 }); // Warm Sand photos until switched on
     const { data: row } = await db.from("site_photos").select("storage_path, width, height, kind").eq("slot", "hero").single();
     assert(row.kind === "lbh", `label not stored (${row.kind})`);
     assert(row.width === 2400 && row.height === 1867, `not resized: ${row.width}×${row.height}`);
@@ -892,31 +892,33 @@ console.log("\nAdmin (admin@lbh.test) — 2FA required");
     // public URL works without logging in
     const pub = await fetch(`${SUPABASE_URL}/storage/v1/object/public/site-photos/${row.storage_path}`);
     assert(pub.ok, `public URL ${pub.status}`);
-    // logged-out visitor sees it on the homepage straight away
+    // the homepage keeps the approved Warm Sand hero (src/config/photos.ts) while admin photos are switched off
     const visitor = await (await newCtx()).newPage();
     await visitor.goto(`${BASE}/en`);
     const src = decodeURIComponent((await visitor.getByTestId("home-hero").locator("img").first().getAttribute("src")) ?? "");
-    assert(src.includes(`site-photos/${row.storage_path}`), `homepage hero not updated (${src.slice(0, 120)})`);
-    // a real LBH photo carries no "Stock photo" label
-    assert((await visitor.getByTestId("home-hero").getByText("Stock photo").count()) === 0, "LBH photo labelled as stock");
-    await shot(visitor, "homepage-new-hero");
+    assert(src.includes("/images/site/hero.jpg") && !src.includes(row.storage_path), `homepage hero changed (${src.slice(0, 120)})`);
+    await shot(visitor, "homepage-hero");
     await visitor.context().close();
   });
 
-  await step("Website photos: replace a service card photo → shown on the Services page", async () => {
+  await step("Website photos: replace a service card photo → saved (the site shows the Warm Sand photos until switched on)", async () => {
     const land = page.getByTestId("photo-slot-land");
     await land.getByTestId("photo-input").setInputFiles(photoPath);
     await land.getByTestId("photo-kind").getByLabel("Stock photo", { exact: false }).check();
     await land.getByTestId("photo-credit").fill("Test credit, CC BY 4.0");
     await land.getByTestId("photo-save").click();
-    await land.getByText("live on the website now").waitFor({ timeout: 60000 });
-    const { data: row } = await db.from("site_photos").select("storage_path, width").eq("slot", "land").single();
+    await land.getByText("Not shown on the website yet").waitFor({ timeout: 60000 });
+    await page.getByTestId("photos-paused").waitFor();
+    const { data: row } = await db.from("site_photos").select("storage_path, width, credit").eq("slot", "land").single();
     assert(row.width === 1600, `card photo width ${row.width}`);
+    assert(row.credit === "Test credit, CC BY 4.0", "credit not saved");
+    // the website keeps the approved Warm Sand photo for this spot (src/config/photos.ts)
     const visitor = await (await newCtx()).newPage();
-    await visitor.goto(`${BASE}/en/services`);
-    const src = decodeURIComponent((await visitor.locator("#land img").first().getAttribute("src")) ?? "");
-    assert(src.includes(row.storage_path), "services page not updated");
-    await visitor.locator("#land").getByText("Stock photo · Test credit, CC BY 4.0").waitFor(); // honest credit shown
+    await visitor.goto(`${BASE}/en/services/land`);
+    await visitor.locator("img").first().waitFor();
+    const srcs = await visitor.locator("img").evaluateAll((els) => els.map((e) => decodeURIComponent(e.getAttribute("src") ?? "")));
+    assert(srcs.some((x) => x.includes("/images/site/land.jpg")), "Warm Sand land photo missing");
+    assert(!srcs.some((x) => x.includes(row.storage_path)), "admin photo shown while switched off");
     await visitor.context().close();
   });
 
