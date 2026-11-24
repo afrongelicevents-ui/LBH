@@ -29,7 +29,7 @@ export function brandedHtml(e: BrandedEmail): string {
 <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${esc(e.preheader)}</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f1ece5;"><tr><td align="center" style="padding:32px 16px;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
-<tr><td style="padding:0 4px 20px;"><a href="${site.url}" style="text-decoration:none;"><img src="${site.url}/images/brand/logo-on-light.png" width="46" height="40" alt="" style="vertical-align:middle;border:0;"><span style="vertical-align:middle;margin-left:10px;font-family:Georgia,'Times New Roman',serif;font-size:21px;color:#b5552f;">Let's Build Home</span></a></td></tr>
+<tr><td style="padding:0 4px 20px;"><a href="${site.url}" style="text-decoration:none;"><img src="${site.url}/images/brand/logo-email.png" width="48" height="42" alt="LBH" style="vertical-align:middle;border:0;"><span style="vertical-align:middle;margin-left:10px;font-family:Georgia,'Times New Roman',serif;font-size:21px;color:#b5552f;">Let's Build Home</span></a></td></tr>
 <tr><td style="background:#faf7f3;border:1px solid #e6dcd0;border-top:4px solid #b5552f;border-radius:6px;padding:32px 28px;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;">
 <h1 style="margin:0 0 18px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:28px;line-height:1.2;color:#2a1e16;">${esc(e.title)}</h1>
 ${e.paragraphs.map(p).join("\n")}
