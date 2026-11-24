@@ -9,6 +9,7 @@ import { useAuthProfile } from "@/components/auth/useAuthProfile";
 import { guardAction, useSubmitKeepingValues } from "@/lib/useSubmitKeepingValues";
 import { loadVisitorChat, sendVisitorMessage, startVisitorChat, type ChatMessage, type StartResult } from "@/app/actions/visitorChat";
 import { StatusPill, useOfficeStatus } from "./OfficeStatus";
+import ChatAssistant from "./ChatAssistant";
 
 const KEY = "lbh-chat";
 const SEEN = "lbh-chat-seen";
@@ -46,6 +47,9 @@ export default function ChatWidget() {
   const [saved, setSaved] = useState<Saved | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [unread, setUnread] = useState(false);
+  // "bot": instant answers (default) · "person": the team chat
+  const [mode, setMode] = useState<"bot" | "person">("bot");
+  const [prefill, setPrefill] = useState("");
   const status = useOfficeStatus(open);
   const wa = waLink();
 
@@ -62,16 +66,22 @@ export default function ChatWidget() {
         }
         setSaved(s);
         setMessages(r.messages);
+        setMode("person"); // an ongoing conversation with the team opens first
         const lastLbh = [...r.messages].reverse().find((m) => m.author === "lbh");
         if (lastLbh && lastLbh.at > (localStorage.getItem(SEEN) ?? "")) setUnread(true);
       })
       .catch(() => undefined);
   }, []);
 
-  // open from anywhere: <a href="#chat"> or ?chat=open
+  // open from anywhere: <a href="#chat"> or ?chat=open; "#chat-person" / ?chat=person opens the team chat
   useEffect(() => {
     const check = () => {
-      if (location.hash === "#chat" || new URLSearchParams(location.search).get("chat") === "open") {
+      const q = new URLSearchParams(location.search).get("chat");
+      if (location.hash === "#chat-person" || q === "person") {
+        setMode("person");
+        setUnread(false);
+        setOpen(true);
+      } else if (location.hash === "#chat" || q === "open") {
         setUnread(false);
         setOpen(true);
       }
@@ -120,13 +130,35 @@ export default function ChatWidget() {
             <div>
               <h2 id="chat-title" className="font-serif text-xl text-charcoal">{t("title")}</h2>
               <StatusPill s={status} className="mt-0.5" />
+              <div role="tablist" aria-label={t("title")} className="mt-2 inline-flex rounded-full border border-rule bg-white p-0.5 text-sm">
+                {(["bot", "person"] as const).map((m) => (
+                  <button
+                    key={m}
+                    type="button"
+                    role="tab"
+                    aria-selected={mode === m}
+                    onClick={() => setMode(m)}
+                    className={`rounded-full px-3 py-1 font-semibold ${mode === m ? "bg-forest text-white" : "text-slate hover:text-charcoal"}`}
+                    data-testid={`chat-tab-${m}`}
+                  >
+                    {m === "bot" ? t("bot.tabBot") : t("bot.tabPerson")}
+                  </button>
+                ))}
+              </div>
             </div>
             <button type="button" onClick={() => setOpen(false)} aria-label={t("close")} className="-mr-2 rounded p-2 text-slate hover:text-charcoal" data-testid="chat-close">
               <CloseIcon width={20} height={20} />
             </button>
           </div>
 
-          {auth.status === "in" ? (
+          {mode === "bot" ? (
+            <ChatAssistant
+              onPerson={(q) => {
+                setPrefill(q);
+                setMode("person");
+              }}
+            />
+          ) : auth.status === "in" ? (
             <div className="space-y-4 px-5 py-5">
               <p className="ds-body">{t("signedInText")}</p>
               <Link href="/account/support" className="ds-btn ds-btn-primary w-full" data-testid="chat-account-link">
@@ -139,6 +171,7 @@ export default function ChatWidget() {
           ) : (
             <StartForm
               wa={wa}
+              defaultMessage={prefill}
               onStarted={(r) => {
                 const s = { chatId: r.chatId, token: r.token };
                 localStorage.setItem(KEY, JSON.stringify(s));
@@ -163,7 +196,7 @@ function WhatsAppOption({ href }: { href: string }) {
   );
 }
 
-function StartForm({ onStarted, wa }: { onStarted: (r: Extract<StartResult, { ok: true }>) => void; wa: string | null }) {
+function StartForm({ onStarted, wa, defaultMessage = "" }: { onStarted: (r: Extract<StartResult, { ok: true }>) => void; wa: string | null; defaultMessage?: string }) {
   const t = useTranslations("site.chat");
   const locale = useLocale();
   const pathname = usePathname();
@@ -197,7 +230,7 @@ function StartForm({ onStarted, wa }: { onStarted: (r: Extract<StartResult, { ok
       <p className="-mt-1 text-xs text-slate">{t("contactHint")}</p>
       <label>
         <span className="mb-1 block text-sm font-semibold text-charcoal">{t("message")} *</span>
-        <textarea name="message" required rows={3} maxLength={4000} placeholder={t("messagePlaceholder")} className={inputCls} />
+        <textarea name="message" required rows={3} maxLength={4000} defaultValue={defaultMessage} placeholder={t("messagePlaceholder")} className={inputCls} />
       </label>
       <input type="hidden" name="locale" value={locale} />
       <input type="hidden" name="page" value={pathname} />

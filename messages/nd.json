@@ -2593,6 +2593,26 @@
         "network": "Akula-network — siza uzame futhi.",
         "invalid": "Siza uhlole imininingwane yakho.",
         "error": "Kukhona okungahambanga kahle — siza uzame futhi."
+      },
+      "bot": {
+        "tabBot": "Izimpendulo ezisheshayo",
+        "tabPerson": "Khuluma lomuntu",
+        "name": "Umsizi weLBH",
+        "autoLabel": "impendulo ezenzakalelayo",
+        "hello": "Salibonani! Ngingumsizi weLBH. Ngiphendula imibuzo mayelana lokuthi iLBH isebenza njani — khonokho, emini loba ebusuku. Khetha umbuzo kumbe ubhale owakho.",
+        "popular": "Imibuzo ebuzwa kakhulu",
+        "more": "Eminye imibuzo",
+        "placeholder": "Bhala umbuzo wakho…",
+        "ask": "Buza",
+        "thinking": "Ngiyadinga…",
+        "notSure": "Angilaqiniso ngalokho. Umuntu weqembu lethu angakusiza — cindezela “Khuluma lomuntu”.",
+        "handoffCta": "Khuluma lomuntu",
+        "handoffHint": "Ngamanani, ukubhadala kumbe iphrojekthi yakho, iqembu lethu likuphendula ngqo.",
+        "disclaimer": "Izimpendulo ezenzakalelayo zingaphosisa. Ngezemali kumbe iphrojekthi yakho, khuluma lomuntu.",
+        "errors": {
+          "rate": "Imibuzo isiminengi — linda kancane, kumbe ukhulume lomuntu.",
+          "error": "Angikwazanga ukuphendula khathesi — zama futhi, kumbe ukhulume lomuntu."
+        }
       }
     }
   }

@@ -2592,6 +2592,26 @@
         "network": "No connection — please try again.",
         "invalid": "Please check your details.",
         "error": "Something went wrong — please try again."
+      },
+      "bot": {
+        "tabBot": "Quick answers",
+        "tabPerson": "Talk to a person",
+        "name": "LBH assistant",
+        "autoLabel": "automatic answer",
+        "hello": "Hi! I'm the LBH assistant. I answer questions about how LBH works — straight away, day or night. Pick a question or type your own.",
+        "popular": "Popular questions",
+        "more": "More questions",
+        "placeholder": "Type your question…",
+        "ask": "Ask",
+        "thinking": "Looking that up…",
+        "notSure": "I'm not sure about that one. A person from our team can help — tap “Talk to a person”.",
+        "handoffCta": "Talk to a person",
+        "handoffHint": "For prices, payments or your own project, our team answers you directly.",
+        "disclaimer": "Automatic answers can be wrong. For money or your project, talk to a person.",
+        "errors": {
+          "rate": "Too many questions — please wait a little, or talk to a person.",
+          "error": "I couldn't answer just now — please try again, or talk to a person."
+        }
       }
     }
   }

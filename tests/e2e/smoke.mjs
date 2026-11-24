@@ -1636,6 +1636,30 @@ console.log("\nLive chat, Inbox, alerts and office hours");
     await v.getByTestId("reply-promise").getByText(/within 24 hours/).waitFor();
   });
 
+  await step("chat assistant: quick questions answer at once, typed questions answered, prices handed to a person", async () => {
+    const actx = await newCtx({ viewport: { width: 390, height: 844 } });
+    const a = await actx.newPage();
+    await a.goto(`${BASE}/en`);
+    await a.getByTestId("chat-open").click();
+    await a.getByTestId("assistant-thread").waitFor();
+    await a.getByTestId("assistant-chip-there").click();
+    await a.getByTestId("assistant-msg-bot").first().getByText(/No\. Everything happens through your LBH account/).waitFor();
+    await a.getByTestId("assistant-input").fill("Does LBH hold my money?");
+    await a.getByTestId("assistant-ask").click();
+    await a.getByTestId("assistant-msg-bot").nth(1).getByText(/not a bank account/).waitFor({ timeout: 20000 });
+    await a.getByTestId("assistant-input").fill("How much will my house cost?");
+    await a.getByTestId("assistant-ask").click();
+    await a.getByTestId("assistant-handoff").last().click();
+    const f = a.getByTestId("chat-start");
+    await f.waitFor();
+    const prefilled = await f.locator('textarea[name="message"]').inputValue();
+    assert(prefilled === "How much will my house cost?", `question not carried to the team chat: ${prefilled}`);
+    await a.getByTestId("chat-tab-bot").click();
+    await a.getByTestId("assistant-msg-user").first().waitFor(); // conversation kept
+    await shot(a, "chat-assistant-m");
+    await actx.close();
+  });
+
   let chatId;
   await step("visitor chats without an account → instant reply on screen + email; team alerted by email and in the Inbox", async () => {
     await v.getByTestId("contact-open-chat").click();

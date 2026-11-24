@@ -4,6 +4,8 @@
   "main": "worker.ts",
   "compatibility_date": "2026-11-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  // Chat assistant: Workers AI (free daily allowance; model can be changed with the AI_MODEL variable)
+  "ai": { "binding": "AI" },
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"

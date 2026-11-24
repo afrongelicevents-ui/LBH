@@ -39,7 +39,7 @@ function ContactContent() {
         </div>
         <p className="mt-3 text-center text-sm text-muted">
           {t("chatNote")}{" "}
-          <a href="#chat" className="font-semibold text-forest underline underline-offset-2" data-testid="contact-open-chat">{t("chatCta")}</a>
+          <a href="#chat-person" className="font-semibold text-forest underline underline-offset-2" data-testid="contact-open-chat">{t("chatCta")}</a>
         </p>
 
         <div className="mt-8 grid gap-5 sm:grid-cols-2">

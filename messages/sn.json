@@ -2593,6 +2593,26 @@
         "network": "Hapana network — ndapota edza zvakare.",
         "invalid": "Ndapota tarisa zvawaisa.",
         "error": "Pane chakanganisika — ndapota edza zvakare."
+      },
+      "bot": {
+        "tabBot": "Mhinduro dzinokurumidza",
+        "tabPerson": "Taura nemunhu",
+        "name": "Mubatsiri weLBH",
+        "autoLabel": "mhinduro yeotomatiki",
+        "hello": "Mhoro! Ndini mubatsiri weLBH. Ndinopindura mibvunzo pamusoro pekushanda kweLBH — ipapo ipapo, masikati kana usiku. Sarudza mubvunzo kana kunyora wako.",
+        "popular": "Mibvunzo inowanzobvunzwa",
+        "more": "Mimwe mibvunzo",
+        "placeholder": "Nyora mubvunzo wako…",
+        "ask": "Bvunza",
+        "thinking": "Ndiri kutsvaga…",
+        "notSure": "Handina chokwadi nazvo. Munhu wechikwata chedu anogona kukubatsira — dzvanya “Taura nemunhu”.",
+        "handoffCta": "Taura nemunhu",
+        "handoffHint": "Pamitengo, kubhadhara kana purojekiti yako, chikwata chedu chinokupindura chaiko.",
+        "disclaimer": "Mhinduro dzeotomatiki dzinogona kukanganisa. Pane zvemari kana purojekiti yako, taura nemunhu.",
+        "errors": {
+          "rate": "Mibvunzo yawanda — mira zvishoma, kana taura nemunhu.",
+          "error": "Handina kukwanisa kupindura izvozvi — edza zvakare, kana taura nemunhu."
+        }
       }
     }
   }
