@@ -47,8 +47,9 @@ export default function ChatWidget() {
   const [saved, setSaved] = useState<Saved | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [unread, setUnread] = useState(false);
-  // "bot": instant answers (default) · "person": the team chat
-  const [mode, setMode] = useState<"bot" | "person">("bot");
+  // "bot": instant answers · "person": the team chat. Until chosen, visitors
+  // start with quick answers and signed-in clients with their account messages.
+  const [chosenMode, setMode] = useState<"bot" | "person" | null>(null);
   const [prefill, setPrefill] = useState("");
   const status = useOfficeStatus(open);
   const wa = waLink();
@@ -101,6 +102,7 @@ export default function ChatWidget() {
   };
 
   if (auth.status === "in" && auth.profile.role !== "client") return null; // staff
+  const mode = chosenMode ?? (auth.status === "in" ? "person" : "bot");
 
   return (
     <>
