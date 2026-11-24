@@ -11,13 +11,14 @@
 import { writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 
-const FOREST = "#163a2b";
-const IVORY = "#f5f1e8";
-const PAPER = "#fbf9f4";
-const CHARCOAL = "#23261f";
-const SLATE = "#565b52";
-const RULE = "#ddd5c4";
-const LOGO = "{{ .SiteURL }}/images/logo.jpg";
+const FOREST = "#b5552f"; // Warm Sand accent (buttons, name, top line)
+const IVORY = "#f1ece5";
+const PAPER = "#faf7f3";
+const CHARCOAL = "#2a1e16";
+const SLATE = "#76675a";
+const RULE = "#e6dcd0";
+// Logo on its own dark badge: stays visible when mail apps darken the email
+const LOGO = "{{ .SiteURL }}/images/brand/logo-email.png";
 const link = (type, next) => `{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=${type}&next=${next}`;
 const hi = `Hi{{ if .Data.full_name }} {{ .Data.full_name }}{{ end }},`;
 
@@ -90,7 +91,7 @@ export function render(e) {
           <tr>
             <td style="padding:0 4px 20px;">
               <a href="{{ .SiteURL }}" style="text-decoration:none;">
-                <img src="${LOGO}" width="48" height="38" alt="" style="vertical-align:middle;border:0;border-radius:4px;background:#fff;">
+                <img src="${LOGO}" width="48" height="42" alt="LBH" style="vertical-align:middle;border:0;">
                 <span style="vertical-align:middle;margin-left:10px;font-family:Georgia,'Times New Roman',serif;font-size:21px;color:${FOREST};">Let's Build Home</span>
               </a>
             </td>
