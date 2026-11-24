@@ -15,7 +15,7 @@
   "images": { "binding": "IMAGES" },
   // Daily: Build Account renewal reminders + receipt clean-up (was Vercel Cron)
   "triggers": { "crons": ["17 7 * * *"] },
-  "observability": { "enabled": true },
-  // Paid plan: allow slow pages (PDFs, photos) up to 60 s of CPU
-  "limits": { "cpu_ms": 60000 }
+  "observability": { "enabled": true }
+  // On the Workers Paid plan, add: "limits": { "cpu_ms": 60000 }
+  // (lets slow pages such as PDFs and photo uploads use more CPU time)
 }

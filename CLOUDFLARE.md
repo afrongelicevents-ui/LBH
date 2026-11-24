@@ -4,7 +4,7 @@ Branch `cloudflare`. Built with OpenNext (`@opennextjs/cloudflare`).
 
 - Build: `npm run cf:build` · Local run: `npm run cf:preview` · Deploy: `npm run cf:deploy`
 - Config: `wrangler.jsonc` (worker `lbh`, Images binding, daily cron 07:17 UTC), `worker.ts` (app + cron), `open-next.config.ts`
-- Needs the **Workers Paid** plan ($5/month): pages need more than the free plan's 10 ms CPU.
+- Runs on the **free** Workers plan for now (2.8 MB of the 3 MB limit). If pages fail with "exceeded CPU time" (error 1102), move to Workers Paid ($5/month) and add `"limits": { "cpu_ms": 60000 }` to wrangler.jsonc.
 - Tested: full e2e suite (`tests/e2e/smoke.mjs`) passes against `wrangler dev` with local Supabase (104/104).
 
 ## Settings
