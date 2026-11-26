@@ -21,3 +21,8 @@ Workers Builds: build command `npm run cf:build`, deploy command `npx wrangler d
 - EXIF read with `exifr`; receipts read on the phone (tesseract.js, files in `/ocr`, copied at build)
 - PDFs use pdfkit's self-contained build on Cloudflare (`CF_BUILD=1` alias in `next.config.ts`)
 - `cookie@0.7` pinned for OpenNext (cookie@1 crashed the middleware on any request with cookies)
+
+## LBH Shops (added 26 Nov 2026)
+- New database tables: apply `supabase/migrations/20261126100000_shops.sql` to the live Supabase project **before** this branch goes live.
+- No payments: shops are a catalogue; project managers buy with order codes.
+- Local test note: after many large photo uploads in one long `wrangler dev` session, the local worker ran out of memory. Check photo uploads on the real preview link before switching the domain.
