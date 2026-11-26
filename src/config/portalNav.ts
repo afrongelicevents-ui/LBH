@@ -15,10 +15,14 @@ const CLIENT: PortalNavDef[] = [
   { href: "/account/build-account", label: "portal.nav.buildAccount", icon: "card" },
   { href: "/account/projects/new-land", label: "portal.nav.newLand", icon: "pin" },
   { href: "/account/projects/new-materials", label: "portal.nav.newMaterials", icon: "truck" },
+  { href: "/account/shop-orders", label: "portal.nav.shopOrders", icon: "list" },
   { href: "/account/support", label: "portal.nav.chat", icon: "chat" },
 ];
 
-const FIELD: PortalNavDef[] = [{ href: "/field", label: "portal.nav.myJobs", icon: "briefcase" }];
+const FIELD: PortalNavDef[] = [
+  { href: "/field", label: "portal.nav.myJobs", icon: "briefcase" },
+  { href: "/field/shop-orders", label: "portal.nav.shopOrders", icon: "truck" },
+];
 
 const ADMIN: PortalNavDef[] = [
   { href: "/admin", label: "admin.nav.needsYou", icon: "home" },
@@ -29,6 +33,7 @@ const ADMIN: PortalNavDef[] = [
   { href: "/admin/clients", label: "admin.nav.clients", icon: "users" },
 
   { href: "/admin/payments", label: "admin.nav.payments", icon: "card" },
+  { href: "/admin/shops", label: "admin.nav.shops", icon: "truck" },
   { href: "/admin/interest", label: "admin.nav.interest", icon: "bell" },
   { href: "/admin/settings", label: "admin.nav.settings", icon: "cog" },
   { href: "/admin/settings/photos", label: "admin.nav.photos", icon: "camera" },

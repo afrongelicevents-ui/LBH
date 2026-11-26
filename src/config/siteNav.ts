@@ -19,6 +19,7 @@ export function publicNav(_showProjects?: boolean): SiteNavItem[] {
     { href: "/services", key: "services" },
     { href: "/how-it-works", key: "howItWorks" },
     { href: "/build-account", key: "buildAccount" },
+    { href: "/shops", key: "shops" },
     { href: "/projects", key: "projects" },
     { href: "/about", key: "about" },
     { href: "/contact", key: "contact" },
@@ -30,6 +31,7 @@ export const HEADER_LINKS: SiteNavItem[] = [
   { href: "/services", key: "services" },
   { href: "/how-it-works", key: "howItWorks" },
   { href: "/build-account", key: "buildAccount" },
+  { href: "/shops", key: "shops" },
   { href: "/projects", key: "projects" },
   { href: "/about", key: "about" },
 ];
@@ -45,6 +47,7 @@ export const ACCOUNT_NAV: SiteNavItem[] = [
   { href: "/account/reports", key: "reports" },
   { href: "/account/updates", key: "updates" },
   { href: "/account/approvals", key: "approvals" },
+  { href: "/account/shop-orders", key: "shopOrders" },
   { href: "/account/support", key: "support" },
   { href: "/account/settings", key: "settings" },
 ];

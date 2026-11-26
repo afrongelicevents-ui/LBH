@@ -171,6 +171,13 @@ export function WhatWeDo() {
       <span className="ws-kicker">{t("whatKicker")}</span>
       <h2 id="what-title" className="ws-h-sec mt-2.5">{t("whatTitle")}</h2>
       <ServiceTiles />
+      <Link href="/shops" className="card mt-3.5 flex items-center justify-between gap-4 p-5 hover:border-forest md:mt-5 md:p-6" data-testid="tile-shops">
+        <span>
+          <span className="block font-serif text-xl font-bold text-charcoal">{t("shopsTile.title")}</span>
+          <span className="mt-1 block text-[15px] text-slate">{t("shopsTile.text")}</span>
+        </span>
+        <span className="ws-go shrink-0"><ArrowGo /></span>
+      </Link>
     </section>
   );
 }

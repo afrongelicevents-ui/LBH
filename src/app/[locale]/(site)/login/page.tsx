@@ -25,7 +25,8 @@ export default async function LoginPage({
     // back to the page they were trying to open, if it belongs to their area
     const home = homeForRole(profile.role);
     const area = home.replace(/^\//, "");
-    const ok = safeNext && new RegExp(`^(/(sn|nd))?/${area}(/|\\?|$)`).test(safeNext);
+    // …or back to LBH Shops (clients order from a shop page)
+    const ok = safeNext && new RegExp(`^(/(sn|nd))?/(${area}${profile.role === "client" ? "|shops" : ""})(/|\\?|$)`).test(safeNext);
     redirect({ href: ok ? safeNext.replace(/^\/(sn|nd)(?=\/)/, "") : home, locale });
   }
 

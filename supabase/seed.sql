@@ -198,3 +198,31 @@ begin
   perform public.log_audit('seed.loaded', 'system', null,
     '{"note":"SAMPLE DATA — local/test only"}');
 end $$;
+
+-- ---------- SAMPLE shops (marketplace) — local/test only ----------
+do $$
+declare
+  s1 uuid := gen_random_uuid();
+  s2 uuid := gen_random_uuid();
+  s3 uuid := gen_random_uuid();
+begin
+  insert into public.shops (id, slug, name, area, address, about, categories, status, fair_price_agreed_at) values
+    (s1, 'sample-harare-hardware', 'SAMPLE Harare Hardware', 'Harare · Msasa', 'SAMPLE 12 Mutare Road, Msasa',
+     'SAMPLE — Cement, steel and roofing for houses of every size.', '{cement,steel,roofing,hardware}', 'approved', now()),
+    (s2, 'sample-bulawayo-building', 'SAMPLE Bulawayo Building Supplies', 'Bulawayo · Belmont', 'SAMPLE 4 Steelworks Road, Belmont',
+     'SAMPLE — Bricks, sand, stone and plumbing.', '{bricks,sand_stone,cement,plumbing}', 'approved', now()),
+    (s3, 'sample-new-shop', 'SAMPLE New Shop (waiting)', 'Gweru', '', '', '{paint}', 'pending', now());
+  insert into public.shop_contacts (shop_id, contact_name, phone, email, notes) values
+    (s1, 'SAMPLE Tendai', '+263 77 000 0001', 'sample-shop1@example.test', ''),
+    (s2, 'SAMPLE Sipho', '+263 77 000 0002', 'sample-shop2@example.test', ''),
+    (s3, 'SAMPLE Rudo', '+263 77 000 0003', 'sample-shop3@example.test', 'SAMPLE — price list to follow');
+  insert into public.shop_items (shop_id, name, category, unit, price_cents) values
+    (s1, 'SAMPLE Portland cement 32.5', 'cement', '50 kg bag', 1150),
+    (s1, 'SAMPLE Y12 rebar', 'steel', '6 m length', 980),
+    (s1, 'SAMPLE IBR roof sheet 0.5 mm', 'roofing', '3 m sheet', 1890),
+    (s1, 'SAMPLE Wire nails 75 mm', 'hardware', '1 kg', 250),
+    (s2, 'SAMPLE Portland cement 32.5', 'cement', '50 kg bag', 1100),
+    (s2, 'SAMPLE Common bricks', 'bricks', '1,000 bricks', 9000),
+    (s2, 'SAMPLE River sand', 'sand_stone', '1 tonne', 2500),
+    (s2, 'SAMPLE PVC pipe 110 mm', 'plumbing', '6 m length', 1450);
+end $$;

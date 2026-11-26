@@ -1767,6 +1767,123 @@ console.log("\nLive chat, Inbox, alerts and office hours");
   });
   await actx.close();
 
+  await step("LBH Shops: compare, order with a code, PM buys at a lower shelf price, shop warned", async () => {
+    // visitor: compare and open a shop
+    const v = await (await newCtx({ viewport: { width: 390, height: 844 } })).newPage();
+    await v.goto(`${BASE}/en/shops?c=cement`);
+    const rows = v.getByTestId("compare-row");
+    await rows.first().waitFor();
+    assert((await rows.first().innerText()).includes("$11.00"), "cheapest cement not first");
+    await v.getByTestId("shop-card").filter({ hasText: "Harare Hardware" }).click();
+    await v.getByTestId("shop-fair").waitFor();
+    await v.getByTestId("item-add").first().click();
+    await v.getByTestId("order-login").waitFor(); // must log in to order
+    await v.context().close();
+
+    // shop applies to join
+    const j = await (await newCtx()).newPage();
+    await j.goto(`${BASE}/en/shops/join`);
+    const jf = j.getByTestId("shop-join-form");
+    await jf.locator('input[name="name"]').fill("E2E Gweru Paints");
+    await jf.locator('input[name="area"]').fill("Gweru");
+    await jf.locator('input[name="contact_name"]').fill("E2E Owner");
+    await jf.locator('input[name="phone"]').fill("+263 77 123 4567");
+    await jf.locator('button[type="submit"]').click();
+    await j.waitForTimeout(800);
+    assert((await j.getByTestId("shop-join-done").count()) === 0, "joined without agreeing to the fair-price rules");
+    await j.getByTestId("shop-join-agree").check();
+    await jf.locator('button[type="submit"]').click();
+    await j.getByTestId("shop-join-done").waitFor();
+    await j.context().close();
+
+    // client orders 3 bags of cement + 1 sheet
+    const c = await (await newCtx({ viewport: { width: 390, height: 844 } })).newPage();
+    await login(c, "client@lbh.test");
+    await c.goto(`${BASE}/en/shops/sample-harare-hardware`);
+    const cement = c.getByTestId("shop-item").filter({ hasText: "cement" });
+    await cement.getByTestId("item-add").click();
+    await cement.getByRole("button", { name: "One more" }).click();
+    await cement.getByRole("button", { name: "One more" }).click();
+    await c.getByTestId("shop-item").filter({ hasText: "roof sheet" }).getByTestId("item-add").click();
+    assert((await c.getByTestId("cart-total").innerText()) === "$53.40", "cart total wrong");
+    await c.getByTestId("order-send").click();
+    const code = (await c.getByTestId("order-code").innerText()).trim();
+    assert(/^LBH-[A-Z0-9]{6}$/.test(code), `bad code ${code}`);
+    await c.goto(`${BASE}/en/account/shop-orders`);
+    await c.getByTestId("shop-order-code").filter({ hasText: code }).waitFor();
+
+    // admin approves the new shop and assigns the order to the PM
+    const a = await (await newCtx()).newPage();
+    await loginStaff(a, "admin@lbh.test");
+    await a.goto(`${BASE}/en/admin/shops`);
+    await a.getByTestId("admin-shops-pending").getByText("E2E Gweru Paints").click();
+    await a.getByTestId("shop-approve").click();
+    await a.getByTestId("admin-shop-status").filter({ hasText: "Live" }).waitFor();
+    await a.goto(`${BASE}/en/admin/shops/orders`);
+    const card = a.getByTestId("admin-shop-order").filter({ hasText: code });
+    await card.getByTestId("order-assign").click();
+    await a.getByTestId("admin-shop-order").filter({ hasText: code }).filter({ hasText: "A project manager is buying it" }).waitFor();
+
+    // PM at the shop: cement is $0.50 cheaper on the shelf → bought, client pays less, shop warned
+    const f = await (await newCtx({ viewport: { width: 390, height: 844 } })).newPage();
+    await loginStaff(f, "agent@lbh.test");
+    await f.goto(`${BASE}/en/field/shop-orders`);
+    await f.getByTestId("field-shop-order").filter({ hasText: code }).click();
+    await f.getByTestId("field-order-code").filter({ hasText: code }).waitFor();
+    await f.getByTestId("field-shop-line").filter({ hasText: "cement" }).getByTestId("field-shelf").fill("11.00");
+    await f.getByTestId("field-shop-save").click();
+    await f.getByTestId("field-shop-msg").filter({ hasText: "receipt" }).waitFor(); // receipt needed
+    await f.getByTestId("field-receipt").setInputFiles(photoPath);
+    await f.getByTestId("field-shop-save").click();
+    await f.getByTestId("field-shop-msg").filter({ hasText: "bought" }).waitFor({ timeout: 30000 });
+
+    await c.reload();
+    const done = c.getByTestId("shop-order").filter({ hasText: code });
+    await done.getByText("Bought").waitFor();
+    await done.getByText("$51.90").waitFor(); // 3 × $11.00 + $18.90
+    await done.getByTestId("shop-order-receipt").waitFor();
+    await a.goto(`${BASE}/en/admin/shops`);
+    await a.getByTestId("admin-shops-approved").getByTestId("admin-shop-row").filter({ hasText: "Harare Hardware" }).getByText("1 warning").waitFor();
+    await shot(c, "shop-orders-m");
+    await c.context().close();
+    await a.context().close();
+    await f.context().close();
+  });
+
+  await step("LBH Shops: item missing at the shop → client approves the change before anything is bought", async () => {
+    const c = await (await newCtx({ viewport: { width: 390, height: 844 } })).newPage();
+    await login(c, "client@lbh.test");
+    await c.goto(`${BASE}/en/shops/sample-bulawayo-building`);
+    await c.getByTestId("shop-item").filter({ hasText: "River sand" }).getByTestId("item-add").click();
+    await c.getByTestId("shop-item").filter({ hasText: "PVC pipe" }).getByTestId("item-add").click();
+    await c.getByTestId("order-send").click();
+    const code = (await c.getByTestId("order-code").innerText()).trim();
+
+    const a = await (await newCtx()).newPage();
+    await loginStaff(a, "admin@lbh.test");
+    await a.goto(`${BASE}/en/admin/shops/orders`);
+    await a.getByTestId("admin-shop-order").filter({ hasText: code }).getByTestId("order-assign").click();
+    await a.getByTestId("admin-shop-order").filter({ hasText: code }).filter({ hasText: "A project manager is buying it" }).waitFor();
+
+    const f = await (await newCtx({ viewport: { width: 390, height: 844 } })).newPage();
+    await loginStaff(f, "agent@lbh.test");
+    await f.goto(`${BASE}/en/field/shop-orders`);
+    await f.getByTestId("field-shop-order").filter({ hasText: code }).click();
+    await f.getByTestId("field-shop-line").filter({ hasText: "PVC pipe" }).getByTestId("field-avail").uncheck();
+    await f.getByTestId("field-shop-save").click(); // no receipt needed: nothing bought yet
+    await f.getByTestId("field-shop-msg").filter({ hasText: "client to decide" }).waitFor({ timeout: 30000 });
+
+    await c.goto(`${BASE}/en/account/shop-orders`);
+    const o = c.getByTestId("shop-order").filter({ hasText: code });
+    await o.getByTestId("shop-order-changes").getByText("Not in stock").waitFor();
+    await o.getByTestId("shop-order-accept").click();
+    await c.getByTestId("shop-order").filter({ hasText: code }).filter({ hasText: "A project manager is buying it" }).waitFor();
+    await c.getByTestId("shop-order").filter({ hasText: code }).getByText("$25.00").last().waitFor(); // sand only
+    await c.context().close();
+    await a.context().close();
+    await f.context().close();
+  });
+
   await step("signed-in customers are sent to their account messages; staff see no chat button", async () => {
     const c = await (await newCtx({ viewport: { width: 390, height: 844 } })).newPage();
     await login(c, "client@lbh.test");

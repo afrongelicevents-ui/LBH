@@ -48,7 +48,8 @@ export function tokenMatches(token: string, hash: string): boolean {
 }
 
 // ---------- alerts to the admin team ----------
-export type AlertKind = "booking" | "visitor_chat" | "client_chat";
+/** "shop": LBH Shops (applications, orders, price warnings) — email only, never an inbox item. */
+export type AlertKind = "booking" | "visitor_chat" | "client_chat" | "shop";
 
 /** Where alert emails go: the addresses set in admin, else every admin account. */
 async function alertRecipients(): Promise<string[]> {
@@ -72,13 +73,13 @@ export async function alertTeam(a: {
   inApp?: boolean;
 }): Promise<void> {
   try {
-    if (a.inApp) await createAdminClient().from("admin_alerts").insert({ kind: a.kind, ref: a.ref, title: a.title.slice(0, 300) });
+    if (a.inApp && a.kind !== "shop") await createAdminClient().from("admin_alerts").insert({ kind: a.kind, ref: a.ref, title: a.title.slice(0, 300) });
     const { replyHours } = await getReplySettings();
     const mail: BrandedEmail = {
       preheader: a.title,
       title: a.title,
-      paragraphs: [...a.lines, `Please reply within ${replyHours} hours — that is what we promise on the website.`],
-      button: { label: "Open the Inbox", href: `${site.url}${a.path}` },
+      paragraphs: a.kind === "shop" ? a.lines : [...a.lines, `Please reply within ${replyHours} hours — that is what we promise on the website.`],
+      button: { label: a.kind === "shop" ? "Open in LBH" : "Open the Inbox", href: `${site.url}${a.path}` },
       note: "You get this email because you are on the LBH admin team.",
     };
     const to = await alertRecipients();
